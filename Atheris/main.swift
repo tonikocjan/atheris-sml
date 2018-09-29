@@ -8,5 +8,5 @@
 
 import Foundation
 
-print("Hello, World!")
-
+let lexan = try? LexAn(parseFile: "playground.ar")
+print(lexan?.nextSymbol())

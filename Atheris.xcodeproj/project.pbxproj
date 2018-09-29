@@ -7,7 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3734A741215A28A600917960 /* Atheris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A740215A28A600917960 /* Atheris.swift */; };
+		3734A745215A2AEB00917960 /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A744215A2AEB00917960 /* ArgumentParser.swift */; };
+		3734A750215A2D6700917960 /* Atheris_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A74F215A2D6700917960 /* Atheris_tests.swift */; };
+		3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A755215A2D8100917960 /* ArgumentParserTests.swift */; };
+		3734A757215A2F2B00917960 /* Atheris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A740215A28A600917960 /* Atheris.swift */; };
+		3734A758215A2F2E00917960 /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A744215A2AEB00917960 /* ArgumentParser.swift */; };
+		3734A759215A2F3100917960 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
+		3734A75A215A2F3300917960 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
+		3734A75B215A2F3500917960 /* TokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650921553D2A0058BD03 /* TokenType.swift */; };
+		3734A75C215A2F3700917960 /* LexAn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650D21553D560058BD03 /* LexAn.swift */; };
+		3734A75D215A2F3D00917960 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376164F821553CB90058BD03 /* main.swift */; };
 		376164F921553CB90058BD03 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376164F821553CB90058BD03 /* main.swift */; };
+		3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
+		3761650B21553D2A0058BD03 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
+		3761650C21553D2A0058BD03 /* TokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650921553D2A0058BD03 /* TokenType.swift */; };
+		3761650E21553D560058BD03 /* LexAn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650D21553D560058BD03 /* LexAn.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,11 +38,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3734A740215A28A600917960 /* Atheris.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atheris.swift; sourceTree = "<group>"; };
+		3734A744215A2AEB00917960 /* ArgumentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParser.swift; sourceTree = "<group>"; };
+		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3734A74F215A2D6700917960 /* Atheris_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atheris_tests.swift; sourceTree = "<group>"; };
+		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
 		376164F521553CB90058BD03 /* Atheris */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Atheris; sourceTree = BUILT_PRODUCTS_DIR; };
 		376164F821553CB90058BD03 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LexicalAnalyzer.swift; path = Lexan/LexicalAnalyzer.swift; sourceTree = "<group>"; };
+		3761650821553D2A0058BD03 /* Symbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Symbol.swift; path = Lexan/Symbol.swift; sourceTree = "<group>"; };
+		3761650921553D2A0058BD03 /* TokenType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenType.swift; path = Lexan/TokenType.swift; sourceTree = "<group>"; };
+		3761650D21553D560058BD03 /* LexAn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexAn.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3734A74A215A2D6600917960 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		376164F221553CB90058BD03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -38,10 +70,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3734A73F215A289400917960 /* Compiler */ = {
+			isa = PBXGroup;
+			children = (
+				3734A740215A28A600917960 /* Atheris.swift */,
+				3734A744215A2AEB00917960 /* ArgumentParser.swift */,
+			);
+			name = Compiler;
+			sourceTree = "<group>";
+		};
+		3734A74E215A2D6700917960 /* Atheris tests */ = {
+			isa = PBXGroup;
+			children = (
+				3734A74F215A2D6700917960 /* Atheris_tests.swift */,
+				3734A755215A2D8100917960 /* ArgumentParserTests.swift */,
+				3734A751215A2D6700917960 /* Info.plist */,
+			);
+			path = "Atheris tests";
+			sourceTree = "<group>";
+		};
 		376164EC21553CB90058BD03 = {
 			isa = PBXGroup;
 			children = (
 				376164F721553CB90058BD03 /* Atheris */,
+				3734A74E215A2D6700917960 /* Atheris tests */,
 				376164F621553CB90058BD03 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				376164F521553CB90058BD03 /* Atheris */,
+				3734A74D215A2D6600917960 /* Atheris tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -57,14 +110,44 @@
 		376164F721553CB90058BD03 /* Atheris */ = {
 			isa = PBXGroup;
 			children = (
+				3734A73F215A289400917960 /* Compiler */,
+				3761650621553D1E0058BD03 /* Lexan */,
 				376164F821553CB90058BD03 /* main.swift */,
 			);
 			path = Atheris;
 			sourceTree = "<group>";
 		};
+		3761650621553D1E0058BD03 /* Lexan */ = {
+			isa = PBXGroup;
+			children = (
+				3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */,
+				3761650821553D2A0058BD03 /* Symbol.swift */,
+				3761650921553D2A0058BD03 /* TokenType.swift */,
+				3761650D21553D560058BD03 /* LexAn.swift */,
+			);
+			name = Lexan;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3734A74C215A2D6600917960 /* Atheris tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3734A752215A2D6700917960 /* Build configuration list for PBXNativeTarget "Atheris tests" */;
+			buildPhases = (
+				3734A749215A2D6600917960 /* Sources */,
+				3734A74A215A2D6600917960 /* Frameworks */,
+				3734A74B215A2D6600917960 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Atheris tests";
+			productName = "Atheris tests";
+			productReference = 3734A74D215A2D6600917960 /* Atheris tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		376164F421553CB90058BD03 /* Atheris */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 376164FC21553CB90058BD03 /* Build configuration list for PBXNativeTarget "Atheris" */;
@@ -92,6 +175,9 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Toni Kocjan";
 				TargetAttributes = {
+					3734A74C215A2D6600917960 = {
+						CreatedOnToolsVersion = 10.0;
+					};
 					376164F421553CB90058BD03 = {
 						CreatedOnToolsVersion = 10.0;
 					};
@@ -110,22 +196,91 @@
 			projectRoot = "";
 			targets = (
 				376164F421553CB90058BD03 /* Atheris */,
+				3734A74C215A2D6600917960 /* Atheris tests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		3734A74B215A2D6600917960 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		3734A749215A2D6600917960 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3734A757215A2F2B00917960 /* Atheris.swift in Sources */,
+				3734A750215A2D6700917960 /* Atheris_tests.swift in Sources */,
+				3734A75D215A2F3D00917960 /* main.swift in Sources */,
+				3734A75B215A2F3500917960 /* TokenType.swift in Sources */,
+				3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */,
+				3734A758215A2F2E00917960 /* ArgumentParser.swift in Sources */,
+				3734A759215A2F3100917960 /* LexicalAnalyzer.swift in Sources */,
+				3734A75C215A2F3700917960 /* LexAn.swift in Sources */,
+				3734A75A215A2F3300917960 /* Symbol.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		376164F121553CB90058BD03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3734A741215A28A600917960 /* Atheris.swift in Sources */,
+				3761650E21553D560058BD03 /* LexAn.swift in Sources */,
+				3734A745215A2AEB00917960 /* ArgumentParser.swift in Sources */,
+				3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */,
+				3761650C21553D2A0058BD03 /* TokenType.swift in Sources */,
 				376164F921553CB90058BD03 /* main.swift in Sources */,
+				3761650B21553D2A0058BD03 /* Symbol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		3734A753215A2D6700917960 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T634YNT6FE;
+				INFOPLIST_FILE = "Atheris tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "tss.Atheris-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		3734A754215A2D6700917960 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T634YNT6FE;
+				INFOPLIST_FILE = "Atheris tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "tss.Atheris-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 		376164FA21553CB90058BD03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -264,6 +419,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3734A752215A2D6700917960 /* Build configuration list for PBXNativeTarget "Atheris tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3734A753215A2D6700917960 /* Debug */,
+				3734A754215A2D6700917960 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		376164F021553CB90058BD03 /* Build configuration list for PBXProject "Atheris" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
