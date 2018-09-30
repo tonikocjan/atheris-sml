@@ -18,9 +18,9 @@ class ArgumentParserTests: XCTestCase {
   
   func testRandomArgs() {
     let parser = ArgumentParser()
-    parser.parseArguments(["main.ar", "dump_lex=true", "dump_ast=false", "phase=lexan", "stack_size=999"])
+    parser.parseArguments(["/Users/toni/swift/Atheris/main.swift", "main.ar", "dump_lex=true", "dump_ast=false", "phase=lexan", "stack_size=999"])
     
-    XCTAssertEqual(5, parser.count)
+    XCTAssertEqual(6, parser.count)
     
     XCTAssertEqual("main.ar", parser.string(for: "source_file"))
     XCTAssertEqual(999, parser.int(for: "stack_size"))

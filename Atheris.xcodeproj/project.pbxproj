@@ -18,6 +18,10 @@
 		3734A75B215A2F3500917960 /* TokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650921553D2A0058BD03 /* TokenType.swift */; };
 		3734A75C215A2F3700917960 /* LexAn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650D21553D560058BD03 /* LexAn.swift */; };
 		3734A75D215A2F3D00917960 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376164F821553CB90058BD03 /* main.swift */; };
+		375FF4F02160C08D0088F7A3 /* FileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4EC2160B20C0088F7A3 /* FileReader.swift */; };
+		375FF4F32160C0DA0088F7A3 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */; };
+		375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */ = {isa = PBXBuildFile; fileRef = 375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */; };
+		375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F62160C1040088F7A3 /* file_parser_test_2 */; };
 		376164F921553CB90058BD03 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376164F821553CB90058BD03 /* main.swift */; };
 		3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
 		3761650B21553D2A0058BD03 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
@@ -44,6 +48,10 @@
 		3734A74F215A2D6700917960 /* Atheris_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atheris_tests.swift; sourceTree = "<group>"; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
+		375FF4EC2160B20C0088F7A3 /* FileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReader.swift; sourceTree = "<group>"; };
+		375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
+		375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_1; sourceTree = "<group>"; };
+		375FF4F62160C1040088F7A3 /* file_parser_test_2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_2; sourceTree = "<group>"; };
 		376164F521553CB90058BD03 /* Atheris */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Atheris; sourceTree = BUILT_PRODUCTS_DIR; };
 		376164F821553CB90058BD03 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LexicalAnalyzer.swift; path = Lexan/LexicalAnalyzer.swift; sourceTree = "<group>"; };
@@ -82,11 +90,22 @@
 		3734A74E215A2D6700917960 /* Atheris tests */ = {
 			isa = PBXGroup;
 			children = (
+				375FF4F12160C0C80088F7A3 /* Lexan */,
 				3734A74F215A2D6700917960 /* Atheris_tests.swift */,
 				3734A755215A2D8100917960 /* ArgumentParserTests.swift */,
 				3734A751215A2D6700917960 /* Info.plist */,
 			);
 			path = "Atheris tests";
+			sourceTree = "<group>";
+		};
+		375FF4F12160C0C80088F7A3 /* Lexan */ = {
+			isa = PBXGroup;
+			children = (
+				375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */,
+				375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */,
+				375FF4F62160C1040088F7A3 /* file_parser_test_2 */,
+			);
+			path = Lexan;
 			sourceTree = "<group>";
 		};
 		376164EC21553CB90058BD03 = {
@@ -121,9 +140,10 @@
 			isa = PBXGroup;
 			children = (
 				3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */,
+				3761650D21553D560058BD03 /* LexAn.swift */,
 				3761650821553D2A0058BD03 /* Symbol.swift */,
 				3761650921553D2A0058BD03 /* TokenType.swift */,
-				3761650D21553D560058BD03 /* LexAn.swift */,
+				375FF4EC2160B20C0088F7A3 /* FileReader.swift */,
 			);
 			name = Lexan;
 			sourceTree = "<group>";
@@ -206,6 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,15 +237,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375FF4F32160C0DA0088F7A3 /* FileParserTests.swift in Sources */,
 				3734A757215A2F2B00917960 /* Atheris.swift in Sources */,
 				3734A750215A2D6700917960 /* Atheris_tests.swift in Sources */,
 				3734A75D215A2F3D00917960 /* main.swift in Sources */,
 				3734A75B215A2F3500917960 /* TokenType.swift in Sources */,
+				375FF4F02160C08D0088F7A3 /* FileReader.swift in Sources */,
 				3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */,
 				3734A758215A2F2E00917960 /* ArgumentParser.swift in Sources */,
 				3734A759215A2F3100917960 /* LexicalAnalyzer.swift in Sources */,
 				3734A75C215A2F3700917960 /* LexAn.swift in Sources */,
 				3734A75A215A2F3300917960 /* Symbol.swift in Sources */,
+				375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

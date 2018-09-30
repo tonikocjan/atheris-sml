@@ -8,5 +8,16 @@
 
 import Foundation
 
-let lexan = try? LexAn(parseFile: "playground.ar")
-print(lexan?.nextSymbol())
+do {
+//  try Atheris(argumentParser: ArgumentParser())
+//    .parseArguments(CommandLine.arguments)
+//    .compile()
+  
+  let reader = try FileReader(fileUrl: URL(string: "/Users/tonikocjan/swift/Atheris/Atheris/playground.ar")!)
+  defer { reader.closeFile() }
+  while let line = reader.readLine() {
+    print(line)
+  }
+} catch {
+  LoggerFactory.logger.error(message: error.localizedDescription)
+}
