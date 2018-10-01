@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+enum Arguments: String {
+  case sourceFile = "source_file"
+}

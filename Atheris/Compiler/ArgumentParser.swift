@@ -20,8 +20,9 @@ class ArgumentParser: ArgumentParserProtocol {
   private var arguments = [String: String]()
   
   func parseArguments(_ arguments: [String]) {
-    guard let first = arguments.first else { return }
-    self.arguments["source_file"] = first
+    guard arguments.count >= 2 else { return }
+    self.arguments["cwd"] = arguments[0]
+    self.arguments["source_file"] = arguments[1]
     arguments.dropFirst().compactMap(parseArgument).forEach { self.arguments[$0.key] = $0.value }
   }
   
