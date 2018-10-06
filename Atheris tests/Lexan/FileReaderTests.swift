@@ -9,10 +9,10 @@
 @testable import Atheris
 import XCTest
 
-class FileParserTests: XCTestCase {
+class FileReaderTests: XCTestCase {
   func testReadCharByChar() {
     do {
-      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_parser_test_1".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_reader_test_1".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
       
       XCTAssertEqual("H", try fileReader.readChar())
@@ -40,7 +40,7 @@ class FileParserTests: XCTestCase {
   
   func testReadLineByLine() {
     do {
-      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_parser_test_2".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_reader_test_2".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
       XCTAssertEqual("line1", fileReader.readLine())
       XCTAssertEqual("line2", fileReader.readLine())
@@ -55,13 +55,25 @@ class FileParserTests: XCTestCase {
   
   func testReadBytes() {
     do {
-      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_parser_test_1".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_reader_test_1".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
       let bytes = fileReader.readString(size: 1000) ?? "" // NOTE: - try to read more bytes than the file contains
       XCTAssertEqual(17, bytes.count)
       XCTAssertEqual("Hello Atheris!\n:)", bytes)
     } catch {
       XCTFail()
+    }
+  }
+  
+  func testPerformance() {
+    self.measure {
+      do {
+        let path = "/Users/tonikocjan/swift/Atheris/file.txt".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+        let fileReader = try FileReader(fileUrl: URL(string: path)!)
+        while let _ = fileReader.readLine() {}
+      } catch {
+        XCTFail()
+      }
     }
   }
 }
