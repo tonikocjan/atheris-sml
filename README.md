@@ -15,6 +15,8 @@ The goal of this project is to implement a compiler which will be able to parse 
   - core semantics
 - Code generation: target language ==> Racket
 
+Source code of this _translator_ will be written in `Swift`.
+
 🚀🚀🚀
 
 ## Other relevant information
