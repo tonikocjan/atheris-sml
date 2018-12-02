@@ -17,4 +17,4 @@ The goal of this project is to implement a compiler which will be able to parse 
 
 🚀🚀🚀
 
-Implementation of the compiler will be based on: http://sml-family.org/sml97-defn.pdf
+Implementation of the compiler will be based on: http://sml-family.org/sml97-defn.pdf (PDF included in `/SML/sml97-defn.pdf`)
