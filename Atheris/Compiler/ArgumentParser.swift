@@ -23,7 +23,10 @@ class ArgumentParser: ArgumentParserProtocol {
     guard arguments.count >= 2 else { return }
     self.arguments[Arguments.workingDirectory.rawValue] = arguments[0]
     self.arguments[Arguments.sourceFile.rawValue] = arguments[1]
-    arguments.dropFirst().compactMap(parseArgument).forEach { self.arguments[$0.key] = $0.value }
+    arguments
+      .dropFirst()
+      .compactMap(parseArgument)
+      .forEach { self.arguments[$0.key] = $0.value }
   }
   
   func bool(for key: String) -> Bool? {

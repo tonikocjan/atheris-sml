@@ -79,6 +79,7 @@
 		37E0CE28216A360E00BAFD2A /* InputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputStream.swift; sourceTree = "<group>"; };
 		37E0CE2A216A362800BAFD2A /* OutputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputStream.swift; sourceTree = "<group>"; };
 		37E0CE2C216A380100BAFD2A /* FileOutputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOutputStream.swift; sourceTree = "<group>"; };
+		37F024A121B3C63A006B868E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +135,7 @@
 		376164EC21553CB90058BD03 = {
 			isa = PBXGroup;
 			children = (
+				37F024A121B3C63A006B868E /* README.md */,
 				376164F721553CB90058BD03 /* Atheris */,
 				3734A74E215A2D6700917960 /* Atheris tests */,
 				376164F621553CB90058BD03 /* Products */,
