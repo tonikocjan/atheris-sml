@@ -20,7 +20,7 @@ class LexAn: LexicalAnalyzer {
   
   func nextSymbol() -> Symbol {
     guard let symbol = parseSymbol() else {
-      let symbol = Symbol(tokenType: .eof, lexeme: "$", position: Position(startLocation: currentLocation,
+      let symbol = Symbol(token: .eof, lexeme: "$", position: Position(startLocation: currentLocation,
                                                                            endLocation: Location(row: currentLocation.row,
                                                                                                  column: currentLocation.column + 1)))
       return symbol
@@ -29,7 +29,7 @@ class LexAn: LexicalAnalyzer {
   }
 }
 
-extension LexAn {
+extension LexAn: Sequence {
   struct Iterator: IteratorProtocol {
     let lexan: LexAn
     private var didEnd = false
@@ -41,7 +41,7 @@ extension LexAn {
     mutating func next() -> Symbol? {
       guard !didEnd else { return nil }
       let symbol = lexan.nextSymbol()
-      didEnd = symbol.tokenType == .eof
+      didEnd = symbol.token == .eof
       return symbol
     }
   }
@@ -54,7 +54,7 @@ extension LexAn {
         continue
       }
       if notLegalCharacter(character) {
-        return Symbol(tokenType: .invalidCharacter, lexeme: "\(character)", position: position(count: 1))
+        return Symbol(token: .invalidCharacter, lexeme: "\(character)", position: position(count: 1))
       }
       
       //////////////////////////////
@@ -89,12 +89,12 @@ private extension LexAn {
     while let character = nextCharacter() {
       if character == "\"" {
         let newPosition = position(count: lexeme.count + 2)
-        return Symbol(tokenType: .stringConstant, lexeme: lexeme, position: newPosition)
+        return Symbol(token: .stringConstant, lexeme: lexeme, position: newPosition)
       } else {
         lexeme.append(character)
       }
     }
-    return Symbol(tokenType: .nonEscapedStringConstant, lexeme: lexeme, position: position(count: lexeme.count + 1))
+    return Symbol(token: .nonEscapedStringConstant, lexeme: lexeme, position: position(count: lexeme.count + 1))
   }
   
   func parseOperatorOrComment(_ char: Character) -> Symbol? {
@@ -111,7 +111,7 @@ private extension LexAn {
       let lexeme = "\(char)\(nextCharacter)"
       if let compositeOperator = LexAn.compositeOperators[lexeme] {
         let symbolPosition = position(count: 2)
-        return Symbol(tokenType: compositeOperator, lexeme: lexeme, position: symbolPosition)
+        return Symbol(token: compositeOperator, lexeme: lexeme, position: symbolPosition)
       } else if lexeme == "(*" {
         return parseMultilineComment()
       } else {
@@ -120,7 +120,7 @@ private extension LexAn {
     }
     
     let symbolPosition = position(count: 1)
-    return Symbol(tokenType: LexAn.operators[char]!, lexeme: String(char), position: symbolPosition)
+    return Symbol(token: LexAn.operators[char]!, lexeme: String(char), position: symbolPosition)
   }
   
   func parseNumericConstant() -> Symbol {
@@ -142,7 +142,7 @@ private extension LexAn {
     }
     
     let newPosition = position(count: lexeme.count)
-    return Symbol(tokenType: tokenType, lexeme: lexeme, position: newPosition)
+    return Symbol(token: tokenType, lexeme: lexeme, position: newPosition)
   }
   
   func parseIdentifierOrReservedKeyword() -> Symbol {
@@ -174,7 +174,7 @@ private extension LexAn {
     }
     
     let newPosition = position(count: lexeme.count)
-    return Symbol(tokenType: tokenType(), lexeme: lexeme, position: newPosition)
+    return Symbol(token: tokenType(), lexeme: lexeme, position: newPosition)
   }
 }
 
@@ -268,7 +268,7 @@ private extension LexAn {
      ";": .semicolon,
      ":": .colon,
      "|": .pipe,
-     "_": .ignore,]
+     "_": .wildcard,]
   
   private static let compositeOperators: [String: TokenType] =
     ["=>": .darrow,

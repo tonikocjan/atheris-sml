@@ -8,20 +8,28 @@
 import Foundation
 
 struct Symbol {
-  let tokenType: TokenType
+  let token: TokenType
   let lexeme: String
   let position: Position
 }
 
 extension Symbol: CustomStringConvertible {
   var description: String {
-    return position.description + " " + tokenType.rawValue + ": " + lexeme
+    return position.description + " " + token.rawValue + ": " + lexeme
   }
 }
 
 struct Position {
   let startLocation: Location
   let endLocation: Location
+  
+  static let zero = Position(startRow: 0, startColumn: 0, endRow: 0, endColumn: 0)
+}
+
+extension Position {
+  static func + (_ lhs: Position, _ rhs: Position) -> Position {
+    return Position(startLocation: lhs.startLocation, endLocation: rhs.endLocation)
+  }
 }
 
 extension Position {

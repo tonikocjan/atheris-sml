@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol LexicalAnalyzer: Sequence {
-  func nextSymbol() throws -> Symbol
+protocol LexicalAnalyzer {
+  func nextSymbol() -> Symbol
 }

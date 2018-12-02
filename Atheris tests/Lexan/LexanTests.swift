@@ -22,7 +22,7 @@ class LexanTests: XCTestCase {
     XCTAssertEqual("[1:3, 1:4] INT_CONST: 0", generateSymbols("  0").first?.description)
     XCTAssertEqual("[1:1, 1:7] FLOAT_CONST: 3.1417", generateSymbols("3.1417").first?.description)
     XCTAssertEqual("[1:1, 1:7] FLOAT_CONST: 3.1417", generateSymbols("3.1417.12").first?.description)
-    XCTAssertEqual(TokenType.invalidCharacter, generateSymbols(".12").first?.tokenType)
+    XCTAssertEqual(TokenType.invalidCharacter, generateSymbols(".12").first?.token)
   }
   
   func testParseOperator() {
@@ -40,40 +40,40 @@ class LexanTests: XCTestCase {
   }
   
   func testKeywords() {
-    XCTAssertEqual(TokenType.keywordModulo, generateSymbols("mod").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordNot, generateSymbols("not").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordAbstype, generateSymbols("abstype").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordAnd, generateSymbols("and").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordAndalso, generateSymbols("andalso").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordAs, generateSymbols("as").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordCase, generateSymbols("case").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordDatatype, generateSymbols("datatype").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordDo, generateSymbols("do").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordElse, generateSymbols("else").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordEnd, generateSymbols("end").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordException, generateSymbols("exception").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordFn, generateSymbols("fn").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordFun, generateSymbols("fun").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordHandle, generateSymbols("handle").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordIf, generateSymbols("if").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordIn, generateSymbols("in").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordInfix, generateSymbols("infix").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordInfixr, generateSymbols("infixr").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordLet, generateSymbols("let").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordLocal, generateSymbols("local").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordNonfix, generateSymbols("nonfix").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordOf, generateSymbols("of").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordOp, generateSymbols("op").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordOpen, generateSymbols("open").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordOrelse, generateSymbols("orelse").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordRaise, generateSymbols("raise").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordRec, generateSymbols("rec").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordThen, generateSymbols("then").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordType, generateSymbols("type").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordVal, generateSymbols("val").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordWith, generateSymbols("with").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordWithtype, generateSymbols("withtype").first?.tokenType)
-    XCTAssertEqual(TokenType.keywordWhile, generateSymbols("while").first?.tokenType)
+    XCTAssertEqual(TokenType.keywordModulo, generateSymbols("mod").first?.token)
+    XCTAssertEqual(TokenType.keywordNot, generateSymbols("not").first?.token)
+    XCTAssertEqual(TokenType.keywordAbstype, generateSymbols("abstype").first?.token)
+    XCTAssertEqual(TokenType.keywordAnd, generateSymbols("and").first?.token)
+    XCTAssertEqual(TokenType.keywordAndalso, generateSymbols("andalso").first?.token)
+    XCTAssertEqual(TokenType.keywordAs, generateSymbols("as").first?.token)
+    XCTAssertEqual(TokenType.keywordCase, generateSymbols("case").first?.token)
+    XCTAssertEqual(TokenType.keywordDatatype, generateSymbols("datatype").first?.token)
+    XCTAssertEqual(TokenType.keywordDo, generateSymbols("do").first?.token)
+    XCTAssertEqual(TokenType.keywordElse, generateSymbols("else").first?.token)
+    XCTAssertEqual(TokenType.keywordEnd, generateSymbols("end").first?.token)
+    XCTAssertEqual(TokenType.keywordException, generateSymbols("exception").first?.token)
+    XCTAssertEqual(TokenType.keywordFn, generateSymbols("fn").first?.token)
+    XCTAssertEqual(TokenType.keywordFun, generateSymbols("fun").first?.token)
+    XCTAssertEqual(TokenType.keywordHandle, generateSymbols("handle").first?.token)
+    XCTAssertEqual(TokenType.keywordIf, generateSymbols("if").first?.token)
+    XCTAssertEqual(TokenType.keywordIn, generateSymbols("in").first?.token)
+    XCTAssertEqual(TokenType.keywordInfix, generateSymbols("infix").first?.token)
+    XCTAssertEqual(TokenType.keywordInfixr, generateSymbols("infixr").first?.token)
+    XCTAssertEqual(TokenType.keywordLet, generateSymbols("let").first?.token)
+    XCTAssertEqual(TokenType.keywordLocal, generateSymbols("local").first?.token)
+    XCTAssertEqual(TokenType.keywordNonfix, generateSymbols("nonfix").first?.token)
+    XCTAssertEqual(TokenType.keywordOf, generateSymbols("of").first?.token)
+    XCTAssertEqual(TokenType.keywordOp, generateSymbols("op").first?.token)
+    XCTAssertEqual(TokenType.keywordOpen, generateSymbols("open").first?.token)
+    XCTAssertEqual(TokenType.keywordOrelse, generateSymbols("orelse").first?.token)
+    XCTAssertEqual(TokenType.keywordRaise, generateSymbols("raise").first?.token)
+    XCTAssertEqual(TokenType.keywordRec, generateSymbols("rec").first?.token)
+    XCTAssertEqual(TokenType.keywordThen, generateSymbols("then").first?.token)
+    XCTAssertEqual(TokenType.keywordType, generateSymbols("type").first?.token)
+    XCTAssertEqual(TokenType.keywordVal, generateSymbols("val").first?.token)
+    XCTAssertEqual(TokenType.keywordWith, generateSymbols("with").first?.token)
+    XCTAssertEqual(TokenType.keywordWithtype, generateSymbols("withtype").first?.token)
+    XCTAssertEqual(TokenType.keywordWhile, generateSymbols("while").first?.token)
   }
   
   func testSimpleExpressions() {
@@ -138,7 +138,7 @@ lwedklwe
 *)
 """)
     XCTAssertEqual(1, symbols.count)
-    XCTAssertEqual(TokenType.eof, symbols[0].tokenType)
+    XCTAssertEqual(TokenType.eof, symbols[0].token)
     
     symbols = generateSymbols("""
 val x = 10;
@@ -152,37 +152,37 @@ val x = 20.15;
 """)
     XCTAssertEqual(11, symbols.count)
     guard symbols.count == 11 else { return }
-    XCTAssertEqual(TokenType.keywordVal, symbols[0].tokenType)
-    XCTAssertEqual(TokenType.identifier, symbols[1].tokenType)
-    XCTAssertEqual(TokenType.assign, symbols[2].tokenType)
-    XCTAssertEqual(TokenType.integerConstant, symbols[3].tokenType)
-    XCTAssertEqual(TokenType.semicolon, symbols[4].tokenType)
-    XCTAssertEqual(TokenType.keywordVal, symbols[5].tokenType)
-    XCTAssertEqual(TokenType.identifier, symbols[6].tokenType)
-    XCTAssertEqual(TokenType.assign, symbols[7].tokenType)
-    XCTAssertEqual(TokenType.floatingConstant, symbols[8].tokenType)
-    XCTAssertEqual(TokenType.semicolon, symbols[9].tokenType)
-    XCTAssertEqual(TokenType.eof, symbols[10].tokenType)
+    XCTAssertEqual(TokenType.keywordVal, symbols[0].token)
+    XCTAssertEqual(TokenType.identifier, symbols[1].token)
+    XCTAssertEqual(TokenType.assign, symbols[2].token)
+    XCTAssertEqual(TokenType.integerConstant, symbols[3].token)
+    XCTAssertEqual(TokenType.semicolon, symbols[4].token)
+    XCTAssertEqual(TokenType.keywordVal, symbols[5].token)
+    XCTAssertEqual(TokenType.identifier, symbols[6].token)
+    XCTAssertEqual(TokenType.assign, symbols[7].token)
+    XCTAssertEqual(TokenType.floatingConstant, symbols[8].token)
+    XCTAssertEqual(TokenType.semicolon, symbols[9].token)
+    XCTAssertEqual(TokenType.eof, symbols[10].token)
   }
   
   func testIdentifier() {
-    XCTAssertEqual(TokenType.identifier, generateSymbols("ident1").first?.tokenType)
+    XCTAssertEqual(TokenType.identifier, generateSymbols("ident1").first?.token)
     XCTAssertEqual("ident1", generateSymbols("ident1").first?.lexeme)
     
-    XCTAssertEqual(TokenType.integerConstant, generateSymbols("1ident").first?.tokenType)
+    XCTAssertEqual(TokenType.integerConstant, generateSymbols("1ident").first?.token)
     XCTAssertEqual("ident", generateSymbols("1ident")[1].lexeme)
-    XCTAssertEqual(TokenType.integerConstant, generateSymbols("1ident").first?.tokenType)
+    XCTAssertEqual(TokenType.integerConstant, generateSymbols("1ident").first?.token)
     
     XCTAssertEqual("abc_", generateSymbols("abc_")[0].lexeme)
-    XCTAssertEqual(TokenType.identifier, generateSymbols("abc_")[0].tokenType)
+    XCTAssertEqual(TokenType.identifier, generateSymbols("abc_")[0].token)
     
-    XCTAssertEqual(TokenType.identifier, generateSymbols("a'a").first?.tokenType)
+    XCTAssertEqual(TokenType.identifier, generateSymbols("a'a").first?.token)
     XCTAssertEqual("a'a", generateSymbols("a'a").first?.lexeme)
     
-    XCTAssertEqual(TokenType.identifier, generateSymbols("#&#?@").first?.tokenType)
+    XCTAssertEqual(TokenType.identifier, generateSymbols("#&#?@").first?.token)
     XCTAssertEqual("#&#?@", generateSymbols("#&#?@").first?.lexeme)
     
-    XCTAssertEqual(TokenType.identifier, generateSymbols("!%&$#+-/:<=>?@\\~‘^|*").first?.tokenType)
+    XCTAssertEqual(TokenType.identifier, generateSymbols("!%&$#+-/:<=>?@\\~‘^|*").first?.token)
     XCTAssertEqual("!%&$#+-/:<=>?@\\~‘^|*", generateSymbols("!%&$#+-/:<=>?@\\~‘^|*").first?.lexeme)
     
     XCTAssertEqual(3, generateSymbols("ident@#").count)
@@ -203,15 +203,15 @@ val x = 20.15;
     XCTAssertEqual(5, symbols.count)
     XCTAssertEqual(";", symbols[3].lexeme)
     
-    XCTAssertEqual(TokenType.nonEscapedStringConstant, generateSymbols("\"a").first?.tokenType)
+    XCTAssertEqual(TokenType.nonEscapedStringConstant, generateSymbols("\"a").first?.token)
     
     symbols = generateSymbols("\"this is \"a string\";")
     XCTAssertEqual(5, symbols.count)
-    XCTAssertEqual(TokenType.stringConstant, symbols[0].tokenType)
-    XCTAssertEqual(TokenType.identifier, symbols[1].tokenType)
-    XCTAssertEqual(TokenType.identifier, symbols[2].tokenType)
-    XCTAssertEqual(TokenType.nonEscapedStringConstant, symbols[3].tokenType)
-    XCTAssertEqual(TokenType.eof, symbols[4].tokenType)
+    XCTAssertEqual(TokenType.stringConstant, symbols[0].token)
+    XCTAssertEqual(TokenType.identifier, symbols[1].token)
+    XCTAssertEqual(TokenType.identifier, symbols[2].token)
+    XCTAssertEqual(TokenType.nonEscapedStringConstant, symbols[3].token)
+    XCTAssertEqual(TokenType.eof, symbols[4].token)
   }
   
   func testBooleanConstant() {
@@ -230,27 +230,12 @@ val x = 20.15;
     //    while true {
     //      let symbol = lexan.nextSymbol()
     //
-    //      if symbol.tokenType == .eof { break }
+    //      if symbol.token == .eof { break }
     //    }
   }
 }
 
 private extension LexanTests {
-  class TextStream: InputStream {
-    let string: String
-    private var it = 0
-    
-    init(string: String) {
-      self.string = string
-    }
-    
-    func next() throws -> Character {
-      guard it < string.count else { throw NSError(domain: "Empty string", code: 0, userInfo: nil) }
-      it += 1
-      return string[string.index(string.startIndex, offsetBy: it - 1)]
-    }
-  }
-  
   func generateSymbols(_ string: String) -> [Symbol] {
     let lexan = LexAn(inputStream: TextStream(string: string))
     return lexan.map { $0 }

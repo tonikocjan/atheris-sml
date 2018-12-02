@@ -37,7 +37,7 @@ enum TokenType: String {
   case assign = "ASSIGN"
   case pipe = "PIPE"
   
-  case ignore = "_"
+  case wildcard = "_"
   
   case keywordModulo = "MOD"
   case keywordNot = "NOT"
