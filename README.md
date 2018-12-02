@@ -17,4 +17,7 @@ The goal of this project is to implement a compiler which will be able to parse 
 
 🚀🚀🚀
 
+## Other relevant information
 Implementation of the compiler will be based on: http://sml-family.org/sml97-defn.pdf (PDF included in `/SML/sml97-defn.pdf`)
+
+The codebase is based on `Atheris-Swift` project, which at this point in time contains only tokenization of the `Atheris` programming language. The original compiler (written in Java) can be found at https://gitlab.com/seckmaster/atheris. 
