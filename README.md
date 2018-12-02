@@ -11,8 +11,10 @@ The goal of this project is to implement a compiler which will be able to parse 
 - Tokenization (lexical analysis) of SML code
 - Syntax analysis: Abstract Syntax Tree
   - core syntax
-- Semantic analysis: type evaluation
-  - core semantics
+- Semantic analysis:
+  - core semantics 
+    - name resolving 
+    - type evaluation
 - Code generation: target language ==> Racket
 
 Source code of this _translator_ will be written in `Swift`.
