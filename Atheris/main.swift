@@ -8,5 +8,10 @@
 
 import Foundation
 
-print("Hello, World!")
-
+do {
+  try Atheris(argumentParser: ArgumentParser())
+    .parseArguments(CommandLine.arguments)
+    .compile()
+} catch {
+  LoggerFactory.logger.error(message: error.localizedDescription)
+}
