@@ -9,17 +9,6 @@
 import Foundation
 
 class LexAn: LexicalAnalyzer {
-  enum Error: Swift.Error {
-    case stringConstantNotClosed
-    
-    var localizedDescription: String {
-      switch self {
-      case .stringConstantNotClosed:
-        return "String must be closed with a `\"`!"
-      }
-    }
-  }
-  
   let inputStream: InputStream
   
   private var currentLocation = Location(row: 1, column: 1)
@@ -63,10 +52,16 @@ extension LexAn {
     while let character = nextCharacter() {
       if character == " " { continue }
       if character == "\n" {
-        return parseNewLine()
+        currentLocation = Location(row: currentLocation.row + 1, column: 1)
+        continue
+      }
+      if notLegalCharacter(character) {
+        return Symbol(tokenType: .invalidCharacter, lexeme: "\(character)", position: position(count: 1))
       }
       
-      if character == "\"" {
+      //////////////////////////////
+      
+      if isDoubleQuote(character) {
         return parseStringConstant()
       }
       
@@ -77,7 +72,7 @@ extension LexAn {
       bufferCharacter = character
       
       if isNumeric(character) {
-        return parseNumbericConstant()
+        return parseNumericConstant()
       }
       
       return parseIdentifierOrReservedKeyword()
@@ -91,14 +86,6 @@ extension LexAn {
 }
 
 private extension LexAn {
-  func parseNewLine() -> Symbol? {
-    guard previousSymbol != .newline else { return parseSymbol() }
-    
-    let newline = Symbol(tokenType: .newline, lexeme: "", position: position(count: 1))
-    currentLocation = Location(row: currentLocation.row + 1, column: 1)
-    return newline
-  }
-  
   func parseStringConstant() -> Symbol {
     var lexeme = ""
     while let character = nextCharacter() {
@@ -113,16 +100,9 @@ private extension LexAn {
   }
   
   func parseOperatorOrComment(_ char: Character) -> Symbol? {
-    func parseSingleLineComment() -> Symbol? {
-      while let character = nextCharacter() {
-        if character == "\n" { return parseNewLine() }
-      }
-      return nil
-    }
-    
     func parseMultilineComment() -> Symbol? {
       while let character = nextCharacter() {
-        if character == "*", let next = nextCharacter(), next == "/" {
+        if character == "*", let next = nextCharacter(), next == ")" {
           return parseSymbol()
         }
       }
@@ -134,19 +114,18 @@ private extension LexAn {
       if let compositeOperator = LexAn.compositeOperators[lexeme] {
         let symbolPosition = position(count: 2)
         return Symbol(tokenType: compositeOperator, lexeme: lexeme, position: symbolPosition)
-      } else if lexeme == "//" {
-        return parseSingleLineComment()
-      } else if lexeme == "/*" {
+      } else if lexeme == "(*" {
         return parseMultilineComment()
       } else {
         bufferCharacter = nextCharacter
       }
     }
+    
     let symbolPosition = position(count: 1)
     return Symbol(tokenType: LexAn.operators[char]!, lexeme: String(char), position: symbolPosition)
   }
   
-  func parseNumbericConstant() -> Symbol {
+  func parseNumericConstant() -> Symbol {
     var lexeme = ""
     var tokenType = TokenType.integerConstant
     while let character = nextCharacter() {
@@ -171,11 +150,14 @@ private extension LexAn {
   func parseIdentifierOrReservedKeyword() -> Symbol {
     var lexeme = ""
     
-    func isLegal(char: Character) -> Bool {
-      if lexeme.isEmpty {
-        return isLegalCharacterForIdentifierWhenFirst(char)
+    func isLegal(char: Character, lexeme: String) -> Bool {
+      if let lastChar = lexeme.last {
+        if isLegalCharacterForSymbolicIdentifier(lastChar) {
+          return isLegalCharacterForSymbolicIdentifier(char)
+        }
+        return isLegalCharacterForAlphanumbericIdentifier(char)
       }
-      return isLegalCharacterForIdentifier(char)
+      return isLegalCharacterForAlphanumbericIdentifierWhenFirst(char) || isLegalCharacterForSymbolicIdentifier(char)
     }
     
     func tokenType() -> TokenType {
@@ -185,7 +167,7 @@ private extension LexAn {
     }
     
     while let character = nextCharacter() {
-      if isLegal(char: character) {
+      if isLegal(char: character, lexeme: lexeme) {
         lexeme.append(character)
       } else {
         bufferCharacter = character
@@ -199,16 +181,32 @@ private extension LexAn {
 }
 
 private extension LexAn {
-  func isLegalCharacterForIdentifier(_ char: Character) -> Bool {
-    return isLegalCharacterForIdentifierWhenFirst(char) || isNumeric(char)
+  func isLegalCharacterForSymbolicIdentifier(_ char: Character) -> Bool {
+    return LexAn.symbolicIdentifierCharacterSet.contains(char)
   }
   
-  func isLegalCharacterForIdentifierWhenFirst(_ char: Character) -> Bool {
-    return isAlphabet(char) || isUnderscore(char)
+  func isLegalCharacterForAlphanumbericIdentifier(_ char: Character) -> Bool {
+    return
+      isLegalCharacterForAlphanumbericIdentifierWhenFirst(char) ||
+      isUnderscore(char) ||
+      isPrime(char) ||
+      isNumeric(char)
+  }
+  
+  func isLegalCharacterForAlphanumbericIdentifierWhenFirst(_ char: Character) -> Bool {
+    return isAlphabet(char)
+  }
+  
+  func isLegalForSymbolicIdentifier(_ char: Character) -> Bool {
+    return LexAn.symbolicIdentifierCharacterSet.contains(char)
   }
   
   func isOperator(_ char: Character) -> Bool {
     return LexAn.operators[char] != nil
+  }
+  
+  func isDoubleQuote(_ char: Character) -> Bool {
+    return char == "\""
   }
   
   func isNumeric(_ char: Character) -> Bool {
@@ -223,8 +221,16 @@ private extension LexAn {
     return char == "_"
   }
   
+  func isPrime(_ char: Character) -> Bool {
+    return char == "'"
+  }
+  
   func isWhitespace(_ char: Character) -> Bool {
     return char == " " || char == "\n"
+  }
+  
+  func notLegalCharacter(_ char: Character) -> Bool {
+    return char == "."
   }
 }
 
@@ -253,18 +259,62 @@ private extension LexAn {
   }
   
   private static let operators: [Character: TokenType] =
-    ["+": .add, "-": .subtract, "*": .multiply, "/": .divide, ".": .dot, "%": .modulo, "(": .leftParent, ")": .rightParent, "[": .leftBracket, "]": .rightBracket, "{": .leftBrace, "}": .rightBrace, ",": .comma, ";": .semicolon, ":": .colon, "&": .and, "|" : .or, "!": .not, ">": .greaterThan, "<": .lowerThan, "=": .assign]
+    ["=": .assign,
+     "(": .leftParent,
+     ")": .rightParent,
+     "[": .leftBracket,
+     "]": .rightBracket,
+     "{": .leftBrace,
+     "}": .rightBrace,
+     ",": .comma,
+     ";": .semicolon,
+     ":": .colon,
+     "|": .pipe,
+     "_": .ignore,]
   
   private static let compositeOperators: [String: TokenType] =
-    ["==": .equal, "!=": .notEqual, ">=": .greaterThanOrEqual, "<=": .lowerThanOrEqual, "||": .or, "&&": .and]
+    ["=>": .darrow,
+     "->": .darrow,]
   
   private static let keywords: [String: TokenType] =
-    ["else": .keywordElse, "for": .keywordFor, "func": .keywordFun, "if": .keywordIf, "var": .keywordVar, "while": .keywordWhile, "struct": .keywordStruct, "import": .keywordImport,
-     "let": .keywordLet, "null": .keywordNull, "class": .keywordClass, "in": .keywordIn, "return": .keywordReturn, "public": .keywordPublic,
-     "private": .keywordPrivate, "continue": .keywordContinue, "break": .keywordBreak, "switch": .keywordSwitch, "case": .keywordCase, "default": .keywordDefault,
-     "enum": .keywordEnum, "init": .keywordInit, "is": .keywordIs, "override": .keywordOverride, "as": .keywordAs, "extension": .keywordExtension, "final": .keywordFinal,
-     "static": .keywordStatic, "interface": .keywordInterface, "abstract": .keywordAbstract]
+    ["mod": .keywordModulo,
+     "not": .keywordNot,
+     "abstype": .keywordAbstype,
+     "and": .keywordAnd,
+     "andalso": .keywordAndalso,
+     "as": .keywordAs,
+     "case": .keywordCase,
+     "datatype": .keywordDatatype,
+     "do": .keywordDo,
+     "else": .keywordElse,
+     "end": .keywordEnd,
+     "exception": .keywordException,
+     "fn": .keywordFn,
+     "fun": .keywordFun,
+     "handle": .keywordHandle,
+     "if": .keywordIf,
+     "in": .keywordIn,
+     "infix": .keywordInfix,
+     "infixr": .keywordInfixr,
+     "let": .keywordLet,
+     "local": .keywordLocal,
+     "nonfix": .keywordNonfix,
+     "of": .keywordOf,
+     "op": .keywordOp,
+     "open": .keywordOpen,
+     "orelse": .keywordOrelse,
+     "raise": .keywordRaise,
+     "rec": .keywordRec,
+     "then": .keywordThen,
+     "type": .keywordType,
+     "val": .keywordVal,
+     "with": .keywordWith,
+     "withtype": .keywordWithtype,
+     "while": .keywordWhile]
   
   private static let booleanConstants: [String: TokenType] =
-    ["true": .logicalConstant, "false": .logicalConstant]
+    ["true": .logicalConstant,
+     "false": .logicalConstant]
+  
+  private static let symbolicIdentifierCharacterSet = "!%&$#+-/:<=>?@\\~‘^|*"
 }
