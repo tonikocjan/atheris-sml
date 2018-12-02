@@ -10,7 +10,11 @@ The goal of this project is to implement a compiler which will be able to parse 
 
 - Tokenization (lexical analysis) of SML code
 - Syntax analysis: Abstract Syntax Tree
+  - core syntax
 - Semantic analysis: type evaluation
-- Code generation: target language = Racket
+  - core semantics
+- Code generation: target language ==> Racket
 
 🚀🚀🚀
+
+Implementation of the compiler will be based on: http://sml-family.org/sml97-defn.pdf
