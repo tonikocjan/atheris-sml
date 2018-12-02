@@ -22,6 +22,8 @@ class Atheris {
   }
   
   func compile() throws {
+    logger.log(message: "SML - >Racket 🚀 [0.0.1 (pre-alpha)]:")
+    
     guard let sourceFile = argumentParser.string(for: ArgumentParser.Arguments.sourceFile.rawValue) else {
       throw Error.invalidArguments(errorMessage: "Source file missing!")
     }
@@ -31,10 +33,15 @@ class Atheris {
     guard let url = URL(string: sourceFile) else { throw Error.invalidPath(sourceFile) }
     let fileReader = try FileReader(fileUrl: url)
     let lexan = LexAn(inputStream: FileInputStream(fileReader: fileReader))
-    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
-    for symbol in lexan {
-      outputStream.printLine(symbol.description)
-    }
+//    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
+//    for symbol in lexan {
+//      outputStream.printLine(symbol.description)
+//    }
+    let synan = SynAn(lexan: lexan)
+    let ast = try synan.parse()
+    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "ast")!))
+    let visitor = DumpVisitor(outputStream: outputStream)
+    visitor.visit(node: ast)
   }
 }
 

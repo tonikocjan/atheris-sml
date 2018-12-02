@@ -14,18 +14,14 @@ class SynAn: SyntaxParser {
   }
   
   let lexan: LexicalAnalyzer
-  let logger: LoggerProtocol
-  let shouldDumpAst: Bool
   private var symbol: Symbol
   
-  init(lexan: LexicalAnalyzer, logger: LoggerProtocol, shouldDumpAst: Bool) {
+  init(lexan: LexicalAnalyzer) {
     self.lexan = lexan
-    self.logger = logger
-    self.shouldDumpAst = shouldDumpAst
     self.symbol = lexan.nextSymbol()
   }
   
-  func parse() throws -> AstNode {
+  func parse() throws -> AstBindings {
     return try parseBindings()
   }
 }
@@ -51,7 +47,7 @@ private extension SynAn {
   }
   
   func parseBindings_(binding: AstBinding) throws -> [AstBinding] {
-    if symbol.token == .eof { return [binding] }
+    if expecting(.eof) { return [binding] }
     let newBinding = try parseBinding()
     return [binding] + (try parseBindings_(binding: newBinding))
   }
@@ -59,11 +55,15 @@ private extension SynAn {
 
 private extension SynAn {
   func parseValBinding() throws -> AstValBinding {
-    guard symbol.token == .keywordVal else { throw reportError("expected `val`", symbol.position)}
+    guard expecting(.keywordVal) else { throw reportError("expected `val`", symbol.position)}
     let startingPosition = symbol.position
     nextSymbol()
     let pattern = try parsePattern()
+    guard expecting(.assign) else { throw reportError("expected `=`", symbol.position) }
+    nextSymbol()
     let expression = try parseExpression()
+    guard expecting(.semicolon) else { throw reportError("expected `;`", symbol.position) }
+    nextSymbol()
     return AstValBinding(position: startingPosition + expression.position,
                          pattern: pattern,
                          expression: expression)
@@ -81,9 +81,13 @@ private extension SynAn {
       nextSymbol()
       return AstWildcardPattern(position: symbol.position)
     case .identifier:
+      let identifier = symbol
       nextSymbol()
       let type = symbol.token == .colon ? try parseType() : nil
-      return AstIdentifierPattern(position: symbol.position, name: symbol.lexeme, type: type)
+      let position = type == nil ? identifier.position : identifier.position + type!.position
+      return AstIdentifierPattern(position: position,
+                                  name: identifier.lexeme,
+                                  type: type)
     case .leftParent:
       return try parseTuplePattern()
     case .leftBrace:
@@ -94,18 +98,18 @@ private extension SynAn {
   }
   
   func parseTuplePattern() throws -> AstTuplePattern {
-    guard symbol.token == .leftParent else { throw reportError("expected `(`", symbol.position) }
+    guard expecting(.leftParent) else { throw reportError("expected `(`", symbol.position) }
     let startingPosition = symbol.position
     let pattern = try parsePattern()
     let patterns = try parseTuplePattern_(pattern: pattern)
-    guard symbol.token == .rightParent else { throw reportError("expected `)`", symbol.position) }
+    guard expecting(.rightParent) else { throw reportError("expected `)`", symbol.position) }
     nextSymbol()
     return AstTuplePattern(position: startingPosition + symbol.position,
                            patterns: patterns)
   }
   
   func parseTuplePattern_(pattern: AstPattern) throws -> [AstPattern] {
-    guard symbol.token == .comma else { return [pattern] }
+    guard expecting(.comma) else { return [pattern] }
     let newPattern = try parsePattern()
     return [pattern] + (try parseTuplePattern_(pattern: newPattern))
   }
@@ -123,7 +127,28 @@ private extension SynAn {
 
 private extension SynAn {
   func parseExpression() throws -> AstExpression {
-    throw NSError()
+    return try parseAtomExpression()
+  }
+  
+  func parseAtomExpression() throws -> AstExpression {
+    let currentSymbol = symbol
+    
+    switch symbol.token {
+    case .integerConstant:
+      nextSymbol()
+      return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .int)
+    case .stringConstant:
+      nextSymbol()
+      return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .string)
+    case .floatingConstant:
+      nextSymbol()
+      return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .real)
+    case .logicalConstant:
+      nextSymbol()
+      return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .bool)
+    default:
+      throw reportError("unable to parse expression", symbol.position)
+    }
   }
 }
 
@@ -137,5 +162,9 @@ private extension SynAn {
   func reportError(_ error: String, _ position: Position, _ others: CustomStringConvertible...) -> Error {
     let errorMessage = error + others.map { $0.description }.joined(separator: " ")
     return Error.syntaxError("Syntax error [\(position.description)]: " + errorMessage)
+  }
+  
+  func expecting(_ type: TokenType) -> Bool {
+    return symbol.token == type
   }
 }

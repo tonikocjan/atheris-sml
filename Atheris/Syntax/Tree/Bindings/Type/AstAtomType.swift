@@ -10,7 +10,7 @@ import Foundation
 
 struct AstAtomType: AstType {
   let position: Position
-  let name: String
+  let identifier: AstIdentifierPattern
   let type: AtomType
   
   func accept(visitor: AstVisitor) {

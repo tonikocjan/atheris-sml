@@ -60,6 +60,7 @@
 		37F024CB21B412E3006B868E /* AstWildcardPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024CA21B412E3006B868E /* AstWildcardPattern.swift */; };
 		37F024CD21B413B2006B868E /* AstTuplePattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024CC21B413B2006B868E /* AstTuplePattern.swift */; };
 		37F024CF21B41697006B868E /* AstRecordPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024CE21B41697006B868E /* AstRecordPattern.swift */; };
+		37F024D221B419B8006B868E /* DumpVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024D121B419B8006B868E /* DumpVisitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -118,6 +119,7 @@
 		37F024CA21B412E3006B868E /* AstWildcardPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstWildcardPattern.swift; sourceTree = "<group>"; };
 		37F024CC21B413B2006B868E /* AstTuplePattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstTuplePattern.swift; sourceTree = "<group>"; };
 		37F024CE21B41697006B868E /* AstRecordPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstRecordPattern.swift; sourceTree = "<group>"; };
+		37F024D121B419B8006B868E /* DumpVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DumpVisitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,7 +243,6 @@
 				37F024A521B3F420006B868E /* Tree */,
 				37F024A621B3F483006B868E /* SyntaxParser.swift */,
 				37F024BB21B3FA2C006B868E /* SynAn.swift */,
-				37F024A321B3F40B006B868E /* AstVisitor.swift */,
 			);
 			path = Syntax;
 			sourceTree = "<group>";
@@ -249,6 +250,7 @@
 		37F024A521B3F420006B868E /* Tree */ = {
 			isa = PBXGroup;
 			children = (
+				37F024D021B419A5006B868E /* Visitor */,
 				37F024AA21B3F6E7006B868E /* Bindings */,
 				37F024AB21B3F6F7006B868E /* Expressions */,
 				37F024A821B3F4C2006B868E /* AstNode.swift */,
@@ -313,6 +315,15 @@
 				37F024CE21B41697006B868E /* AstRecordPattern.swift */,
 			);
 			path = Patterns;
+			sourceTree = "<group>";
+		};
+		37F024D021B419A5006B868E /* Visitor */ = {
+			isa = PBXGroup;
+			children = (
+				37F024A321B3F40B006B868E /* AstVisitor.swift */,
+				37F024D121B419B8006B868E /* DumpVisitor.swift */,
+			);
+			path = Visitor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -450,6 +461,7 @@
 				37F024C021B3FE16006B868E /* AstFunBinding.swift in Sources */,
 				375FF4FA2161E0930088F7A3 /* LexAn.swift in Sources */,
 				375FF5042161E0D60088F7A3 /* ArgumentParser.swift in Sources */,
+				37F024D221B419B8006B868E /* DumpVisitor.swift in Sources */,
 				3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */,
 				3761650C21553D2A0058BD03 /* TokenType.swift in Sources */,
 				375FF50A2161E0D60088F7A3 /* Atheris.swift in Sources */,

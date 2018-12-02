@@ -10,5 +10,5 @@ import Foundation
 
 protocol SyntaxParser {
   var lexan: LexicalAnalyzer { get }
-  func parse() throws -> AstNode
+  func parse() throws -> AstBindings
 }
