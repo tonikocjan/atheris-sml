@@ -13,7 +13,6 @@ class LexAn: LexicalAnalyzer {
   
   private var currentLocation = Location(row: 1, column: 1)
   private var bufferCharacter: Character?
-  private var previousSymbol: TokenType = .eof
   
   init(inputStream: InputStream) {
     self.inputStream = inputStream
@@ -26,7 +25,6 @@ class LexAn: LexicalAnalyzer {
                                                                                                  column: currentLocation.column + 1)))
       return symbol
     }
-    previousSymbol = symbol.tokenType
     return symbol
   }
 }
