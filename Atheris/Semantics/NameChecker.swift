@@ -12,8 +12,6 @@ class NameChecker {
   let symbolTable: SymbolTableProtocol
   let symbolDescription: SymbolDescriptionProtocol
   
-  private var binding: AstBinding?
-  
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
     self.symbolDescription = symbolDescription
@@ -26,15 +24,12 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstValBinding) throws {
-    self.binding = node
     try node.pattern.accept(visitor: self)
     try node.expression.accept(visitor: self)
-    self.binding = nil
   }
   
   func visit(node: AstFunBinding) throws {
-    self.binding = node
-    self.binding = nil
+    
   }
   
   func visit(node: AstAtomType) throws {
@@ -42,6 +37,10 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstTypeName) throws {
+    
+  }
+  
+  func visit(node: AstTupleType) throws {
     
   }
   
@@ -53,7 +52,6 @@ extension NameChecker: AstVisitor {
     guard let binding = findBinding(for: node.name) else {
       throw Error.bindingNotFound(node.name, node.position)
     }
-    
     symbolDescription.bindNode(node, binding: binding)
   }
   
@@ -78,7 +76,8 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstTypedPattern) throws {
-    
+    try node.pattern.accept(visitor: self)
+    try node.type.accept(visitor: self)
   }
 }
 
@@ -96,8 +95,8 @@ extension NameChecker {
 
 private extension NameChecker {
   func insertIdentifier(identifier: AstIdentifierPattern) throws {
-    guard let binding = binding else { return }
-    try symbolTable.addBindingToCurrentScope(name: identifier.name, binding: binding)
+    try symbolTable.addBindingToCurrentScope(name: identifier.name,
+                                             binding: identifier)
   }
   
   func findBinding(for name: String) -> AstBinding? {

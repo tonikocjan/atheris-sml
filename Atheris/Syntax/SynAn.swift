@@ -157,9 +157,35 @@ private extension SynAn {
       nextSymbol()
       return AstTypeName(position: currentSymbol.position,
                          name: currentSymbol.lexeme)
+    case .leftParent:
+      return try parseTupleType()
     default:
       throw reportError("failed to parse type", symbol.position)
     }
+  }
+  
+  func parseTupleType() throws -> AstTupleType {
+    guard expecting(.leftParent) else { throw reportError("expected `(`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let types = try parseStarSeparatedTypes()
+    guard expecting(.rightParent) else { throw reportError("expected `)`", symbol.position) }
+    let endingPosition = symbol.position
+    nextSymbol()
+    let tupleType = AstTupleType(position: startingPosition + endingPosition, types: types)
+    return tupleType
+  }
+  
+  func parseStarSeparatedTypes() throws -> [AstType] {
+    let type = try parseType()
+    return try parseStarSeparatedTypes_(type: type)
+  }
+  
+  func parseStarSeparatedTypes_(type: AstType) throws -> [AstType] {
+    guard expecting(.identifier), symbol.lexeme == "*" else { return [type] }
+    nextSymbol()
+    let newType = try parseType()
+    return [type] + (try parseStarSeparatedTypes_(type: newType))
   }
 }
 

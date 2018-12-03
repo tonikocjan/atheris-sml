@@ -14,6 +14,7 @@ protocol AstVisitor {
   func visit(node: AstFunBinding) throws
   func visit(node: AstAtomType) throws
   func visit(node: AstTypeName) throws
+  func visit(node: AstTupleType) throws
   func visit(node: AstConstantExpression) throws
   func visit(node: AstNameExpression) throws
   func visit(node: AstTupleExpression) throws

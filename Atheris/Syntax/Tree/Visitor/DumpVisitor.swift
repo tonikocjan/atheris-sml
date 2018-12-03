@@ -29,6 +29,7 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstBindings) throws {
     print("AstBindings", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     for binding in node.bindings { try binding.accept(visitor: self) }
     decreaseIndent()
   }
@@ -36,6 +37,7 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstValBinding) throws {
     print("AstValBinding", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     try node.pattern.accept(visitor: self)
     try node.expression.accept(visitor: self)
     decreaseIndent()
@@ -44,6 +46,7 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstFunBinding) throws {
     print("AstFunBinding", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     print("todo")
     decreaseIndent()
   }
@@ -51,6 +54,7 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstAtomType) throws {
     print("AstAtomType", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     print("Name: " + node.name)
     print("Atom type: " + node.type.rawValue)
     decreaseIndent()
@@ -59,7 +63,16 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstTypeName) throws {
     print("AstTypeName", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     print("Name: " + node.name)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstTupleType) throws {
+    print("AstTupleType", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    for type in node.types { try type.accept(visitor: self) }
     decreaseIndent()
   }
   
@@ -91,17 +104,20 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     print("Name: " + node.name)
     decreaseIndent()
   }
   
   func visit(node: AstWildcardPattern) throws {
     print("AstWildcardPattern", node.position)
+    printSemanticInformation(node: node)
   }
   
   func visit(node: AstTuplePattern) throws {
     print("AstTuplePattern", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     for pattern in node.patterns { try pattern.accept(visitor: self) }
     decreaseIndent()
   }
@@ -109,12 +125,14 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstRecordPattern) throws {
     print("AstRecordPattern", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     decreaseIndent()
   }
   
   func visit(node: AstTypedPattern) throws {
     print("AstTypedPattern", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     try node.pattern.accept(visitor: self)
     try node.type.accept(visitor: self)
     decreaseIndent()
@@ -145,9 +163,7 @@ private extension DumpVisitor {
     }
     
     if let type = symbolDescription.type(for: node) {
-      increaseIndent()
-      print("# typed: " + type.description)
-      decreaseIndent()
+      print("-> typed: " + type.description)
     }
   }
 }

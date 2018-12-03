@@ -73,6 +73,13 @@ extension TypeChecker: AstVisitor {
     }
   }
   
+  func visit(node: AstTupleType) throws {
+    for type in node.types { try type.accept(visitor: self) }
+    let types = node.types.compactMap { symbolDescription.type(for: $0) }
+    let tupleType = TupleType(members: types)
+    symbolDescription.setType(for: node, type: tupleType)
+  }
+  
   func visit(node: AstConstantExpression) throws {
     let atomType = AtomType(type: node.type)
     symbolDescription.setType(for: node, type: atomType)
@@ -122,13 +129,15 @@ extension TypeChecker: AstVisitor {
         throw Error.internalError
     }
     
-    guard type.sameStructureAs(other: patternType) else {
+    guard patternType.sameStructureAs(other: type) else {
       throw Error.constraintError(patternType: patternType, constraintType: type)
     }
+    
+    symbolDescription.setType(for: node, type: type)
   }
 }
 
-extension TypeChecker {
+extension TypeChecker  {
   enum Error: AtherisError {
     case internalError
     case typeError(patternType: Type, expressionType: Type)

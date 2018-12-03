@@ -8,9 +8,10 @@
 
 import Foundation
 
-class AstIdentifierPattern: AstPattern {
+class AstIdentifierPattern: AstPattern, AstBinding {
   let position: Position
   let name: String
+  var pattern: AstPattern { return self }
   
   init(position: Position, name: String) {
     self.position = position
