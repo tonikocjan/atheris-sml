@@ -10,12 +10,19 @@ import Foundation
 
 class DumpVisitor {
   let outputStream: OutputStream
+  let symbolDescription: SymbolDescriptionProtocol?
+  
+  convenience init(outputStream: OutputStream) {
+    self.init(outputStream: outputStream, symbolDescription: nil)
+  }
+  
+  init(outputStream: OutputStream, symbolDescription: SymbolDescriptionProtocol?) {
+    self.outputStream = outputStream
+    self.symbolDescription = symbolDescription
+  }
+  
   private var indent = 0
   private let indentIncrement = 2
-  
-  init(outputStream: OutputStream) {
-    self.outputStream = outputStream
-  }
 }
 
 extension DumpVisitor: AstVisitor {
@@ -59,8 +66,17 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstConstantExpression) throws {
     print("AstConstantExpression", node.position)
     increaseIndent()
+    printSemanticInformation(node: node)
     print("Value: " + node.value)
     print("Atom type: " + node.type.rawValue)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstNameExpression) throws {
+    print("AstNameExpression", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    print("Name: " + node.name)
     decreaseIndent()
   }
   
@@ -112,4 +128,18 @@ private extension DumpVisitor {
   
   func increaseIndent() { indent += indentIncrement }
   func decreaseIndent() { indent -= indentIncrement }
+  
+  func printSemanticInformation(node: AstNode) {
+    guard let symbolDescription = symbolDescription else { return }
+    
+    if let binding = symbolDescription.binding(for: node) {
+      print("⇢ defined at: ", binding.position)
+    }
+    
+//    if let type = symbolDescription.type(for: node) {
+//      increaseIndent()
+//      print("# typed: ", binding.position)
+//      decreaseIndent()
+//    }
+  }
 }

@@ -37,10 +37,19 @@ class Atheris {
 //    for symbol in lexan {
 //      outputStream.printLine(symbol.description)
 //    }
+    
+    // Parse syntax
     let synan = SynAn(lexan: lexan)
     let ast = try synan.parse()
+    let symbolTable = SymbolTable(symbolDescription: SymbolDescription())
+    let nameChecker = NameChecker(symbolTable: symbolTable,
+                                  symbolDescription: symbolTable.symbolDescription)
+    try nameChecker.visit(node: ast)
+    
+    // Dump ast
     let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "ast")!))
-    let visitor = DumpVisitor(outputStream: outputStream)
+    let visitor = DumpVisitor(outputStream: outputStream,
+                              symbolDescription: symbolTable.symbolDescription)
     try visitor.visit(node: ast)
   }
 }

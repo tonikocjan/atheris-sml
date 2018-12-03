@@ -1,0 +1,13 @@
+AstBindings [1:1, 2:10]:
+  AstValBinding [1:1, 1:11]:
+    AstIdentifierPattern [1:5, 1:6]:
+      Name: x
+    AstConstantExpression [1:9, 1:11]:
+      Value: 10
+      Atom type: int
+  AstValBinding [2:1, 2:10]:
+    AstIdentifierPattern [2:5, 2:6]:
+      Name: y
+    AstNameExpression [2:9, 2:10]:
+      ⇢ defined at:  [1:1, 1:11]:
+      Name: x

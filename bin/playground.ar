@@ -1,2 +1,2 @@
-val (x, (a, c)) = "a string";
-val x: int = 10;
+val x = 10;
+val y = z;

@@ -183,6 +183,9 @@ private extension SynAn {
     case .logicalConstant:
       nextSymbol()
       return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .bool)
+    case .identifier:
+      nextSymbol()
+      return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
     default:
       throw reportError("unable to parse expression", symbol.position)
     }

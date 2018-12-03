@@ -29,10 +29,12 @@ extension NameChecker: AstVisitor {
     self.binding = node
     try node.pattern.accept(visitor: self)
     try node.expression.accept(visitor: self)
+    self.binding = nil
   }
   
   func visit(node: AstFunBinding) throws {
     self.binding = node
+    self.binding = nil
   }
   
   func visit(node: AstAtomType) throws {
@@ -45,6 +47,14 @@ extension NameChecker: AstVisitor {
   
   func visit(node: AstConstantExpression) throws {
     
+  }
+  
+  func visit(node: AstNameExpression) throws {
+    guard let binding = findBinding(for: node.name) else {
+      throw Error.bindingNotFound(node.name, node.position)
+    }
+    
+    symbolDescription.bindNode(node, binding: binding)
   }
   
   func visit(node: AstIdentifierPattern) throws {
@@ -68,9 +78,25 @@ extension NameChecker: AstVisitor {
   }
 }
 
+extension NameChecker {
+  enum Error: AtherisError {
+    case bindingNotFound(String, Position)
+    
+    var errorMessage: String {
+      switch self {
+      case .bindingNotFound(let name, let position): return "error \(position.description): use of undeclared name `\(name)`"
+      }
+    }
+  }
+}
+
 private extension NameChecker {
   func insertIdentifier(identifier: AstIdentifierPattern) throws {
     guard let binding = binding else { return }
     try symbolTable.addBindingToCurrentScope(name: identifier.name, binding: binding)
+  }
+  
+  func findBinding(for name: String) -> AstBinding? {
+    return symbolTable.findBinding(name: name)
   }
 }
