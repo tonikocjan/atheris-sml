@@ -66,7 +66,7 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstTuplePattern) throws {
-    
+    for pattern in node.patterns { try pattern.accept(visitor: self) }
   }
   
   func visit(node: AstRecordPattern) throws {

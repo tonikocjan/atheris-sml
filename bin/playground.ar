@@ -1,2 +1,3 @@
-val x = 10;
-val y = z;
+val (x, y) = 10;
+val a = x;
+val b = y;

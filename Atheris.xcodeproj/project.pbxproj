@@ -45,6 +45,7 @@
 		374505F021B531130051E1E9 /* AstNameExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374505EE21B530C90051E1E9 /* AstNameExpression.swift */; };
 		374505F121B5341F0051E1E9 /* SymbolDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374505EA21B51FCF0051E1E9 /* SymbolDescription.swift */; };
 		374505F221B534720051E1E9 /* NameChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374505EC21B52ACA0051E1E9 /* NameChecker.swift */; };
+		374505F421B536B50051E1E9 /* ast2 in Resources */ = {isa = PBXBuildFile; fileRef = 374505F321B536B50051E1E9 /* ast2 */; };
 		375FF4F32160C0DA0088F7A3 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */; };
 		375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */ = {isa = PBXBuildFile; fileRef = 375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */; };
 		375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F62160C1040088F7A3 /* file_parser_test_2 */; };
@@ -121,6 +122,7 @@
 		374505EA21B51FCF0051E1E9 /* SymbolDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolDescription.swift; sourceTree = "<group>"; };
 		374505EC21B52ACA0051E1E9 /* NameChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameChecker.swift; sourceTree = "<group>"; };
 		374505EE21B530C90051E1E9 /* AstNameExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstNameExpression.swift; sourceTree = "<group>"; };
+		374505F321B536B50051E1E9 /* ast2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast2; sourceTree = "<group>"; };
 		375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
 		375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_1; sourceTree = "<group>"; };
 		375FF4F62160C1040088F7A3 /* file_parser_test_2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_2; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				374505DD21B510B10051E1E9 /* ast1 */,
+				374505F321B536B50051E1E9 /* ast2 */,
 			);
 			path = Asts;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				374505F421B536B50051E1E9 /* ast2 in Resources */,
 				374505DE21B510B10051E1E9 /* ast1 in Resources */,
 				375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */,
 			);

@@ -12,11 +12,11 @@ AstBindings [1:1, 3:10]:
     AstIdentifierPattern [2:5, 2:6]:
       Name: a
     AstNameExpression [2:9, 2:10]:
-      ⇢ defined at:  [1:1, 1:16]:
+      -> defined at:  [1:1, 1:16]:
       Name: x
   AstValBinding [3:1, 3:10]:
     AstIdentifierPattern [3:5, 3:6]:
       Name: b
     AstNameExpression [3:9, 3:10]:
-      ⇢ defined at:  [1:1, 1:16]:
+      -> defined at:  [1:1, 1:16]:
       Name: y

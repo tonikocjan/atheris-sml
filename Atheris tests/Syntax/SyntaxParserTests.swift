@@ -17,6 +17,15 @@ val x: int = 10;
 """
     testSyntaxParsing(code: code, expected: "ast1")
   }
+  
+  func testAst2() {
+    let code = """
+val (x, y) = 10;
+val a = x;
+val b = y;
+"""
+    testSyntaxParsingAndSemantics(code: code, expected: "ast2")
+  }
 }
 
 private extension SyntaxParserTests {
@@ -44,10 +53,26 @@ private extension SyntaxParserTests {
     }
   }
   
-  func astToString(_ ast: AstBindings?) -> String {
+  func testSyntaxParsingAndSemantics(code: String, expected filepath: String?) {
+    do {
+      let lexan = LexAn(inputStream: TextStream(string: code))
+      let parser = SynAn(lexan: lexan)
+      let ast = try parser.parse()
+      let symbolDescription = SymbolDescription()
+      let nameChecker = NameChecker(symbolTable: SymbolTable(symbolDescription: symbolDescription),
+                                    symbolDescription: symbolDescription)
+      try? nameChecker.visit(node: ast)
+      XCTAssertEqual(openAst(filepath), astToString(ast, symbolDescription: symbolDescription))
+    } catch {
+      print((error as? AtherisError)?.errorMessage ?? error.localizedDescription)
+      XCTFail()
+    }
+  }
+  
+  func astToString(_ ast: AstBindings?, symbolDescription: SymbolDescription?=nil) -> String {
     guard let ast = ast else { return "" }
     let stream = TextOutputStream()
-    let visitor = DumpVisitor(outputStream: stream)
+    let visitor = DumpVisitor(outputStream: stream, symbolDescription: symbolDescription)
     try? visitor.visit(node: ast)
     return stream.buffer
   }

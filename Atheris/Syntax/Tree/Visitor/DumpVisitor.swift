@@ -133,7 +133,7 @@ private extension DumpVisitor {
     guard let symbolDescription = symbolDescription else { return }
     
     if let binding = symbolDescription.binding(for: node) {
-      print("⇢ defined at: ", binding.position)
+      print("-> defined at: ", binding.position)
     }
     
 //    if let type = symbolDescription.type(for: node) {
