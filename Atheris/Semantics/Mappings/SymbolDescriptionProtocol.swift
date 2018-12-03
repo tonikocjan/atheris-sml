@@ -13,6 +13,6 @@ protocol SymbolDescriptionProtocol {
   func scope(for node: AstBinding) -> Int?
   func bindNode(_ node: AstNode, binding: AstBinding)
   func binding(for node: AstNode) -> AstBinding?
-  //  func setType(for node: AstNode, type: Type)
-  //  func getType(for node: AstNode) -> Type?
+  func setType(for node: AstNode, type: Type)
+  func type(for node: AstNode) -> Type?
 }

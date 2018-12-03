@@ -11,7 +11,7 @@ import Foundation
 class SymbolDescription: SymbolDescriptionProtocol {
   private var scopeMapping: [NodeWrapper: Int] = [:]
   private var definitionsMapping: [NodeWrapper: AstBinding] = [:]
-//  private var scopeMapping: [AstBinding: Int] = [:]
+  private var typeMapping: [NodeWrapper: Type] = [:]
   
   func setScope(for node: AstBinding, scope: Int) {
     scopeMapping[NodeWrapper(node)] = scope
@@ -27,6 +27,14 @@ class SymbolDescription: SymbolDescriptionProtocol {
   
   func binding(for node: AstNode) -> AstBinding? {
     return definitionsMapping[NodeWrapper(node)]
+  }
+  
+  func type(for node: AstNode) -> Type? {
+    return typeMapping[NodeWrapper(node)]
+  }
+  
+  func setType(for node: AstNode, type: Type) {
+    typeMapping[NodeWrapper(node)] = type
   }
 }
 
