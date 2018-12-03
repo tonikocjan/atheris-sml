@@ -44,8 +44,15 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstAtomType) {
     print("AstAtomType", node.position)
     increaseIndent()
-    node.identifier.accept(visitor: self)
+    print("Identifier: " + node.identifier)
     print("Atom type: " + node.type.rawValue)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstTypeName) {
+    print("AstTypeName", node.position)
+    increaseIndent()
+    print("Identifier: " + node.identifier)
     decreaseIndent()
   }
   
@@ -61,7 +68,6 @@ extension DumpVisitor: AstVisitor {
     print("AstIdentifierPattern", node.position)
     increaseIndent()
     print("Name: " + node.name)
-    node.type?.accept(visitor: self) ?? print("AstAtomType: nil")
     decreaseIndent()
   }
   
@@ -79,6 +85,14 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstRecordPattern) {
     print("AstRecordPattern", node.position)
     increaseIndent()
+    decreaseIndent()
+  }
+  
+  func visit(node: AstTypedPattern) {
+    print("AstTypedPattern", node.position)
+    increaseIndent()
+    node.pattern.accept(visitor: self)
+    node.type.accept(visitor: self)
     decreaseIndent()
   }
 }

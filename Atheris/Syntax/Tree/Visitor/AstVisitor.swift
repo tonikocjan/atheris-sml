@@ -13,9 +13,11 @@ protocol AstVisitor {
   func visit(node: AstValBinding)
   func visit(node: AstFunBinding)
   func visit(node: AstAtomType)
+  func visit(node: AstTypeName)
   func visit(node: AstConstantExpression)
   func visit(node: AstIdentifierPattern)
   func visit(node: AstWildcardPattern)
   func visit(node: AstTuplePattern)
   func visit(node: AstRecordPattern)
+  func visit(node: AstTypedPattern)
 }

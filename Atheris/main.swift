@@ -13,5 +13,6 @@ do {
     .parseArguments(CommandLine.arguments)
     .compile()
 } catch {
-  LoggerFactory.logger.error(message: error.localizedDescription)
+  let errorMessage = (error as? AtherisError)?.errorMessage ?? error.localizedDescription
+  LoggerFactory.logger.error(message: errorMessage)
 }

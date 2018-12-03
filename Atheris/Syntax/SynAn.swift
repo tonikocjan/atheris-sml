@@ -8,9 +8,20 @@
 
 import Foundation
 
+protocol AtherisError: Error {
+  var errorMessage: String { get }
+}
+
 class SynAn: SyntaxParser {
-  enum Error: Swift.Error {
+  enum Error: AtherisError {
     case syntaxError(String)
+    
+    var errorMessage: String {
+      switch self {
+      case .syntaxError(let error):
+        return error
+      }
+    }
   }
   
   let lexan: LexicalAnalyzer
@@ -76,18 +87,29 @@ private extension SynAn {
 
 private extension SynAn {
   func parsePattern() throws -> AstPattern {
+    let pattern = try parseAtomPattern()
+    return try parsePattern_(pattern: pattern)
+  }
+  
+  func parsePattern_(pattern: AstPattern) throws -> AstPattern {
+    switch symbol.token {
+    case .colon:
+      nextSymbol()
+      let type = try parseType()
+      return AstTypedPattern(position: pattern.position + type.position, pattern: pattern, type: type)
+    // TODO: ....
+    default:
+      return pattern
+    }
+  }
+  
+  func parseAtomPattern() throws -> AstPattern {
     switch symbol.token {
     case .wildcard:
       nextSymbol()
       return AstWildcardPattern(position: symbol.position)
     case .identifier:
-      let identifier = symbol
-      nextSymbol()
-      let type = symbol.token == .colon ? try parseType() : nil
-      let position = type == nil ? identifier.position : identifier.position + type!.position
-      return AstIdentifierPattern(position: position,
-                                  name: identifier.lexeme,
-                                  type: type)
+      return parseIdentifierPattern()
     case .leftParent:
       return try parseTuplePattern()
     case .leftBrace:
@@ -97,9 +119,16 @@ private extension SynAn {
     }
   }
   
+  func parseIdentifierPattern() -> AstIdentifierPattern {
+    let identifier = symbol
+    nextSymbol()
+    return AstIdentifierPattern(position: identifier.position, name: identifier.lexeme)
+  }
+  
   func parseTuplePattern() throws -> AstTuplePattern {
     guard expecting(.leftParent) else { throw reportError("expected `(`", symbol.position) }
     let startingPosition = symbol.position
+    nextSymbol()
     let pattern = try parsePattern()
     let patterns = try parseTuplePattern_(pattern: pattern)
     guard expecting(.rightParent) else { throw reportError("expected `)`", symbol.position) }
@@ -110,6 +139,7 @@ private extension SynAn {
   
   func parseTuplePattern_(pattern: AstPattern) throws -> [AstPattern] {
     guard expecting(.comma) else { return [pattern] }
+    nextSymbol()
     let newPattern = try parsePattern()
     return [pattern] + (try parseTuplePattern_(pattern: newPattern))
   }
@@ -121,7 +151,14 @@ private extension SynAn {
 
 private extension SynAn {
   func parseType() throws -> AstType {
-    throw NSError()
+    switch symbol.token {
+    case .identifier:
+      let currentSymbol = symbol
+      nextSymbol()
+      return AstTypeName(position: currentSymbol.position, identifier: currentSymbol.lexeme)
+    default:
+      throw reportError("failed to parse type", symbol.position)
+    }
   }
 }
 

@@ -8,4 +8,5 @@
 
 import Foundation
 
-protocol AstPattern: AstNode {}
+protocol AstPattern: AstNode {
+}

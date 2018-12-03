@@ -1,5 +1,5 @@
 //
-//  AstIdentifierPattern.swift
+//  AstTypeName.swift
 //  Atheris
 //
 //  Created by Toni Kocjan on 02/12/2018.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct AstIdentifierPattern: AstPattern {
+struct AstTypeName: AstType {
   let position: Position
-  let name: String
+  let identifier: String
   
   func accept(visitor: AstVisitor) {
     visitor.visit(node: self)
