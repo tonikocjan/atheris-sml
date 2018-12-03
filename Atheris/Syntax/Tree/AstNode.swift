@@ -12,6 +12,6 @@ protocol Visitable {
   func accept(visitor: AstVisitor)
 }
 
-protocol AstNode: Visitable {
+protocol AstNode: class, Visitable {
   var position: Position { get }
 }

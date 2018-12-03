@@ -45,6 +45,16 @@ extension Position: CustomStringConvertible {
   }
 }
 
+extension Position: Hashable {
+  var hashValue: Int {
+    return startLocation.hashValue ^ endLocation.hashValue
+  }
+  
+  static func == (lhs: Position, rhs: Position) -> Bool {
+    return lhs.startLocation == rhs.startLocation && lhs.endLocation == rhs.endLocation
+  }
+}
+
 struct Location {
   let row: Int
   let column: Int
@@ -53,5 +63,15 @@ struct Location {
 extension Location: CustomStringConvertible {
   var description: String {
     return "\(row):\(column)"
+  }
+}
+
+extension Location: Hashable {
+  var hashValue: Int {
+    return row.hashValue ^ column.hashValue
+  }
+  
+  static func == (lhs: Location, rhs: Location) -> Bool {
+    return lhs.row == rhs.row && lhs.column == rhs.column
   }
 }

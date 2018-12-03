@@ -8,10 +8,24 @@
 
 import Foundation
 
-struct AstWildcardPattern: AstPattern {
+class AstWildcardPattern: AstPattern {
   let position: Position
+  
+  init(position: Position) {
+    self.position = position
+  }
   
   func accept(visitor: AstVisitor) {
     visitor.visit(node: self)
   }
 }
+
+//extension AstWildcardPattern {
+//  var hashValue: Int {
+//    return position.hashValue ^ name.hashValue
+//  }
+//
+//  static func == (lhs: AstWildcardPattern, rhs: AstWildcardPattern) -> Bool {
+//    return lhs.position == rhs.position
+//  }
+//}

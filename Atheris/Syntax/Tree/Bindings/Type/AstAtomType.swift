@@ -8,10 +8,16 @@
 
 import Foundation
 
-struct AstAtomType: AstType {
+class AstAtomType: AstType {
   let position: Position
   let identifier: String
   let type: AtomType
+  
+  init(position: Position, identifier: String, type: AtomType) {
+    self.position = position
+    self.identifier = identifier
+    self.type = type
+  }
   
   func accept(visitor: AstVisitor) {
     visitor.visit(node: self)

@@ -8,9 +8,14 @@
 
 import Foundation
 
-struct AstTypeName: AstType {
+class AstTypeName: AstType {
   let position: Position
   let identifier: String
+  
+  init(position: Position, identifier: String) {
+    self.position = position
+    self.identifier = identifier
+  }
   
   func accept(visitor: AstVisitor) {
     visitor.visit(node: self)
