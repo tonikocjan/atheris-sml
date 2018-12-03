@@ -12,8 +12,12 @@ class TypeChecker {
   let symbolTable: SymbolTableProtocol
   let symbolDescription: SymbolDescriptionProtocol
   
+  // MARK: - dummy types
   private static let dummyTypeCharacterSet = Array("ABCDEFGHIJKLMNOPRSTVUZ".reversed())
   private var dummyTypeCount = 0
+  
+  // MARK: - Type distribution stack
+  private var typeDistributionStack = [Type]()
   
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
@@ -34,17 +38,25 @@ extension TypeChecker: AstVisitor {
       throw Error.internalError
     }
     
+    let resultType: Type
+    
     if let patternType = symbolDescription.type(for: node.pattern) {
       guard patternType.sameStructureAs(other: expressionType) else {
         throw Error.typeError(patternType: patternType, expressionType: expressionType)
       }
-      
       symbolDescription.setType(for: node, type: expressionType)
+      resultType = expressionType
     } else {
-      // expression's type is infered to pattern and node
+      // expression's type is assigned to pattern and node
       symbolDescription.setType(for: node.pattern, type: expressionType)
       symbolDescription.setType(for: node, type: expressionType)
+      resultType = expressionType
     }
+    
+    // distribute top-level type to child nodes
+    typeDistributionStack.append(resultType)
+    try node.pattern.accept(visitor: self)
+    _ = typeDistributionStack.popLast()
   }
   
   func visit(node: AstFunBinding) throws {
@@ -99,6 +111,11 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstIdentifierPattern) throws {
+    if let parentNodeType = typeDistributionStack.last {
+      symbolDescription.setType(for: node, type: parentNodeType)
+      return
+    }
+    
     let dummyPatternType = PatternDummyType(name: "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])") // TODO: -
     symbolDescription.setType(for: node, type: dummyPatternType)
     dummyTypeCount += 1
@@ -109,6 +126,16 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstTuplePattern) throws {
+    if let parentNodeType = typeDistributionStack.last as? TupleType {
+      symbolDescription.setType(for: node, type: parentNodeType)
+      for (type, pattern) in zip(parentNodeType.members, node.patterns) {
+        typeDistributionStack.append(type)
+        try pattern.accept(visitor: self)
+        _ = typeDistributionStack.popLast()
+      }
+      return
+    }
+    
     for pattern in node.patterns { try pattern.accept(visitor: self) }
     let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? PatternType }
     let tuplePatternType = PatternTupleType(members: types)
@@ -120,6 +147,12 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstTypedPattern) throws {
+    if let parentNodeType = typeDistributionStack.last {
+      symbolDescription.setType(for: node, type: parentNodeType)
+      try node.pattern.accept(visitor: self)
+      return
+    }
+    
     try node.type.accept(visitor: self)
     try node.pattern.accept(visitor: self)
     

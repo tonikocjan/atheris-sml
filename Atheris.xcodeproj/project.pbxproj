@@ -458,8 +458,8 @@
 			isa = PBXGroup;
 			children = (
 				3745060E21B5566F0051E1E9 /* ast1 */,
-				3745060F21B556700051E1E9 /* ast3 */,
 				374505F321B536B50051E1E9 /* ast2 */,
+				3745060F21B556700051E1E9 /* ast3 */,
 			);
 			path = Asts;
 			sourceTree = "<group>";
