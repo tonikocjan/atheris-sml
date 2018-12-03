@@ -186,9 +186,40 @@ private extension SynAn {
     case .identifier:
       nextSymbol()
       return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
+    case .leftParent:
+      let expression = try parseTupleExpression()
+      guard expecting(.rightParent) else { throw reportError("expecting `)`", symbol.position) }
+      nextSymbol()
+      return expression
     default:
       throw reportError("unable to parse expression", symbol.position)
     }
+  }
+  
+  func parseTupleExpression() throws -> AstTupleExpression {
+    guard expecting(.leftParent) else {
+      throw reportError("expecting `(`", symbol.position)
+    }
+    
+    nextSymbol()
+    let expressions = try parseCommaSeparatedExpressions()
+    guard let first = expressions.first, let last = expressions.last else {
+      throw reportError("failed to parse tuple expression", symbol.position)
+    }
+    return AstTupleExpression(position: first.position + last.position,
+                              expressions: expressions)
+  }
+  
+  func parseCommaSeparatedExpressions() throws -> [AstExpression] {
+    let expression = try parseExpression()
+    return try parseCommaSeparatedExpressions_(expression: expression)
+  }
+  
+  func parseCommaSeparatedExpressions_(expression: AstExpression) throws -> [AstExpression] {
+    guard expecting(.comma) else { return [expression] }
+    nextSymbol()
+    let newExpression = try parseExpression()
+    return [expression] + (try parseCommaSeparatedExpressions_(expression: newExpression))
   }
 }
 
@@ -201,7 +232,7 @@ private extension SynAn {
   
   func reportError(_ error: String, _ position: Position, _ others: CustomStringConvertible...) -> Error {
     let errorMessage = error + others.map { $0.description }.joined(separator: " ")
-    return Error.syntaxError("Syntax error [\(position.description)]: " + errorMessage)
+    return Error.syntaxError("Syntax error \(position.description): " + errorMessage)
   }
   
   func expecting(_ type: TokenType) -> Bool {

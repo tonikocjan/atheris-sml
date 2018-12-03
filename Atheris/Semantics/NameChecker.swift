@@ -57,6 +57,10 @@ extension NameChecker: AstVisitor {
     symbolDescription.bindNode(node, binding: binding)
   }
   
+  func visit(node: AstTupleExpression) throws {
+    for expression in node.expressions { try expression.accept(visitor: self) }
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     try insertIdentifier(identifier: node)
   }

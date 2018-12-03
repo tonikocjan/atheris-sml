@@ -32,7 +32,6 @@
 		374505DA21B50FFE0051E1E9 /* SyntaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024A621B3F483006B868E /* SyntaxParser.swift */; };
 		374505DB21B50FFE0051E1E9 /* SynAn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024BB21B3FA2C006B868E /* SynAn.swift */; };
 		374505DC21B510020051E1E9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376164F821553CB90058BD03 /* main.swift */; };
-		374505DE21B510B10051E1E9 /* ast1 in Resources */ = {isa = PBXBuildFile; fileRef = 374505DD21B510B10051E1E9 /* ast1 */; };
 		374505E221B5183D0051E1E9 /* SymbolTableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374505E121B5183D0051E1E9 /* SymbolTableProtocol.swift */; };
 		374505E421B518EA0051E1E9 /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374505E321B518EA0051E1E9 /* SymbolTable.swift */; };
 		374505E521B518FA0051E1E9 /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374505E321B518EA0051E1E9 /* SymbolTable.swift */; };
@@ -60,6 +59,10 @@
 		3745060721B53EC30051E1E9 /* PatternTupleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745060521B53EC10051E1E9 /* PatternTupleType.swift */; };
 		3745060921B5449C0051E1E9 /* PatternDummyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745060821B5449C0051E1E9 /* PatternDummyType.swift */; };
 		3745060A21B5449C0051E1E9 /* PatternDummyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745060821B5449C0051E1E9 /* PatternDummyType.swift */; };
+		3745060C21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745060B21B545BD0051E1E9 /* AstTupleExpression.swift */; };
+		3745060D21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745060B21B545BD0051E1E9 /* AstTupleExpression.swift */; };
+		3745061021B556700051E1E9 /* ast1 in Resources */ = {isa = PBXBuildFile; fileRef = 3745060E21B5566F0051E1E9 /* ast1 */; };
+		3745061121B556700051E1E9 /* ast3 in Resources */ = {isa = PBXBuildFile; fileRef = 3745060F21B556700051E1E9 /* ast3 */; };
 		375FF4F32160C0DA0088F7A3 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */; };
 		375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */ = {isa = PBXBuildFile; fileRef = 375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */; };
 		375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F62160C1040088F7A3 /* file_parser_test_2 */; };
@@ -129,7 +132,6 @@
 		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
-		374505DD21B510B10051E1E9 /* ast1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ast1; path = bin/ast1; sourceTree = SOURCE_ROOT; };
 		374505E121B5183D0051E1E9 /* SymbolTableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTableProtocol.swift; sourceTree = "<group>"; };
 		374505E321B518EA0051E1E9 /* SymbolTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTable.swift; sourceTree = "<group>"; };
 		374505E721B5197E0051E1E9 /* SymbolDescriptionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolDescriptionProtocol.swift; sourceTree = "<group>"; };
@@ -144,6 +146,9 @@
 		3745060221B53EA80051E1E9 /* PatternType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternType.swift; sourceTree = "<group>"; };
 		3745060521B53EC10051E1E9 /* PatternTupleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternTupleType.swift; sourceTree = "<group>"; };
 		3745060821B5449C0051E1E9 /* PatternDummyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternDummyType.swift; sourceTree = "<group>"; };
+		3745060B21B545BD0051E1E9 /* AstTupleExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstTupleExpression.swift; sourceTree = "<group>"; };
+		3745060E21B5566F0051E1E9 /* ast1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast1; sourceTree = "<group>"; };
+		3745060F21B556700051E1E9 /* ast3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast3; sourceTree = "<group>"; };
 		375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
 		375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_1; sourceTree = "<group>"; };
 		375FF4F62160C1040088F7A3 /* file_parser_test_2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_2; sourceTree = "<group>"; };
@@ -380,6 +385,7 @@
 				37F024C121B40DA0006B868E /* AstExpression.swift */,
 				37F024C321B40DD0006B868E /* AstConstantExpression.swift */,
 				374505EE21B530C90051E1E9 /* AstNameExpression.swift */,
+				3745060B21B545BD0051E1E9 /* AstTupleExpression.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -436,7 +442,8 @@
 		37F024D721B492C3006B868E /* Asts */ = {
 			isa = PBXGroup;
 			children = (
-				374505DD21B510B10051E1E9 /* ast1 */,
+				3745060E21B5566F0051E1E9 /* ast1 */,
+				3745060F21B556700051E1E9 /* ast3 */,
 				374505F321B536B50051E1E9 /* ast2 */,
 			);
 			path = Asts;
@@ -521,7 +528,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				374505F421B536B50051E1E9 /* ast2 in Resources */,
-				374505DE21B510B10051E1E9 /* ast1 in Resources */,
+				3745061021B556700051E1E9 /* ast1 in Resources */,
+				3745061121B556700051E1E9 /* ast3 in Resources */,
 				375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,6 +579,7 @@
 				3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */,
 				374505E521B518FA0051E1E9 /* SymbolTable.swift in Sources */,
 				37E0CE2E216A466100BAFD2A /* OutputStream.swift in Sources */,
+				3745060D21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */,
 				37E0CE31216A46C000BAFD2A /* FileWriter.swift in Sources */,
 				374505E921B51A4B0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,
 				375FF50B2161E0D60088F7A3 /* Atheris.swift in Sources */,
@@ -637,6 +646,7 @@
 				37F024C221B40DA0006B868E /* AstExpression.swift in Sources */,
 				374505EF21B530C90051E1E9 /* AstNameExpression.swift in Sources */,
 				374505ED21B52ACA0051E1E9 /* NameChecker.swift in Sources */,
+				3745060C21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */,
 				37F024D421B424EE006B868E /* AstTypeName.swift in Sources */,
 				374505EB21B51FCF0051E1E9 /* SymbolDescription.swift in Sources */,
 				3745060021B53C950051E1E9 /* TupleType.swift in Sources */,

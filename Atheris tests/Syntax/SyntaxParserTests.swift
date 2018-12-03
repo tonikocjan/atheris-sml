@@ -26,6 +26,13 @@ val b = y;
 """
     testSyntaxParsingAndSemantics(code: code, expected: "ast2")
   }
+  
+  func testAst3() {
+    let code = """
+val (x, y) = (10, 20, 30);
+"""
+    testSyntaxParsing(code: code, expected: "ast3")
+  }
 }
 
 private extension SyntaxParserTests {

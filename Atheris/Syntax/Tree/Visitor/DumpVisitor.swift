@@ -80,6 +80,14 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstTupleExpression) throws {
+    print("AstTupleExpression", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    for expression in node.expressions { try expression.accept(visitor: self) }
+    decreaseIndent()
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()
@@ -136,10 +144,10 @@ private extension DumpVisitor {
       print("-> defined at: ", binding.position)
     }
     
-//    if let type = symbolDescription.type(for: node) {
-//      increaseIndent()
-//      print("# typed: ", binding.position)
-//      decreaseIndent()
-//    }
+    if let type = symbolDescription.type(for: node) {
+      increaseIndent()
+      print("# typed: " + type.description)
+      decreaseIndent()
+    }
   }
 }

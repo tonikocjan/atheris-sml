@@ -68,6 +68,10 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: type)
   }
   
+  func visit(node: AstTupleExpression) throws {
+    for expression in node.expressions { try expression.accept(visitor: self) }
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.internalError }
     guard let type = symbolDescription.type(for: binding) else { throw Error.internalError }

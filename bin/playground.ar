@@ -1,3 +1,1 @@
-val (x, y) = 10;
-val a = x;
-val b = y;
+val (x, y) = (10, 20, 30);
