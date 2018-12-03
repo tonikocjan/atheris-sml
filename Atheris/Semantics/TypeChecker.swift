@@ -110,6 +110,15 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: tupleType)
   }
   
+  func visit(node: AstBinaryExpression) throws {
+    try node.left.accept(visitor: self)
+    try node.right.accept(visitor: self)
+  }
+  
+  func visit(node: AstUnaryExpression) throws {
+    try node.expression.accept(visitor: self)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       symbolDescription.setType(for: node, type: parentNodeType)

@@ -33,6 +33,27 @@ val (x, y) = (10, 20, 30);
 """
     testSyntaxParsing(code: code, expected: "ast3")
   }
+  
+  func testAst4() {
+    let code = """
+val (x, (a, b)): (int * (int * int)) = (10, (20, 30));
+val y = a;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast4")
+  }
+  
+  func testAst5() {
+    let code = """
+val x = 10 + 20 * 30 / 40;
+val y = ~10;
+val z = true + ~10;
+val a = true andalso false orelse 5 > 3;
+val b = (10 + 5) * 2;
+val c = 10 >= 5 andalso true = false;
+val d = 10 <= 5;
+"""
+    testSyntaxParsing(code: code, expected: "ast5")
+  }
 }
 
 private extension SyntaxParserTests {
@@ -60,7 +81,7 @@ private extension SyntaxParserTests {
     }
   }
   
-  func testSyntaxParsingAndSemantics(code: String, expected filepath: String?) {
+  func testSyntaxParsingAndSemantics(code: String, typeCheck: Bool=false, expected filepath: String?) {
     do {
       let lexan = LexAn(inputStream: TextStream(string: code))
       let parser = SynAn(lexan: lexan)
@@ -68,7 +89,10 @@ private extension SyntaxParserTests {
       let symbolDescription = SymbolDescription()
       let nameChecker = NameChecker(symbolTable: SymbolTable(symbolDescription: symbolDescription),
                                     symbolDescription: symbolDescription)
+      let typeChecker = TypeChecker(symbolTable: SymbolTable(symbolDescription: symbolDescription),
+                                    symbolDescription: symbolDescription)
       try? nameChecker.visit(node: ast)
+      if typeCheck { try? typeChecker.visit(node: ast) }
       XCTAssertEqual(openAst(filepath), astToString(ast, symbolDescription: symbolDescription))
     } catch {
       print((error as? AtherisError)?.errorMessage ?? error.localizedDescription)

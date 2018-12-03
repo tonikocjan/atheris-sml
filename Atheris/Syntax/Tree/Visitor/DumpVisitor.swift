@@ -101,6 +101,23 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstBinaryExpression) throws {
+    print("AstBinaryExpression `\(node.operation.rawValue)`", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.left.accept(visitor: self)
+    try node.right.accept(visitor: self)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstUnaryExpression) throws {
+    print("AstUnaryExpression `\(node.operation.rawValue)`", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.expression.accept(visitor: self)
+    decreaseIndent()
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()

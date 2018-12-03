@@ -36,7 +36,7 @@ class SymbolTable: SymbolTableProtocol {
     }
     
     guard try !isNameAlreadyUsedInCurrentScope(bindings: bindings) else {
-      throw Error.bindingAlreadyExists("todo")
+      throw Error.bindingAlreadyExists(name)
     }
     
     insertBinding(name: name, binding: binding)
@@ -45,7 +45,7 @@ class SymbolTable: SymbolTableProtocol {
   
   func removeBindingFromCurrentScope(name: String) throws {
     guard let bindings = mapping[name], try !isNameDefinedInCurrentOrGreaterScope(bindings: bindings) else {
-      throw Error.bindingNotFound("todo")
+      throw Error.bindingNotFound(name)
     }
     
     removeBinding(name: name)
@@ -65,8 +65,8 @@ extension SymbolTable {
     
     var errorMessage: String {
       switch self {
-      case .bindingAlreadyExists(let name): return "binding `\(name)` already exists"
-      case .bindingNotFound(let name): return "binding `\(name)` not found"
+      case .bindingAlreadyExists(let name): return "error: binding `\(name)` already exists"
+      case .bindingNotFound(let name): return "error: binding `\(name)` not found"
       case .internalError(let dumpStack): return "internal error occured: \(dumpStack.joined(separator: "\n"))"
       }
     }

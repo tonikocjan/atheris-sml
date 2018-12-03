@@ -191,7 +191,188 @@ private extension SynAn {
 
 private extension SynAn {
   func parseExpression() throws -> AstExpression {
-    return try parseAtomExpression()
+    switch symbol.token {
+    case .leftParent,
+         .leftBrace,
+         .leftBracket,
+         .integerConstant,
+         .floatingConstant,
+         .logicalConstant,
+         .stringConstant,
+         .keywordLet:
+      return try parseExpression_(expression: parseIorExpression())
+    case .identifier:
+      return try parseExpression_(expression: parseIorExpression())
+    default:
+      throw Error.syntaxError("invalid symbol")
+    }
+  }
+  
+  func parseExpression_(expression: AstExpression) throws -> AstExpression {
+    return expression
+  }
+  
+  func parseIorExpression() throws -> AstExpression {
+    return try parseIorExpression_(expression: try parseAndExpression())
+  }
+  
+  func parseIorExpression_(expression: AstExpression) throws -> AstExpression {
+    switch symbol.token {
+    case .keywordOrelse:
+      nextSymbol()
+      let newExpression = try parseCmpExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .orelse,
+                                                 left: expression, right: newExpression)
+      return try parseIorExpression_(expression: binaryExpression)
+    default:
+      return expression
+    }
+  }
+  
+  func parseAndExpression() throws -> AstExpression {
+    return try parseAndExpression_(expression: try parseCmpExpression())
+  }
+  
+  func parseAndExpression_(expression: AstExpression) throws -> AstExpression {
+    switch symbol.token {
+    case .keywordAndalso:
+      nextSymbol()
+      let newExpression = try parseCmpExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .andalso,
+                                                 left: expression, right: newExpression)
+      return try parseAndExpression_(expression: binaryExpression)
+    default:
+      return expression
+    }
+  }
+  
+  func parseCmpExpression() throws -> AstExpression {
+    return try parseCmpExpression_(expression: try parseAddExpression())
+  }
+  
+  func parseCmpExpression_(expression: AstExpression) throws -> AstExpression {
+    switch symbol.lexeme {
+    case "<":
+      nextSymbol()
+      let newExpression = try parsePrefixExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .lessThan,
+                                                 left: expression, right: newExpression)
+      return binaryExpression
+    case ">":
+      nextSymbol()
+      let newExpression = try parsePrefixExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .greaterThan,
+                                                 left: expression, right: newExpression)
+      return binaryExpression
+    case "=":
+      nextSymbol()
+      let newExpression = try parsePrefixExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .equal,
+                                                 left: expression, right: newExpression)
+      return binaryExpression
+    case "<=":
+      nextSymbol()
+      let newExpression = try parsePrefixExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .lessThanOrEqual,
+                                                 left: expression, right: newExpression)
+      return binaryExpression
+    case ">=":
+      nextSymbol()
+      let newExpression = try parsePrefixExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: .greaterThanOrEqual,
+                                                 left: expression, right: newExpression)
+      return binaryExpression
+    default:
+      return expression
+    }
+  }
+  
+  func parseAddExpression() throws -> AstExpression {
+    return try parseAddExpression_(expression: try parseMulExpression())
+  }
+  
+  func parseAddExpression_(expression: AstExpression) throws -> AstExpression {
+    switch symbol.token {
+    case .identifier:
+      switch symbol.lexeme {
+      case "+":
+        nextSymbol()
+        let newExpression = try parseMulExpression()
+        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                   operation: .add,
+                                                   left: expression, right: newExpression)
+        return try parseAddExpression_(expression: binaryExpression)
+      case "-":
+        nextSymbol()
+        let newExpression = try parseMulExpression()
+        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                   operation: .subtract,
+                                                   left: expression, right: newExpression)
+        return try parseAddExpression_(expression: binaryExpression)
+      default:
+        return expression
+      }
+    default:
+      return expression
+    }
+  }
+  
+  func parseMulExpression() throws -> AstExpression {
+    return try parseMulExpression_(expression: try parsePrefixExpression())
+  }
+  
+  func parseMulExpression_(expression: AstExpression) throws -> AstExpression {
+    switch symbol.token {
+    case .identifier:
+      switch symbol.lexeme {
+      case "*":
+        nextSymbol()
+        let newExpression = try parsePrefixExpression()
+        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                   operation: .multiply,
+                                                   left: expression, right: newExpression)
+        return try parseMulExpression_(expression: binaryExpression)
+      case "/":
+        nextSymbol()
+        let newExpression = try parsePrefixExpression()
+        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                   operation: .divide,
+                                                   left: expression, right: newExpression)
+        return try parseMulExpression_(expression: binaryExpression)
+      default:
+        return expression
+      }
+    default:
+      return expression
+    }
+  }
+  
+  func parsePrefixExpression() throws -> AstExpression {
+    guard expecting("~") else {
+      return try parseCmpExpression_(expression: try parsePostfixExpression())
+    }
+    
+    let startingPosition = symbol.position
+    nextSymbol()
+    let expression = try parsePrefixExpression()
+    return AstUnaryExpression(position: startingPosition + expression.position,
+                              operation: .negate,
+                              expression: expression)
+  }
+  
+  func parsePostfixExpression() throws -> AstExpression {
+    return try parsePostfixExpression_(expression: try parseAtomExpression())
+  }
+  
+  func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
+    return expression
   }
   
   func parseAtomExpression() throws -> AstExpression {
@@ -217,6 +398,9 @@ private extension SynAn {
       let expression = try parseTupleExpression()
       guard expecting(.rightParent) else { throw reportError("expecting `)`", symbol.position) }
       nextSymbol()
+      if expression.expressions.count == 1, let first = expression.expressions.first {
+        return first
+      }
       return expression
     default:
       throw reportError("unable to parse expression", symbol.position)
@@ -264,5 +448,9 @@ private extension SynAn {
   
   func expecting(_ type: TokenType) -> Bool {
     return symbol.token == type
+  }
+  
+  func expecting(_ lexeme: String) -> Bool {
+    return symbol.token == .identifier && symbol.lexeme == lexeme
   }
 }

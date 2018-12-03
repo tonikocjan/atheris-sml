@@ -59,6 +59,15 @@ extension NameChecker: AstVisitor {
     for expression in node.expressions { try expression.accept(visitor: self) }
   }
   
+  func visit(node: AstBinaryExpression) throws {
+    try node.left.accept(visitor: self)
+    try node.right.accept(visitor: self)
+  }
+  
+  func visit(node: AstUnaryExpression) throws {
+    try node.expression.accept(visitor: self)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     try insertIdentifier(identifier: node)
   }

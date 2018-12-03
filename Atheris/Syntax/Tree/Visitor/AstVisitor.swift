@@ -18,6 +18,8 @@ protocol AstVisitor {
   func visit(node: AstConstantExpression) throws
   func visit(node: AstNameExpression) throws
   func visit(node: AstTupleExpression) throws
+  func visit(node: AstBinaryExpression) throws
+  func visit(node: AstUnaryExpression) throws
   func visit(node: AstIdentifierPattern) throws
   func visit(node: AstWildcardPattern) throws
   func visit(node: AstTuplePattern) throws
