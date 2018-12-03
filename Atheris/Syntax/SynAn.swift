@@ -155,7 +155,8 @@ private extension SynAn {
     case .identifier:
       let currentSymbol = symbol
       nextSymbol()
-      return AstTypeName(position: currentSymbol.position, identifier: currentSymbol.lexeme)
+      return AstTypeName(position: currentSymbol.position,
+                         name: currentSymbol.lexeme)
     default:
       throw reportError("failed to parse type", symbol.position)
     }

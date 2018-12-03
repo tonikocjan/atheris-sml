@@ -9,5 +9,5 @@
 import Foundation
 
 protocol AstType: AstNode {
-  var identifier: String { get }
+  var name: String { get }
 }

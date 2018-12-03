@@ -16,7 +16,7 @@ class TupleType: Type {
   }
   
   var description: String {
-    return "TupleType \(members.count): \(members.map { $0.description }.joined(separator: "; "))"
+    return "(\(members.map { $0.description }.joined(separator: " * ")))"
   }
   
   func sameStructureAs(other: Type) -> Bool {

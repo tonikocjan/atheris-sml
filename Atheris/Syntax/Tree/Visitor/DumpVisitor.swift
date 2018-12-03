@@ -51,7 +51,7 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstAtomType) throws {
     print("AstAtomType", node.position)
     increaseIndent()
-    print("Identifier: " + node.identifier)
+    print("Name: " + node.name)
     print("Atom type: " + node.type.rawValue)
     decreaseIndent()
   }
@@ -59,7 +59,7 @@ extension DumpVisitor: AstVisitor {
   func visit(node: AstTypeName) throws {
     print("AstTypeName", node.position)
     increaseIndent()
-    print("Identifier: " + node.identifier)
+    print("Name: " + node.name)
     decreaseIndent()
   }
   

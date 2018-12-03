@@ -9,8 +9,14 @@
 import Foundation
 
 class PatternDummyType: PatternType {
+  let name: String
+  
+  init(name: String) {
+    self.name = name
+  }
+  
   var description: String {
-    return "PatternDummyType"
+    return name
   }
   
   func sameStructureAs(other: Type) -> Bool {

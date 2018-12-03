@@ -16,7 +16,7 @@ AstBindings [1:1, 2:16]:
       AstIdentifierPattern [2:5, 2:6]:
         Name: x
       AstTypeName [2:8, 2:11]:
-        Identifier: int
+        Name: int
     AstConstantExpression [2:14, 2:16]:
       Value: 10
       Atom type: int

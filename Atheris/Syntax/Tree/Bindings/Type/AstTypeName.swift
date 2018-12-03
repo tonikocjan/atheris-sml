@@ -10,11 +10,11 @@ import Foundation
 
 class AstTypeName: AstType {
   let position: Position
-  let identifier: String
+  let name: String
   
-  init(position: Position, identifier: String) {
+  init(position: Position, name: String) {
     self.position = position
-    self.identifier = identifier
+    self.name = name
   }
   
   func accept(visitor: AstVisitor) throws {

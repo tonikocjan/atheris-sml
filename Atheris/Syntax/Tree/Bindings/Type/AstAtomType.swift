@@ -10,12 +10,12 @@ import Foundation
 
 class AstAtomType: AstType {
   let position: Position
-  let identifier: String
+  let name: String
   let type: AtomType
   
-  init(position: Position, identifier: String, type: AtomType) {
+  init(position: Position, name: String, type: AtomType) {
     self.position = position
-    self.identifier = identifier
+    self.name = name
     self.type = type
   }
   

@@ -1,17 +1,22 @@
-AstBindings [1:1, 1:25]:
-  AstValBinding [1:1, 1:25]:
-    AstTuplePattern [1:5, 1:13]:
+AstBindings [1:1, 2:16]:
+  AstValBinding [1:1, 1:29]:
+    AstTuplePattern [1:5, 1:18]:
       AstIdentifierPattern [1:6, 1:7]:
         Name: x
-      AstIdentifierPattern [1:9, 1:10]:
-        Name: y
-    AstTupleExpression [1:15, 1:25]:
-      AstConstantExpression [1:15, 1:17]:
-        Value: 10
-        Atom type: int
-      AstConstantExpression [1:19, 1:21]:
-        Value: 20
-        Atom type: int
-      AstConstantExpression [1:23, 1:25]:
-        Value: 30
-        Atom type: int
+      AstTuplePattern [1:9, 1:16]:
+        AstIdentifierPattern [1:10, 1:11]:
+          Name: a
+        AstIdentifierPattern [1:13, 1:14]:
+          Name: c
+    AstConstantExpression [1:19, 1:29]:
+      Value: a string
+      Atom type: string
+  AstValBinding [2:1, 2:16]:
+    AstTypedPattern [2:5, 2:11]:
+      AstIdentifierPattern [2:5, 2:6]:
+        Name: x
+      AstTypeName [2:8, 2:11]:
+        Name: int
+    AstConstantExpression [2:14, 2:16]:
+      Value: 10
+      Atom type: int

@@ -21,6 +21,6 @@ class AtomType: Type {
   }
   
   var description: String {
-    return "Atom type: \(type.rawValue)"
+    return type.rawValue
   }
 }

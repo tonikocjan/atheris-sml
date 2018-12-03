@@ -16,7 +16,7 @@ class PatternTupleType: PatternType {
   }
   
   var description: String {
-    return "Abstract tuple type \(members.count)"
+    return "(\(members.map { $0.description }.joined(separator: " * ")))"
   }
   
   func sameStructureAs(other: Type) -> Bool {
