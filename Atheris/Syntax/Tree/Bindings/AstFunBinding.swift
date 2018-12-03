@@ -17,8 +17,8 @@ class AstFunBinding: AstBinding {
     self.pattern = pattern
   }
   
-  func accept(visitor: AstVisitor) {
-    visitor.visit(node: self)
+  func accept(visitor: AstVisitor) throws {
+    try visitor.visit(node: self)
   }
 }
 

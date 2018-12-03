@@ -41,7 +41,7 @@ class Atheris {
     let ast = try synan.parse()
     let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "ast")!))
     let visitor = DumpVisitor(outputStream: outputStream)
-    visitor.visit(node: ast)
+    try visitor.visit(node: ast)
   }
 }
 

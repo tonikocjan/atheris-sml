@@ -19,29 +19,29 @@ class DumpVisitor {
 }
 
 extension DumpVisitor: AstVisitor {
-  func visit(node: AstBindings) {
+  func visit(node: AstBindings) throws {
     print("AstBindings", node.position)
     increaseIndent()
-    node.bindings.forEach { $0.accept(visitor: self) }
+    for binding in node.bindings { try binding.accept(visitor: self) }
     decreaseIndent()
   }
   
-  func visit(node: AstValBinding) {
+  func visit(node: AstValBinding) throws {
     print("AstValBinding", node.position)
     increaseIndent()
-    node.pattern.accept(visitor: self)
-    node.expression.accept(visitor: self)
+    try node.pattern.accept(visitor: self)
+    try node.expression.accept(visitor: self)
     decreaseIndent()
   }
   
-  func visit(node: AstFunBinding) {
+  func visit(node: AstFunBinding) throws {
     print("AstFunBinding", node.position)
     increaseIndent()
     print("todo")
     decreaseIndent()
   }
   
-  func visit(node: AstAtomType) {
+  func visit(node: AstAtomType) throws {
     print("AstAtomType", node.position)
     increaseIndent()
     print("Identifier: " + node.identifier)
@@ -49,14 +49,14 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTypeName) {
+  func visit(node: AstTypeName) throws {
     print("AstTypeName", node.position)
     increaseIndent()
     print("Identifier: " + node.identifier)
     decreaseIndent()
   }
   
-  func visit(node: AstConstantExpression) {
+  func visit(node: AstConstantExpression) throws {
     print("AstConstantExpression", node.position)
     increaseIndent()
     print("Value: " + node.value)
@@ -64,35 +64,35 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstIdentifierPattern) {
+  func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()
     print("Name: " + node.name)
     decreaseIndent()
   }
   
-  func visit(node: AstWildcardPattern) {
+  func visit(node: AstWildcardPattern) throws {
     print("AstWildcardPattern", node.position)
   }
   
-  func visit(node: AstTuplePattern) {
+  func visit(node: AstTuplePattern) throws {
     print("AstTuplePattern", node.position)
     increaseIndent()
-    node.patterns.forEach { $0.accept(visitor: self) }
+    for pattern in node.patterns { try pattern.accept(visitor: self) }
     decreaseIndent()
   }
   
-  func visit(node: AstRecordPattern) {
+  func visit(node: AstRecordPattern) throws {
     print("AstRecordPattern", node.position)
     increaseIndent()
     decreaseIndent()
   }
   
-  func visit(node: AstTypedPattern) {
+  func visit(node: AstTypedPattern) throws {
     print("AstTypedPattern", node.position)
     increaseIndent()
-    node.pattern.accept(visitor: self)
-    node.type.accept(visitor: self)
+    try node.pattern.accept(visitor: self)
+    try node.type.accept(visitor: self)
     decreaseIndent()
   }
 }

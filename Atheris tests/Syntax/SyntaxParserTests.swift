@@ -48,7 +48,7 @@ private extension SyntaxParserTests {
     guard let ast = ast else { return "" }
     let stream = TextOutputStream()
     let visitor = DumpVisitor(outputStream: stream)
-    visitor.visit(node: ast)
+    try? visitor.visit(node: ast)
     return stream.buffer
   }
   

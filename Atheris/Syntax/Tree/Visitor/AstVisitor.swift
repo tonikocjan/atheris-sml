@@ -9,15 +9,15 @@
 import Foundation
 
 protocol AstVisitor {
-  func visit(node: AstBindings)
-  func visit(node: AstValBinding)
-  func visit(node: AstFunBinding)
-  func visit(node: AstAtomType)
-  func visit(node: AstTypeName)
-  func visit(node: AstConstantExpression)
-  func visit(node: AstIdentifierPattern)
-  func visit(node: AstWildcardPattern)
-  func visit(node: AstTuplePattern)
-  func visit(node: AstRecordPattern)
-  func visit(node: AstTypedPattern)
+  func visit(node: AstBindings) throws
+  func visit(node: AstValBinding) throws
+  func visit(node: AstFunBinding) throws
+  func visit(node: AstAtomType) throws
+  func visit(node: AstTypeName) throws
+  func visit(node: AstConstantExpression) throws
+  func visit(node: AstIdentifierPattern) throws
+  func visit(node: AstWildcardPattern) throws
+  func visit(node: AstTuplePattern) throws
+  func visit(node: AstRecordPattern) throws
+  func visit(node: AstTypedPattern) throws
 }

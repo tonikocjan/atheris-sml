@@ -15,8 +15,8 @@ class AstWildcardPattern: AstPattern {
     self.position = position
   }
   
-  func accept(visitor: AstVisitor) {
-    visitor.visit(node: self)
+  func accept(visitor: AstVisitor) throws {
+    try visitor.visit(node: self)
   }
 }
 

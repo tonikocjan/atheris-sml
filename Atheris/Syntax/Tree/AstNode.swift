@@ -9,7 +9,7 @@
 import Foundation
 
 protocol Visitable {
-  func accept(visitor: AstVisitor)
+  func accept(visitor: AstVisitor) throws
 }
 
 protocol AstNode: class, Visitable {

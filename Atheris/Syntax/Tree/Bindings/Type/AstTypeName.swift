@@ -17,7 +17,7 @@ class AstTypeName: AstType {
     self.identifier = identifier
   }
   
-  func accept(visitor: AstVisitor) {
-    visitor.visit(node: self)
+  func accept(visitor: AstVisitor) throws {
+    try visitor.visit(node: self)
   }
 }
