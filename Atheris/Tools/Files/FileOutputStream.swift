@@ -16,7 +16,7 @@ class FileOutputStream: OutputStream {
   }
   
   func print(_ string: String) {
-    fileWriter.writeLine(string)
+    fileWriter.writeString(string)
   }
   
   func printLine(_ string: String) {

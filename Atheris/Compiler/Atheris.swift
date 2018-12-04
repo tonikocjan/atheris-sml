@@ -33,10 +33,10 @@ class Atheris {
     guard let url = URL(string: sourceFile) else { throw Error.invalidPath(sourceFile) }
     let fileReader = try FileReader(fileUrl: url)
     let lexan = LexAn(inputStream: FileInputStream(fileReader: fileReader))
-//    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
-//    for symbol in lexan {
-//      outputStream.printLine(symbol.description)
-//    }
+    //        let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
+    //        for symbol in lexan {
+    //          outputStream.printLine(symbol.description)
+    //        }
     
     // Parse syntax
     let synan = SynAn(lexan: lexan)
@@ -55,9 +55,15 @@ class Atheris {
     
     // Dump ast
     let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "ast")!))
-    let visitor = DumpVisitor(outputStream: outputStream,
-                              symbolDescription: symbolTable.symbolDescription)
-    try visitor.visit(node: ast)
+    let dumpVisitor = DumpVisitor(outputStream: outputStream,
+                                  symbolDescription: symbolTable.symbolDescription)
+    try dumpVisitor.visit(node: ast)
+    
+    // Code generation
+    let codeOutputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "code.rkt")!))
+    let codeGenerator = RacketCodeGenerator(outputStream: codeOutputStream,
+                                            configuration: .standard)
+    try codeGenerator.visit(node: ast)
   }
 }
 

@@ -68,18 +68,6 @@ val b = true = true andalso 5 = 5 andalso "abc" = "efg" andalso 5 * 5 < 13 orels
 }
 
 private extension SyntaxParserTests {
-  class TextOutputStream: OutputStream {
-    private(set) var buffer = ""
-    
-    func print(_ string: String) {
-      buffer.append(string)
-    }
-    
-    func printLine(_ string: String) {
-      buffer.append(string + "\n")
-    }
-  }
-  
   func testSyntaxParsing(code: String, expected filepath: String?) {
     do {
       let lexan = LexAn(inputStream: TextStream(string: code))
@@ -100,10 +88,10 @@ private extension SyntaxParserTests {
       let symbolDescription = SymbolDescription()
       let nameChecker = NameChecker(symbolTable: SymbolTable(symbolDescription: symbolDescription),
                                     symbolDescription: symbolDescription)
-      let typeChecker = TypeChecker(symbolTable: SymbolTable(symbolDescription: symbolDescription),
-                                    symbolDescription: symbolDescription)
-      try? nameChecker.visit(node: ast)
-      if typeCheck { try? typeChecker.visit(node: ast) }
+      let typeChecker = TypeChecker(symbolTable: nameChecker.symbolTable,
+                                    symbolDescription: nameChecker.symbolDescription)
+      try nameChecker.visit(node: ast)
+      if typeCheck { try typeChecker.visit(node: ast) }
       XCTAssertEqual(openAst(filepath),
                      astToString(ast, symbolDescription: symbolDescription))
     } catch {
