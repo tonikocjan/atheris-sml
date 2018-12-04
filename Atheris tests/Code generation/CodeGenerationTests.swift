@@ -16,6 +16,13 @@ val y = x > 10 + 5 andalso true;
 """
     performTest(code: code, filepath: "code1.rkt")
   }
+  
+  func testIfExpression() {
+    let code = """
+val x = if 3 < 4 then "a" else "b";
+"""
+    performTest(code: code, filepath: "code2.rkt")
+  }
 }
 
 private extension CodeGenerationTests {

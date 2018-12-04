@@ -1,2 +1,1 @@
-val x = 10 + 20;
-val y = x > 10 + 5 andalso true;
+val x = if 3 < 4 then "a" else "b";

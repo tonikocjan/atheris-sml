@@ -82,6 +82,7 @@
 		3745063E21B6CEE70051E1E9 /* CodeGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745063D21B6CEE70051E1E9 /* CodeGenerationTests.swift */; };
 		3745064121B6CF290051E1E9 /* TextOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745064021B6CF290051E1E9 /* TextOutputStream.swift */; };
 		3745064321B6D0470051E1E9 /* code1.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3745064221B6D0470051E1E9 /* code1.rkt */; };
+		3745064521B6D9260051E1E9 /* code2.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3745064421B6D9260051E1E9 /* code2.rkt */; };
 		375FF4F32160C0DA0088F7A3 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */; };
 		375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */ = {isa = PBXBuildFile; fileRef = 375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */; };
 		375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F62160C1040088F7A3 /* file_parser_test_2 */; };
@@ -181,6 +182,7 @@
 		3745063D21B6CEE70051E1E9 /* CodeGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeGenerationTests.swift; sourceTree = "<group>"; };
 		3745064021B6CF290051E1E9 /* TextOutputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputStream.swift; sourceTree = "<group>"; };
 		3745064221B6D0470051E1E9 /* code1.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code1.rkt; sourceTree = "<group>"; };
+		3745064421B6D9260051E1E9 /* code2.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code2.rkt; sourceTree = "<group>"; };
 		375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
 		375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_1; sourceTree = "<group>"; };
 		375FF4F62160C1040088F7A3 /* file_parser_test_2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_2; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				3745064221B6D0470051E1E9 /* code1.rkt */,
+				3745064421B6D9260051E1E9 /* code2.rkt */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3745064521B6D9260051E1E9 /* code2.rkt in Resources */,
 				3745061921B58F140051E1E9 /* ast4 in Resources */,
 				374505F421B536B50051E1E9 /* ast2 in Resources */,
 				3745061021B556700051E1E9 /* ast1 in Resources */,

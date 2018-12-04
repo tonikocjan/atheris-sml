@@ -70,7 +70,7 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstConstantExpression) throws {
-    print(node.value)
+    print(node.type == .string ? "\"\(node.value)\"" : node.value)
   }
   
   func visit(node: AstNameExpression) throws {
@@ -111,7 +111,13 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstIfExpression) throws {
-    
+    print("(if ")
+    try node.condition.accept(visitor: self)
+    print(" ")
+    try node.trueBranch.accept(visitor: self)
+    print(" ")
+    try node.falseBranch.accept(visitor: self)
+    print(")")
   }
   
   func visit(node: AstIdentifierPattern) throws {
