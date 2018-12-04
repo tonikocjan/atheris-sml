@@ -83,6 +83,8 @@
 		3745064121B6CF290051E1E9 /* TextOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745064021B6CF290051E1E9 /* TextOutputStream.swift */; };
 		3745064321B6D0470051E1E9 /* code1.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3745064221B6D0470051E1E9 /* code1.rkt */; };
 		3745064521B6D9260051E1E9 /* code2.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3745064421B6D9260051E1E9 /* code2.rkt */; };
+		3745064721B6DD4A0051E1E9 /* code3.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3745064621B6DD4A0051E1E9 /* code3.rkt */; };
+		3745064A21B6DDC00051E1E9 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745064921B6DDC00051E1E9 /* Executor.swift */; };
 		375FF4F32160C0DA0088F7A3 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */; };
 		375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */ = {isa = PBXBuildFile; fileRef = 375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */; };
 		375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */ = {isa = PBXBuildFile; fileRef = 375FF4F62160C1040088F7A3 /* file_parser_test_2 */; };
@@ -183,6 +185,8 @@
 		3745064021B6CF290051E1E9 /* TextOutputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextOutputStream.swift; sourceTree = "<group>"; };
 		3745064221B6D0470051E1E9 /* code1.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code1.rkt; sourceTree = "<group>"; };
 		3745064421B6D9260051E1E9 /* code2.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code2.rkt; sourceTree = "<group>"; };
+		3745064621B6DD4A0051E1E9 /* code3.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code3.rkt; sourceTree = "<group>"; };
+		3745064921B6DDC00051E1E9 /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		375FF4F22160C0DA0088F7A3 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
 		375FF4F42160C0EF0088F7A3 /* file_parser_test_1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_1; sourceTree = "<group>"; };
 		375FF4F62160C1040088F7A3 /* file_parser_test_2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file_parser_test_2; sourceTree = "<group>"; };
@@ -324,10 +328,19 @@
 		3745063F21B6CF020051E1E9 /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				3745064621B6DD4A0051E1E9 /* code3.rkt */,
 				3745064221B6D0470051E1E9 /* code1.rkt */,
 				3745064421B6D9260051E1E9 /* code2.rkt */,
 			);
 			path = Code;
+			sourceTree = "<group>";
+		};
+		3745064821B6DDAE0051E1E9 /* Executor */ = {
+			isa = PBXGroup;
+			children = (
+				3745064921B6DDC00051E1E9 /* Executor.swift */,
+			);
+			path = Executor;
 			sourceTree = "<group>";
 		};
 		375FF4F12160C0C80088F7A3 /* Lexan */ = {
@@ -380,6 +393,7 @@
 				37F024A221B3F3E9006B868E /* Syntax */,
 				374505DF21B5163E0051E1E9 /* Semantics */,
 				3745063521B6C6510051E1E9 /* Code generation */,
+				3745064821B6DDAE0051E1E9 /* Executor */,
 				376164F821553CB90058BD03 /* main.swift */,
 			);
 			path = Atheris;
@@ -615,6 +629,7 @@
 				3745064321B6D0470051E1E9 /* code1.rkt in Resources */,
 				3745061121B556700051E1E9 /* ast3 in Resources */,
 				375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */,
+				3745064721B6DD4A0051E1E9 /* code3.rkt in Resources */,
 				3745063121B6BC030051E1E9 /* ast6 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -698,6 +713,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				374505FD21B53C870051E1E9 /* AtomType.swift in Sources */,
+				3745064A21B6DDC00051E1E9 /* Executor.swift in Sources */,
 				374505E221B5183D0051E1E9 /* SymbolTableProtocol.swift in Sources */,
 				37F024CF21B41697006B868E /* AstRecordPattern.swift in Sources */,
 				3745060921B5449C0051E1E9 /* PatternDummyType.swift in Sources */,

@@ -1,1 +1,2 @@
-val x = if 3 < 4 then "a" else "b";
+val (x, y, z) = (10, 20, 30);
+val a = if false then "a" else "b";

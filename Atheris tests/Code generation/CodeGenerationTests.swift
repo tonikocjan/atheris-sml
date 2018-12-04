@@ -23,6 +23,13 @@ val x = if 3 < 4 then "a" else "b";
 """
     performTest(code: code, filepath: "code2.rkt")
   }
+  
+  func testTupleBinding() {
+    let code = """
+val (x, y, z) = (10, 20, 30);
+"""
+    performTest(code: code, filepath: "code3.rkt")
+  }
 }
 
 private extension CodeGenerationTests {
@@ -39,7 +46,9 @@ private extension CodeGenerationTests {
       try nameChecker.visit(node: ast)
       try typeChecker.visit(node: ast)
       let outputStream = TextOutputStream()
-      let codeGenerator = RacketCodeGenerator(outputStream: outputStream, configuration: .standard)
+      let codeGenerator = RacketCodeGenerator(outputStream: outputStream,
+                                              configuration: .standard,
+                                              symbolDescription: symbolDescription)
       try codeGenerator.visit(node: ast)
       XCTAssertEqual(outputStream.buffer, loadCode(filepath))
     } catch {

@@ -11,13 +11,16 @@ import Foundation
 class RacketCodeGenerator {
   let outputStream: OutputStream
   let configuration: Configuration
+  let symbolDescription: SymbolDescriptionProtocol
   
   private var isRootNode = true
   private var indent = 0
+  private var debugPrint = false
   
-  init(outputStream: OutputStream, configuration: Configuration) {
+  init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
     self.configuration = configuration
+    self.symbolDescription = symbolDescription
   }
 }
 
@@ -42,11 +45,17 @@ extension RacketCodeGenerator: CodeGenerator {
     for binding in node.bindings {
       try binding.accept(visitor: self)
       newLine()
+      debugPrint = true
+      try binding.pattern.accept(visitor: self)
+      debugPrint = false
+      newLine()
     }
   }
   
   func visit(node: AstValBinding) throws {
-    print("(define ")
+    guard let type = symbolDescription.type(for: node) else { return }
+    let define = type.isTuple ? "(define-values " : "(define "
+    print(define)
     try node.pattern.accept(visitor: self)
     print(" ")
     try node.expression.accept(visitor: self)
@@ -78,7 +87,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    
+    print("(values ")
+    try perform(on: node.expressions, appending: " ")
+    print(")")
   }
   
   func visit(node: AstBinaryExpression) throws {
@@ -129,7 +140,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTuplePattern) throws {
-    
+    if !debugPrint { print("(") }
+    try perform(on: node.patterns, appending: " ")
+    if !debugPrint { print(")") }
   }
   
   func visit(node: AstRecordPattern) throws {
@@ -137,7 +150,7 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTypedPattern) throws {
-    
+    try node.pattern.accept(visitor: self)
   }
 }
 
@@ -158,4 +171,12 @@ private extension RacketCodeGenerator {
   
   func increaseIndent() { indent += configuration.indentation }
   func decreaseIndent() { indent -= configuration.indentation }
+  
+  func perform(on nodes: [AstNode], appending: String) throws {
+    for node in nodes.dropLast() {
+      try node.accept(visitor: self)
+      print(appending)
+    }
+    try nodes.last?.accept(visitor: self)
+  }
 }
