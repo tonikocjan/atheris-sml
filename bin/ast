@@ -1,20 +1,56 @@
-AstBindings [1:1, 3:10]:
-  AstValBinding [1:1, 1:16]:
-    AstTuplePattern [1:5, 1:13]:
-      AstIdentifierPattern [1:6, 1:7]:
-        Name: x
-      AstIdentifierPattern [1:9, 1:10]:
-        Name: y
-    AstConstantExpression [1:14, 1:16]:
-      Value: 10
-      Atom type: int
+AstBindings [1:1, 2:10]:
+  AstValBinding [1:1, 1:52]:
+    -> typed: (int * (int * int))
+    AstTypedPattern [1:5, 1:37]:
+      -> typed: (int * (int * int))
+      AstTuplePattern [1:5, 1:17]:
+        -> typed: (int * (int * int))
+        AstIdentifierPattern [1:6, 1:7]:
+          -> typed: int
+          Name: x
+        AstTuplePattern [1:9, 1:16]:
+          -> typed: (int * int)
+          AstIdentifierPattern [1:10, 1:11]:
+            -> typed: int
+            Name: a
+          AstIdentifierPattern [1:13, 1:14]:
+            -> typed: int
+            Name: b
+      AstTupleType [1:18, 1:37]:
+        -> typed: (int * (int * int))
+        AstTypeName [1:19, 1:22]:
+          -> typed: int
+          Name: int
+        AstTupleType [1:25, 1:36]:
+          -> typed: (int * int)
+          AstTypeName [1:26, 1:29]:
+            -> typed: int
+            Name: int
+          AstTypeName [1:32, 1:35]:
+            -> typed: int
+            Name: int
+    AstTupleExpression [1:41, 1:52]:
+      -> typed: (int * (int * int))
+      AstConstantExpression [1:41, 1:43]:
+        -> typed: int
+        Value: 10
+        Atom type: int
+      AstTupleExpression [1:46, 1:52]:
+        -> typed: (int * int)
+        AstConstantExpression [1:46, 1:48]:
+          -> typed: int
+          Value: 20
+          Atom type: int
+        AstConstantExpression [1:50, 1:52]:
+          -> typed: int
+          Value: 30
+          Atom type: int
   AstValBinding [2:1, 2:10]:
+    -> typed: int
     AstIdentifierPattern [2:5, 2:6]:
-      Name: a
-    AstNameExpression [2:9, 2:10]:
-      Name: x
-  AstValBinding [3:1, 3:10]:
-    AstIdentifierPattern [3:5, 3:6]:
-      Name: b
-    AstNameExpression [3:9, 3:10]:
+      -> typed: int
       Name: y
+    AstNameExpression [2:9, 2:10]:
+      -> defined at:  [1:10, 1:11]:
+      -> typed: int
+      Name: a

@@ -42,7 +42,7 @@ extension TypeChecker: AstVisitor {
     
     if let patternType = symbolDescription.type(for: node.pattern) {
       guard patternType.sameStructureAs(other: expressionType) else {
-        throw Error.typeError(patternType: patternType, expressionType: expressionType)
+        throw Error.typeError(position: node.position, patternType: patternType, expressionType: expressionType)
       }
       symbolDescription.setType(for: node, type: expressionType)
       resultType = expressionType
@@ -111,8 +111,19 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstBinaryExpression) throws {
+    let operation = Operation.convert(node.operation)
     try node.left.accept(visitor: self)
     try node.right.accept(visitor: self)
+    
+    guard
+      let leftType = symbolDescription.type(for: node.left),
+      let rightType = symbolDescription.type(for: node.right) else { throw Error.internalError }
+    
+    guard let resultType = leftType.isBinaryOperationValid(operation, other: rightType) else {
+      throw Error.operatorError(position: node.position, domain: operation.domain, operand: TupleType.formPair(leftType, rightType))
+    }
+    
+    symbolDescription.setType(for: node, type: resultType)
   }
   
   func visit(node: AstUnaryExpression) throws {
@@ -172,7 +183,7 @@ extension TypeChecker: AstVisitor {
     }
     
     guard patternType.sameStructureAs(other: type) else {
-      throw Error.constraintError(patternType: patternType, constraintType: type)
+      throw Error.constraintError(position: node.position, patternType: patternType, constraintType: type)
     }
     
     symbolDescription.setType(for: node, type: type)
@@ -182,19 +193,32 @@ extension TypeChecker: AstVisitor {
 extension TypeChecker  {
   enum Error: AtherisError {
     case internalError
-    case typeError(patternType: Type, expressionType: Type)
-    case constraintError(patternType: Type, constraintType: Type)
+    case typeError(position: Position, patternType: Type, expressionType: Type)
+    case constraintError(position: Position, patternType: Type, constraintType: Type)
+    case operatorError(position: Position, domain: String, operand: TupleType)
     
     var errorMessage: String {
       switch self {
       case .internalError: return "internal error: \(Thread.callStackSymbols.joined(separator: "\n"))"
-      case .typeError(let patternType, let expressionType): return "error: pattern and expression type do not match\n    pattern: \(patternType.description)\n    expression: \(expressionType.description)"
-      case .constraintError(let patternType, let constraintType): return "error: pattern and contraint do not match\n    pattern: \(patternType.description)\n    constraint: \(constraintType.description)"
+      case .typeError(let position, let patternType, let expressionType):
+        return """
+        error \(position.description): pattern and expression type do not match
+            pattern: \(patternType.description)
+            expression: \(expressionType.description)
+        """
+      case .constraintError(let position, let patternType, let constraintType):
+        return """
+        error \(position.description): pattern and contraint do not match
+            pattern: \(patternType.description)
+            constraint: \(constraintType.description)
+        """
+      case .operatorError(let position, let domain, let operand):
+        return """
+        error \(position.description): operator and operand do not match
+            operator domain: \(domain)
+            operand: \(operand.description)
+        """
       }
     }
   }
-}
-
-private extension TypeChecker {
-  
 }

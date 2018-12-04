@@ -256,35 +256,35 @@ private extension SynAn {
     switch symbol.lexeme {
     case "<":
       nextSymbol()
-      let newExpression = try parsePrefixExpression()
+      let newExpression = try parseAddExpression()
       let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
                                                  operation: .lessThan,
                                                  left: expression, right: newExpression)
       return binaryExpression
     case ">":
       nextSymbol()
-      let newExpression = try parsePrefixExpression()
+      let newExpression = try parseAddExpression()
       let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
                                                  operation: .greaterThan,
                                                  left: expression, right: newExpression)
       return binaryExpression
     case "=":
       nextSymbol()
-      let newExpression = try parsePrefixExpression()
+      let newExpression = try parseAddExpression()
       let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
                                                  operation: .equal,
                                                  left: expression, right: newExpression)
       return binaryExpression
     case "<=":
       nextSymbol()
-      let newExpression = try parsePrefixExpression()
+      let newExpression = try parseAddExpression()
       let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
                                                  operation: .lessThanOrEqual,
                                                  left: expression, right: newExpression)
       return binaryExpression
     case ">=":
       nextSymbol()
-      let newExpression = try parsePrefixExpression()
+      let newExpression = try parseAddExpression()
       let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
                                                  operation: .greaterThanOrEqual,
                                                  left: expression, right: newExpression)
@@ -356,7 +356,7 @@ private extension SynAn {
   
   func parsePrefixExpression() throws -> AstExpression {
     guard expecting("~") else {
-      return try parseCmpExpression_(expression: try parsePostfixExpression())
+      return try parsePostfixExpression()
     }
     
     let startingPosition = symbol.position

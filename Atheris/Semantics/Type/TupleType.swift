@@ -26,3 +26,43 @@ class TupleType: Type {
       .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
   }
 }
+
+extension TupleType {
+  static func formPair(_ lhs: Type, _ rhs: Type) -> TupleType {
+    return TupleType(members: [lhs, rhs])
+  }
+}
+
+extension TupleType {
+  func canBeAddedTo(other: Type) -> Bool {
+    return false
+  }
+  
+  func canBeSubtractedFrom(other: Type) -> Bool {
+    return false
+  }
+  
+  func canBeMultiplyedWith(other: Type) -> Bool {
+    return false
+  }
+  
+  func canBeDividedBy(other: Type) -> Bool {
+    return false
+  }
+  
+  func canBeComparedAsEqualTo(other: Type) -> Bool {
+    return self.sameStructureAs(other: other)
+  }
+  
+  func canBeCompared(other: Type) -> Bool {
+    return false
+  }
+  
+  func canAndAlsoWith(other: Type) -> Bool {
+    return false
+  }
+  
+  func canOrElseWith(other: Type) -> Bool {
+    return false
+  }
+}

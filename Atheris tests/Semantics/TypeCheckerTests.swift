@@ -27,7 +27,7 @@ class TypeCheckerTests: XCTestCase {
       }
       
       switch error {
-      case .constraintError(let patternType, let constraintType):
+      case .constraintError(_, let patternType, let constraintType):
         guard patternType is PatternTupleType && constraintType.isAtom else {
           XCTFail()
           return

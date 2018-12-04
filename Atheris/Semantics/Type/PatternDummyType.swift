@@ -23,3 +23,14 @@ class PatternDummyType: PatternType {
     return true
   }
 }
+
+extension PatternDummyType {
+  func canBeAddedTo(other: Type) -> Bool { return false }
+  func canBeSubtractedFrom(other: Type) -> Bool { return false }
+  func canBeMultiplyedWith(other: Type) -> Bool { return false }
+  func canBeDividedBy(other: Type) -> Bool { return false }
+  func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
+  func canBeCompared(other: Type) -> Bool { return false }
+  func canAndAlsoWith(other: Type) -> Bool { return false }
+  func canOrElseWith(other: Type) -> Bool { return false }
+}
