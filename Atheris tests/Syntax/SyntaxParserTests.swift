@@ -122,7 +122,8 @@ private extension SyntaxParserTests {
   
   func openAst(_ ast: String?) -> String? {
     guard let ast = ast else { return nil }
-    let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Syntax/Asts/\(ast)".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+    let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Syntax/Asts/\(ast)"
+      .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     do {
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
       var result = ""

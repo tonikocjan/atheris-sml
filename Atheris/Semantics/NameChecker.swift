@@ -68,6 +68,12 @@ extension NameChecker: AstVisitor {
     try node.expression.accept(visitor: self)
   }
   
+  func visit(node: AstIfExpression) throws {
+    try node.condition.accept(visitor: self)
+    try node.trueBranch.accept(visitor: self)
+    try node.falseBranch.accept(visitor: self)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     try insertIdentifier(identifier: node)
   }

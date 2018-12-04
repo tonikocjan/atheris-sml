@@ -130,6 +130,27 @@ extension TypeChecker: AstVisitor {
     try node.expression.accept(visitor: self)
   }
   
+  func visit(node: AstIfExpression) throws {
+    try node.condition.accept(visitor: self)
+    try node.trueBranch.accept(visitor: self)
+    try node.falseBranch.accept(visitor: self)
+    
+    guard
+      let conditionType = symbolDescription.type(for: node.condition),
+      let trueBranchType = symbolDescription.type(for: node.trueBranch),
+      let falseBranchType = symbolDescription.type(for: node.falseBranch) else { throw Error.internalError }
+    
+    guard conditionType.isBool else {
+      throw Error.testExpressionError(position: node.condition.position, testExpressionType: conditionType)
+    }
+    
+    guard trueBranchType.sameStructureAs(other: falseBranchType) else {
+      throw Error.branchesTypeMistmatchError(position: node.position, trueBranchType: trueBranchType, falseBranchType: falseBranchType)
+    }
+    
+    symbolDescription.setType(for: node, type: trueBranchType)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       symbolDescription.setType(for: node, type: parentNodeType)
@@ -196,6 +217,8 @@ extension TypeChecker  {
     case typeError(position: Position, patternType: Type, expressionType: Type)
     case constraintError(position: Position, patternType: Type, constraintType: Type)
     case operatorError(position: Position, domain: String, operand: TupleType)
+    case testExpressionError(position: Position, testExpressionType: Type)
+    case branchesTypeMistmatchError(position: Position, trueBranchType: Type, falseBranchType: Type)
     
     var errorMessage: String {
       switch self {
@@ -217,6 +240,17 @@ extension TypeChecker  {
         error \(position.description): operator and operand do not match
             operator domain: \(domain)
             operand: \(operand.description)
+        """
+      case .testExpressionError(let position, let testExpressionType):
+        return """
+        error \(position.description): test expression in if is not of type bool
+            test expression: \(testExpressionType.description)
+        """
+      case .branchesTypeMistmatchError(let position, let trueBranchType, let falseBranchType):
+        return """
+        error \(position.description): types of if branches do not agree
+            then branch: \(trueBranchType.description)
+            else branch: \(falseBranchType.description)
         """
       }
     }

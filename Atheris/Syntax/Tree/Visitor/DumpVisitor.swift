@@ -118,6 +118,16 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstIfExpression) throws {
+    print("AstIfExpression", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.condition.accept(visitor: self)
+    try node.trueBranch.accept(visitor: self)
+    try node.falseBranch.accept(visitor: self)
+    decreaseIndent()
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()

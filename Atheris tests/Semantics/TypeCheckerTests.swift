@@ -10,8 +10,30 @@ import XCTest
 
 class TypeCheckerTests: XCTestCase {
   func testSimplePatternMatchingShouldFail() {
+    let code = """
+val (x, (a, b)): int = (10, (20, 30));
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testIfBranchesTypeMistmatch() {
+    let code = """
+val x = if true then 10 else false;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testIfConditionNotBool() {
+    let code = """
+val x = if 10 * 10 then "a" else "b";
+"""
+    performFailingTest(code: code)
+  }
+}
+
+private extension TypeCheckerTests {
+  func performFailingTest(code: String) {
     do {
-      let code = "val (x, (a, b)): int = (10, (20, 30));"
       let lexan = LexAn(inputStream: TextStream(string: code))
       let parser = SynAn(lexan: lexan)
       let ast = try parser.parse()
@@ -21,19 +43,9 @@ class TypeCheckerTests: XCTestCase {
       let typeChecker = TypeChecker(symbolTable: symbolTable, symbolDescription: symbolTable.symbolDescription)
       try typeChecker.visit(node: ast)
     } catch {
-      guard let error = error as? TypeChecker.Error else {
+      guard let _ = error as? TypeChecker.Error else {
         XCTFail()
         return
-      }
-      
-      switch error {
-      case .constraintError(_, let patternType, let constraintType):
-        guard patternType is PatternTupleType && constraintType.isAtom else {
-          XCTFail()
-          return
-        }
-      default:
-        XCTFail()
       }
     }
   }

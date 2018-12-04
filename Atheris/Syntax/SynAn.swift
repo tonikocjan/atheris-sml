@@ -192,6 +192,8 @@ private extension SynAn {
 private extension SynAn {
   func parseExpression() throws -> AstExpression {
     switch symbol.token {
+    case .keywordIf:
+      return try parseIfExpression()
     case .leftParent,
          .leftBrace,
          .leftBracket,
@@ -204,8 +206,25 @@ private extension SynAn {
     case .identifier:
       return try parseExpression_(expression: parseIorExpression())
     default:
-      throw Error.syntaxError("invalid symbol")
+      throw reportError("unexpected symbol", symbol.position)
     }
+  }
+  
+  func parseIfExpression() throws -> AstIfExpression {
+    guard expecting(.keywordIf) else { throw reportError("expected `if`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let condition = try parseExpression()
+    guard expecting(.keywordThen) else { throw reportError("expected `then`", symbol.position) }
+    nextSymbol()
+    let positiveBranch = try parseExpression()
+    guard expecting(.keywordElse) else { throw reportError("expected `else`", symbol.position) }
+    nextSymbol()
+    let negativeBranch = try parseExpression()
+    return AstIfExpression(position: startingPosition + negativeBranch.position,
+                           condition: condition,
+                           trueBranch: positiveBranch,
+                           falseBranch: negativeBranch)
   }
   
   func parseExpression_(expression: AstExpression) throws -> AstExpression {
