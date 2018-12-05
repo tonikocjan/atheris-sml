@@ -63,7 +63,16 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstFunBinding) throws {
-    
+    print("(define (\(node.identifier.name) ")
+    debugPrint = true
+    try node.parameters.first?.accept(visitor: self)
+    debugPrint = false
+    print(")")
+    increaseIndent()
+    newLine()
+    try node.body.accept(visitor: self)
+    print(")")
+    decreaseIndent()
   }
   
   func visit(node: AstAtomType) throws {
@@ -87,9 +96,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    print("(values ")
+    if !debugPrint { print("(values ") }
     try perform(on: node.expressions, appending: " ")
-    print(")")
+    if !debugPrint { print(")") }
   }
   
   func visit(node: AstBinaryExpression) throws {
@@ -140,7 +149,13 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-    
+    print("(")
+    print(node.name)
+    print(" ")
+    debugPrint = true
+    try perform(on: node.arguments, appending: " ")
+    debugPrint = false
+    print(")")
   }
   
   func visit(node: AstIdentifierPattern) throws {

@@ -90,7 +90,7 @@ extension NameChecker: AstVisitor {
       throw Error.bindingNotFound(node.name, node.position)
     }
     symbolDescription.bindNode(node, binding: binding)
-    try node.arguments.accept(visitor: self)
+    for argument in node.arguments { try argument.accept(visitor: self) }
   }
   
   func visit(node: AstIdentifierPattern) throws {

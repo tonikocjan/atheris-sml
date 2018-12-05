@@ -443,18 +443,14 @@ private extension SynAn {
       let identifier = symbol
       nextSymbol()
       if expecting(.leftParent) {
-        let arguments = try parseTupleExpression()
-        guard expecting(.rightParent) else { throw Error.syntaxError("expecting `)`") }
-        nextSymbol()
-        return AstFunctionCallExpression(position: identifier.position + arguments.position,
+        let arguments = try parseArguments()
+        return AstFunctionCallExpression(position: identifier.position + arguments.last!.position,
                                          name: identifier.lexeme,
                                          arguments: arguments)
       }
       return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
     case .leftParent:
       let expression = try parseTupleExpression()
-      guard expecting(.rightParent) else { throw reportError("expecting `)`", symbol.position) }
-      nextSymbol()
       if expression.expressions.count == 1, let first = expression.expressions.first {
         return first
       }
@@ -466,13 +462,27 @@ private extension SynAn {
     }
   }
   
-  func parseTupleExpression() throws -> AstTupleExpression {
-    guard expecting(.leftParent) else {
-      throw reportError("expecting `(`", symbol.position)
+  func parseArguments() throws -> [AstExpression] {
+    let argument = try parseExpression()
+    return try parseArguments_(argument: argument)
+  }
+  
+  func parseArguments_(argument: AstExpression) throws -> [AstExpression] {
+    switch symbol.token {
+    case .integerConstant, .stringConstant, .floatingConstant, .logicalConstant, .identifier, .leftParent, .keywordLet:
+      let newArgument = try parseExpression()
+      return [argument] + (try parseArguments_(argument: newArgument))
+    default:
+      return [argument]
     }
-    
+  }
+  
+  func parseTupleExpression() throws -> AstTupleExpression {
+    guard expecting(.leftParent) else { throw reportError("expecting `(`", symbol.position) }
     nextSymbol()
     let expressions = try parseCommaSeparatedExpressions()
+    guard expecting(.rightParent) else { throw reportError("expecting `)`", symbol.position) }
+    nextSymbol()
     guard let first = expressions.first, let last = expressions.last else {
       throw reportError("failed to parse tuple expression", symbol.position)
     }

@@ -144,7 +144,7 @@ extension DumpVisitor: AstVisitor {
     increaseIndent()
     printSemanticInformation(node: node)
     print("Function name: " + node.name)
-    try node.arguments.accept(visitor: self)
+    for argument in node.arguments { try argument.accept(visitor: self) }
     decreaseIndent()
   }
   

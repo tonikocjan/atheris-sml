@@ -13,7 +13,7 @@ class TypeChecker {
   let symbolDescription: SymbolDescriptionProtocol
   
   // MARK: - dummy types
-  private static let dummyTypeCharacterSet = Array("ABCDEFGHIJKLMNOPRSTVUZ".reversed())
+  private static let dummyTypeCharacterSet = Array("ABCDEFGHIJKLMNOPRSTVUZA1B1C1D1E1F1G1H1I1J1K1L1M1N1O1P1R1S1T1V1U1Z1".reversed())
   private var dummyTypeCount = 0
   
   // MARK: - Type distribution stack
@@ -63,10 +63,11 @@ extension TypeChecker: AstVisitor {
     try node.identifier.accept(visitor: self)
     for parameter in node.parameters { try parameter.accept(visitor: self) }
     try node.body.accept(visitor: self)
-    let parameterTypes = node.parameters.compactMap { symbolDescription.type(for: $0) }
+    for parameter in node.parameters { try parameter.accept(visitor: self) }
+    let parameterTypes = node.parameters.compactMap { symbolDescription.type(for: $0) as? TupleType }
     guard let bodyType = symbolDescription.type(for: node.body) else { throw Error.internalError }
     let functionType = FunctionType(name: node.identifier.name,
-                                    parameters: TupleType(members: parameterTypes),
+                                    parameters: parameterTypes,
                                     body: bodyType)
     symbolDescription.setType(for: node, type: functionType)
     symbolDescription.setType(for: node.identifier, type: functionType)
@@ -188,9 +189,9 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-    func areArgumentsAndParametersOfSameStructure(arguments: [Type], parameters: TupleType) -> Bool {
-      guard arguments.count == parameters.members.count else { return false }
-      return zip(arguments, parameters.members)
+    func areArgumentsAndParametersOfSameStructure(arguments: [TupleType], parameters: [TupleType]) -> Bool {
+      guard arguments.count == parameters.count else { return false }
+      return zip(arguments, parameters)
         .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
     }
     
@@ -198,8 +199,8 @@ extension TypeChecker: AstVisitor {
       let binding = symbolDescription.binding(for: node),
       let functionType = symbolDescription.type(for: binding)?.asFunction else { throw Error.internalError }
     
-    try node.arguments.accept(visitor: self)
-    let argumentTypes = node.arguments.expressions.compactMap { symbolDescription.type(for: $0) }
+    for argument in node.arguments { try argument.accept(visitor: self) }
+    let argumentTypes = node.arguments.compactMap { symbolDescription.type(for: $0) as? TupleType }
     guard areArgumentsAndParametersOfSameStructure(arguments: argumentTypes, parameters: functionType.parameters) else {
       throw Error.operatorError(position: node.position,
                                 domain: functionType.parameters.description,
@@ -215,9 +216,8 @@ extension TypeChecker: AstVisitor {
       return
     }
     
-    let dummyPatternType = PatternDummyType(name: "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])") // TODO: -
+    let dummyPatternType = PatternDummyType(name: dummyName()) // TODO: -
     symbolDescription.setType(for: node, type: dummyPatternType)
-    dummyTypeCount += 1
   }
   
   func visit(node: AstWildcardPattern) throws {
@@ -232,6 +232,11 @@ extension TypeChecker: AstVisitor {
         try pattern.accept(visitor: self)
         _ = typeDistributionStack.popLast()
       }
+      return
+    }
+    let alreadyCalculatedTypes = node.patterns.compactMap { symbolDescription.type(for: $0) }
+    guard alreadyCalculatedTypes.count != node.patterns.count else {
+      symbolDescription.setType(for: node, type: TupleType(members: alreadyCalculatedTypes))
       return
     }
     
@@ -267,6 +272,11 @@ extension TypeChecker: AstVisitor {
     
     symbolDescription.setType(for: node, type: type)
     symbolDescription.setType(for: node.pattern, type: type)
+  }
+  
+  func dummyName() -> String {
+    let name = "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])"
+    return name
   }
 }
 

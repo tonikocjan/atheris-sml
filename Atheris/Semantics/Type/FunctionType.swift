@@ -10,10 +10,10 @@ import Foundation
 
 class FunctionType: Type {
   let name: String
-  let parameters: TupleType
+  let parameters: [TupleType]
   let body: Type
   
-  init(name: String, parameters: TupleType, body: Type) {
+  init(name: String, parameters: [TupleType], body: Type) {
     self.name = name
     self.parameters = parameters
     self.body = body
@@ -27,9 +27,8 @@ class FunctionType: Type {
 extension FunctionType {
   func sameStructureAs(other: Type) -> Bool {
     guard let other = other.asFunction else { return false }
-    return
-      self.parameters.sameStructureAs(other: other.parameters) &&
-      self.body.sameStructureAs(other: other.body)
+    return zip(self.parameters, other.parameters)
+      .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
   }
   
   func canBeAddedTo(other: Type) -> Bool { return false }

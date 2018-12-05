@@ -11,9 +11,9 @@ import Foundation
 class AstFunctionCallExpression: AstExpression {
   let position: Position
   let name: String
-  let arguments: AstTupleExpression
+  let arguments: [AstExpression]
   
-  init(position: Position, name: String, arguments: AstTupleExpression) {
+  init(position: Position, name: String, arguments: [AstExpression]) {
     self.position = position
     self.name = name
     self.arguments = arguments
