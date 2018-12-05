@@ -60,7 +60,9 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunBinding) throws {
-    
+    try node.identifier.accept(visitor: self)
+    for parameter in node.parameters { try parameter.accept(visitor: self) }
+    try node.body.accept(visitor: self)
   }
   
   func visit(node: AstAtomType) throws {
@@ -158,6 +160,11 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: expressionType)
   }
   
+  func visit(node: AstFunctionCallExpression) throws {
+    try node.name.accept(visitor: self)
+    for argument in node.arguments { try argument.accept(visitor: self) }
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       symbolDescription.setType(for: node, type: parentNodeType)
@@ -215,6 +222,7 @@ extension TypeChecker: AstVisitor {
     }
     
     symbolDescription.setType(for: node, type: type)
+    symbolDescription.setType(for: node.pattern, type: type)
   }
 }
 

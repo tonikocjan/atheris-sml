@@ -139,6 +139,10 @@ extension RacketCodeGenerator: CodeGenerator {
     try node.expression.accept(visitor: self)
   }
   
+  func visit(node: AstFunctionCallExpression) throws {
+    
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print(node.name)
   }

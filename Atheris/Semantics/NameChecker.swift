@@ -29,7 +29,11 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstFunBinding) throws {
-    
+    try node.identifier.accept(visitor: self)
+    symbolTable.newScope()
+    for parameter in node.parameters { try parameter.accept(visitor: self) }
+    try node.body.accept(visitor: self)
+    symbolTable.oldScope()
   }
   
   func visit(node: AstAtomType) throws {
@@ -79,6 +83,11 @@ extension NameChecker: AstVisitor {
     try node.bindings.accept(visitor: self)
     try node.expression.accept(visitor: self)
     symbolTable.oldScope()
+  }
+  
+  func visit(node: AstFunctionCallExpression) throws {
+    try node.name.accept(visitor: self)
+    for argument in node.arguments { try argument.accept(visitor: self) }
   }
   
   func visit(node: AstIdentifierPattern) throws {

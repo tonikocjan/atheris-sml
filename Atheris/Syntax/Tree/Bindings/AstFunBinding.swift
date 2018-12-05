@@ -10,24 +10,21 @@ import Foundation
 
 class AstFunBinding: AstBinding {
   let position: Position
-  let pattern: AstPattern
+  let identifier: AstIdentifierPattern
+  let parameters: [AstPattern]
+  let body: AstExpression
+  var pattern: AstPattern {
+    return identifier
+  }
   
-  init(position: Position, pattern: AstPattern) {
+  init(position: Position, identifier: AstIdentifierPattern, parameters: [AstPattern], body: AstExpression) {
     self.position = position
-    self.pattern = pattern
+    self.identifier = identifier
+    self.parameters = parameters
+    self.body = body
   }
   
   func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstFunBinding {
-//  var hashValue: Int {
-//    return position.hashValue ^ pattern.hashValue
-//  }
-//
-//  static func == (lhs: AstFunBinding, rhs: AstFunBinding) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}

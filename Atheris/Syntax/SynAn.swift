@@ -81,7 +81,29 @@ private extension SynAn {
   }
   
   func parseFunBinding() throws -> AstFunBinding {
-    throw NSError()
+    guard expecting(.keywordFun) else { throw Error.syntaxError("expecting `fun`") }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let identifier = parseIdentifierPattern()
+    let parameters = try parseParameters()
+    guard expecting("=") else { throw Error.syntaxError("expecting `=`") }
+    nextSymbol()
+    let expression = try parseExpression()
+    return AstFunBinding(position: startingPosition + expression.position,
+                         identifier: identifier,
+                         parameters: parameters,
+                         body: expression)
+  }
+  
+  func parseParameters() throws -> [AstPattern] {
+    let parameter = try parsePattern()
+    return try parseParameters_(parameter: parameter)
+  }
+  
+  func parseParameters_(parameter: AstPattern) throws -> [AstPattern] {
+    guard !expecting("=") else { return [parameter] }
+    let newParameter = try parsePattern()
+    return [parameter] + (try parseParameters_(parameter: newParameter))
   }
 }
 
@@ -125,7 +147,7 @@ private extension SynAn {
     return AstIdentifierPattern(position: identifier.position, name: identifier.lexeme)
   }
   
-  func parseTuplePattern() throws -> AstTuplePattern {
+  func parseTuplePattern() throws -> AstPattern {
     guard expecting(.leftParent) else { throw reportError("expected `(`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
@@ -133,6 +155,7 @@ private extension SynAn {
     let patterns = try parseTuplePattern_(pattern: pattern)
     guard expecting(.rightParent) else { throw reportError("expected `)`", symbol.position) }
     nextSymbol()
+    if patterns.count == 1, let first = patterns.first { return first }
     return AstTuplePattern(position: startingPosition + symbol.position,
                            patterns: patterns)
   }

@@ -23,13 +23,3 @@ class AstTypedPattern: AstPattern {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstTypedPattern {
-//  var hashValue: Int {
-//    return position.hashValue ^ pattern.hashValue ^ type.hashValue
-//  }
-//
-//  static func == (lhs: AstTypedPattern, rhs: AstTypedPattern) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}
