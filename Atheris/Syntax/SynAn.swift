@@ -364,6 +364,13 @@ private extension SynAn {
                                                    operation: .divide,
                                                    left: expression, right: newExpression)
         return try parseMulExpression_(expression: binaryExpression)
+      case "^":
+        nextSymbol()
+        let newExpression = try parsePrefixExpression()
+        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                   operation: .concat,
+                                                   left: expression, right: newExpression)
+        return try parseMulExpression_(expression: binaryExpression)
       default:
         return expression
       }

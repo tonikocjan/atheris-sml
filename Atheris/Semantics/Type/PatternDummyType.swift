@@ -29,6 +29,7 @@ extension PatternDummyType {
   func canBeSubtractedFrom(other: Type) -> Bool { return false }
   func canBeMultiplyedWith(other: Type) -> Bool { return false }
   func canBeDividedBy(other: Type) -> Bool { return false }
+  func canBeConcatenatedWith(other: Type) -> Bool { return false }
   func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
   func canBeCompared(other: Type) -> Bool { return false }
   func canAndAlsoWith(other: Type) -> Bool { return false }

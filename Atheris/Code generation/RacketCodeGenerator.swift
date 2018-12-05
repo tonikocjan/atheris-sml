@@ -99,6 +99,7 @@ extension RacketCodeGenerator: CodeGenerator {
          .subtract,
          .multiply,
          .divide,
+         .concat,
          .lessThan,
          .greaterThan,
          .equal,

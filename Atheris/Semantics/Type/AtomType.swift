@@ -42,6 +42,10 @@ extension AtomType {
     return self.isReal && other.isReal
   }
   
+  func canBeConcatenatedWith(other: Type) -> Bool {
+    return self.isString && other.isString
+  }
+  
   func canBeComparedAsEqualTo(other: Type) -> Bool {
     return
       self.isInt && other.isInt ||

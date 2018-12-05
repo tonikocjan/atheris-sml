@@ -13,6 +13,7 @@ enum Operation: String {
   case subtract = "-"
   case multiply = "*"
   case divide = "/"
+  case concat = "^"
   case lessThan = "<"
   case greaterThan = ">"
   case equal = "="
@@ -39,6 +40,7 @@ protocol Type: class, CustomStringConvertible {
   func canBeSubtractedFrom(other: Type) -> Bool
   func canBeMultiplyedWith(other: Type) -> Bool
   func canBeDividedBy(other: Type) -> Bool
+  func canBeConcatenatedWith(other: Type) -> Bool
   func canBeComparedAsEqualTo(other: Type) -> Bool
   func canBeCompared(other: Type) -> Bool
   func canAndAlsoWith(other: Type) -> Bool
@@ -73,6 +75,8 @@ extension Type {
       return self.canBeMultiplyedWith(other: other) ? self : nil
     case .divide:
       return self.canBeDividedBy(other: other) ? self : nil
+    case .concat:
+      return self.canBeConcatenatedWith(other: other) ? self : nil
     case .lessThan,
          .greaterThan,
          .lessThanOrEqual,

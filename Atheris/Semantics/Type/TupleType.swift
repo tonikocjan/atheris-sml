@@ -50,6 +50,10 @@ extension TupleType {
     return false
   }
   
+  func canBeConcatenatedWith(other: Type) -> Bool {
+    return false
+  }
+  
   func canBeComparedAsEqualTo(other: Type) -> Bool {
     return self.sameStructureAs(other: other)
   }
