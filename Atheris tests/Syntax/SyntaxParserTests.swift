@@ -116,7 +116,7 @@ private extension SyntaxParserTests {
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
       var result = ""
       while let line = fileReader.readLine() {
-        result += line
+        result += line + "\n"
       }
       return result
     } catch {

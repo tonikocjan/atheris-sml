@@ -1,3 +1,4 @@
 #lang racket
 
-(define-values (x y z) (values 10 20 30))
+(match-define-values (x y z) (values 10 20 30))
+x y z

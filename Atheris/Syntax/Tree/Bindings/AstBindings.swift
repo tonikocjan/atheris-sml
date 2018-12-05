@@ -21,13 +21,3 @@ class AstBindings: AstNode {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstBindings {
-//  var hashValue: Int {
-//    return position.hashValue ^ (bindings.reduce(1, { acc, next in acc ^ next.hashValue }))
-//  }
-//
-//  static func == (lhs: AstBindings, rhs: AstBindings) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}

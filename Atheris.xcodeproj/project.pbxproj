@@ -328,9 +328,9 @@
 		3745063F21B6CF020051E1E9 /* Code */ = {
 			isa = PBXGroup;
 			children = (
-				3745064621B6DD4A0051E1E9 /* code3.rkt */,
 				3745064221B6D0470051E1E9 /* code1.rkt */,
 				3745064421B6D9260051E1E9 /* code2.rkt */,
+				3745064621B6DD4A0051E1E9 /* code3.rkt */,
 			);
 			path = Code;
 			sourceTree = "<group>";
