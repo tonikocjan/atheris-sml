@@ -99,10 +99,8 @@ extension RacketCodeGenerator: CodeGenerator {
          .subtract,
          .multiply,
          .divide,
-         .concat,
          .lessThan,
          .greaterThan,
-         .equal,
          .lessThanOrEqual,
          .greaterThanOrEqual:
       operation = node.operation.rawValue
@@ -110,6 +108,10 @@ extension RacketCodeGenerator: CodeGenerator {
       operation = "and"
     case .orelse:
       operation = "or"
+    case .concat:
+      operation = "string-append"
+    case .equal:
+      operation = "equal?"
     }
     print("(\(operation) ")
     try node.left.accept(visitor: self)

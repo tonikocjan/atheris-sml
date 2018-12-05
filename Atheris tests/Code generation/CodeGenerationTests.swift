@@ -12,7 +12,11 @@ class CodeGenerationTests: XCTestCase {
   func testBinaryExpressions() {
     let code = """
 val x = 10 + 20;
-val y = x > 10 + 5 andalso true;
+val y = 10.5 / 2.3;
+val z = true andalso 10 < 5;
+val a = 5 <= 10 andalso 2.5 >= 3.2;
+val b = true = true andalso 5 = 5 andalso "abc" = "efg" andalso 5 * 5 < 13 orelse 3.3 - 2.3 > 0.0;
+val c = "123" ^ "456";
 """
     performTest(code: code, filepath: "code1.rkt")
   }
