@@ -25,13 +25,13 @@ class PatternDummyType: PatternType {
 }
 
 extension PatternDummyType {
-  func canBeAddedTo(other: Type) -> Bool { return false }
-  func canBeSubtractedFrom(other: Type) -> Bool { return false }
-  func canBeMultiplyedWith(other: Type) -> Bool { return false }
-  func canBeDividedBy(other: Type) -> Bool { return false }
-  func canBeConcatenatedWith(other: Type) -> Bool { return false }
-  func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
-  func canBeCompared(other: Type) -> Bool { return false }
-  func canAndAlsoWith(other: Type) -> Bool { return false }
-  func canOrElseWith(other: Type) -> Bool { return false }
+  func canBeAddedTo(other: Type) -> Bool { return other.isConcrete && other.canBeAddedTo(other: other) }
+  func canBeSubtractedFrom(other: Type) -> Bool { return other.isConcrete && other.canBeSubtractedFrom(other: other) }
+  func canBeMultiplyedWith(other: Type) -> Bool { return other.isConcrete && other.canBeMultiplyedWith(other: other) }
+  func canBeDividedBy(other: Type) -> Bool { return other.isConcrete && other.canBeDividedBy(other: other) }
+  func canBeConcatenatedWith(other: Type) -> Bool { return other.isConcrete && other.canBeConcatenatedWith(other: other) }
+  func canBeComparedAsEqualTo(other: Type) -> Bool { return other.isConcrete && other.canBeComparedAsEqualTo(other: other) }
+  func canBeCompared(other: Type) -> Bool { return other.isConcrete && other.canBeCompared(other: other) }
+  func canAndAlsoWith(other: Type) -> Bool { return other.isConcrete && other.canAndAlsoWith(other: other) }
+  func canOrElseWith(other: Type) -> Bool { return other.isConcrete && other.canOrElseWith(other: other) }
 }

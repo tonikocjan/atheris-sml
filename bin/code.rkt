@@ -1,4 +1,10 @@
 #lang racket
 
 
-f
+a
+
+b
+
+c
+
+d

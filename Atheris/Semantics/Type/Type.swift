@@ -31,6 +31,24 @@ enum Operation: String {
   static func convert(_ op: AstBinaryExpression.Operation) -> Operation {
     return Operation.init(rawValue: op.rawValue) ?? .unknown
   }
+  
+  var defaultType: Type {
+    switch self {
+    case .add: return AtomType.int
+    case .subtract: return AtomType.int
+    case .multiply: return AtomType.int
+    case .divide: return AtomType.real
+    case .concat: return AtomType.string
+    case .lessThan: return AtomType.bool
+    case .greaterThan: return AtomType.bool
+    case .equal: return AtomType.bool
+    case .lessThanOrEqual: return AtomType.bool
+    case .greaterThanOrEqual: return AtomType.int
+    case .andalso: return AtomType.bool
+    case .orelse: return AtomType.bool
+    case .unknown: return PatternDummyType(name: "dummy")
+    }
+  }
 }
 
 protocol Type: class, CustomStringConvertible {
@@ -50,6 +68,11 @@ protocol Type: class, CustomStringConvertible {
 }
 
 extension Type {
+  var isConcrete: Bool { return !(self is PatternDummyType) }
+  var isAbstract: Bool { return self is PatternDummyType }
+}
+
+extension Type {
   var isAtom: Bool { return self is AtomType }
   var toAtom: AtomType? { return self as? AtomType}
   
@@ -65,29 +88,34 @@ extension Type {
 }
 
 extension Type {
+  var isFunction: Bool { return self is FunctionType }
+  var asFunction: FunctionType? { return self as? FunctionType}
+}
+
+extension Type {
   func isBinaryOperationValid(_ operation: Operation, other: Type) -> Type? {
     switch operation {
     case .add:
-      return self.canBeAddedTo(other: other) ? self : nil
+      return self.canBeAddedTo(other: other) ? self.isConcrete ? self : other : nil
     case .subtract:
-      return self.canBeSubtractedFrom(other: other) ? self : nil
+      return self.canBeSubtractedFrom(other: other) ? self.isConcrete ? self : other : nil
     case .multiply:
-      return self.canBeMultiplyedWith(other: other) ? self : nil
+      return self.canBeMultiplyedWith(other: other) ? self.isConcrete ? self : other : nil
     case .divide:
-      return self.canBeDividedBy(other: other) ? self : nil
+      return self.canBeDividedBy(other: other) ? self.isConcrete ? self : other : nil
     case .concat:
-      return self.canBeConcatenatedWith(other: other) ? self : nil
+      return self.canBeConcatenatedWith(other: other) ? self.isConcrete ? self : other : nil
     case .lessThan,
          .greaterThan,
          .lessThanOrEqual,
          .greaterThanOrEqual:
-      return self.canBeCompared(other: other) ? AtomType.boolType : nil
+      return self.canBeCompared(other: other) ? AtomType.bool : nil
     case .equal:
-      return self.canBeComparedAsEqualTo(other: other) ? AtomType.boolType : nil
+      return self.canBeComparedAsEqualTo(other: other) ? AtomType.bool : nil
     case .andalso:
-      return self.canAndAlsoWith(other: other) ? AtomType.boolType : nil
+      return self.canAndAlsoWith(other: other) ? AtomType.bool : nil
     case .orelse:
-      return self.canOrElseWith(other: other) ? AtomType.boolType : nil
+      return self.canOrElseWith(other: other) ? AtomType.bool : nil
     case .unknown:
       return nil
     }

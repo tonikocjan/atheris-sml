@@ -27,48 +27,49 @@ class AtomType: Type {
 
 extension AtomType {
   func canBeAddedTo(other: Type) -> Bool {
-    return self.isInt && other.isInt || self.isReal && other.isReal
+    return other.isAbstract || self.isInt && other.isInt || self.isReal && other.isReal
   }
   
   func canBeSubtractedFrom(other: Type) -> Bool {
-    return self.isInt && other.isInt || self.isReal && other.isReal
+    return other.isAbstract || self.isInt && other.isInt || self.isReal && other.isReal
   }
   
   func canBeMultiplyedWith(other: Type) -> Bool {
-    return self.isInt && other.isInt || self.isReal && other.isReal
+    return other.isAbstract || self.isInt && other.isInt || self.isReal && other.isReal
   }
   
   func canBeDividedBy(other: Type) -> Bool {
-    return self.isReal && other.isReal
+    return other.isAbstract || self.isReal && other.isReal
   }
   
   func canBeConcatenatedWith(other: Type) -> Bool {
-    return self.isString && other.isString
+    return other.isAbstract || self.isString && other.isString
   }
   
   func canBeComparedAsEqualTo(other: Type) -> Bool {
     return
+      other.isAbstract ||
       self.isInt && other.isInt ||
       self.isString && other.isString  ||
       self.isBool && other.isBool
   }
   
   func canBeCompared(other: Type) -> Bool {
-    return self.isInt && other.isInt || self.isReal && other.isReal
+    return other.isAbstract || self.isInt && other.isInt || self.isReal && other.isReal
   }
   
   func canAndAlsoWith(other: Type) -> Bool {
-    return self.isBool && other.isBool
+    return other.isAbstract || self.isBool && other.isBool
   }
   
   func canOrElseWith(other: Type) -> Bool {
-    return self.isBool && other.isBool
+    return other.isAbstract || self.isBool && other.isBool
   }
 }
 
 extension AtomType {
-  static let intType = AtomType(type: .int)
-  static let stringType = AtomType(type: .string)
-  static let realType = AtomType(type: .real)
-  static let boolType = AtomType(type: .bool)
+  static let int = AtomType(type: .int)
+  static let string = AtomType(type: .string)
+  static let real = AtomType(type: .real)
+  static let bool = AtomType(type: .bool)
 }

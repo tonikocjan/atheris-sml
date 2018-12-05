@@ -1,18 +1,133 @@
-AstBindings [1:1, 1:16]:
-  AstFunBinding [1:1, 1:16]:
+AstBindings [1:1, 4:53]:
+  AstFunBinding [1:1, 1:24]:
+    -> typed: fn : (string * string * string) -> string
     AstIdentifierPattern [1:5, 1:6]:
       -> typed: 'Z
-      Name: f
+      Name: a
     AstIdentifierPattern [1:7, 1:8]:
-      -> typed: 'U
+      -> typed: string
       Name: x
     AstIdentifierPattern [1:9, 1:10]:
-      -> typed: 'V
+      -> typed: string
       Name: y
     AstIdentifierPattern [1:11, 1:12]:
-      -> typed: 'T
+      -> typed: string
       Name: z
-    AstNameExpression [1:15, 1:16]:
-      -> defined at:  [1:7, 1:8]:
-      -> typed: 'U
+    AstBinaryExpression `^` [1:15, 1:24]:
+      -> typed: string
+      AstBinaryExpression `^` [1:15, 1:20]:
+        -> typed: string
+        AstNameExpression [1:15, 1:16]:
+          -> defined at:  [1:7, 1:8]:
+          -> typed: string
+          Name: x
+        AstNameExpression [1:19, 1:20]:
+          -> defined at:  [1:9, 1:10]:
+          -> typed: string
+          Name: y
+      AstNameExpression [1:23, 1:24]:
+        -> defined at:  [1:11, 1:12]:
+        -> typed: string
+        Name: z
+  AstFunBinding [2:1, 2:28]:
+    -> typed: fn : (string * string * 'O) -> string
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: 'S
+      Name: b
+    AstIdentifierPattern [2:7, 2:8]:
+      -> typed: string
       Name: x
+    AstIdentifierPattern [2:9, 2:10]:
+      -> typed: string
+      Name: y
+    AstIdentifierPattern [2:11, 2:12]:
+      -> typed: 'O
+      Name: z
+    AstBinaryExpression `^` [2:15, 2:28]:
+      -> typed: string
+      AstBinaryExpression `^` [2:15, 2:20]:
+        -> typed: string
+        AstNameExpression [2:15, 2:16]:
+          -> defined at:  [2:7, 2:8]:
+          -> typed: string
+          Name: x
+        AstNameExpression [2:19, 2:20]:
+          -> defined at:  [2:9, 2:10]:
+          -> typed: string
+          Name: y
+      AstConstantExpression [2:23, 2:28]:
+        -> typed: string
+        Value: abc
+        Atom type: string
+  AstFunBinding [3:1, 3:25]:
+    -> typed: fn : (int * int * 'K) -> int
+    AstIdentifierPattern [3:5, 3:6]:
+      -> typed: 'N
+      Name: c
+    AstIdentifierPattern [3:7, 3:8]:
+      -> typed: int
+      Name: x
+    AstIdentifierPattern [3:9, 3:10]:
+      -> typed: int
+      Name: y
+    AstIdentifierPattern [3:11, 3:12]:
+      -> typed: 'K
+      Name: z
+    AstBinaryExpression `+` [3:15, 3:25]:
+      -> typed: int
+      AstBinaryExpression `+` [3:15, 3:20]:
+        -> typed: int
+        AstNameExpression [3:15, 3:16]:
+          -> defined at:  [3:7, 3:8]:
+          -> typed: int
+          Name: x
+        AstNameExpression [3:19, 3:20]:
+          -> defined at:  [3:9, 3:10]:
+          -> typed: int
+          Name: y
+      AstConstantExpression [3:23, 3:25]:
+        -> typed: int
+        Value: 10
+        Atom type: int
+  AstFunBinding [4:1, 4:53]:
+    -> typed: fn : (bool * bool * bool) -> bool
+    AstIdentifierPattern [4:5, 4:6]:
+      -> typed: 'J
+      Name: d
+    AstIdentifierPattern [4:7, 4:8]:
+      -> typed: bool
+      Name: x
+    AstIdentifierPattern [4:9, 4:10]:
+      -> typed: bool
+      Name: y
+    AstIdentifierPattern [4:11, 4:12]:
+      -> typed: bool
+      Name: z
+    AstBinaryExpression `orelse` [4:15, 4:53]:
+      -> typed: bool
+      AstBinaryExpression `andalso` [4:15, 4:44]:
+        -> typed: bool
+        AstBinaryExpression `andalso` [4:15, 4:34]:
+          -> typed: bool
+          AstBinaryExpression `>` [4:15, 4:21]:
+            -> typed: bool
+            AstNameExpression [4:15, 4:16]:
+              -> defined at:  [4:7, 4:8]:
+              -> typed: bool
+              Name: x
+            AstConstantExpression [4:19, 4:21]:
+              -> typed: int
+              Value: 10
+              Atom type: int
+          AstConstantExpression [4:30, 4:34]:
+            -> typed: bool
+            Value: true
+            Atom type: bool
+        AstNameExpression [4:43, 4:44]:
+          -> defined at:  [4:9, 4:10]:
+          -> typed: bool
+          Name: y
+      AstNameExpression [4:52, 4:53]:
+        -> defined at:  [4:11, 4:12]:
+        -> typed: bool
+        Name: z

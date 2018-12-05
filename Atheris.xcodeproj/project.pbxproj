@@ -108,6 +108,8 @@
 		3790FECA21B7A95B005CA8D5 /* ast7 in Resources */ = {isa = PBXBuildFile; fileRef = 3790FEC921B7A95B005CA8D5 /* ast7 */; };
 		3790FECC21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FECB21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift */; };
 		3790FECD21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FECB21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift */; };
+		3790FECF21B7C813005CA8D5 /* FunctionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FECE21B7C813005CA8D5 /* FunctionType.swift */; };
+		3790FED021B7C813005CA8D5 /* FunctionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FECE21B7C813005CA8D5 /* FunctionType.swift */; };
 		37E0CE1D2168F73E00BAFD2A /* LexanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */; };
 		37E0CE202168F93C00BAFD2A /* FileInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */; };
 		37E0CE212168FAB800BAFD2A /* FileInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */; };
@@ -209,6 +211,7 @@
 		3790FEC521B79D8E005CA8D5 /* AstLetExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstLetExpression.swift; sourceTree = "<group>"; };
 		3790FEC921B7A95B005CA8D5 /* ast7 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast7; sourceTree = "<group>"; };
 		3790FECB21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstFunctionCallExpression.swift; sourceTree = "<group>"; };
+		3790FECE21B7C813005CA8D5 /* FunctionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionType.swift; sourceTree = "<group>"; };
 		37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexanTests.swift; sourceTree = "<group>"; };
 		37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInputStream.swift; sourceTree = "<group>"; };
 		37E0CE22216A2FCE00BAFD2A /* test.ar */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.ar; sourceTree = "<group>"; };
@@ -304,6 +307,7 @@
 				3745060221B53EA80051E1E9 /* PatternType.swift */,
 				3745060521B53EC10051E1E9 /* PatternTupleType.swift */,
 				3745060821B5449C0051E1E9 /* PatternDummyType.swift */,
+				3790FECE21B7C813005CA8D5 /* FunctionType.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -667,6 +671,7 @@
 				374505CF21B50FFE0051E1E9 /* AstTypedPattern.swift in Sources */,
 				374505D021B50FFE0051E1E9 /* AstType.swift in Sources */,
 				374505FE21B53C8A0051E1E9 /* AtomType.swift in Sources */,
+				3790FED021B7C813005CA8D5 /* FunctionType.swift in Sources */,
 				3745061421B55F7D0051E1E9 /* TypeCheckerTests.swift in Sources */,
 				374505D121B50FFE0051E1E9 /* AstAtomType.swift in Sources */,
 				3745060721B53EC30051E1E9 /* PatternTupleType.swift in Sources */,
@@ -735,6 +740,7 @@
 				3745060921B5449C0051E1E9 /* PatternDummyType.swift in Sources */,
 				37F024AD21B3F705006B868E /* AstValBinding.swift in Sources */,
 				37F024AF21B3F7C9006B868E /* AstBinding.swift in Sources */,
+				3790FECF21B7C813005CA8D5 /* FunctionType.swift in Sources */,
 				37F024A421B3F40B006B868E /* AstVisitor.swift in Sources */,
 				3745060621B53EC10051E1E9 /* PatternTupleType.swift in Sources */,
 				37F024A721B3F483006B868E /* SyntaxParser.swift in Sources */,

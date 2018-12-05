@@ -63,6 +63,12 @@ extension TypeChecker: AstVisitor {
     try node.identifier.accept(visitor: self)
     for parameter in node.parameters { try parameter.accept(visitor: self) }
     try node.body.accept(visitor: self)
+    let parameterTypes = node.parameters.compactMap { symbolDescription.type(for: $0) }
+    guard let bodyType = symbolDescription.type(for: node.body) else { throw Error.internalError }
+    let functionType = FunctionType(name: node.identifier.name,
+                                    parameters: TupleType(members: parameterTypes),
+                                    body: bodyType)
+    symbolDescription.setType(for: node, type: functionType)
   }
   
   func visit(node: AstAtomType) throws {
@@ -113,6 +119,20 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstBinaryExpression) throws {
+    func applyType(_ resultType: Type, leftType: Type, rightType: Type) {
+      symbolDescription.setType(for: node, type: resultType)
+      
+      if leftType.isAbstract, let leftBinding = symbolDescription.binding(for: node.left) {
+        symbolDescription.setType(for: node.left, type: resultType)
+        symbolDescription.setType(for: leftBinding, type: resultType)
+      }
+      
+      if rightType.isAbstract, let rightBinding = symbolDescription.binding(for: node.right) {
+        symbolDescription.setType(for: rightBinding, type: resultType)
+        symbolDescription.setType(for: node.right, type: resultType)
+      }
+    }
+    
     let operation = Operation.convert(node.operation)
     try node.left.accept(visitor: self)
     try node.right.accept(visitor: self)
@@ -121,11 +141,17 @@ extension TypeChecker: AstVisitor {
       let leftType = symbolDescription.type(for: node.left),
       let rightType = symbolDescription.type(for: node.right) else { throw Error.internalError }
     
+    guard leftType.isConcrete && rightType.isConcrete else {
+      let defaultType = Operation.convert(node.operation).defaultType
+      applyType(defaultType, leftType: leftType, rightType: rightType)
+      return
+    }
+    
     guard let resultType = leftType.isBinaryOperationValid(operation, other: rightType) else {
       throw Error.operatorError(position: node.position, domain: operation.domain, operand: TupleType.formPair(leftType, rightType))
     }
     
-    symbolDescription.setType(for: node, type: resultType)
+    applyType(resultType, leftType: leftType, rightType: rightType)
   }
   
   func visit(node: AstUnaryExpression) throws {

@@ -44,10 +44,9 @@ class SymbolTable: SymbolTableProtocol {
   }
   
   func removeBindingFromCurrentScope(name: String) throws {
-    guard let bindings = mapping[name], try !isNameDefinedInCurrentOrGreaterScope(bindings: bindings) else {
+    guard let bindings = mapping[name], try isNameDefinedInCurrentOrGreaterScope(bindings: bindings) else {
       throw Error.bindingNotFound(name)
     }
-    
     removeBinding(name: name)
   }
   
@@ -100,13 +99,13 @@ private extension SymbolTable {
   }
   
   private func isNameAlreadyUsedInCurrentScope(bindings: Bindigs) throws -> Bool {
-    guard let first = bindings.last else { throw Error.internalError(Thread.callStackSymbols) }
+    guard let first = bindings.first else { throw Error.internalError(Thread.callStackSymbols) }
     guard let bindingScope = symbolDescription.scope(for: first) else { throw Error.internalError(Thread.callStackSymbols) }
     return bindingScope == currentScopeDepth
   }
   
   private func isNameDefinedInCurrentOrGreaterScope(bindings: Bindigs) throws -> Bool {
-    guard let first = bindings.last else { throw Error.internalError(Thread.callStackSymbols) }
+    guard let first = bindings.first else { throw Error.internalError(Thread.callStackSymbols) }
     guard let bindingScope = symbolDescription.scope(for: first) else { throw Error.internalError(Thread.callStackSymbols) }
     return bindingScope >= currentScopeDepth
   }
