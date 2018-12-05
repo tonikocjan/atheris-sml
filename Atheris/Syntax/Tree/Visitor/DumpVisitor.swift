@@ -143,8 +143,8 @@ extension DumpVisitor: AstVisitor {
     print("AstFunctionCallExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
-    try node.name.accept(visitor: self)
-    for argument in node.arguments { try argument.accept(visitor: self) }
+    print("Function name: " + node.name)
+    try node.arguments.accept(visitor: self)
     decreaseIndent()
   }
   

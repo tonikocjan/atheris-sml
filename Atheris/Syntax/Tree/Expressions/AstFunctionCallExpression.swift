@@ -10,10 +10,10 @@ import Foundation
 
 class AstFunctionCallExpression: AstExpression {
   let position: Position
-  let name: AstIdentifierPattern
-  let arguments: [AstExpression]
+  let name: String
+  let arguments: AstTupleExpression
   
-  init(position: Position, name: AstIdentifierPattern, arguments: [AstExpression]) {
+  init(position: Position, name: String, arguments: AstTupleExpression) {
     self.position = position
     self.name = name
     self.arguments = arguments

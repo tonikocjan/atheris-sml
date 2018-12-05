@@ -53,7 +53,7 @@ private extension SynAn {
     case .keywordFun:
       return try parseFunBinding()
     default:
-      throw reportError("removing", symbol.position, symbol)
+      throw reportError("removing", symbol.position, symbol.lexeme)
     }
   }
   
@@ -440,7 +440,16 @@ private extension SynAn {
       nextSymbol()
       return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .bool)
     case .identifier:
+      let identifier = symbol
       nextSymbol()
+      if expecting(.leftParent) {
+        let arguments = try parseTupleExpression()
+        guard expecting(.rightParent) else { throw Error.syntaxError("expecting `)`") }
+        nextSymbol()
+        return AstFunctionCallExpression(position: identifier.position + arguments.position,
+                                         name: identifier.lexeme,
+                                         arguments: arguments)
+      }
       return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
     case .leftParent:
       let expression = try parseTupleExpression()
@@ -509,7 +518,7 @@ private extension SynAn {
   }
   
   func reportError(_ error: String, _ position: Position, _ others: CustomStringConvertible...) -> Error {
-    let errorMessage = error + others.map { $0.description }.joined(separator: " ")
+    let errorMessage = error + " " + others.map { "`\($0.description)`" }.joined(separator: " ")
     return Error.syntaxError("Syntax error \(position.description): " + errorMessage)
   }
   

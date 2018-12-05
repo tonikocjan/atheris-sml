@@ -73,6 +73,19 @@ val x = let val x = 10 in x end;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast7")
   }
+  
+  func testFunctionDefinitionsAndCall() {
+    let code = """
+fun a x y z = x ^ y ^ z;
+fun b x y z = x ^ y ^ "abc";
+fun c x y z = x + y + 10;
+fun d x y z = x > 10 andalso true andalso y orelse z;
+fun e (x, y, z) = x > 10 andalso true andalso y orelse z;
+
+val v = a ("abc", "efg", "cdf");
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast8")
+  }
 }
 
 private extension SyntaxParserTests {

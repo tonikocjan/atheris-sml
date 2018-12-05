@@ -69,6 +69,7 @@ extension TypeChecker: AstVisitor {
                                     parameters: TupleType(members: parameterTypes),
                                     body: bodyType)
     symbolDescription.setType(for: node, type: functionType)
+    symbolDescription.setType(for: node.identifier, type: functionType)
   }
   
   func visit(node: AstAtomType) throws {
@@ -187,8 +188,25 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-    try node.name.accept(visitor: self)
-    for argument in node.arguments { try argument.accept(visitor: self) }
+    func areArgumentsAndParametersOfSameStructure(arguments: [Type], parameters: TupleType) -> Bool {
+      guard arguments.count == parameters.members.count else { return false }
+      return zip(arguments, parameters.members)
+        .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
+    }
+    
+    guard
+      let binding = symbolDescription.binding(for: node),
+      let functionType = symbolDescription.type(for: binding)?.asFunction else { throw Error.internalError }
+    
+    try node.arguments.accept(visitor: self)
+    let argumentTypes = node.arguments.expressions.compactMap { symbolDescription.type(for: $0) }
+    guard areArgumentsAndParametersOfSameStructure(arguments: argumentTypes, parameters: functionType.parameters) else {
+      throw Error.operatorError(position: node.position,
+                                domain: functionType.parameters.description,
+                                operand: TupleType(members: argumentTypes))
+    }
+    
+    symbolDescription.setType(for: node, type: functionType.body)
   }
   
   func visit(node: AstIdentifierPattern) throws {
