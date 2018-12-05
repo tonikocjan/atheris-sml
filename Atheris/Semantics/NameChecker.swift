@@ -74,6 +74,13 @@ extension NameChecker: AstVisitor {
     try node.falseBranch.accept(visitor: self)
   }
   
+  func visit(node: AstLetExpression) throws {
+    symbolTable.newScope()
+    try node.bindings.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    symbolTable.oldScope()
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     try insertIdentifier(identifier: node)
   }

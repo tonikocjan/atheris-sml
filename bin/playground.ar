@@ -1,2 +1,1 @@
-val x = (10, 20, 30);
-val (a, b, c) = (10, 20, 10 + 20);
+val x = let val x = 10 in x end;

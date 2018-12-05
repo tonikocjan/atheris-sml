@@ -10,7 +10,7 @@
 import XCTest
 
 class SyntaxParserTests: XCTestCase {
-  func testAst1() {
+  func testValBinding() {
     let code = """
 val (x, (a, c)) = "a string";
 val x: int = 10;
@@ -18,7 +18,7 @@ val x: int = 10;
     testSyntaxParsing(code: code, expected: "ast1")
   }
   
-  func testAst2() {
+  func testValBinding2() {
     let code = """
 val (x, y) = 10;
 val a = x;
@@ -27,14 +27,14 @@ val b = y;
     testSyntaxParsingAndSemantics(code: code, expected: "ast2")
   }
   
-  func testAst3() {
+  func testTupleExpression() {
     let code = """
 val (x, y) = (10, 20, 30);
 """
     testSyntaxParsing(code: code, expected: "ast3")
   }
   
-  func testAst4() {
+  func testTupleExpression2() {
     let code = """
 val (x, (a, b)): (int * (int * int)) = (10, (20, 30));
 val y = a;
@@ -42,7 +42,7 @@ val y = a;
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast4")
   }
   
-  func testAst5() {
+  func testBinaryExpressions() {
     let code = """
 val x = 10 + 20 * 30 / 40;
 val y = ~10;
@@ -55,7 +55,7 @@ val d = 10 <= 5;
     testSyntaxParsing(code: code, expected: "ast5")
   }
   
-  func testAst6() {
+  func testBinaryExpressions2() {
     let code = """
 val x = 10 + 20;
 val y = 10.5 / 2.3;
@@ -64,6 +64,13 @@ val a = 5 <= 10 andalso 2.5 >= 3.2;
 val b = true = true andalso 5 = 5 andalso "abc" = "efg" andalso 5 * 5 < 13 orelse 3.3 - 2.3 > 0.0;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast6")
+  }
+  
+  func testLetExpression() {
+    let code = """
+val x = let val x = 10 in x end;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast7")
   }
 }
 

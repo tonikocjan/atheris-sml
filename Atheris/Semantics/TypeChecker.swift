@@ -98,7 +98,7 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstNameExpression) throws {
-    guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.internalError }
+    guard let binding = symbolDescription.binding(for: node) else { throw Error.internalError }
     guard let type = symbolDescription.type(for: binding) else { throw Error.internalError }
     symbolDescription.setType(for: node, type: type)
   }
@@ -149,6 +149,13 @@ extension TypeChecker: AstVisitor {
     }
     
     symbolDescription.setType(for: node, type: trueBranchType)
+  }
+  
+  func visit(node: AstLetExpression) throws {
+    try node.bindings.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw Error.internalError }
+    symbolDescription.setType(for: node, type: expressionType)
   }
   
   func visit(node: AstIdentifierPattern) throws {

@@ -33,13 +33,13 @@ class SynAn: SyntaxParser {
   }
   
   func parse() throws -> AstBindings {
-    return try parseBindings()
+    return try parseBindings(separated: ";", stop: .eof)
   }
 }
 
 private extension SynAn {
-  func parseBindings() throws -> AstBindings {
-    let bindings = try parseBindings_(binding: try parseBinding())
+  func parseBindings(separated with: String, stop when: TokenType) throws -> AstBindings {
+    let bindings = try parseBindings_(binding: try parseBinding(), sepearated: with, stop: when)
     guard let first = bindings.first, let last = bindings.last else {
       throw reportError("", symbol.position)
     }
@@ -57,10 +57,12 @@ private extension SynAn {
     }
   }
   
-  func parseBindings_(binding: AstBinding) throws -> [AstBinding] {
-    if expecting(.eof) { return [binding] }
+  func parseBindings_(binding: AstBinding, sepearated with: String, stop when: TokenType) throws -> [AstBinding] {
+    guard with.isEmpty || expecting(with) else { throw reportError("expecting `\(with)`", symbol.position)}
+    if !with.isEmpty { nextSymbol() }
+    guard !expecting(when) else { return [binding] }
     let newBinding = try parseBinding()
-    return [binding] + (try parseBindings_(binding: newBinding))
+    return [binding] + (try parseBindings_(binding: newBinding, sepearated: with, stop: when))
   }
 }
 
@@ -73,8 +75,6 @@ private extension SynAn {
     guard expecting(.assign) else { throw reportError("expected `=`", symbol.position) }
     nextSymbol()
     let expression = try parseExpression()
-    guard expecting(.semicolon) else { throw reportError("expected `;`", symbol.position) }
-    nextSymbol()
     return AstValBinding(position: startingPosition + expression.position,
                          pattern: pattern,
                          expression: expression)
@@ -201,9 +201,8 @@ private extension SynAn {
          .floatingConstant,
          .logicalConstant,
          .stringConstant,
-         .keywordLet:
-      return try parseExpression_(expression: parseIorExpression())
-    case .identifier:
+         .keywordLet,
+         .identifier:
       return try parseExpression_(expression: parseIorExpression())
     default:
       throw reportError("unexpected symbol", symbol.position)
@@ -421,6 +420,8 @@ private extension SynAn {
         return first
       }
       return expression
+    case .keywordLet:
+      return try parseLetExpression()
     default:
       throw reportError("unable to parse expression", symbol.position)
     }
@@ -451,6 +452,23 @@ private extension SynAn {
     let newExpression = try parseExpression()
     return [expression] + (try parseCommaSeparatedExpressions_(expression: newExpression))
   }
+  
+  func parseLetExpression() throws -> AstLetExpression {
+    guard expecting(.keywordLet) else {
+      throw reportError("expected `let`", symbol.position)
+    }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let bindings = try parseBindings(separated: "", stop: .keywordIn)
+    guard expecting(.keywordIn) else { throw reportError("expecting `in`", symbol.position) }
+    nextSymbol()
+    let expression = try parseExpression()
+    guard expecting(.keywordEnd) else { throw reportError("expecting `end`", symbol.position) }
+    nextSymbol()
+    return AstLetExpression(position: startingPosition + bindings.position,
+                            bindings: bindings,
+                            expression: expression)
+  }
 }
 
 private extension SynAn {
@@ -470,6 +488,6 @@ private extension SynAn {
   }
   
   func expecting(_ lexeme: String) -> Bool {
-    return symbol.token == .identifier && symbol.lexeme == lexeme
+    return symbol.lexeme == lexeme
   }
 }

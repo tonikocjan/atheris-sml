@@ -128,6 +128,15 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstLetExpression) throws {
+    print("AstLetExpression", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.bindings.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    decreaseIndent()
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()
