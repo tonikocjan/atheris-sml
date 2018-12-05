@@ -16,6 +16,7 @@ class AtomType: Type {
   }
   
   func sameStructureAs(other: Type) -> Bool {
+    guard !other.isAbstract else { return true }
     guard let other = other.toAtom else { return false }
     return other.type == type
   }

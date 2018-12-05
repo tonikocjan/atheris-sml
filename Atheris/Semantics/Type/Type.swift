@@ -46,7 +46,7 @@ enum Operation: String {
     case .greaterThanOrEqual: return AtomType.int
     case .andalso: return AtomType.bool
     case .orelse: return AtomType.bool
-    case .unknown: return PatternDummyType(name: "dummy")
+    case .unknown: return PatternDummyType(name: "")
     }
   }
 }

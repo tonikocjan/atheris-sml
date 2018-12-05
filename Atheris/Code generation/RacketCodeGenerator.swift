@@ -15,7 +15,8 @@ class RacketCodeGenerator {
   
   private var isRootNode = true
   private var indent = 0
-  private var debugPrint = false
+  private var shouldPrintParents = false
+  private var debugPrintBindingName = true
   
   init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
@@ -45,9 +46,9 @@ extension RacketCodeGenerator: CodeGenerator {
     for binding in node.bindings {
       try binding.accept(visitor: self)
       newLine()
-      debugPrint = true
+      shouldPrintParents = true
       try binding.pattern.accept(visitor: self)
-      debugPrint = false
+      shouldPrintParents = false
       newLine()
     }
   }
@@ -64,9 +65,9 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstFunBinding) throws {
     print("(define (\(node.identifier.name) ")
-    debugPrint = true
+    shouldPrintParents = true
     try node.parameters.first?.accept(visitor: self)
-    debugPrint = false
+    shouldPrintParents = false
     print(")")
     increaseIndent()
     newLine()
@@ -96,9 +97,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    if !debugPrint { print("(values ") }
+    if !shouldPrintParents { print("(values ") }
     try perform(on: node.expressions, appending: " ")
-    if !debugPrint { print(")") }
+    if !shouldPrintParents { print(")") }
   }
   
   func visit(node: AstBinaryExpression) throws {
@@ -152,9 +153,9 @@ extension RacketCodeGenerator: CodeGenerator {
     print("(")
     print(node.name)
     print(" ")
-    debugPrint = true
+    shouldPrintParents = true
     try perform(on: node.arguments, appending: " ")
-    debugPrint = false
+    shouldPrintParents = false
     print(")")
   }
   
@@ -167,9 +168,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTuplePattern) throws {
-    if !debugPrint { print("(") }
+    if !shouldPrintParents { print("(") }
     try perform(on: node.patterns, appending: " ")
-    if !debugPrint { print(")") }
+    if !shouldPrintParents { print(")") }
   }
   
   func visit(node: AstRecordPattern) throws {

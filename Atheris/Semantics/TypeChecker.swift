@@ -13,11 +13,12 @@ class TypeChecker {
   let symbolDescription: SymbolDescriptionProtocol
   
   // MARK: - dummy types
-  private static let dummyTypeCharacterSet = Array("ABCDEFGHIJKLMNOPRSTVUZA1B1C1D1E1F1G1H1I1J1K1L1M1N1O1P1R1S1T1V1U1Z1".reversed())
+  private static let dummyTypeCharacterSet = Array("A1B1C1D1E1F1G1H1I1J1K1L1M1N1O1P1R1S1T1V1U1Z1ABCDEFGHIJKLMNOPRSTVUZ".reversed())
   private var dummyTypeCount = 0
   
-  // MARK: - Type distribution stack
+  // MARK: - Internal stacks
   private var typeDistributionStack = [Type]()
+  private var funEvalStack = [AstFunBinding]()
   
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
@@ -34,9 +35,7 @@ extension TypeChecker: AstVisitor {
     try node.expression.accept(visitor: self)
     try node.pattern.accept(visitor: self)
     
-    guard let expressionType = symbolDescription.type(for: node.expression) else {
-      throw Error.internalError
-    }
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw Error.internalError }
     
     let resultType: Type
     
@@ -60,6 +59,7 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunBinding) throws {
+    funEvalStack.append(node)
     try node.identifier.accept(visitor: self)
     for parameter in node.parameters { try parameter.accept(visitor: self) }
     try node.body.accept(visitor: self)
@@ -71,6 +71,7 @@ extension TypeChecker: AstVisitor {
                                     body: bodyType)
     symbolDescription.setType(for: node, type: functionType)
     symbolDescription.setType(for: node.identifier, type: functionType)
+    _ = funEvalStack.popLast()
   }
   
   func visit(node: AstAtomType) throws {
@@ -123,37 +124,53 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstBinaryExpression) throws {
     func applyType(_ resultType: Type, leftType: Type, rightType: Type) {
       symbolDescription.setType(for: node, type: resultType)
+      symbolDescription.setType(for: node.right, type: rightType)
+      symbolDescription.setType(for: node.left, type: leftType)
       
-      if leftType.isAbstract, let leftBinding = symbolDescription.binding(for: node.left) {
-        symbolDescription.setType(for: node.left, type: resultType)
-        symbolDescription.setType(for: leftBinding, type: resultType)
+      if let leftBinding = symbolDescription.binding(for: node.left) {
+        symbolDescription.setType(for: leftBinding, type: leftType)
       }
       
-      if rightType.isAbstract, let rightBinding = symbolDescription.binding(for: node.right) {
-        symbolDescription.setType(for: rightBinding, type: resultType)
-        symbolDescription.setType(for: node.right, type: resultType)
+      if let rightBinding = symbolDescription.binding(for: node.right) {
+        symbolDescription.setType(for: rightBinding, type: rightType)
       }
+    }
+    
+    func concreteType(defaultType: Type, leftType: Type, rightType: Type) -> Type {
+      if leftType.isAbstract && rightType.isAbstract { return defaultType }
+      return leftType.isAbstract ? rightType : leftType
     }
     
     let operation = Operation.convert(node.operation)
     try node.left.accept(visitor: self)
     try node.right.accept(visitor: self)
+    let leftType = symbolDescription.type(for: node.left)
+    let rightType = symbolDescription.type(for: node.right)
     
-    guard
-      let leftType = symbolDescription.type(for: node.left),
-      let rightType = symbolDescription.type(for: node.right) else { throw Error.internalError }
-    
-    guard leftType.isConcrete && rightType.isConcrete else {
-      let defaultType = Operation.convert(node.operation).defaultType
-      applyType(defaultType, leftType: leftType, rightType: rightType)
+    if let leftType = leftType, rightType == nil {
+      let defaultType = operation.defaultType
+      let operandsType = concreteType(defaultType: defaultType, leftType: leftType, rightType: leftType)
+      applyType(operandsType, leftType: operandsType, rightType: operandsType)
+      return
+    } else if let rightType = rightType, leftType == nil {
+      let defaultType = operation.defaultType
+      let operandsType = concreteType(defaultType: defaultType, leftType: rightType, rightType: rightType)
+      applyType(operandsType, leftType: operandsType, rightType: operandsType)
       return
     }
     
-    guard let resultType = leftType.isBinaryOperationValid(operation, other: rightType) else {
-      throw Error.operatorError(position: node.position, domain: operation.domain, operand: TupleType.formPair(leftType, rightType))
+    guard leftType!.isConcrete && rightType!.isConcrete else {
+      let defaultType = operation.defaultType
+      let operandsType = concreteType(defaultType: defaultType, leftType: leftType!, rightType: rightType!)
+      applyType(defaultType, leftType: operandsType, rightType: operandsType)
+      return
     }
     
-    applyType(resultType, leftType: leftType, rightType: rightType)
+    guard let resultType = leftType!.isBinaryOperationValid(operation, other: rightType!) else {
+      throw Error.operatorError(position: node.position, domain: operation.domain, operand: TupleType.formPair(leftType!, rightType!))
+    }
+    
+    applyType(resultType, leftType: leftType!, rightType: rightType!)
   }
   
   func visit(node: AstUnaryExpression) throws {
@@ -161,6 +178,24 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstIfExpression) throws {
+    func applyType(_ type: Type) {
+      symbolDescription.setType(for: node, type: type)
+      symbolDescription.setType(for: node.trueBranch, type: type)
+      symbolDescription.setType(for: node.falseBranch, type: type)
+      
+      if let conditionBinding = symbolDescription.binding(for: node.condition) {
+        symbolDescription.setType(for: conditionBinding, type: type)
+      }
+      
+      if let trueBranchBinding = symbolDescription.binding(for: node.trueBranch) {
+        symbolDescription.setType(for: trueBranchBinding, type: type)
+      }
+      
+      if let falseBranchBinding = symbolDescription.binding(for: node.falseBranch) {
+        symbolDescription.setType(for: falseBranchBinding, type: type)
+      }
+    }
+    
     try node.condition.accept(visitor: self)
     try node.trueBranch.accept(visitor: self)
     try node.falseBranch.accept(visitor: self)
@@ -178,7 +213,8 @@ extension TypeChecker: AstVisitor {
       throw Error.branchesTypeMistmatchError(position: node.position, trueBranchType: trueBranchType, falseBranchType: falseBranchType)
     }
     
-    symbolDescription.setType(for: node, type: trueBranchType)
+    let concreteType = trueBranchType.isConcrete ? trueBranchType : falseBranchType
+    applyType(concreteType)
   }
   
   func visit(node: AstLetExpression) throws {
@@ -195,9 +231,20 @@ extension TypeChecker: AstVisitor {
         .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
     }
     
+    if let currentFunctionBinding = funEvalStack.last, currentFunctionBinding.identifier.name == node.name {
+      if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
+        symbolDescription.setType(for: node, type: type)
+      }
+      for argument in node.arguments { try argument.accept(visitor: self) }
+      return
+    }
+    
     guard
       let binding = symbolDescription.binding(for: node),
-      let functionType = symbolDescription.type(for: binding)?.asFunction else { throw Error.internalError }
+      let functionType = symbolDescription.type(for: binding)?.asFunction else {
+        for argument in node.arguments { try argument.accept(visitor: self) }
+        return
+    }
     
     for argument in node.arguments { try argument.accept(visitor: self) }
     let argumentTypes = node.arguments.compactMap { symbolDescription.type(for: $0) as? TupleType }
@@ -205,6 +252,15 @@ extension TypeChecker: AstVisitor {
       throw Error.operatorError(position: node.position,
                                 domain: functionType.parameters.description,
                                 operand: TupleType(members: argumentTypes))
+    }
+    
+    for (argument, paramater) in zip(node.arguments, functionType.parameters) {
+      guard let argument = argument as? AstTupleExpression else { return }
+      for (arg, par) in zip(argument.expressions, paramater.members) {
+        guard let binding = symbolDescription.binding(for: arg) else { continue }
+        symbolDescription.setType(for: binding, type: par)
+      }
+      symbolDescription.setType(for: argument, type: paramater)
     }
     
     symbolDescription.setType(for: node, type: functionType.body)

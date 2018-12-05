@@ -53,6 +53,10 @@ extension LexAn: Sequence {
         currentLocation = Location(row: currentLocation.row + 1, column: 1)
         continue
       }
+      if character == "\t" {
+        currentLocation = Location(row: currentLocation.row, column: currentLocation.column + 4)
+        continue
+      }
       if notLegalCharacter(character) {
         return Symbol(token: .invalidCharacter, lexeme: "\(character)", position: position(count: 1))
       }
@@ -224,7 +228,7 @@ private extension LexAn {
   }
   
   func isWhitespace(_ char: Character) -> Bool {
-    return char == " " || char == "\n"
+    return char == " " || char == "\n" || char == "\t"
   }
   
   func notLegalCharacter(_ char: Character) -> Bool {
