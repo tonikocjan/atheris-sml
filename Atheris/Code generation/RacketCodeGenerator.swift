@@ -54,7 +54,7 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstValBinding) throws {
     guard let type = symbolDescription.type(for: node) else { return }
-    let define = type.isTuple ? "(define-values " : "(define "
+    let define = type.isTuple ? "(match-define-values " : "(define "
     print(define)
     try node.pattern.accept(visitor: self)
     print(" ")

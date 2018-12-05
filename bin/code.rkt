@@ -1,6 +1,6 @@
 #lang racket
 
-(define-values (x y z) (values 10 20 30))
-x y z
-(define a (if false "a" "b"))
-a
+(match-define-values x (values 10 20 30))
+x
+(match-define-values (a b c) (values 10 20 (+ 10 20)))
+a b c

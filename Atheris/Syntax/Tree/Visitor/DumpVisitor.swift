@@ -168,11 +168,11 @@ extension DumpVisitor: AstVisitor {
 
 private extension DumpVisitor {
   func print(_ string: String, _ position: Position) {
-    outputStream.print("\(withIndent(string)) \(position.description):")
+    outputStream.printLine("\(withIndent(string)) \(position.description):")
   }
   
   func print(_ string: String) {
-    outputStream.print(withIndent(string))
+    outputStream.printLine(withIndent(string))
   }
   
   func withIndent(_ string: String) -> String {

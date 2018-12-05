@@ -1,2 +1,2 @@
-val (x, y, z) = (10, 20, 30);
-val a = if false then "a" else "b";
+val x = (10, 20, 30);
+val (a, b, c) = (10, 20, 10 + 20);
