@@ -162,12 +162,18 @@ extension TypeChecker: AstVisitor {
     guard leftType!.isConcrete && rightType!.isConcrete else {
       let defaultType = operation.defaultType
       let operandsType = concreteType(defaultType: defaultType, leftType: leftType!, rightType: rightType!)
-      applyType(defaultType, leftType: operandsType, rightType: operandsType)
+      if defaultType.isBool {
+        applyType(defaultType, leftType: operandsType, rightType: operandsType)
+      } else {
+        applyType(operandsType, leftType: operandsType, rightType: operandsType)
+      }
       return
     }
     
     guard let resultType = leftType!.isBinaryOperationValid(operation, other: rightType!) else {
-      throw Error.operatorError(position: node.position, domain: operation.domain, operand: TupleType.formPair(leftType!, rightType!))
+      throw Error.operatorError(position: node.position,
+                                domain: operation.domain,
+                                operand: TupleType.formPair(leftType!, rightType!))
     }
     
     applyType(resultType, leftType: leftType!, rightType: rightType!)

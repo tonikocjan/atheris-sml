@@ -47,6 +47,21 @@ val v = a ("abc", "efg", "cdf");
 """
     performTest(code: code, filepath: "code4.rkt")
   }
+  
+  func testLocalFunctionAndRecursion() {
+    let code = """
+fun pow (x, y) =
+  let
+    fun pow (x, y) =
+      if y = 0 then 1
+      else x * pow (x, y - 1)
+  in
+    pow (x, y)
+  end;
+val x = pow (3, 3);
+"""
+    performTest(code: code, filepath: "code5.rkt")
+  }
 }
 
 private extension CodeGenerationTests {

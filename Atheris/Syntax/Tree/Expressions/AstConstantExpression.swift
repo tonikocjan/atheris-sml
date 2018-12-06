@@ -23,13 +23,3 @@ class AstConstantExpression: AstExpression {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstConstantExpression {
-//  var hashValue: Int {
-//    return position.hashValue ^ value.hashValue ^ type.hashValue
-//  }
-//
-//  static func == (lhs: AstConstantExpression, rhs: AstConstantExpression) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}

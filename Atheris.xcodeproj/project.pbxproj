@@ -112,6 +112,7 @@
 		3790FED021B7C813005CA8D5 /* FunctionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FECE21B7C813005CA8D5 /* FunctionType.swift */; };
 		3790FED221B7E44F005CA8D5 /* ast8 in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED121B7E44F005CA8D5 /* ast8 */; };
 		3790FED421B7FEC2005CA8D5 /* code4.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED321B7FEC2005CA8D5 /* code4.rkt */; };
+		3790FED621B810B4005CA8D5 /* code5.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED521B810B4005CA8D5 /* code5.rkt */; };
 		37E0CE1D2168F73E00BAFD2A /* LexanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */; };
 		37E0CE202168F93C00BAFD2A /* FileInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */; };
 		37E0CE212168FAB800BAFD2A /* FileInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */; };
@@ -216,6 +217,7 @@
 		3790FECE21B7C813005CA8D5 /* FunctionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionType.swift; sourceTree = "<group>"; };
 		3790FED121B7E44F005CA8D5 /* ast8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast8; sourceTree = "<group>"; };
 		3790FED321B7FEC2005CA8D5 /* code4.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code4.rkt; sourceTree = "<group>"; };
+		3790FED521B810B4005CA8D5 /* code5.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code5.rkt; sourceTree = "<group>"; };
 		37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexanTests.swift; sourceTree = "<group>"; };
 		37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInputStream.swift; sourceTree = "<group>"; };
 		37E0CE22216A2FCE00BAFD2A /* test.ar */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.ar; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 		3745063F21B6CF020051E1E9 /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				3790FED521B810B4005CA8D5 /* code5.rkt */,
 				3790FED321B7FEC2005CA8D5 /* code4.rkt */,
 				3745064221B6D0470051E1E9 /* code1.rkt */,
 				3745064421B6D9260051E1E9 /* code2.rkt */,
@@ -655,6 +658,7 @@
 				375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */,
 				3790FECA21B7A95B005CA8D5 /* ast7 in Resources */,
 				3745064721B6DD4A0051E1E9 /* code3.rkt in Resources */,
+				3790FED621B810B4005CA8D5 /* code5.rkt in Resources */,
 				3745063121B6BC030051E1E9 /* ast6 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

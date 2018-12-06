@@ -1,7 +1,9 @@
-fun a (x, y, z) a = x ^ y ^ z;
-fun b (x, y, z) = x ^ y ^ "abc";
-fun c (x, y, z) = x + y + 10;
-fun d (x, y, z) = x > 10 andalso true andalso y orelse z;
-fun e (x, y, z) = x > 10 andalso true andalso y orelse z;
+fun pow (x, y) =
+	let
+		val (a, b) = (10, 20)
+	in
+		if y = 0 then 1
+		else (pow (x, y - 1)) + a
+	end;
 
-val v = a ("abc", "efg", "cdf");
+val x = pow (3, 3);

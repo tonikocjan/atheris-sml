@@ -29,6 +29,15 @@ val x = if 10 * 10 then "a" else "b";
 """
     performFailingTest(code: code)
   }
+  
+  func testIfBranchesTypeMismatchWithInference() {
+    let code = """
+fun pow (x: real, y) =
+  if y = 0 then 1
+  else x * pow (x, y - 1);
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {
