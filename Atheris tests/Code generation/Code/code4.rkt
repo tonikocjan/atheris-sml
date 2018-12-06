@@ -1,7 +1,8 @@
 #lang racket
 
 (define (a x y z)
-  (string-append (string-append x y) z))
+  (lambda (a)
+    (string-append (string-append x y) z)))
 a
 (define (b x y z)
   (string-append (string-append x y) "abc"))

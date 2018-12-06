@@ -62,6 +62,14 @@ val x = pow (3, 3);
 """
     performTest(code: code, filepath: "code5.rkt")
   }
+  
+  func testCurrying() {
+    let code = """
+fun mul x y z = x * y * z;
+val x = mul (10) (20) (30);
+"""
+    performTest(code: code, filepath: "code6.rkt")
+  }
 }
 
 private extension CodeGenerationTests {
@@ -79,7 +87,9 @@ private extension CodeGenerationTests {
       try typeChecker.visit(node: ast)
       let outputStream = TextOutputStream()
       let codeGenerator = RacketCodeGenerator(outputStream: outputStream,
-                                              configuration: .standard,
+                                              configuration: RacketCodeGenerator.Configuration(indentation: 2,
+                                                                                               pretty: true,
+                                                                                               printWelcome: false),
                                               symbolDescription: symbolDescription)
       try codeGenerator.visit(node: ast)
       XCTAssertEqual(outputStream.buffer, loadCode(filepath))

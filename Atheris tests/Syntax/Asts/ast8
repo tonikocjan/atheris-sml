@@ -1,8 +1,8 @@
 AstBindings [1:1, 7:31]:
-  AstFunBinding [1:1, 1:30]:
-    -> typed: fn : [(string * string * string)] -> string
+  AstFunBinding [1:1, 1:18]:
+    -> typed: fn : (string * string * string) -> string
     AstIdentifierPattern [1:5, 1:6]:
-      -> typed: fn : [(string * string * string)] -> string
+      -> typed: fn : (string * string * string) -> string
       Name: a
     AstTuplePattern [1:7, 1:18]:
       -> typed: (string * string * string)
@@ -15,29 +15,26 @@ AstBindings [1:1, 7:31]:
       AstIdentifierPattern [1:14, 1:15]:
         -> typed: string
         Name: z
-    AstIdentifierPattern [1:17, 1:18]:
-      -> typed: 'Z
-      Name: a
-    AstBinaryExpression `^` [1:21, 1:30]:
+    AstBinaryExpression `^` [1:19, 1:28]:
       -> typed: string
-      AstBinaryExpression `^` [1:21, 1:26]:
+      AstBinaryExpression `^` [1:19, 1:24]:
         -> typed: string
-        AstNameExpression [1:21, 1:22]:
+        AstNameExpression [1:19, 1:20]:
           -> defined at:  [1:8, 1:9]:
           -> typed: string
           Name: x
-        AstNameExpression [1:25, 1:26]:
+        AstNameExpression [1:23, 1:24]:
           -> defined at:  [1:11, 1:12]:
           -> typed: string
           Name: y
-      AstNameExpression [1:29, 1:30]:
+      AstNameExpression [1:27, 1:28]:
         -> defined at:  [1:14, 1:15]:
         -> typed: string
         Name: z
-  AstFunBinding [2:1, 2:32]:
-    -> typed: fn : [(string * string * 'Z)] -> string
+  AstFunBinding [2:1, 2:18]:
+    -> typed: fn : (string * string * 'Z) -> string
     AstIdentifierPattern [2:5, 2:6]:
-      -> typed: fn : [(string * string * 'Z)] -> string
+      -> typed: fn : (string * string * 'Z) -> string
       Name: b
     AstTuplePattern [2:7, 2:18]:
       -> typed: (string * string * 'Z)
@@ -66,10 +63,10 @@ AstBindings [1:1, 7:31]:
         -> typed: string
         Value: abc
         Atom type: string
-  AstFunBinding [3:1, 3:29]:
-    -> typed: fn : [(int * int * 'Z)] -> int
+  AstFunBinding [3:1, 3:18]:
+    -> typed: fn : (int * int * 'Z) -> int
     AstIdentifierPattern [3:5, 3:6]:
-      -> typed: fn : [(int * int * 'Z)] -> int
+      -> typed: fn : (int * int * 'Z) -> int
       Name: c
     AstTuplePattern [3:7, 3:18]:
       -> typed: (int * int * 'Z)
@@ -98,10 +95,10 @@ AstBindings [1:1, 7:31]:
         -> typed: int
         Value: 10
         Atom type: int
-  AstFunBinding [4:1, 4:57]:
-    -> typed: fn : [(int * bool * bool)] -> bool
+  AstFunBinding [4:1, 4:18]:
+    -> typed: fn : (int * bool * bool) -> bool
     AstIdentifierPattern [4:5, 4:6]:
-      -> typed: fn : [(int * bool * bool)] -> bool
+      -> typed: fn : (int * bool * bool) -> bool
       Name: d
     AstTuplePattern [4:7, 4:18]:
       -> typed: (int * bool * bool)
@@ -142,10 +139,10 @@ AstBindings [1:1, 7:31]:
         -> defined at:  [4:14, 4:15]:
         -> typed: bool
         Name: z
-  AstFunBinding [5:1, 5:57]:
-    -> typed: fn : [(int * bool * bool)] -> bool
+  AstFunBinding [5:1, 5:18]:
+    -> typed: fn : (int * bool * bool) -> bool
     AstIdentifierPattern [5:5, 5:6]:
-      -> typed: fn : [(int * bool * bool)] -> bool
+      -> typed: fn : (int * bool * bool) -> bool
       Name: e
     AstTuplePattern [5:7, 5:18]:
       -> typed: (int * bool * bool)
@@ -191,7 +188,7 @@ AstBindings [1:1, 7:31]:
     AstIdentifierPattern [7:5, 7:6]:
       -> typed: string
       Name: v
-    AstFunctionCallExpression [7:9, 7:31]:
+    AstFunctionCallExpression [7:12, 7:31]:
       -> defined at:  [1:5, 1:6]:
       -> typed: string
       Function name: a

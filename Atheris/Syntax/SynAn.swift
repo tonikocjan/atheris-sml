@@ -94,7 +94,10 @@ private extension SynAn {
   }
   
   func parseFunBody() throws -> AstExpression {
-    if expecting("=") { return try parseExpression() }
+    if expecting("=") {
+      nextSymbol()
+      return try parseExpression()
+    }
     let pattern = try parsePattern()
     return try parseFunBody_(pattern: pattern)
   }

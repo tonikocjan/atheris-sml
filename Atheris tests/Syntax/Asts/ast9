@@ -1,43 +1,58 @@
 AstBindings [1:1, 2:26]:
   AstFunBinding [1:1, 1:10]:
+    -> typed: fn : int -> fn : int -> fn : int -> int
     AstIdentifierPattern [1:5, 1:8]:
+      -> typed: fn : int -> fn : int -> fn : int -> int
       Name: mul
     AstIdentifierPattern [1:9, 1:10]:
+      -> typed: int
       Name: x
     AstAnonymousFunctionBinding [1:11, 1:14]:
+      -> typed: fn : int -> fn : int -> int
       AstIdentifierPattern [1:11, 1:12]:
+        -> typed: int
         Name: y
       AstAnonymousFunctionBinding [1:13, 1:26]:
+        -> typed: fn : int -> int
         AstIdentifierPattern [1:13, 1:14]:
+          -> typed: int
           Name: z
         AstBinaryExpression `*` [1:17, 1:26]:
+          -> typed: int
           AstBinaryExpression `*` [1:17, 1:22]:
+            -> typed: int
             AstNameExpression [1:17, 1:18]:
               -> defined at:  [1:9, 1:10]:
+              -> typed: int
               Name: x
             AstNameExpression [1:21, 1:22]:
               -> defined at:  [1:11, 1:12]:
+              -> typed: int
               Name: y
           AstNameExpression [1:25, 1:26]:
             -> defined at:  [1:13, 1:14]:
+            -> typed: int
             Name: z
   AstValBinding [2:1, 2:26]:
+    -> typed: int
     AstIdentifierPattern [2:5, 2:6]:
+      -> typed: int
       Name: x
     AstAnonymousFunctionCall [2:14, 2:26]:
-      AstTupleExpression [2:24, 2:26]:
-        AstConstantExpression [2:24, 2:26]:
-          Value: 30
-          Atom type: int
+      -> typed: int
+      AstConstantExpression [2:24, 2:26]:
+        Value: 30
+        Atom type: int
       AstAnonymousFunctionCall [2:14, 2:21]:
-        AstTupleExpression [2:19, 2:21]:
-          AstConstantExpression [2:19, 2:21]:
-            Value: 20
-            Atom type: int
+        -> typed: fn : int -> int
+        AstConstantExpression [2:19, 2:21]:
+          Value: 20
+          Atom type: int
         AstFunctionCallExpression [2:14, 2:16]:
           -> defined at:  [1:5, 1:8]:
+          -> typed: fn : int -> fn : int -> int
           Function name: mul
-          AstTupleExpression [2:14, 2:16]:
-            AstConstantExpression [2:14, 2:16]:
-              Value: 10
-              Atom type: int
+          AstConstantExpression [2:14, 2:16]:
+            -> typed: int
+            Value: 10
+            Atom type: int
