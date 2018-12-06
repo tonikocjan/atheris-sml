@@ -48,7 +48,16 @@ extension DumpVisitor: AstVisitor {
     increaseIndent()
     printSemanticInformation(node: node)
     try node.identifier.accept(visitor: self)
-    for parameter in node.parameters { try parameter.accept(visitor: self) }
+    try node.parameter.accept(visitor: self)
+    try node.body.accept(visitor: self)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstAnonymousFunctionBinding) throws {
+    print("AstAnonymousFunctionBinding", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.parameter.accept(visitor: self)
     try node.body.accept(visitor: self)
     decreaseIndent()
   }
@@ -144,7 +153,16 @@ extension DumpVisitor: AstVisitor {
     increaseIndent()
     printSemanticInformation(node: node)
     print("Function name: " + node.name)
-    for argument in node.arguments { try argument.accept(visitor: self) }
+    try node.argument.accept(visitor: self)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstAnonymousFunctionCall) throws {
+    print("AstAnonymousFunctionCall", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.argument.accept(visitor: self)
+    try node.function.accept(visitor: self)
     decreaseIndent()
   }
   

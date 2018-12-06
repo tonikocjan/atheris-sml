@@ -86,6 +86,14 @@ val v = a ("abc", "efg", "cdf");
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast8")
   }
+  
+  func testCurryingSyntaxParsing() {
+    let code = """
+fun mul x y z = x * y * z;
+val x = mul (10) (20) (30);
+"""
+    testSyntaxParsingAndSemantics(code: code, expected: "ast9")
+  }
 }
 
 private extension SyntaxParserTests {

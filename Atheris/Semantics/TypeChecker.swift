@@ -61,13 +61,29 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstFunBinding) throws {
     funEvalStack.append(node)
     try node.identifier.accept(visitor: self)
-    for parameter in node.parameters { try parameter.accept(visitor: self) }
+    try node.parameter.accept(visitor: self)
     try node.body.accept(visitor: self)
-    for parameter in node.parameters { try parameter.accept(visitor: self) }
-    let parameterTypes = node.parameters.compactMap { symbolDescription.type(for: $0) as? TupleType }
+    try node.parameter.accept(visitor: self)
+    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw Error.internalError }
     guard let bodyType = symbolDescription.type(for: node.body) else { throw Error.internalError }
     let functionType = FunctionType(name: node.identifier.name,
-                                    parameters: parameterTypes,
+                                    parameter: parameterType,
+                                    body: bodyType)
+    symbolDescription.setType(for: node, type: functionType)
+    symbolDescription.setType(for: node.identifier, type: functionType)
+    _ = funEvalStack.popLast()
+  }
+  
+  func visit(node: AstAnonymousFunctionBinding) throws {
+    funEvalStack.append(node)
+    try node.identifier.accept(visitor: self)
+    try node.parameter.accept(visitor: self)
+    try node.body.accept(visitor: self)
+    try node.parameter.accept(visitor: self)
+    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw Error.internalError }
+    guard let bodyType = symbolDescription.type(for: node.body) else { throw Error.internalError }
+    let functionType = FunctionType(name: node.identifier.name,
+                                    parameter: parameterType,
                                     body: bodyType)
     symbolDescription.setType(for: node, type: functionType)
     symbolDescription.setType(for: node.identifier, type: functionType)
@@ -231,50 +247,47 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-    func areArgumentsAndParametersOfSameStructure(arguments: [TupleType], parameters: [TupleType]) -> Bool {
-      guard arguments.count == parameters.count else { return false }
-      return zip(arguments, parameters)
-        .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
-    }
-    
     if let currentFunctionBinding = funEvalStack.last, currentFunctionBinding.identifier.name == node.name {
       if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
         symbolDescription.setType(for: node, type: type)
       }
-      for argument in node.arguments { try argument.accept(visitor: self) }
+      try node.argument.accept(visitor: self)
       return
     }
     
     guard
       let binding = symbolDescription.binding(for: node),
       let functionType = symbolDescription.type(for: binding)?.asFunction else {
-        for argument in node.arguments { try argument.accept(visitor: self) }
+        try node.argument.accept(visitor: self)
         return
     }
     
-    for argument in node.arguments { try argument.accept(visitor: self) }
-    let argumentTypes = node.arguments.compactMap { symbolDescription.type(for: $0) as? TupleType }
-    guard areArgumentsAndParametersOfSameStructure(arguments: argumentTypes, parameters: functionType.parameters) else {
+    try node.argument.accept(visitor: self)
+    guard let argumentType = symbolDescription.type(for: node.argument) else { throw Error.internalError }
+    guard argumentType.sameStructureAs(other: functionType.parameter) else {
       throw Error.operatorError(position: node.position,
-                                domain: functionType.parameters.description,
-                                operand: TupleType(members: argumentTypes))
+                                domain: functionType.parameter.description,
+                                operand: argumentType)
     }
-    
-    for (argument, paramater) in zip(node.arguments, functionType.parameters) {
-      guard let argument = argument as? AstTupleExpression else { return }
-      for (arg, par) in zip(argument.expressions, paramater.members) {
-        guard let binding = symbolDescription.binding(for: arg) else { continue }
-        symbolDescription.setType(for: binding, type: par)
-      }
-      symbolDescription.setType(for: argument, type: paramater)
-    }
-    
+
+    symbolDescription.setType(for: node.argument, type: functionType.parameter)
+    symbolDescription.setType(for: node, type: functionType.body)
+  }
+  
+  func visit(node: AstAnonymousFunctionCall) throws {
+    try node.function.accept(visitor: self)
+    guard let functionType = symbolDescription.type(for: node.function) as? FunctionType else { throw Error.internalError }
     symbolDescription.setType(for: node, type: functionType.body)
   }
   
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
+      // TOOD: - Let's try to get rid of this
       symbolDescription.setType(for: node, type: parentNodeType)
+      return
+    }
+    
+    if let _ = symbolDescription.type(for: node) {
       return
     }
     
@@ -347,7 +360,7 @@ extension TypeChecker  {
     case internalError
     case typeError(position: Position, patternType: Type, expressionType: Type)
     case constraintError(position: Position, patternType: Type, constraintType: Type)
-    case operatorError(position: Position, domain: String, operand: TupleType)
+    case operatorError(position: Position, domain: String, operand: Type)
     case testExpressionError(position: Position, testExpressionType: Type)
     case branchesTypeMistmatchError(position: Position, trueBranchType: Type, falseBranchType: Type)
     

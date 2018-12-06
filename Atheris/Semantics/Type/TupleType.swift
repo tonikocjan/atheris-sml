@@ -20,9 +20,14 @@ class TupleType: Type {
   }
   
   func sameStructureAs(other: Type) -> Bool {
-    guard let other = other.toTuple else { return false }
-    guard other.members.count == members.count else { return false }
-    return zip(members, other.members)
+    guard let tuple = other.toTuple else {
+      if members.count == 1, let other = other.toAtom, let first = members.first {
+        return first.sameStructureAs(other: other)
+      }
+      return false
+    }
+    guard tuple.members.count == members.count else { return false }
+    return zip(members, tuple.members)
       .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
   }
 }

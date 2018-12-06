@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AstIdentifierPattern: AstPattern, AstBinding {
+class AstIdentifierPattern: AstPattern, AstBinding, AstExpression {
   let position: Position
   let name: String
   var pattern: AstPattern { return self }
@@ -22,13 +22,3 @@ class AstIdentifierPattern: AstPattern, AstBinding {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstIdentifierPattern {
-//  var hashValue: Int {
-//    return position.hashValue ^ name.hashValue
-//  }
-//
-//  static func == (lhs: AstIdentifierPattern, rhs: AstIdentifierPattern) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}

@@ -1,9 +1,2 @@
-fun pow (x, y) =
-	let
-		val (a, b) = (10, 20)
-	in
-		if y = 0 then 1
-		else (pow (x, y - 1)) + a
-	end;
-
-val x = pow (3, 3);
+fun mul x y z = x * y * z;
+val x = mul (10) (20) (30);

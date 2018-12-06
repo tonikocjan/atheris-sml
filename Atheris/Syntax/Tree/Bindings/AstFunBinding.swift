@@ -11,16 +11,16 @@ import Foundation
 class AstFunBinding: AstBinding {
   let position: Position
   let identifier: AstIdentifierPattern
-  let parameters: [AstPattern]
+  let parameter: AstPattern
   let body: AstExpression
   var pattern: AstPattern {
     return identifier
   }
   
-  init(position: Position, identifier: AstIdentifierPattern, parameters: [AstPattern], body: AstExpression) {
+  init(position: Position, identifier: AstIdentifierPattern, parameter: AstPattern, body: AstExpression) {
     self.position = position
     self.identifier = identifier
-    self.parameters = parameters
+    self.parameter = parameter
     self.body = body
   }
   

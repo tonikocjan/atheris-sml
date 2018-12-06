@@ -12,6 +12,7 @@ protocol AstVisitor {
   func visit(node: AstBindings) throws
   func visit(node: AstValBinding) throws
   func visit(node: AstFunBinding) throws
+  func visit(node: AstAnonymousFunctionBinding) throws
   func visit(node: AstAtomType) throws
   func visit(node: AstTypeName) throws
   func visit(node: AstTupleType) throws
@@ -23,6 +24,7 @@ protocol AstVisitor {
   func visit(node: AstIfExpression) throws
   func visit(node: AstLetExpression) throws
   func visit(node: AstFunctionCallExpression) throws
+  func visit(node: AstAnonymousFunctionCall) throws
   func visit(node: AstIdentifierPattern) throws
   func visit(node: AstWildcardPattern) throws
   func visit(node: AstTuplePattern) throws

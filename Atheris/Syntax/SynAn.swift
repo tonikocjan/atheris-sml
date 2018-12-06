@@ -85,14 +85,32 @@ private extension SynAn {
     let startingPosition = symbol.position
     nextSymbol()
     let identifier = parseIdentifierPattern()
-    let parameters = try parseParameters()
-    guard expecting("=") else { throw Error.syntaxError("expecting `=`") }
-    nextSymbol()
-    let expression = try parseExpression()
-    return AstFunBinding(position: startingPosition + expression.position,
-                         identifier: identifier,
-                         parameters: parameters,
-                         body: expression)
+    let parameter = try parsePattern()
+    let binding = AstFunBinding(position: startingPosition + parameter.position,
+                                identifier: identifier,
+                                parameter: parameter,
+                                body: try parseFunBody())
+    return binding
+  }
+  
+  func parseFunBody() throws -> AstExpression {
+    if expecting("=") { return try parseExpression() }
+    let pattern = try parsePattern()
+    return try parseFunBody_(pattern: pattern)
+  }
+  
+  func parseFunBody_(pattern: AstPattern) throws -> AstExpression {
+    if expecting("=") {
+      nextSymbol()
+      let expression = try parseExpression()
+      return AstAnonymousFunctionBinding(position: pattern.position + expression.position,
+                                         parameter: pattern,
+                                         body: expression)
+    }
+    let newPattern = try parsePattern()
+    return AstAnonymousFunctionBinding(position: pattern.position + newPattern.position,
+                                       parameter: pattern,
+                                       body: try parseFunBody_(pattern: newPattern))
   }
   
   func parseParameters() throws -> [AstPattern] {
@@ -443,10 +461,8 @@ private extension SynAn {
       let identifier = symbol
       nextSymbol()
       if expecting(.leftParent) {
-        let arguments = try parseArguments()
-        return AstFunctionCallExpression(position: identifier.position + arguments.last!.position,
-                                         name: identifier.lexeme,
-                                         arguments: arguments)
+        let functionCall = try parseFunctionCallExpression(identifier: identifier.lexeme)
+        return functionCall
       }
       return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
     case .leftParent:
@@ -462,18 +478,24 @@ private extension SynAn {
     }
   }
   
-  func parseArguments() throws -> [AstExpression] {
+  func parseFunctionCallExpression(identifier: String) throws -> AstFunctionCallExpression {
     let argument = try parseExpression()
-    return try parseArguments_(argument: argument)
+    let functionCall = AstFunctionCallExpression(position: argument.position,
+                                                 name: identifier,
+                                                 argument: argument)
+    return try parseFunctionCallExpression_(functionCall: functionCall)
   }
   
-  func parseArguments_(argument: AstExpression) throws -> [AstExpression] {
+  func parseFunctionCallExpression_(functionCall: AstFunctionCallExpression) throws -> AstFunctionCallExpression {
     switch symbol.token {
     case .integerConstant, .stringConstant, .floatingConstant, .logicalConstant, .identifier, .leftParent, .keywordLet:
       let newArgument = try parseExpression()
-      return [argument] + (try parseArguments_(argument: newArgument))
+      let newFunctionCall = AstAnonymousFunctionCall(position: functionCall.position + newArgument.position,
+                                                     function: functionCall,
+                                                     argument: newArgument)
+      return try parseFunctionCallExpression_(functionCall: newFunctionCall)
     default:
-      return [argument]
+      return functionCall
     }
   }
   

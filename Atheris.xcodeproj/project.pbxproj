@@ -102,6 +102,11 @@
 		3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
 		3761650B21553D2A0058BD03 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
 		3761650C21553D2A0058BD03 /* TokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650921553D2A0058BD03 /* TokenType.swift */; };
+		378EB81E21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */; };
+		378EB81F21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */; };
+		378EB82121B8FA0700E576E6 /* ast9 in Resources */ = {isa = PBXBuildFile; fileRef = 378EB82021B8FA0700E576E6 /* ast9 */; };
+		378EB82321B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EB82221B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift */; };
+		378EB82421B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EB82221B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift */; };
 		3790FEC621B79D8E005CA8D5 /* AstLetExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FEC521B79D8E005CA8D5 /* AstLetExpression.swift */; };
 		3790FEC721B79D8E005CA8D5 /* AstLetExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790FEC521B79D8E005CA8D5 /* AstLetExpression.swift */; };
 		3790FEC821B79FC9005CA8D5 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3745064921B6DDC00051E1E9 /* Executor.swift */; };
@@ -211,6 +216,9 @@
 		3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LexicalAnalyzer.swift; path = Lexan/LexicalAnalyzer.swift; sourceTree = "<group>"; };
 		3761650821553D2A0058BD03 /* Symbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Symbol.swift; path = Lexan/Symbol.swift; sourceTree = "<group>"; };
 		3761650921553D2A0058BD03 /* TokenType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenType.swift; path = Lexan/TokenType.swift; sourceTree = "<group>"; };
+		378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstAnonymousFunctionCall.swift; sourceTree = "<group>"; };
+		378EB82021B8FA0700E576E6 /* ast9 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast9; sourceTree = "<group>"; };
+		378EB82221B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstAnonymousFunctionBinding.swift; sourceTree = "<group>"; };
 		3790FEC521B79D8E005CA8D5 /* AstLetExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstLetExpression.swift; sourceTree = "<group>"; };
 		3790FEC921B7A95B005CA8D5 /* ast7 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast7; sourceTree = "<group>"; };
 		3790FECB21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstFunctionCallExpression.swift; sourceTree = "<group>"; };
@@ -482,6 +490,7 @@
 				37F024BD21B3FAC0006B868E /* AstBindings.swift */,
 				37F024AC21B3F705006B868E /* AstValBinding.swift */,
 				37F024BF21B3FE16006B868E /* AstFunBinding.swift */,
+				378EB82221B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift */,
 			);
 			path = Bindings;
 			sourceTree = "<group>";
@@ -498,6 +507,7 @@
 				3745063221B6BCAB0051E1E9 /* AstIfExpression.swift */,
 				3790FEC521B79D8E005CA8D5 /* AstLetExpression.swift */,
 				3790FECB21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift */,
+				378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -564,6 +574,7 @@
 				3745063021B6BC020051E1E9 /* ast6 */,
 				3790FEC921B7A95B005CA8D5 /* ast7 */,
 				3790FED121B7E44F005CA8D5 /* ast8 */,
+				378EB82021B8FA0700E576E6 /* ast9 */,
 			);
 			path = Asts;
 			sourceTree = "<group>";
@@ -651,6 +662,7 @@
 				3745061921B58F140051E1E9 /* ast4 in Resources */,
 				374505F421B536B50051E1E9 /* ast2 in Resources */,
 				3790FED421B7FEC2005CA8D5 /* code4.rkt in Resources */,
+				378EB82121B8FA0700E576E6 /* ast9 in Resources */,
 				3745061021B556700051E1E9 /* ast1 in Resources */,
 				3745062121B5A4DB0051E1E9 /* ast5 in Resources */,
 				3745064321B6D0470051E1E9 /* code1.rkt in Resources */,
@@ -673,6 +685,7 @@
 				3745063E21B6CEE70051E1E9 /* CodeGenerationTests.swift in Sources */,
 				374505C821B50FFE0051E1E9 /* AstVisitor.swift in Sources */,
 				374505F721B537FE0051E1E9 /* TypeChecker.swift in Sources */,
+				378EB81F21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */,
 				374505C921B50FFE0051E1E9 /* DumpVisitor.swift in Sources */,
 				374505CA21B50FFE0051E1E9 /* AstPattern.swift in Sources */,
 				374505CB21B50FFE0051E1E9 /* AstIdentifierPattern.swift in Sources */,
@@ -725,6 +738,7 @@
 				374505E921B51A4B0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,
 				375FF50B2161E0D60088F7A3 /* Atheris.swift in Sources */,
 				375FF5072161E0D60088F7A3 /* Logger.swift in Sources */,
+				378EB82421B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */,
 				375FF4FD2161E0930088F7A3 /* FileReader.swift in Sources */,
 				37E0CE212168FAB800BAFD2A /* FileInputStream.swift in Sources */,
 				37E0CE2F216A466400BAFD2A /* FileOutputStream.swift in Sources */,
@@ -751,6 +765,7 @@
 				37F024CF21B41697006B868E /* AstRecordPattern.swift in Sources */,
 				3745060921B5449C0051E1E9 /* PatternDummyType.swift in Sources */,
 				37F024AD21B3F705006B868E /* AstValBinding.swift in Sources */,
+				378EB82321B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */,
 				37F024AF21B3F7C9006B868E /* AstBinding.swift in Sources */,
 				3790FECF21B7C813005CA8D5 /* FunctionType.swift in Sources */,
 				37F024A421B3F40B006B868E /* AstVisitor.swift in Sources */,
@@ -790,6 +805,7 @@
 				37F024B221B3F816006B868E /* AstType.swift in Sources */,
 				37F024D621B428E4006B868E /* AstTypedPattern.swift in Sources */,
 				374505E421B518EA0051E1E9 /* SymbolTable.swift in Sources */,
+				378EB81E21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */,
 				3745063321B6BCAB0051E1E9 /* AstIfExpression.swift in Sources */,
 				375FF5062161E0D60088F7A3 /* Logger.swift in Sources */,
 				374505E821B5197E0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,

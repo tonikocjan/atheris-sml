@@ -10,25 +10,26 @@ import Foundation
 
 class FunctionType: Type {
   let name: String
-  let parameters: [TupleType]
+  let parameter: Type
   let body: Type
   
-  init(name: String, parameters: [TupleType], body: Type) {
+  init(name: String, parameter: Type, body: Type) {
     self.name = name
-    self.parameters = parameters
+    self.parameter = parameter
     self.body = body
   }
   
   var description: String {
-    return "fn : \(parameters.description) -> \(body.description)"
+    return "fn : \(parameter.description) -> \(body.description)"
   }
 }
 
 extension FunctionType {
   func sameStructureAs(other: Type) -> Bool {
     guard let other = other.asFunction else { return false }
-    return zip(self.parameters, other.parameters)
-      .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
+    return
+      other.parameter.sameStructureAs(other: self.parameter) &&
+      other.body.sameStructureAs(other: self.body)
   }
   
   func canBeAddedTo(other: Type) -> Bool { return false }
