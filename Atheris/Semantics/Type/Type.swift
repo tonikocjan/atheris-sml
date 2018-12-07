@@ -46,7 +46,7 @@ enum Operation: String {
     case .greaterThanOrEqual: return AtomType.int
     case .andalso: return AtomType.bool
     case .orelse: return AtomType.bool
-    case .unknown: return PatternDummyType(name: "")
+    case .unknown: return AbstractDummyType(name: "")
     }
   }
 }
@@ -68,8 +68,8 @@ protocol Type: class, CustomStringConvertible {
 }
 
 extension Type {
-  var isConcrete: Bool { return !(self is PatternDummyType) }
-  var isAbstract: Bool { return self is PatternDummyType }
+  var isConcrete: Bool { return !(self is AbstractDummyType) }
+  var isAbstract: Bool { return self is AbstractDummyType }
 }
 
 extension Type {

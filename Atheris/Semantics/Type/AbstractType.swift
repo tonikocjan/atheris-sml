@@ -8,5 +8,5 @@
 
 import Foundation
 
-protocol PatternType: Type {
+protocol AbstractType: Type {
 }

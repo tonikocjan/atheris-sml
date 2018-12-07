@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PatternDummyType: PatternType {
+class AbstractDummyType: AbstractType {
   let name: String
   
   init(name: String) {
@@ -24,7 +24,7 @@ class PatternDummyType: PatternType {
   }
 }
 
-extension PatternDummyType {
+extension AbstractDummyType {
   func canBeAddedTo(other: Type) -> Bool { return other.isConcrete && other.canBeAddedTo(other: other) }
   func canBeSubtractedFrom(other: Type) -> Bool { return other.isConcrete && other.canBeSubtractedFrom(other: other) }
   func canBeMultiplyedWith(other: Type) -> Bool { return other.isConcrete && other.canBeMultiplyedWith(other: other) }

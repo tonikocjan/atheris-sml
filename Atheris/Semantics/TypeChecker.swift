@@ -35,7 +35,7 @@ extension TypeChecker: AstVisitor {
     try node.expression.accept(visitor: self)
     try node.pattern.accept(visitor: self)
     
-    guard let expressionType = symbolDescription.type(for: node.expression) else { throw Error.internalError }
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
     
     let resultType: Type
     
@@ -64,8 +64,8 @@ extension TypeChecker: AstVisitor {
     try node.parameter.accept(visitor: self)
     try node.body.accept(visitor: self)
     try node.parameter.accept(visitor: self)
-    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw Error.internalError }
-    guard let bodyType = symbolDescription.type(for: node.body) else { throw Error.internalError }
+    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw internalError() }
+    guard let bodyType = symbolDescription.type(for: node.body) else { throw internalError() }
     let functionType = FunctionType(name: node.identifier.name,
                                     parameter: parameterType,
                                     body: bodyType)
@@ -80,8 +80,8 @@ extension TypeChecker: AstVisitor {
     try node.parameter.accept(visitor: self)
     try node.body.accept(visitor: self)
     try node.parameter.accept(visitor: self)
-    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw Error.internalError }
-    guard let bodyType = symbolDescription.type(for: node.body) else { throw Error.internalError }
+    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw internalError() }
+    guard let bodyType = symbolDescription.type(for: node.body) else { throw internalError() }
     let functionType = FunctionType(name: node.identifier.name,
                                     parameter: parameterType,
                                     body: bodyType)
@@ -106,8 +106,8 @@ extension TypeChecker: AstVisitor {
     if let atomType = builtinType(name: node.name) {
       symbolDescription.setType(for: node, type: atomType)
     } else {
-      guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.internalError }
-      guard let type = symbolDescription.type(for: binding) else { throw Error.internalError }
+      guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
+      guard let type = symbolDescription.type(for: binding) else { throw internalError() }
       symbolDescription.setType(for: node, type: type)
     }
   }
@@ -125,8 +125,8 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstNameExpression) throws {
-    guard let binding = symbolDescription.binding(for: node) else { throw Error.internalError }
-    guard let type = symbolDescription.type(for: binding) else { throw Error.internalError }
+    guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
+    guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     symbolDescription.setType(for: node, type: type)
   }
   
@@ -225,7 +225,7 @@ extension TypeChecker: AstVisitor {
     guard
       let conditionType = symbolDescription.type(for: node.condition),
       let trueBranchType = symbolDescription.type(for: node.trueBranch),
-      let falseBranchType = symbolDescription.type(for: node.falseBranch) else { throw Error.internalError }
+      let falseBranchType = symbolDescription.type(for: node.falseBranch) else { throw internalError() }
     
     guard conditionType.isBool else {
       throw Error.testExpressionError(position: node.condition.position, testExpressionType: conditionType)
@@ -242,7 +242,7 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstLetExpression) throws {
     try node.bindings.accept(visitor: self)
     try node.expression.accept(visitor: self)
-    guard let expressionType = symbolDescription.type(for: node.expression) else { throw Error.internalError }
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
     symbolDescription.setType(for: node, type: expressionType)
   }
   
@@ -255,29 +255,37 @@ extension TypeChecker: AstVisitor {
       return
     }
     
+    guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
+    
+    try node.argument.accept(visitor: self)
+    guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
+    
     guard
-      let binding = symbolDescription.binding(for: node),
+      
       let functionType = symbolDescription.type(for: binding)?.asFunction else {
         try node.argument.accept(visitor: self)
+        let abstractFunctionType = FunctionType(name: node.name,
+                                                parameter: argumentType,
+                                                body: AbstractDummyType(name: dummyName()))
+        symbolDescription.setType(for: node, type: abstractFunctionType.body)
+        symbolDescription.setType(for: binding, type: abstractFunctionType)
         return
     }
     
-    try node.argument.accept(visitor: self)
-    guard let argumentType = symbolDescription.type(for: node.argument) else { throw Error.internalError }
     guard argumentType.sameStructureAs(other: functionType.parameter) else {
       throw Error.operatorError(position: node.position,
                                 domain: functionType.parameter.description,
                                 operand: argumentType)
     }
-
+    
     symbolDescription.setType(for: node.argument, type: functionType.parameter)
     symbolDescription.setType(for: node, type: functionType.body)
   }
   
   func visit(node: AstAnonymousFunctionCall) throws {
     try node.function.accept(visitor: self)
-    guard let functionType = symbolDescription.type(for: node.function) as? FunctionType else { throw Error.internalError }
-    symbolDescription.setType(for: node, type: functionType.body)
+    guard let resultType = symbolDescription.type(for: node.function) else { throw internalError() }
+    symbolDescription.setType(for: node, type: resultType.asFunction?.body ?? resultType)
   }
   
   func visit(node: AstIdentifierPattern) throws {
@@ -291,7 +299,7 @@ extension TypeChecker: AstVisitor {
       return
     }
     
-    let dummyPatternType = PatternDummyType(name: dummyName()) // TODO: -
+    let dummyPatternType = AbstractDummyType(name: dummyName()) // TODO: -
     symbolDescription.setType(for: node, type: dummyPatternType)
   }
   
@@ -316,8 +324,8 @@ extension TypeChecker: AstVisitor {
     }
     
     for pattern in node.patterns { try pattern.accept(visitor: self) }
-    let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? PatternType }
-    let tuplePatternType = PatternTupleType(members: types)
+    let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? AbstractType }
+    let tuplePatternType = AbstractTupleType(members: types)
     symbolDescription.setType(for: node, type: tuplePatternType)
   }
   
@@ -338,7 +346,7 @@ extension TypeChecker: AstVisitor {
     guard
       let type = symbolDescription.type(for: node.type),
       let patternType = symbolDescription.type(for: node.pattern) else {
-        throw Error.internalError
+        throw internalError()
     }
     
     guard patternType.sameStructureAs(other: type) else {
@@ -352,6 +360,10 @@ extension TypeChecker: AstVisitor {
   func dummyName() -> String {
     let name = "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])"
     return name
+  }
+  
+  func internalError() -> Error {
+    return Error.internalError
   }
 }
 

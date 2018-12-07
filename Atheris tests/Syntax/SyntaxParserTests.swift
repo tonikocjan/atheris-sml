@@ -42,7 +42,7 @@ val y = a;
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast4")
   }
   
-  func testBinaryExpressions() {
+  func testBinaryExpressionsSyntax() {
     let code = """
 val x = 10 + 20 * 30 / 40;
 val y = ~10;
@@ -55,7 +55,7 @@ val d = 10 <= 5;
     testSyntaxParsing(code: code, expected: "ast5")
   }
   
-  func testBinaryExpressions2() {
+  func testBinaryExpressions2Semantics() {
     let code = """
 val x = 10 + 20;
 val y = 10.5 / 2.3;
@@ -67,14 +67,14 @@ val c = "123" ^ "456";
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast6")
   }
   
-  func testLetExpression() {
+  func testLetExpressionSemantics() {
     let code = """
 val x = let val x = 10 in x end;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast7")
   }
   
-  func testFunctionDefinitionsAndCall() {
+  func testFunctionDefinitionsAndCallSemantics() {
     let code = """
 fun a (x, y, z) = x ^ y ^ z;
 fun b (x, y, z) = x ^ y ^ "abc";
@@ -87,12 +87,19 @@ val v = a ("abc", "efg", "cdf");
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast8")
   }
   
-  func testCurryingSyntaxParsing() {
+  func testCurryingSyntaxAndSemantics() {
     let code = """
 fun mul x y z = x * y * z;
 val x = mul (10) (20) (30);
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast9")
+  }
+  
+  func testFunctionAsAnArugmentSemantics() {
+    let code = """
+fun f g x = (g (x + 1)) + 1;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast10")
   }
 }
 

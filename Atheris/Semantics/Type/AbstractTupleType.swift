@@ -8,10 +8,10 @@
 
 import Foundation
 
-class PatternTupleType: PatternType {
-  let members: [PatternType]
+class AbstractTupleType: AbstractType {
+  let members: [AbstractType]
   
-  init(members: [PatternType]) {
+  init(members: [AbstractType]) {
     self.members = members
   }
   
@@ -28,7 +28,7 @@ class PatternTupleType: PatternType {
   }
 }
 
-extension PatternTupleType {
+extension AbstractTupleType {
   func canBeAddedTo(other: Type) -> Bool { return false }
   func canBeSubtractedFrom(other: Type) -> Bool { return false }
   func canBeMultiplyedWith(other: Type) -> Bool { return false }
