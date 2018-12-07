@@ -30,4 +30,6 @@ protocol AstVisitor {
   func visit(node: AstTuplePattern) throws
   func visit(node: AstRecordPattern) throws
   func visit(node: AstTypedPattern) throws
+  func visit(node: AstMatch) throws
+  func visit(node: AstRule) throws
 }

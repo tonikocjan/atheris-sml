@@ -19,13 +19,3 @@ class AstRecordPattern: AstPattern {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstTuplePattern {
-//  var hashValue: Int {
-//    return position.hashValue
-//  }
-//  
-//  static func == (lhs: AstTuplePattern, rhs: AstTuplePattern) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}

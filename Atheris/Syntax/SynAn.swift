@@ -248,6 +248,8 @@ private extension SynAn {
          .keywordLet,
          .identifier:
       return try parseExpression_(expression: parseIorExpression())
+    case .keywordFn:
+      return try parseAnonymousFunctionExpression()
     default:
       throw reportError("unexpected symbol", symbol.position)
     }
@@ -268,6 +270,45 @@ private extension SynAn {
                            condition: condition,
                            trueBranch: positiveBranch,
                            falseBranch: negativeBranch)
+  }
+  
+  func parseAnonymousFunctionExpression() throws -> AstAnonymousFunctionBinding {
+    guard expecting(.keywordFn) else { throw reportError("expecting `fn`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let match = try parseMatch()
+    return AstAnonymousFunctionBinding(position: startingPosition + match.position,
+                                       parameter: match.rules.first!.pattern,
+                                       body: match.rules.first!.expression)
+  }
+  
+  func parseMatch() throws -> AstMatch {
+    let rules = try parseRules()
+    guard let first = rules.first, let last = rules.last else { throw reportError("parsing match failed", symbol.position) }
+    return AstMatch(position: first.position + last.position,
+                    rules: rules)
+  }
+  
+  func parseRules() throws -> [AstRule] {
+    let rule = try parseRule()
+    return try parseRules_(rule: rule)
+  }
+  
+  func parseRules_(rule: AstRule) throws -> [AstRule] {
+    if !expecting(.pipe) { return [rule] }
+    nextSymbol()
+    let newRule = try parseRule()
+    return [rule] + (try parseRules_(rule: newRule))
+  }
+  
+  func parseRule() throws -> AstRule {
+    let pattern = try parsePattern()
+    guard expecting("=>") else { throw reportError("expecting `=>`", symbol.position) }
+    nextSymbol()
+    let expression = try parseExpression()
+    return AstRule(position: pattern.position + expression.position,
+                   pattern: pattern,
+                   expression: expression)
   }
   
   func parseExpression_(expression: AstExpression) throws -> AstExpression {

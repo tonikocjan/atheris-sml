@@ -283,6 +283,7 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstAnonymousFunctionCall) throws {
+    try node.argument.accept(visitor: self)
     try node.function.accept(visitor: self)
     guard let resultType = symbolDescription.type(for: node.function) else { throw internalError() }
     symbolDescription.setType(for: node, type: resultType.asFunction?.body ?? resultType)
@@ -357,13 +358,12 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node.pattern, type: type)
   }
   
-  func dummyName() -> String {
-    let name = "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])"
-    return name
+  func visit(node: AstMatch) throws {
+    
   }
   
-  func internalError() -> Error {
-    return Error.internalError
+  func visit(node: AstRule) throws {
+    
   }
 }
 
@@ -410,5 +410,17 @@ extension TypeChecker  {
         """
       }
     }
+  }
+}
+
+private extension TypeChecker {
+  func dummyName() -> String {
+    let name = "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])"
+    
+    return name
+  }
+  
+  func internalError() -> Error {
+    return Error.internalError
   }
 }

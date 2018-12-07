@@ -41,11 +41,13 @@ AstBindings [1:1, 2:26]:
     AstAnonymousFunctionCall [2:14, 2:26]:
       -> typed: int
       AstConstantExpression [2:24, 2:26]:
+        -> typed: int
         Value: 30
         Atom type: int
       AstAnonymousFunctionCall [2:14, 2:21]:
         -> typed: fn : int -> int
         AstConstantExpression [2:19, 2:21]:
+          -> typed: int
           Value: 20
           Atom type: int
         AstFunctionCallExpression [2:14, 2:16]:

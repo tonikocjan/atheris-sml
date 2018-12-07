@@ -19,13 +19,3 @@ class AstWildcardPattern: AstPattern {
     try visitor.visit(node: self)
   }
 }
-
-//extension AstWildcardPattern {
-//  var hashValue: Int {
-//    return position.hashValue ^ name.hashValue
-//  }
-//
-//  static func == (lhs: AstWildcardPattern, rhs: AstWildcardPattern) -> Bool {
-//    return lhs.position == rhs.position
-//  }
-//}

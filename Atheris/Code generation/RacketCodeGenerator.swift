@@ -206,6 +206,14 @@ extension RacketCodeGenerator: CodeGenerator {
   func visit(node: AstTypedPattern) throws {
     try node.pattern.accept(visitor: self)
   }
+  
+  func visit(node: AstMatch) throws {
+    
+  }
+  
+  func visit(node: AstRule) throws {
+    
+  }
 }
 
 private extension RacketCodeGenerator {

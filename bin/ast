@@ -1,34 +1,156 @@
-AstBindings [1:1, 1:8]:
-  AstFunBinding [1:1, 1:8]:
-    -> typed: fn : int -> fn : int -> int
+AstBindings [1:1, 5:8]:
+  AstValBinding [1:1, 1:40]:
+    -> typed: fn : 'Z -> fn : 'Z -> fn : fn : ('Z * 'Z) -> 'Z -> 'Z
     AstIdentifierPattern [1:5, 1:6]:
-      -> typed: fn : int -> fn : int -> int
-      Name: f
-    AstIdentifierPattern [1:7, 1:8]:
-      -> typed: int
-      Name: g
-    AstAnonymousFunctionBinding [1:9, 1:28]:
-      -> typed: fn : int -> int
-      AstIdentifierPattern [1:9, 1:10]:
-        -> typed: int
+      -> typed: fn : 'Z -> fn : 'Z -> fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+      Name: x
+    AstAnonymousFunctionBinding [1:9, 1:40]:
+      -> typed: fn : 'Z -> fn : 'Z -> fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+      AstIdentifierPattern [1:12, 1:13]:
+        -> typed: 'Z
         Name: x
-      AstBinaryExpression `+` [1:17, 1:28]:
-        -> typed: int
-        AstFunctionCallExpression [1:17, 1:22]:
-          -> defined at:  [1:7, 1:8]:
-          -> typed: int
-          Function name: g
-          AstBinaryExpression `+` [1:17, 1:22]:
+      AstAnonymousFunctionBinding [1:17, 1:40]:
+        -> typed: fn : 'Z -> fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+        AstIdentifierPattern [1:20, 1:21]:
+          -> typed: 'Z
+          Name: y
+        AstAnonymousFunctionBinding [1:25, 1:40]:
+          -> typed: fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+          AstIdentifierPattern [1:28, 1:29]:
+            -> typed: fn : ('Z * 'Z) -> 'Z
+            Name: z
+          AstFunctionCallExpression [1:36, 1:40]:
+            -> defined at:  [1:28, 1:29]:
+            -> typed: 'Z
+            Function name: z
+            AstTupleExpression [1:36, 1:40]:
+              -> typed: ('Z * 'Z)
+              AstNameExpression [1:36, 1:37]:
+                -> defined at:  [1:12, 1:13]:
+                -> typed: 'Z
+                Name: x
+              AstNameExpression [1:39, 1:40]:
+                -> defined at:  [1:20, 1:21]:
+                -> typed: 'Z
+                Name: y
+  AstValBinding [2:1, 2:40]:
+    -> typed: 'Z
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: 'Z
+      Name: y
+    AstAnonymousFunctionCall [2:12, 2:40]:
+      -> typed: 'Z
+      AstAnonymousFunctionBinding [2:22, 2:40]:
+        -> typed: fn : (int * int) -> int
+        AstTuplePattern [2:25, 2:34]:
+          -> typed: (int * int)
+          AstIdentifierPattern [2:26, 2:27]:
             -> typed: int
-            AstNameExpression [1:17, 1:18]:
-              -> defined at:  [1:9, 1:10]:
-              -> typed: int
-              Name: x
-            AstConstantExpression [1:21, 1:22]:
-              -> typed: int
-              Value: 1
-              Atom type: int
-        AstConstantExpression [1:27, 1:28]:
+            Name: x
+          AstIdentifierPattern [2:29, 2:30]:
+            -> typed: int
+            Name: y
+        AstBinaryExpression `+` [2:35, 2:40]:
           -> typed: int
-          Value: 1
+          AstNameExpression [2:35, 2:36]:
+            -> defined at:  [2:26, 2:27]:
+            -> typed: int
+            Name: x
+          AstNameExpression [2:39, 2:40]:
+            -> defined at:  [2:29, 2:30]:
+            -> typed: int
+            Name: y
+      AstAnonymousFunctionCall [2:12, 2:19]:
+        -> typed: fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+        AstConstantExpression [2:17, 2:19]:
+          -> typed: int
+          Value: 30
           Atom type: int
+        AstFunctionCallExpression [2:12, 2:14]:
+          -> defined at:  [1:5, 1:6]:
+          -> typed: fn : 'Z -> fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+          Function name: x
+          AstConstantExpression [2:12, 2:14]:
+            -> typed: 'Z
+            Value: 20
+            Atom type: int
+  AstValBinding [3:1, 3:46]:
+    -> typed: 'Z
+    AstIdentifierPattern [3:5, 3:6]:
+      -> typed: 'Z
+      Name: z
+    AstAnonymousFunctionCall [3:12, 3:46]:
+      -> typed: 'Z
+      AstAnonymousFunctionBinding [3:28, 3:46]:
+        -> typed: fn : (string * string) -> string
+        AstTuplePattern [3:31, 3:40]:
+          -> typed: (string * string)
+          AstIdentifierPattern [3:32, 3:33]:
+            -> typed: string
+            Name: x
+          AstIdentifierPattern [3:35, 3:36]:
+            -> typed: string
+            Name: y
+        AstBinaryExpression `^` [3:41, 3:46]:
+          -> typed: string
+          AstNameExpression [3:41, 3:42]:
+            -> defined at:  [3:32, 3:33]:
+            -> typed: string
+            Name: x
+          AstNameExpression [3:45, 3:46]:
+            -> defined at:  [3:35, 3:36]:
+            -> typed: string
+            Name: y
+      AstAnonymousFunctionCall [3:12, 3:25]:
+        -> typed: fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+        AstConstantExpression [3:20, 3:25]:
+          -> typed: string
+          Value: efg
+          Atom type: string
+        AstFunctionCallExpression [3:12, 3:17]:
+          -> defined at:  [1:5, 1:6]:
+          -> typed: fn : 'Z -> fn : fn : ('Z * 'Z) -> 'Z -> 'Z
+          Function name: x
+          AstConstantExpression [3:12, 3:17]:
+            -> typed: 'Z
+            Value: abc
+            Atom type: string
+  AstFunBinding [5:1, 5:8]:
+    -> typed: fn : 'Z -> int
+    AstIdentifierPattern [5:5, 5:6]:
+      -> typed: fn : 'Z -> int
+      Name: f
+    AstIdentifierPattern [5:7, 5:8]:
+      -> typed: 'Z
+      Name: x
+    AstLetExpression [6:6, 8:21]:
+      -> typed: int
+      AstBindings [7:11, 8:21]:
+        AstValBinding [7:11, 7:20]:
+          -> typed: 'Z
+          AstIdentifierPattern [7:15, 7:16]:
+            -> typed: int
+            Name: y
+          AstNameExpression [7:19, 7:20]:
+            -> defined at:  [5:7, 5:8]:
+            -> typed: 'Z
+            Name: x
+        AstValBinding [8:11, 8:21]:
+          -> typed: int
+          AstIdentifierPattern [8:15, 8:16]:
+            -> typed: int
+            Name: c
+          AstConstantExpression [8:19, 8:21]:
+            -> typed: int
+            Value: 10
+            Atom type: int
+      AstBinaryExpression `+` [10:11, 10:16]:
+        -> typed: int
+        AstNameExpression [10:11, 10:12]:
+          -> defined at:  [7:15, 7:16]:
+          -> typed: int
+          Name: y
+        AstNameExpression [10:15, 10:16]:
+          -> defined at:  [8:15, 8:16]:
+          -> typed: int
+          Name: c

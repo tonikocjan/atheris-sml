@@ -202,6 +202,23 @@ extension DumpVisitor: AstVisitor {
     try node.type.accept(visitor: self)
     decreaseIndent()
   }
+  
+  func visit(node: AstMatch) throws {
+    print("AstMatch", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    for rule in node.rules { try rule.accept(visitor: self) }
+    decreaseIndent()
+  }
+  
+  func visit(node: AstRule) throws {
+    print("AstRule", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.pattern.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    decreaseIndent()
+  }
 }
 
 private extension DumpVisitor {

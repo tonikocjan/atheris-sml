@@ -38,6 +38,14 @@ fun pow (x: real, y) =
 """
     performFailingTest(code: code)
   }
+  
+  func testAnonymousFunctionOperationNotSupported() {
+    let code = """
+val x = fn x => fn y => fn z => z (x, y);
+val z = x ("abc") ("efg") (fn (x, y) => x + y);
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {
@@ -51,6 +59,7 @@ private extension TypeCheckerTests {
       try nameChecker.visit(node: ast)
       let typeChecker = TypeChecker(symbolTable: symbolTable, symbolDescription: symbolTable.symbolDescription)
       try typeChecker.visit(node: ast)
+      XCTFail()
     } catch {
       guard let _ = error as? TypeChecker.Error else {
         XCTFail()

@@ -70,6 +70,15 @@ val x = mul (10) (20) (30);
 """
     performTest(code: code, filepath: "code6.rkt")
   }
+  
+  func testAnonymousFunctionAsApplication() {
+    let code = """
+val x = fn x => fn y => fn z => z (x, y);
+val y = x (20) (30) (fn (x, y) => x + y);
+val z = x ("abc") ("efg") (fn (x, y) => x ^ y);
+"""
+    performTest(code: code, filepath: "code7.rkt")
+  }
 }
 
 private extension CodeGenerationTests {

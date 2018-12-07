@@ -1,1 +1,11 @@
-fun f g x = (g (x + 1)) + 1;
+val x = fn x => fn y => fn z => z (x, y);
+val y = x (20) (30) (fn (x, y) => x + y);
+val z = x ("abc") ("efg") (fn (x, y) => x ^ y);
+
+fun f x = 
+	let 
+		val y = x
+		val c = 10
+	in
+		y + c
+	end;

@@ -28,6 +28,7 @@ struct Position {
 
 extension Position {
   static func + (_ lhs: Position, _ rhs: Position) -> Position {
+    guard lhs != rhs else { return lhs }
     return Position(startLocation: lhs.startLocation, endLocation: rhs.endLocation)
   }
 }
