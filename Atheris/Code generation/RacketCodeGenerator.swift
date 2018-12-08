@@ -59,9 +59,7 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstValBinding) throws {
-    guard let type = symbolDescription.type(for: node) else { return }
-    let define = type.isTuple ? "(match-define-values " : "(define "
-    print(define)
+    print("(define ")
     try node.pattern.accept(visitor: self)
     print(" ")
     try node.expression.accept(visitor: self)
@@ -113,7 +111,7 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    if !shouldPrintParents { print("(values ") }
+    if !shouldPrintParents { print("(list ") }
     try perform(on: node.expressions, appending: " ")
     if !shouldPrintParents { print(")") }
   }
@@ -196,7 +194,25 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstRecordSelectorExpression) throws {
+    guard
+      let record = symbolDescription.type(for: node.record)?.toRecord,
+      let rowIndex = record.index(of: node.label.name) else { return }
     
+    increaseIndent()
+    newLine()
+    print("(car ")
+    for _ in 0..<rowIndex {
+      increaseIndent()
+      newLine()
+      print("(cdr ")
+    }
+    try node.record.accept(visitor: self)
+    print(")")
+    decreaseIndent()
+    for _ in 0..<rowIndex {
+      print(")")
+      decreaseIndent()
+    }
   }
   
   func visit(node: AstIdentifierPattern) throws {

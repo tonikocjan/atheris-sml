@@ -90,7 +90,7 @@ val v = a ("abc", "efg", "cdf");
   func testCurryingSyntaxAndSemantics() {
     let code = """
 fun mul x y z = x * y * z;
-val x = mul (10) (20) (30);
+val x = ((mul (10)) (20)) (30);
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast9")
   }
@@ -118,6 +118,14 @@ val a = #1 y;
 val b = #2 z;
 val c = #1 x;
 val d = #2 x;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast12")
+  }
+  
+  func testRecordAndSelectionSemantics() {
+    let code = """
+val x = {a = 10, b = "string", promise = {evaled = false, f = fn x => x * x}};
+val a = (#f (#promise x)) (10);
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast12")
   }

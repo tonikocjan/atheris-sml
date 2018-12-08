@@ -486,7 +486,15 @@ private extension SynAn {
   }
   
   func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
-    return expression
+    switch symbol.token {
+    case .leftParent:
+      let argument = try parseExpression()
+      return AstAnonymousFunctionCall(position: expression.position + argument.position,
+                                      function: expression,
+                                      argument: argument)
+    default:
+      return expression
+    }
   }
   
   func parseAtomExpression() throws -> AstExpression {

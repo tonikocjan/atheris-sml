@@ -66,7 +66,7 @@ val x = pow (3, 3);
   func testCurrying() {
     let code = """
 fun mul x y z = x * y * z;
-val x = mul (10) (20) (30);
+val x = ((mul (10)) (20)) (30);
 """
     performTest(code: code, filepath: "code6.rkt")
   }
@@ -74,10 +74,18 @@ val x = mul (10) (20) (30);
   func testAnonymousFunctionAsApplication() {
     let code = """
 val x = fn x => fn y => fn z => z (x, y);
-val y = x (20) (30) (fn (x, y) => x + y);
-val z = x ("abc") ("efg") (fn (x, y) => x ^ y);
+val y = ((x (20)) (30)) (fn (x, y) => x + y);
+val z = ((x ("abc")) ("efg")) (fn (x, y) => x ^ y);
 """
     performTest(code: code, filepath: "code7.rkt")
+  }
+  
+  func testRecordAndRecordSelection() {
+    let code = """
+val x = {a = 10, b = "string", promise = {evaled = false, f = fn x => x * x}};
+val a = (#f (#promise x)) (10);
+"""
+    performTest(code: code, filepath: "code8.rkt")
   }
 }
 

@@ -2,17 +2,23 @@
 
 #lang racket
 
-(match-define-values x (values 10 20))
+(define x (list 10 20))
 x
 (define y (list 10 20))
 y
 (define z (list 55 30))
 z
-(define a )
+(define a 
+  (car y))
 a
-(define b )
+(define b 
+  (car 
+    (cdr z)))
 b
-(define c )
+(define c 
+  (car x))
 c
-(define d )
+(define d 
+  (car 
+    (cdr x)))
 d

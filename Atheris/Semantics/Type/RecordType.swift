@@ -16,6 +16,19 @@ class RecordType: Type {
     self.rows = rows
   }
   
+
+  func row(for name: String) -> Type? {
+    return rows.first(where: { $0.name == name })?.type
+  }
+  
+  func index(of row: String) -> Int? {
+    return rows.enumerated().first(where: { $0.element.name == row })?.offset
+  }
+  
+  var description: String {
+    return "{\(rows.map { $0.name + ":" + $0.type.description }.joined(separator: ", "))}"
+  }
+  
   func sameStructureAs(other: Type) -> Bool {
     guard let record = other.toRecord else {
       if rows.count == 1, let other = other.toAtom, let first = rows.first?.type {
@@ -30,14 +43,6 @@ class RecordType: Type {
           tuple.0.type.sameStructureAs(other: tuple.1.type) &&
           tuple.0.name == tuple.1.name
       })
-  }
-  
-  var description: String {
-    return "{\(rows.map { $0.name + ":" + $0.type.description }.joined(separator: ", "))}"
-  }
-  
-  func row(for name: String) -> Type? {
-    return rows.first(where: { $0.name == name })?.type
   }
 }
 
