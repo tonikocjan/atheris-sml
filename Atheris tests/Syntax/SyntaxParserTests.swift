@@ -101,6 +101,13 @@ fun f g x = (g (x + 1)) + 1;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast10")
   }
+  
+  func testRecordExpressionSemantics() {
+    let code = """
+val x = {a = 10, b = "string", promise = {evaled = false, f = fn x => x * x}};
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast11")
+  }
 }
 
 private extension SyntaxParserTests {

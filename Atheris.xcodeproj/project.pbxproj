@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3716C92621BBBC0E00A24765 /* AstRecordRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C92521BBBC0E00A24765 /* AstRecordRow.swift */; };
+		3716C92721BBBC0E00A24765 /* AstRecordRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C92521BBBC0E00A24765 /* AstRecordRow.swift */; };
+		3716C92921BBBCA600A24765 /* AstRecordExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C92821BBBCA600A24765 /* AstRecordExpression.swift */; };
+		3716C92A21BBBCA600A24765 /* AstRecordExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C92821BBBCA600A24765 /* AstRecordExpression.swift */; };
+		3716C92C21BBC14800A24765 /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C92B21BBC14800A24765 /* RecordType.swift */; };
+		3716C92D21BBC14800A24765 /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C92B21BBC14800A24765 /* RecordType.swift */; };
+		3716C92F21BBC4CB00A24765 /* ast11 in Resources */ = {isa = PBXBuildFile; fileRef = 3716C92E21BBC4CB00A24765 /* ast11 */; };
 		3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A755215A2D8100917960 /* ArgumentParserTests.swift */; };
 		3734A759215A2F3100917960 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
 		3734A75A215A2F3300917960 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
@@ -172,6 +179,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3716C92521BBBC0E00A24765 /* AstRecordRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstRecordRow.swift; sourceTree = "<group>"; };
+		3716C92821BBBCA600A24765 /* AstRecordExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstRecordExpression.swift; sourceTree = "<group>"; };
+		3716C92B21BBC14800A24765 /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
+		3716C92E21BBC4CB00A24765 /* ast11 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast11; sourceTree = "<group>"; };
 		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
@@ -326,6 +337,7 @@
 			children = (
 				374505F921B538B80051E1E9 /* Type.swift */,
 				374505FC21B53C870051E1E9 /* AtomType.swift */,
+				3716C92B21BBC14800A24765 /* RecordType.swift */,
 				374505FF21B53C950051E1E9 /* TupleType.swift */,
 				3790FECE21B7C813005CA8D5 /* FunctionType.swift */,
 				3745060221B53EA80051E1E9 /* AbstractType.swift */,
@@ -519,6 +531,8 @@
 				3790FEC521B79D8E005CA8D5 /* AstLetExpression.swift */,
 				3790FECB21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift */,
 				378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */,
+				3716C92821BBBCA600A24765 /* AstRecordExpression.swift */,
+				3716C92521BBBC0E00A24765 /* AstRecordRow.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -588,6 +602,7 @@
 				3790FED121B7E44F005CA8D5 /* ast8 */,
 				378EB82021B8FA0700E576E6 /* ast9 */,
 				378EB82A21BA531400E576E6 /* ast10 */,
+				3716C92E21BBC4CB00A24765 /* ast11 */,
 			);
 			path = Asts;
 			sourceTree = "<group>";
@@ -674,6 +689,7 @@
 				3790FED221B7E44F005CA8D5 /* ast8 in Resources */,
 				3745064521B6D9260051E1E9 /* code2.rkt in Resources */,
 				3745061921B58F140051E1E9 /* ast4 in Resources */,
+				3716C92F21BBC4CB00A24765 /* ast11 in Resources */,
 				374505F421B536B50051E1E9 /* ast2 in Resources */,
 				3790FED421B7FEC2005CA8D5 /* code4.rkt in Resources */,
 				378EB82121B8FA0700E576E6 /* ast9 in Resources */,
@@ -749,6 +765,7 @@
 				374505E521B518FA0051E1E9 /* SymbolTable.swift in Sources */,
 				3745063B21B6C6990051E1E9 /* RacketCodeGenerator.swift in Sources */,
 				37E0CE2E216A466100BAFD2A /* OutputStream.swift in Sources */,
+				3716C92A21BBBCA600A24765 /* AstRecordExpression.swift in Sources */,
 				3745060D21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */,
 				37E0CE31216A46C000BAFD2A /* FileWriter.swift in Sources */,
 				374505E921B51A4B0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,
@@ -757,6 +774,7 @@
 				378EB82421B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */,
 				375FF4FD2161E0930088F7A3 /* FileReader.swift in Sources */,
 				37D396B121BA698800C11EB5 /* AstMatch.swift in Sources */,
+				3716C92D21BBC14800A24765 /* RecordType.swift in Sources */,
 				37E0CE212168FAB800BAFD2A /* FileInputStream.swift in Sources */,
 				37E0CE2F216A466400BAFD2A /* FileOutputStream.swift in Sources */,
 				3745060421B53EAA0051E1E9 /* AbstractType.swift in Sources */,
@@ -766,6 +784,7 @@
 				374505F121B5341F0051E1E9 /* SymbolDescription.swift in Sources */,
 				37F024BA21B3F9FD006B868E /* TextStream.swift in Sources */,
 				374505FB21B538E00051E1E9 /* Type.swift in Sources */,
+				3716C92721BBBC0E00A24765 /* AstRecordRow.swift in Sources */,
 				3734A75A215A2F3300917960 /* Symbol.swift in Sources */,
 				375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */,
 				3745063421B6BCAB0051E1E9 /* AstIfExpression.swift in Sources */,
@@ -782,10 +801,12 @@
 				37F024CF21B41697006B868E /* AstRecordPattern.swift in Sources */,
 				3745060921B5449C0051E1E9 /* AbstractDummyType.swift in Sources */,
 				37F024AD21B3F705006B868E /* AstValBinding.swift in Sources */,
+				3716C92C21BBC14800A24765 /* RecordType.swift in Sources */,
 				378EB82321B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */,
 				37F024AF21B3F7C9006B868E /* AstBinding.swift in Sources */,
 				3790FECF21B7C813005CA8D5 /* FunctionType.swift in Sources */,
 				37F024A421B3F40B006B868E /* AstVisitor.swift in Sources */,
+				3716C92921BBBCA600A24765 /* AstRecordExpression.swift in Sources */,
 				3745060621B53EC10051E1E9 /* AbstractTupleType.swift in Sources */,
 				37F024A721B3F483006B868E /* SyntaxParser.swift in Sources */,
 				37F024CD21B413B2006B868E /* AstTuplePattern.swift in Sources */,
@@ -830,6 +851,7 @@
 				37F024BC21B3FA2C006B868E /* SynAn.swift in Sources */,
 				37F024C221B40DA0006B868E /* AstExpression.swift in Sources */,
 				374505EF21B530C90051E1E9 /* AstNameExpression.swift in Sources */,
+				3716C92621BBBC0E00A24765 /* AstRecordRow.swift in Sources */,
 				374505ED21B52ACA0051E1E9 /* NameChecker.swift in Sources */,
 				3745060C21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */,
 				3745061E21B59F860051E1E9 /* AstUnaryExpression.swift in Sources */,

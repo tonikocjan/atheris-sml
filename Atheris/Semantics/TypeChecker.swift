@@ -289,6 +289,22 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: resultType.asFunction?.body ?? resultType)
   }
   
+  func visit(node: AstRecordExpression) throws {
+    for row in node.rows { try row.accept(visitor: self) }
+    let types = node.rows.compactMap { symbolDescription.type(for: $0) }
+    let rows = zip(node.rows, types).map { ($0.0.label.name, $0.1) }
+    let recordType = RecordType(rows: rows)
+    symbolDescription.setType(for: node, type: recordType)
+  }
+  
+  func visit(node: AstRecordRow) throws {
+    try node.label.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    guard let type = symbolDescription.type(for: node.expression) else { throw internalError() }
+    symbolDescription.setType(for: node.label, type: type)
+    symbolDescription.setType(for: node, type: type)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       // TOOD: - Let's try to get rid of this

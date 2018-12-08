@@ -166,6 +166,23 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstRecordExpression) throws {
+    print("AstRecordExpression", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    for row in node.rows { try row.accept(visitor: self) }
+    decreaseIndent()
+  }
+  
+  func visit(node: AstRecordRow) throws {
+    print("AstRecordRow", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.label.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    decreaseIndent()
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()

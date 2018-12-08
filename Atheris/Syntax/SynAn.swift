@@ -189,6 +189,10 @@ private extension SynAn {
   }
   
   func parseRecordPattern() throws -> AstRecordPattern {
+    guard expecting(.leftBrace) else { throw reportError("expecting `{`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let recordRow = try parseRecordRow()
     throw NSError()
   }
 }
@@ -517,6 +521,8 @@ private extension SynAn {
       return expression
     case .keywordLet:
       return try parseLetExpression()
+    case .leftBrace:
+      return try parseRecordExpression()
     default:
       throw reportError("unable to parse expression", symbol.position)
     }
@@ -569,9 +575,7 @@ private extension SynAn {
   }
   
   func parseLetExpression() throws -> AstLetExpression {
-    guard expecting(.keywordLet) else {
-      throw reportError("expected `let`", symbol.position)
-    }
+    guard expecting(.keywordLet) else { throw reportError("expected `let`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
     let bindings = try parseBindings(separated: "", stop: .keywordIn)
@@ -583,6 +587,41 @@ private extension SynAn {
     return AstLetExpression(position: startingPosition + bindings.position,
                             bindings: bindings,
                             expression: expression)
+  }
+  
+  func parseRecordExpression() throws -> AstRecordExpression {
+    guard expecting(.leftBrace) else { throw reportError("expecting `{`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let rows = try parseRecordRows()
+    guard expecting(.rightBrace) else { throw reportError("expecting `}`", symbol.position) }
+    let endingPosition = symbol.position
+    nextSymbol()
+    return AstRecordExpression(position: startingPosition + endingPosition,
+                               rows: rows)
+  }
+  
+  func parseRecordRows() throws -> [AstRecordRow] {
+    let row = try parseRecordRow()
+    return try parseRecordRows_(row: row)
+  }
+  
+  func parseRecordRows_(row: AstRecordRow) throws -> [AstRecordRow] {
+    if expecting(.rightBrace) { return [row] }
+    guard expecting(.comma) else { throw reportError("expecting `,`", symbol.position) }
+    nextSymbol()
+    let newRow = try parseRecordRow()
+    return [row] + (try parseRecordRows_(row: newRow))
+  }
+  
+  func parseRecordRow() throws -> AstRecordRow {
+    let identifier = parseIdentifierPattern()
+    guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
+    nextSymbol()
+    let expression = try parseExpression()
+    return AstRecordRow(position: identifier.position + expression.position,
+                        label: identifier,
+                        expression: expression)
   }
 }
 

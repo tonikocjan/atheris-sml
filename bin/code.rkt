@@ -2,21 +2,6 @@
 
 #lang racket
 
-(define x (lambda (x)
-  (lambda (y)
-    (lambda (z)
-      (z x y)))))
+(define x a10b"string"promiseevaledfalsef(lambda (x)
+  (* x x)))
 x
-(define y (((x 20) 30) (lambda (x y)
-  (+ x y))))
-y
-(define z (((x "abc") "efg") (lambda (x y)
-  (string-append x y))))
-z
-(define (f x)
-  (define y x)
-  y
-  (define c 10)
-  c
-  (+ y c))
-f
