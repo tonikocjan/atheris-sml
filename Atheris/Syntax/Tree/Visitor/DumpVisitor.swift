@@ -183,6 +183,14 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstListExpression) throws {
+    print("AstListExpression", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    for element in node.elements { try element.accept(visitor: self) }
+    decreaseIndent()
+  }
+  
   func visit(node: AstRecordSelectorExpression) throws {
     print("AstRecordRow", node.position)
     increaseIndent()

@@ -103,6 +103,13 @@ val a = #a y;
 """
     performFailingTest(code: code)
   }
+  
+  func testListExpressionNotSameTypesShouldFail() {
+    let code = """
+val x = [1, 2, true];
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

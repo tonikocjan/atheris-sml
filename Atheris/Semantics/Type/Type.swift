@@ -95,6 +95,11 @@ extension Type {
 }
 
 extension Type {
+  var isList: Bool { return self is ListType }
+  var toList: ListType? { return self as? ListType}
+}
+
+extension Type {
   func isBinaryOperationValid(_ operation: Operation, other: Type) -> Type? {
     switch operation {
     case .add:

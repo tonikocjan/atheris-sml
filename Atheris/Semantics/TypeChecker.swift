@@ -322,6 +322,25 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: row)
   }
   
+  func visit(node: AstListExpression) throws {
+    func areSame(types: [Type]) throws {
+      guard let first = types.first else { return }
+      for type in types.dropFirst() {
+        guard first.sameStructureAs(other: type) else {
+          throw Error.operatorError(position: node.position,
+                                    domain: "[\(first.description)] * [\(first.description)] list",
+                                    operand: TupleType.formPair(first, type))
+        }
+      }
+    }
+    
+    for element in node.elements { try element.accept(visitor: self) }
+    let types = node.elements.compactMap { symbolDescription.type(for: $0) }
+    try areSame(types: types)
+    let listType = ListType(elementType: types.first!)
+    symbolDescription.setType(for: node, type: listType)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       // TOOD: - Let's try to get rid of this

@@ -19,6 +19,11 @@
 		3716C93421BBD07C00A24765 /* ast12 in Resources */ = {isa = PBXBuildFile; fileRef = 3716C93321BBD07C00A24765 /* ast12 */; };
 		3716C93621BC041400A24765 /* ast13 in Resources */ = {isa = PBXBuildFile; fileRef = 3716C93521BC041400A24765 /* ast13 */; };
 		3716C93821BC043E00A24765 /* code8.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3716C93721BC043E00A24765 /* code8.rkt */; };
+		3716C93D21BC0D2100A24765 /* AstListExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C93C21BC0D2100A24765 /* AstListExpression.swift */; };
+		3716C93E21BC0D2100A24765 /* AstListExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C93C21BC0D2100A24765 /* AstListExpression.swift */; };
+		3716C94021BC0FFB00A24765 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C93F21BC0FFB00A24765 /* ListType.swift */; };
+		3716C94121BC0FFB00A24765 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C93F21BC0FFB00A24765 /* ListType.swift */; };
+		3716C94321BC137E00A24765 /* ast14 in Resources */ = {isa = PBXBuildFile; fileRef = 3716C94221BC137E00A24765 /* ast14 */; };
 		3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A755215A2D8100917960 /* ArgumentParserTests.swift */; };
 		3734A759215A2F3100917960 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
 		3734A75A215A2F3300917960 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
@@ -192,6 +197,9 @@
 		3716C93321BBD07C00A24765 /* ast12 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast12; sourceTree = "<group>"; };
 		3716C93521BC041400A24765 /* ast13 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast13; sourceTree = "<group>"; };
 		3716C93721BC043E00A24765 /* code8.rkt */ = {isa = PBXFileReference; lastKnownFileType = text; path = code8.rkt; sourceTree = "<group>"; };
+		3716C93C21BC0D2100A24765 /* AstListExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstListExpression.swift; sourceTree = "<group>"; };
+		3716C93F21BC0FFB00A24765 /* ListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListType.swift; sourceTree = "<group>"; };
+		3716C94221BC137E00A24765 /* ast14 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast14; sourceTree = "<group>"; };
 		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
@@ -352,6 +360,7 @@
 				3745060221B53EA80051E1E9 /* AbstractType.swift */,
 				3745060521B53EC10051E1E9 /* AbstractTupleType.swift */,
 				3745060821B5449C0051E1E9 /* AbstractDummyType.swift */,
+				3716C93F21BC0FFB00A24765 /* ListType.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -544,6 +553,7 @@
 				3716C92821BBBCA600A24765 /* AstRecordExpression.swift */,
 				3716C92521BBBC0E00A24765 /* AstRecordRow.swift */,
 				3716C93021BBCBC500A24765 /* AstRecordSelectorExpression.swift */,
+				3716C93C21BC0D2100A24765 /* AstListExpression.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -616,6 +626,7 @@
 				3716C92E21BBC4CB00A24765 /* ast11 */,
 				3716C93321BBD07C00A24765 /* ast12 */,
 				3716C93521BC041400A24765 /* ast13 */,
+				3716C94221BC137E00A24765 /* ast14 */,
 			);
 			path = Asts;
 			sourceTree = "<group>";
@@ -699,6 +710,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37D396B321BA6E0C00C11EB5 /* code7.rkt in Resources */,
+				3716C94321BC137E00A24765 /* ast14 in Resources */,
 				3790FED221B7E44F005CA8D5 /* ast8 in Resources */,
 				3745064521B6D9260051E1E9 /* code2.rkt in Resources */,
 				3745061921B58F140051E1E9 /* ast4 in Resources */,
@@ -750,8 +762,10 @@
 				3745060721B53EC30051E1E9 /* AbstractTupleType.swift in Sources */,
 				374505D221B50FFE0051E1E9 /* AstTypeName.swift in Sources */,
 				374505E621B518FC0051E1E9 /* SymbolTableProtocol.swift in Sources */,
+				3716C94121BC0FFB00A24765 /* ListType.swift in Sources */,
 				3745063821B6C6600051E1E9 /* CodeGenerator.swift in Sources */,
 				3745064121B6CF290051E1E9 /* TextOutputStream.swift in Sources */,
+				3716C93E21BC0D2100A24765 /* AstListExpression.swift in Sources */,
 				374505D321B50FFE0051E1E9 /* AstBindings.swift in Sources */,
 				374505D421B50FFE0051E1E9 /* AstBinding.swift in Sources */,
 				3745060A21B5449C0051E1E9 /* AbstractDummyType.swift in Sources */,
@@ -812,6 +826,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3716C93D21BC0D2100A24765 /* AstListExpression.swift in Sources */,
 				374505FD21B53C870051E1E9 /* AtomType.swift in Sources */,
 				3745064A21B6DDC00051E1E9 /* Executor.swift in Sources */,
 				374505E221B5183D0051E1E9 /* SymbolTableProtocol.swift in Sources */,
@@ -852,6 +867,7 @@
 				3761650C21553D2A0058BD03 /* TokenType.swift in Sources */,
 				375FF50A2161E0D60088F7A3 /* Atheris.swift in Sources */,
 				3716C93121BBCBC500A24765 /* AstRecordSelectorExpression.swift in Sources */,
+				3716C94021BC0FFB00A24765 /* ListType.swift in Sources */,
 				3745061621B562880051E1E9 /* AstTupleType.swift in Sources */,
 				37F024BE21B3FAC0006B868E /* AstBindings.swift in Sources */,
 				37F024A921B3F4C2006B868E /* AstNode.swift in Sources */,

@@ -120,6 +120,10 @@ extension NameChecker: AstVisitor {
     try node.expression.accept(visitor: self)
   }
   
+  func visit(node: AstListExpression) throws {
+    for element in node.elements { try element.accept(visitor: self) }
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     try insertIdentifier(identifier: node)
   }

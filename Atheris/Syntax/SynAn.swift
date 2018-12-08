@@ -536,6 +536,8 @@ private extension SynAn {
       return try parseLetExpression()
     case .leftBrace:
       return try parseRecordExpression()
+    case .leftBracket:
+      return try parseListExpression()
     default:
       throw reportError("unable to parse expression", symbol.position)
     }
@@ -646,6 +648,18 @@ private extension SynAn {
     return AstRecordSelectorExpression(position: startingPosition + label.position,
                                        label: label,
                                        record: record)
+  }
+  
+  func parseListExpression() throws -> AstListExpression {
+    guard expecting(.leftBracket) else { throw reportError("expecting `[`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let expressions = try parseCommaSeparatedExpressions()
+    guard expecting(.rightBracket) else { throw reportError("expecting `]`", symbol.position) }
+    nextSymbol()
+    let endingPosition = symbol.position
+    return AstListExpression(position: startingPosition + endingPosition,
+                             elements: expressions)
   }
 }
 

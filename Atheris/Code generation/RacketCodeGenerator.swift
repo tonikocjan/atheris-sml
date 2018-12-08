@@ -215,6 +215,12 @@ extension RacketCodeGenerator: CodeGenerator {
     }
   }
   
+  func visit(node: AstListExpression) throws {
+    print("(list ")
+    try perform(on: node.elements, appending: " ")
+    print(")")
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     print(node.name)
   }
