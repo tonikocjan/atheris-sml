@@ -21,10 +21,10 @@ class AbstractTupleType: AbstractType {
   
   func sameStructureAs(other: Type) -> Bool {
     guard let other = other.toTuple else { return false }
-    guard members.count == other.members.count else { return false }
+    guard members.count == other.rows.count else { return false }
     
-    return zip(members, other.members)
-      .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1) })
+    return zip(members, other.rows)
+      .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1.type) })
   }
 }
 

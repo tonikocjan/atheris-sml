@@ -17,7 +17,19 @@ class RecordType: Type {
   }
   
   func sameStructureAs(other: Type) -> Bool {
-    return false // TODO: -
+    guard let record = other.toRecord else {
+      if rows.count == 1, let other = other.toAtom, let first = rows.first?.type {
+        return first.sameStructureAs(other: other)
+      }
+      return false
+    }
+    guard record.rows.count == rows.count else { return false }
+    return zip(rows, record.rows)
+      .reduce(true, { (acc, tuple) in
+        return acc &&
+          tuple.0.type.sameStructureAs(other: tuple.1.type) &&
+          tuple.0.name == tuple.1.name
+      })
   }
   
   var description: String {

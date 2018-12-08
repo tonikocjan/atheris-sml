@@ -85,6 +85,8 @@ extension Type {
 extension Type {
   var isTuple: Bool { return self is TupleType }
   var toTuple: TupleType? { return self as? TupleType}
+  var isRecord: Bool { return self is RecordType }
+  var toRecord: RecordType? { return self as? RecordType}
 }
 
 extension Type {

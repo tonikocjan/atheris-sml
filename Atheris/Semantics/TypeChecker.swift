@@ -327,8 +327,8 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstTuplePattern) throws {
     if let parentNodeType = typeDistributionStack.last as? TupleType {
       symbolDescription.setType(for: node, type: parentNodeType)
-      for (type, pattern) in zip(parentNodeType.members, node.patterns) {
-        typeDistributionStack.append(type)
+      for (row, pattern) in zip(parentNodeType.rows, node.patterns) {
+        typeDistributionStack.append(row.type)
         try pattern.accept(visitor: self)
         _ = typeDistributionStack.popLast()
       }
