@@ -165,7 +165,7 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstFunctionCallExpression) throws {
     print("(")
-    print(node.name)
+    print(functionName(for: node.name))
     print(" ")
     shouldPrintParents = true
     try node.argument.accept(visitor: self)
@@ -279,4 +279,12 @@ private extension RacketCodeGenerator {
     }
     try nodes.last?.accept(visitor: self)
   }
+  
+  func functionName(for function: String) -> String {
+    return RacketCodeGenerator.builtinFunctionsMapping[function] ?? function
+  }
+  
+  static let builtinFunctionsMapping =
+    ["hd": "car",
+     "tl": "cdr"]
 }

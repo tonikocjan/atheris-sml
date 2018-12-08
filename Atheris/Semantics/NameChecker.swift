@@ -15,6 +15,21 @@ class NameChecker {
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
     self.symbolDescription = symbolDescription
+    
+    insertBuiltinFunctions()
+  }
+  
+  private func insertBuiltinFunctions() {
+    let hd = AstFunBinding(position: .zero,
+                           identifier: AstIdentifierPattern(position: .zero, name: "hd"),
+                           parameter: AstIdentifierPattern(position: .zero, name: "lst"),
+                           body: AstConstantExpression(position: .zero, value: "", type: .int))
+    let tl = AstFunBinding(position: .zero,
+                           identifier: AstIdentifierPattern(position: .zero, name: "tl"),
+                           parameter: AstIdentifierPattern(position: .zero, name: "lst"),
+                           body: AstConstantExpression(position: .zero, value: "", type: .int))
+    [hd, tl].forEach { try! symbolTable.addBindingToCurrentScope(name: $0.identifier.name,
+                                                                 binding: $0) }
   }
 }
 
@@ -60,7 +75,14 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstNameExpression) throws {
-    guard let binding = findBinding(for: node.name) else {
+    switch node.name {
+    case "hd", "tl":
+      return
+    default:
+      break
+    }
+    
+    guard let binding = symbolTable.findBinding(name: node.name) else {
       throw Error.bindingNotFound(node.name, node.position)
     }
     symbolDescription.bindNode(node, binding: binding)
@@ -93,6 +115,13 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
+//    switch node.name {
+//    case "hd", "tl":
+//      return
+//    default:
+//      break
+//    }
+    
     guard let binding = symbolTable.findBinding(name: node.name) else {
       throw Error.bindingNotFound(node.name, node.position)
     }
@@ -125,7 +154,7 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstIdentifierPattern) throws {
-    try insertIdentifier(identifier: node)
+    try symbolTable.addBindingToCurrentScope(name: node.name, binding: node)
   }
   
   func visit(node: AstWildcardPattern) throws {
@@ -167,12 +196,5 @@ extension NameChecker {
 }
 
 private extension NameChecker {
-  func insertIdentifier(identifier: AstIdentifierPattern) throws {
-    try symbolTable.addBindingToCurrentScope(name: identifier.name,
-                                             binding: identifier)
-  }
   
-  func findBinding(for name: String) -> AstBinding? {
-    return symbolTable.findBinding(name: name)
-  }
 }
