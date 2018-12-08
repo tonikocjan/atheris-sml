@@ -106,15 +106,18 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstRecordExpression) throws {
-    ///
-  }
-  
-  func visit(node: AstRecordRow) throws {
-    ///
+    symbolTable.newScope()
+    for row in node.rows { try row.accept(visitor: self) }
+    symbolTable.oldScope()
   }
   
   func visit(node: AstRecordSelectorExpression) throws {
     try node.record.accept(visitor: self)
+  }
+  
+  func visit(node: AstRecordRow) throws {
+    try node.label.accept(visitor: self)
+    try node.expression.accept(visitor: self)
   }
   
   func visit(node: AstIdentifierPattern) throws {
