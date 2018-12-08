@@ -74,6 +74,35 @@ val c = x = y andalso y == z;
 """
     performSucceedingTest(code: code)
   }
+  
+  func testRecordSelectorShouldSucceed() {
+    let code = """
+val x = (10, 20);
+val y = {1 = 10, 2 = 20};
+val z = {1 = 55, 2 = 30};
+val a = #1 y;
+val b = #2 z;
+val c = #1 x;
+val d = #2 x;
+"""
+    performSucceedingTest(code: code)
+  }
+  
+  func testRecordSelectorShouldFailNotPresent() {
+    let code = """
+val y = {1 = 10, 2 = 20};
+val a = #a y;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testRecordSelectorShouldFailNotRecord() {
+    let code = """
+val y = "abc";
+val a = #a y;
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

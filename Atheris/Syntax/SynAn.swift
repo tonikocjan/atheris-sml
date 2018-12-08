@@ -506,13 +506,18 @@ private extension SynAn {
       nextSymbol()
       return AstConstantExpression(position: currentSymbol.position, value: currentSymbol.lexeme, type: .bool)
     case .identifier:
-      let identifier = symbol
-      nextSymbol()
-      if expecting(.leftParent) {
-        let functionCall = try parseFunctionCallExpression(identifier: identifier.lexeme)
-        return functionCall
+      switch symbol.lexeme {
+      case "#":
+        return try parseRecordSelectorExpression()
+      default:
+        let identifier = symbol
+        nextSymbol()
+        if expecting(.leftParent) {
+          let functionCall = try parseFunctionCallExpression(identifier: identifier.lexeme)
+          return functionCall
+        }
+        return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
       }
-      return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
     case .leftParent:
       let expression = try parseTupleExpression()
       if expression.expressions.count == 1, let first = expression.expressions.first {
@@ -622,6 +627,17 @@ private extension SynAn {
     return AstRecordRow(position: identifier.position + expression.position,
                         label: identifier,
                         expression: expression)
+  }
+  
+  func parseRecordSelectorExpression() throws -> AstRecordSelectorExpression {
+    guard expecting("#") else { throw reportError("expecting `#`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let label = parseIdentifierPattern()
+    let record = try parseExpression()
+    return AstRecordSelectorExpression(position: startingPosition + label.position,
+                                       label: label,
+                                       record: record)
   }
 }
 

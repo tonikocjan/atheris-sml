@@ -108,6 +108,19 @@ val x = {a = 10, b = "string", promise = {evaled = false, f = fn x => x * x}};
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast11")
   }
+  
+  func testRecordSelectionSemantics() {
+    let code = """
+val x = (10, 20);
+val y = {1 = 10, 2 = 20};
+val z = {1 = 55, 2 = 30};
+val a = #1 y;
+val b = #2 z;
+val c = #1 x;
+val d = #2 x;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast12")
+  }
 }
 
 private extension SyntaxParserTests {

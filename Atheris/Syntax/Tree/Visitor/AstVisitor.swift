@@ -27,6 +27,7 @@ protocol AstVisitor {
   func visit(node: AstAnonymousFunctionCall) throws
   func visit(node: AstRecordExpression) throws
   func visit(node: AstRecordRow) throws
+  func visit(node: AstRecordSelectorExpression) throws
   func visit(node: AstIdentifierPattern) throws
   func visit(node: AstWildcardPattern) throws
   func visit(node: AstTuplePattern) throws

@@ -2,9 +2,17 @@
 
 #lang racket
 
-(define x 110320)
+(match-define-values x (values 10 20))
 x
-(define y 110320)
+(define y (list 10 20))
 y
-(define c (equal? x y))
+(define z (list 55 30))
+z
+(define a )
+a
+(define b )
+b
+(define c )
 c
+(define d )
+d

@@ -35,6 +35,10 @@ class RecordType: Type {
   var description: String {
     return "{\(rows.map { $0.name + ":" + $0.type.description }.joined(separator: ", "))}"
   }
+  
+  func row(for name: String) -> Type? {
+    return rows.first(where: { $0.name == name })?.type
+  }
 }
 
 extension RecordType {

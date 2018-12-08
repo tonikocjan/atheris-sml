@@ -186,12 +186,17 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstRecordExpression) throws {
-    for row in node.rows { try row.accept(visitor: self) }
+    print("(list ")
+    try perform(on: node.rows, appending: " ")
+    print(")")
   }
   
   func visit(node: AstRecordRow) throws {
-    try node.label.accept(visitor: self)
     try node.expression.accept(visitor: self)
+  }
+  
+  func visit(node: AstRecordSelectorExpression) throws {
+    
   }
   
   func visit(node: AstIdentifierPattern) throws {

@@ -305,6 +305,23 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: type)
   }
   
+  func visit(node: AstRecordSelectorExpression) throws {
+    try node.record.accept(visitor: self)
+    guard let type = symbolDescription.type(for: node.record) else { throw internalError() }
+    guard let record = type.toRecord else {
+      throw Error.operatorError(position: node.record.position,
+                                domain: "{\(node.label.name): 'X}; 'Z}",
+                                operand: type)
+    }
+    let label = node.label.name
+    guard let row = record.row(for: label) else {
+      throw Error.operatorError(position: node.record.position,
+                                domain: "{\(node.label.name): 'X}; 'Z}",
+        operand: type)
+    }
+    symbolDescription.setType(for: node, type: row)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       // TOOD: - Let's try to get rid of this
@@ -398,31 +415,31 @@ extension TypeChecker  {
       case .typeError(let position, let patternType, let expressionType):
         return """
         error \(position.description): pattern and expression type do not match
-            pattern: \(patternType.description)
-            expression: \(expressionType.description)
+        pattern: \(patternType.description)
+        expression: \(expressionType.description)
         """
       case .constraintError(let position, let patternType, let constraintType):
         return """
         error \(position.description): pattern and contraint do not match
-            pattern: \(patternType.description)
-            constraint: \(constraintType.description)
+        pattern: \(patternType.description)
+        constraint: \(constraintType.description)
         """
       case .operatorError(let position, let domain, let operand):
         return """
         error \(position.description): operator and operand do not match
-            operator domain: \(domain)
-            operand: \(operand.description)
+        operator domain: \(domain)
+        operand: \(operand.description)
         """
       case .testExpressionError(let position, let testExpressionType):
         return """
         error \(position.description): test expression in if is not of type bool
-            test expression: \(testExpressionType.description)
+        test expression: \(testExpressionType.description)
         """
       case .branchesTypeMistmatchError(let position, let trueBranchType, let falseBranchType):
         return """
         error \(position.description): types of if branches do not agree
-            then branch: \(trueBranchType.description)
-            else branch: \(falseBranchType.description)
+        then branch: \(trueBranchType.description)
+        else branch: \(falseBranchType.description)
         """
       }
     }
