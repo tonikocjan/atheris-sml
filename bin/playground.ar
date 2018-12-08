@@ -1,1 +1,4 @@
-val x = {a = 10, b = "string", promise = {evaled = false, f = fn x => x * x}};
+val x = (10, 20);
+val y = {1 = 10, 2 = 20};
+val z = {1 = 55, 2 = 30};
+val c = x = y andalso y == z;

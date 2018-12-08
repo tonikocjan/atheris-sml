@@ -46,10 +46,46 @@ val z = x ("abc") ("efg") (fn (x, y) => x + y);
 """
     performFailingTest(code: code)
   }
+  
+  func testRecordComparisonShouldFail() {
+    let code = """
+val x = {1 = 10, 3 = 20};
+val y = {1 = 10, 2 = 20};
+val c = x = y;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testRecordTupleComparisonShouldFail() {
+    let code = """
+val x = (10, 20);
+val y = {1 = 10, 3 = 20};
+val c = x = y;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func tesRecordComparisonShouldSucceed() {
+    let code = """
+val x = (10, 20);
+val y = {1 = 10, 2 = 20};
+val z = {1 = 55, 2 = 30};
+val c = x = y andalso y == z;
+"""
+    performSucceedingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {
   func performFailingTest(code: String) {
+    performTest(code: code, shouldSucceed: false)
+  }
+  
+  func performSucceedingTest(code: String) {
+    performTest(code: code, shouldSucceed: true)
+  }
+  
+  func performTest(code: String, shouldSucceed: Bool) {
     do {
       let lexan = LexAn(inputStream: TextStream(string: code))
       let parser = SynAn(lexan: lexan)
@@ -59,8 +95,9 @@ private extension TypeCheckerTests {
       try nameChecker.visit(node: ast)
       let typeChecker = TypeChecker(symbolTable: symbolTable, symbolDescription: symbolTable.symbolDescription)
       try typeChecker.visit(node: ast)
-      XCTFail()
+      if !shouldSucceed { XCTFail() }
     } catch {
+      guard !shouldSucceed else { return XCTFail() }
       guard let _ = error as? TypeChecker.Error else {
         XCTFail()
         return

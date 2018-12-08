@@ -2,6 +2,9 @@
 
 #lang racket
 
-(define x a10b"string"promiseevaledfalsef(lambda (x)
-  (* x x)))
+(define x 110320)
 x
+(define y 110320)
+y
+(define c (equal? x y))
+c
