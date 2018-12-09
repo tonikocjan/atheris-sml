@@ -358,7 +358,7 @@ extension TypeChecker: AstVisitor {
     for element in node.elements { try element.accept(visitor: self) }
     let types = node.elements.compactMap { symbolDescription.type(for: $0) }
     try areSame(types: types)
-    let listType = ListType(elementType: types.first!)
+    let listType = ListType(elementType: types.first ?? AbstractDummyType(name: dummyName()))
     symbolDescription.setType(for: node, type: listType)
   }
   

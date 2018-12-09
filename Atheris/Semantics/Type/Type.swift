@@ -21,6 +21,7 @@ enum Operation: String {
   case greaterThanOrEqual = ">="
   case andalso = "andalso"
   case orelse = "orelse"
+  case append = "::"
   case unknown
 
   var domain: String {
@@ -46,6 +47,7 @@ enum Operation: String {
     case .greaterThanOrEqual: return AtomType.int
     case .andalso: return AtomType.bool
     case .orelse: return AtomType.bool
+    case .append: return ListType(elementType: AbstractDummyType(name: "'X"))
     case .unknown: return AbstractDummyType(name: "")
     }
   }
@@ -123,6 +125,9 @@ extension Type {
       return self.canAndAlsoWith(other: other) ? AtomType.bool : nil
     case .orelse:
       return self.canOrElseWith(other: other) ? AtomType.bool : nil
+    case .append:
+      guard let list = other.toList, list.type.sameStructureAs(other: self) else { return nil }
+      return list
     case .unknown:
       return nil
     }

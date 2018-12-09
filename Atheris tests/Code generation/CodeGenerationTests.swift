@@ -87,6 +87,14 @@ val a = (#f (#promise x)) (10);
 """
     performTest(code: code, filepath: "code8.rkt")
   }
+  
+  func testListExpression() {
+    let code = """
+val x = [1, 2, 3];
+val y = 1::2::[3];
+"""
+    performTest(code: code, filepath: "code9.rkt")
+  }
 }
 
 private extension CodeGenerationTests {

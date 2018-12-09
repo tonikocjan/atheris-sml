@@ -133,6 +133,7 @@ val a = (#f (#promise x)) (10);
   func testParseListExpression() {
     let code = """
 val x = [1, 2, 3];
+val y = 1::2::[3];
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast14")
   }

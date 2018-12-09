@@ -1,4 +1,4 @@
-AstBindings [1:1, 1:19]:
+AstBindings [1:1, 2:19]:
   AstValBinding [1:1, 1:19]:
     -> typed: int list
     AstIdentifierPattern [1:5, 1:6]:
@@ -18,3 +18,26 @@ AstBindings [1:1, 1:19]:
         -> typed: int
         Value: 3
         Atom type: int
+  AstValBinding [2:1, 2:19]:
+    -> typed: int list
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: int list
+      Name: y
+    AstBinaryExpression `::` [2:9, 2:19]:
+      -> typed: int list
+      AstConstantExpression [2:9, 2:10]:
+        -> typed: int
+        Value: 1
+        Atom type: int
+      AstBinaryExpression `::` [2:12, 2:19]:
+        -> typed: int list
+        AstConstantExpression [2:12, 2:13]:
+          -> typed: int
+          Value: 2
+          Atom type: int
+        AstListExpression [2:15, 2:19]:
+          -> typed: int list
+          AstConstantExpression [2:16, 2:17]:
+            -> typed: int
+            Value: 3
+            Atom type: int

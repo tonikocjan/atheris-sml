@@ -119,6 +119,7 @@ private extension LexAn {
       } else if lexeme == "(*" {
         return parseMultilineComment()
       } else if char == nextCharacter && (char == ":" || char == "|" || char == "=") {
+        // TODO: - this is an ad-hoc fix
         return parseIdentifierOrReservedKeyword(lexeme: lexeme)
       } else {
         bufferCharacter = nextCharacter

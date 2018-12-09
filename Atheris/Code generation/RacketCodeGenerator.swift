@@ -117,6 +117,11 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstBinaryExpression) throws {
+    guard
+      let nodeType = symbolDescription.type(for: node),
+      let lhsType = symbolDescription.type(for: node.left),
+      let rhsType = symbolDescription.type(for: node.right) else { return }
+    
     let operation: String
     switch node.operation {
     case .add,
@@ -136,9 +141,18 @@ extension RacketCodeGenerator: CodeGenerator {
       operation = "string-append"
     case .equal:
       operation = "equal?"
+    case .append:
+      operation = "append"
     }
     print("(\(operation) ")
-    try node.left.accept(visitor: self)
+    if nodeType.isList {
+      guard !lhsType.isList else { return try node.left.accept(visitor: self) }
+      print("(list ")
+      try node.left.accept(visitor: self)
+      print(")")
+    } else {
+      try node.left.accept(visitor: self)
+    }
     print(" ")
     try node.right.accept(visitor: self)
     print(")")

@@ -40,5 +40,6 @@ extension AstBinaryExpression {
     case greaterThanOrEqual = ">="
     case andalso = "andalso"
     case orelse = "orelse"
+    case append = "::"
   }
 }

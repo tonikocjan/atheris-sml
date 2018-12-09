@@ -460,13 +460,13 @@ private extension SynAn {
                                                    operation: .concat,
                                                    left: expression, right: newExpression)
         return try parseMulExpression_(expression: binaryExpression)
-      case "::":
-        nextSymbol()
-        let newExpression = try parsePrefixExpression()
-        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-                                                   operation: .concat,
-                                                   left: expression, right: newExpression)
-        return try parseMulExpression_(expression: binaryExpression)
+//      case "::":
+//        nextSymbol()
+//        let newExpression = try parsePrefixExpression()
+//        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+//                                                   operation: .append,
+//                                                   left: expression, right: newExpression)
+//        return try parseMulExpression_(expression: binaryExpression)
       default:
         return expression
       }
@@ -489,7 +489,22 @@ private extension SynAn {
   }
   
   func parsePostfixExpression() throws -> AstExpression {
-    return try parsePostfixExpression_(expression: try parseAtomExpression())
+    return try parsePostfixExpression_(expression: try parseAppendExpression())
+  }
+  
+  func parseAppendExpression() throws -> AstExpression {
+    return try parseAppendExpression_(expression: try parseAtomExpression())
+  }
+  
+  func parseAppendExpression_(expression: AstExpression) throws -> AstExpression {
+    guard expecting("::") else { return expression }
+    nextSymbol()
+    let newExpression = try parseExpression()
+    let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                               operation: .append,
+                                               left: expression,
+                                               right: newExpression)
+    return binaryExpression
   }
   
   func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
@@ -661,6 +676,12 @@ private extension SynAn {
     guard expecting(.leftBracket) else { throw reportError("expecting `[`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
+    if expecting(.rightBracket) {
+      let endPosition = symbol.position
+      nextSymbol()
+      return AstListExpression(position: startingPosition + endPosition,
+                               elements: [])
+    }
     let expressions = try parseCommaSeparatedExpressions()
     guard expecting(.rightBracket) else { throw reportError("expecting `]`", symbol.position) }
     nextSymbol()
