@@ -28,8 +28,9 @@ class NameChecker {
                            identifier: AstIdentifierPattern(position: .zero, name: "tl"),
                            parameter: AstIdentifierPattern(position: .zero, name: "lst"),
                            body: AstConstantExpression(position: .zero, value: "", type: .int))
-    [hd, tl].forEach { try! symbolTable.addBindingToCurrentScope(name: $0.identifier.name,
-                                                                 binding: $0) }
+    [hd, tl].forEach {
+      try! symbolTable.addBindingToCurrentScope(name: $0.identifier.name,
+                                                binding: $0) }
   }
 }
 

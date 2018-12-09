@@ -118,6 +118,8 @@ private extension LexAn {
         return Symbol(token: compositeOperator, lexeme: lexeme, position: symbolPosition)
       } else if lexeme == "(*" {
         return parseMultilineComment()
+      } else if char == nextCharacter && (char == ":" || char == "|" || char == "=") {
+        return parseIdentifierOrReservedKeyword(lexeme: lexeme)
       } else {
         bufferCharacter = nextCharacter
       }
@@ -149,8 +151,8 @@ private extension LexAn {
     return Symbol(token: tokenType, lexeme: lexeme, position: newPosition)
   }
   
-  func parseIdentifierOrReservedKeyword() -> Symbol {
-    var lexeme = ""
+  func parseIdentifierOrReservedKeyword(lexeme: String = "") -> Symbol {
+    var lexeme = lexeme
     
     func isLegal(char: Character, lexeme: String) -> Bool {
       if let lastChar = lexeme.last {

@@ -192,6 +192,7 @@ val x = 20.15;
     // TODO: -
     XCTAssertEqual("[1:1, 1:3] IDENTIFIER: ==", generateSymbols("==").first?.description)
     XCTAssertEqual("[1:1, 1:3] IDENTIFIER: ||", generateSymbols("||").first?.description)
+    XCTAssertEqual("[1:1, 1:3] IDENTIFIER: ::", generateSymbols("::").first?.description)
   }
   
   func testStringConstant() {
