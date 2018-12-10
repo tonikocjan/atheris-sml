@@ -165,10 +165,12 @@ extension RacketCodeGenerator: CodeGenerator {
   func visit(node: AstIfExpression) throws {
     print("(if ")
     try node.condition.accept(visitor: self)
-    print(" ")
+    increaseIndent()
+    newLine()
     try node.trueBranch.accept(visitor: self)
-    print(" ")
+    newLine()
     try node.falseBranch.accept(visitor: self)
+    decreaseIndent()
     print(")")
   }
   

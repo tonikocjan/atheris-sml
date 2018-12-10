@@ -2,13 +2,7 @@
 
 #lang racket
 
-(define x (list 10 "string" (list false (lambda (x)
-  (* x x)))))
+(define x (if true
+  true
+  false))
 x
-(define a (
-  (car 
-    (cdr 
-      (car 
-        (cdr 
-          (cdr x))))) 10))
-a
