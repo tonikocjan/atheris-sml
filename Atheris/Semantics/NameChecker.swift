@@ -116,13 +116,6 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-//    switch node.name {
-//    case "hd", "tl":
-//      return
-//    default:
-//      break
-//    }
-    
     guard let binding = symbolTable.findBinding(name: node.name) else {
       throw Error.bindingNotFound(node.name, node.position)
     }
@@ -155,7 +148,7 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstIdentifierPattern) throws {
-    try symbolTable.addBindingToCurrentScope(name: node.name, binding: node)
+    try insertBinding(node, name: node.name)
   }
   
   func visit(node: AstWildcardPattern) throws {
@@ -187,15 +180,25 @@ extension NameChecker: AstVisitor {
 extension NameChecker {
   enum Error: AtherisError {
     case bindingNotFound(String, Position)
+    case bindingExists(String, Position)
     
     var errorMessage: String {
       switch self {
-      case .bindingNotFound(let name, let position): return "error \(position.description): use of undeclared name `\(name)`"
+      case .bindingNotFound(let name, let position):
+        return "error \(position.description): use of undeclared name `\(name)`"
+      case .bindingExists(let name, let position):
+        return "error \(position.description): `\(name)` already exists"
       }
     }
   }
 }
 
 private extension NameChecker {
-  
+  func insertBinding(_ binding: AstBinding, name: String) throws {
+    do {
+      try symbolTable.addBindingToCurrentScope(name: name, binding: binding)
+    } catch {
+      throw Error.bindingExists(name, binding.position)
+    }
+  }
 }

@@ -2,7 +2,13 @@
 
 #lang racket
 
-(define x (list 1 2 3))
+(define x (list 10 "string" (list false (lambda (x)
+  (* x x)))))
 x
-(define y (append (list 1) (append (list 2) (list 3))))
-y
+(define a (
+  (car 
+    (cdr 
+      (car 
+        (cdr 
+          (cdr x))))) 10))
+a

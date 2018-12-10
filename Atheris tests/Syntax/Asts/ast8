@@ -188,10 +188,8 @@ AstBindings [1:1, 7:31]:
     AstIdentifierPattern [7:5, 7:6]:
       -> typed: string
       Name: v
-    AstFunctionCallExpression [7:12, 7:31]:
-      -> defined at:  [1:5, 1:6]:
+    AstAnonymousFunctionCall [7:9, 7:31]:
       -> typed: string
-      Function name: a
       AstTupleExpression [7:12, 7:31]:
         -> typed: (string * string * string)
         AstConstantExpression [7:12, 7:17]:
@@ -206,3 +204,7 @@ AstBindings [1:1, 7:31]:
           -> typed: string
           Value: cdf
           Atom type: string
+      AstNameExpression [7:9, 7:10]:
+        -> defined at:  [1:5, 1:6]:
+        -> typed: fn : (string * string * string) -> string
+        Name: a

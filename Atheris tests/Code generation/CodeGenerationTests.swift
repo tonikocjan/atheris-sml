@@ -42,7 +42,6 @@ fun b (x, y, z) = x ^ y ^ "abc";
 fun c (x, y, z) = x + y + 10;
 fun d (x, y, z) = x > 10 andalso true andalso y orelse z;
 fun e (x, y, z) = x > 10 andalso true andalso y orelse z;
-
 val v = a ("abc", "efg", "cdf");
 """
     performTest(code: code, filepath: "code4.rkt")

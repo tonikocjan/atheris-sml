@@ -98,6 +98,7 @@ val x = ((mul (10)) (20)) (30);
   func testFunctionAsAnArugmentSemantics() {
     let code = """
 fun f g x = (g (x + 1)) + 1;
+fun g g x = g (x + 1) + 1;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast10")
   }
@@ -125,7 +126,7 @@ val d = #2 x;
   func testRecordAndSelectionSemantics() {
     let code = """
 val x = {a = 10, b = "string", promise = {evaled = false, f = fn x => x * x}};
-val a = (#f (#promise x)) (10);
+val a = (#f (#promise x)) 10;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast13")
   }

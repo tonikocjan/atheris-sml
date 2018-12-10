@@ -1,4 +1,4 @@
-AstBindings [1:1, 2:30]:
+AstBindings [1:1, 2:29]:
   AstValBinding [1:1, 1:78]:
     -> typed: {a:int, b:string, promise:{evaled:bool, f:fn : int -> int}}
     AstIdentifierPattern [1:5, 1:6]:
@@ -60,14 +60,14 @@ AstBindings [1:1, 2:30]:
                   -> defined at:  [1:66, 1:67]:
                   -> typed: int
                   Name: x
-  AstValBinding [2:1, 2:30]:
+  AstValBinding [2:1, 2:29]:
     -> typed: int
     AstIdentifierPattern [2:5, 2:6]:
       -> typed: int
       Name: a
-    AstAnonymousFunctionCall [2:10, 2:30]:
+    AstAnonymousFunctionCall [2:10, 2:29]:
       -> typed: int
-      AstConstantExpression [2:28, 2:30]:
+      AstConstantExpression [2:27, 2:29]:
         -> typed: int
         Value: 10
         Atom type: int

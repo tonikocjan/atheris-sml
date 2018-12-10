@@ -460,13 +460,6 @@ private extension SynAn {
                                                    operation: .concat,
                                                    left: expression, right: newExpression)
         return try parseMulExpression_(expression: binaryExpression)
-//      case "::":
-//        nextSymbol()
-//        let newExpression = try parsePrefixExpression()
-//        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-//                                                   operation: .append,
-//                                                   left: expression, right: newExpression)
-//        return try parseMulExpression_(expression: binaryExpression)
       default:
         return expression
       }
@@ -491,6 +484,34 @@ private extension SynAn {
   func parsePostfixExpression() throws -> AstExpression {
     return try parsePostfixExpression_(expression: try parseAppendExpression())
   }
+
+  func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
+    func parseFunction() throws -> AstExpression {
+      let argument = try parseAtomExpression()
+      let call = AstAnonymousFunctionCall(position: expression.position + argument.position,
+                                          function: expression,
+                                          argument: argument)
+      return try parsePostfixExpression_(expression: call)
+    }
+    
+    switch symbol.token {
+    case .leftParent,
+         .charConstant,
+         .integerConstant,
+         .logicalConstant,
+         .floatingConstant:
+      return try parseFunction()
+    case .identifier:
+      switch symbol.lexeme {
+      case "+", "-", "*", "/", "::", "~", "<", ">", "<=", ">=", "^":
+        return expression
+      default:
+        return try parseFunction()
+      }
+    default:
+      return expression
+    }
+  }
   
   func parseAppendExpression() throws -> AstExpression {
     return try parseAppendExpression_(expression: try parseAtomExpression())
@@ -505,18 +526,6 @@ private extension SynAn {
                                                left: expression,
                                                right: newExpression)
     return binaryExpression
-  }
-  
-  func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
-    switch symbol.token {
-    case .leftParent:
-      let argument = try parseExpression()
-      return AstAnonymousFunctionCall(position: expression.position + argument.position,
-                                      function: expression,
-                                      argument: argument)
-    default:
-      return expression
-    }
   }
   
   func parseAtomExpression() throws -> AstExpression {
@@ -542,11 +551,7 @@ private extension SynAn {
       default:
         let identifier = symbol
         nextSymbol()
-        if expecting(.leftParent) {
-          let functionCall = try parseFunctionCallExpression(identifier: identifier.lexeme)
-          return functionCall
-        }
-        return AstNameExpression(position: currentSymbol.position, name: currentSymbol.lexeme)
+        return AstNameExpression(position: identifier.position, name: identifier.lexeme)
       }
     case .leftParent:
       let expression = try parseTupleExpression()
