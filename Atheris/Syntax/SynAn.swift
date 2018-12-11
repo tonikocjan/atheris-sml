@@ -406,23 +406,23 @@ private extension SynAn {
   }
   
   func parseAddExpression_(expression: AstExpression) throws -> AstExpression {
+    func binaryExpression(operation: AstBinaryExpression.Operation) throws -> AstExpression {
+      let newExpression = try parseMulExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: operation,
+                                                 left: expression, right: newExpression)
+      return try parseMulExpression_(expression: binaryExpression)
+    }
+    
     switch symbol.token {
     case .identifier:
       switch symbol.lexeme {
       case "+":
         nextSymbol()
-        let newExpression = try parseMulExpression()
-        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-                                                   operation: .add,
-                                                   left: expression, right: newExpression)
-        return try parseAddExpression_(expression: binaryExpression)
+        return try parseAddExpression_(expression: binaryExpression(operation: .add))
       case "-":
         nextSymbol()
-        let newExpression = try parseMulExpression()
-        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-                                                   operation: .subtract,
-                                                   left: expression, right: newExpression)
-        return try parseAddExpression_(expression: binaryExpression)
+        return try parseAddExpression_(expression: binaryExpression(operation: .subtract))
       default:
         return expression
       }
@@ -436,30 +436,26 @@ private extension SynAn {
   }
   
   func parseMulExpression_(expression: AstExpression) throws -> AstExpression {
+    func binaryExpression(operation: AstBinaryExpression.Operation) throws -> AstExpression {
+      let newExpression = try parsePrefixExpression()
+      let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
+                                                 operation: operation,
+                                                 left: expression, right: newExpression)
+      return try parseMulExpression_(expression: binaryExpression)
+    }
+    
     switch symbol.token {
     case .identifier:
       switch symbol.lexeme {
       case "*":
         nextSymbol()
-        let newExpression = try parsePrefixExpression()
-        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-                                                   operation: .multiply,
-                                                   left: expression, right: newExpression)
-        return try parseMulExpression_(expression: binaryExpression)
+        return try parseMulExpression_(expression: binaryExpression(operation: .multiply))
       case "/":
         nextSymbol()
-        let newExpression = try parsePrefixExpression()
-        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-                                                   operation: .divide,
-                                                   left: expression, right: newExpression)
-        return try parseMulExpression_(expression: binaryExpression)
+        return try parseMulExpression_(expression: binaryExpression(operation: .divide))
       case "^":
         nextSymbol()
-        let newExpression = try parsePrefixExpression()
-        let binaryExpression = AstBinaryExpression(position: expression.position + newExpression.position,
-                                                   operation: .concat,
-                                                   left: expression, right: newExpression)
-        return try parseMulExpression_(expression: binaryExpression)
+        return try parseMulExpression_(expression: binaryExpression(operation: .concat))
       default:
         return expression
       }
