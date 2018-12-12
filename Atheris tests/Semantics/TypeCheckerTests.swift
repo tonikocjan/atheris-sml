@@ -110,6 +110,20 @@ val x = [1, 2, true];
 """
     performFailingTest(code: code)
   }
+  
+  func testDatatypeConstructorArgumentInvalid() {
+    let code = """
+datatype prevozno_sredstvo_t =
+  Bus of int
+  | Avto of (string*string*int)
+  | Pes;
+
+val x = Bus (10, 20);
+val y = Avto ("abc", "efg", 10);
+val z = Pes;
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

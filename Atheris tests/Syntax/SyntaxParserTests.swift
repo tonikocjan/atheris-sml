@@ -138,6 +138,20 @@ val y = 1::2::[3];
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast14")
   }
+  
+  func testParseDatatype() {
+    let code = """
+datatype prevozno_sredstvo_t =
+  Bus of int
+  | Avto of (string*string*int)
+  | Pes;
+
+val x = Bus 10;
+val y = Avto ("abc", "efg", 10);
+val z = Pes;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast15")
+  }
 }
 
 private extension SyntaxParserTests {
