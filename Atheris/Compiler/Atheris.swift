@@ -46,12 +46,12 @@ class Atheris {
     let symbolTable = SymbolTable(symbolDescription: SymbolDescription())
     let nameChecker = NameChecker(symbolTable: symbolTable,
                                   symbolDescription: symbolTable.symbolDescription)
-//    try nameChecker.visit(node: ast)
+    try nameChecker.visit(node: ast)
     
     // Type resolving
     let typeChecker = TypeChecker(symbolTable: symbolTable,
                                   symbolDescription: symbolTable.symbolDescription)
-//    try typeChecker.visit(node: ast)
+    try typeChecker.visit(node: ast)
     
     // Dump ast
     let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "ast")!))

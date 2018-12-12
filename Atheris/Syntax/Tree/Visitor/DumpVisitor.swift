@@ -62,6 +62,24 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstDatatypeBinding) throws {
+    print("AstDatatypeBinding", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.name.accept(visitor: self)
+    for case_ in node.cases { try case_.accept(visitor: self) }
+    decreaseIndent()
+  }
+  
+  func visit(node: AstCase) throws {
+    print("AstCase", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.name.accept(visitor: self)
+    try node.associatedType?.accept(visitor: self)
+    decreaseIndent()
+  }
+  
   func visit(node: AstAtomType) throws {
     print("AstAtomType", node.position)
     increaseIndent()

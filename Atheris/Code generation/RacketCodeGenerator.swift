@@ -17,6 +17,8 @@ class RacketCodeGenerator {
   private var indent = 0
   private var shouldPrintParents = false
   private var debugPrintBindingName = true
+  private var expandingDatatypeCaseType = false
+  private var expandingDatatypeCaseCounter = 0
   
   init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
@@ -51,9 +53,11 @@ extension RacketCodeGenerator: CodeGenerator {
     for binding in node.bindings {
       try binding.accept(visitor: self)
       newLine()
-      shouldPrintParents = true
-      try binding.pattern.accept(visitor: self)
-      shouldPrintParents = false
+      if !(binding is AstDatatypeBinding) {
+        shouldPrintParents = true
+        try binding.pattern.accept(visitor: self)
+        shouldPrintParents = false
+      }
       newLine()
     }
   }
@@ -90,16 +94,43 @@ extension RacketCodeGenerator: CodeGenerator {
     decreaseIndent()
   }
   
+  func visit(node: AstDatatypeBinding) throws {
+    expandingDatatypeCaseType = true
+    try perform(on: node.cases, appending: "") {
+      self.newLine()
+      self.expandingDatatypeCaseCounter = 0
+    }
+    expandingDatatypeCaseType = false
+  }
+  
+  func visit(node: AstCase) throws {
+    print("(struct ")
+    try node.name.accept(visitor: self)
+    if let associatedType = node.associatedType {
+      print(" (")
+      try associatedType.accept(visitor: self)
+      print(")")
+    } else {
+      print(" (_)")
+    }
+    print(")")
+  }
+  
   func visit(node: AstAtomType) throws {
-    
+    guard expandingDatatypeCaseType else { return }
+    print("x\(expandingDatatypeCaseCounter)")
+    expandingDatatypeCaseCounter += 1
   }
   
   func visit(node: AstTypeName) throws {
-    
+    guard expandingDatatypeCaseType else { return }
+    print("x\(expandingDatatypeCaseCounter)")
+    expandingDatatypeCaseCounter += 1
   }
   
   func visit(node: AstTupleType) throws {
-    
+    guard expandingDatatypeCaseType else { return }
+    try perform(on: node.types, appending: " ")
   }
   
   func visit(node: AstConstantExpression) throws {
@@ -288,10 +319,11 @@ private extension RacketCodeGenerator {
   func increaseIndent() { indent += configuration.indentation }
   func decreaseIndent() { indent -= configuration.indentation }
   
-  func perform(on nodes: [AstNode], appending: String) throws {
+  func perform(on nodes: [AstNode], appending: String, closure: (()->())?=nil) throws {
     for node in nodes.dropLast() {
       try node.accept(visitor: self)
       print(appending)
+      closure?()
     }
     try nodes.last?.accept(visitor: self)
   }

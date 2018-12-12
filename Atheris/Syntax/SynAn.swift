@@ -52,6 +52,8 @@ private extension SynAn {
       return try parseValBinding()
     case .keywordFun:
       return try parseFunBinding()
+    case .keywordDatatype:
+      return try parseDatatypeBinding()
     default:
       throw reportError("removing", symbol.position, symbol.lexeme)
     }
@@ -81,7 +83,7 @@ private extension SynAn {
   }
   
   func parseFunBinding() throws -> AstFunBinding {
-    guard expecting(.keywordFun) else { throw Error.syntaxError("expecting `fun`") }
+    guard expecting(.keywordFun) else { throw reportError("expecting `fun`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
     let identifier = parseIdentifierPattern()
@@ -125,6 +127,40 @@ private extension SynAn {
     guard !expecting("=") else { return [parameter] }
     let newParameter = try parsePattern()
     return [parameter] + (try parseParameters_(parameter: newParameter))
+  }
+  
+  func parseDatatypeBinding() throws -> AstDatatypeBinding {
+    guard expecting(.keywordDatatype) else { throw reportError("expecting `datatype`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let identifier = parseIdentifierPattern()
+    guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
+    nextSymbol()
+    let cases = try parseCases(datatypeCase: try parseCase())
+    return AstDatatypeBinding(position: startingPosition + cases.last!.position,
+                              name: identifier,
+                              cases: cases)
+  }
+  
+  func parseCase() throws -> AstCase {
+    let type: AstType?
+    let identifier = parseIdentifierPattern()
+    if expecting(.keywordOf) {
+      nextSymbol()
+      type = try parseType()
+    } else {
+      type = nil
+    }
+    return AstCase(position: type == nil ? identifier.position : identifier.position + type!.position,
+                   name: identifier,
+                   associatedType: type)
+  }
+  
+  func parseCases(datatypeCase: AstCase) throws -> [AstCase] {
+    guard expecting("|") else { return [datatypeCase] }
+    nextSymbol()
+    let newCase = try parseCase()
+    return [datatypeCase] + (try parseCases(datatypeCase: newCase))
   }
 }
 
@@ -465,10 +501,7 @@ private extension SynAn {
   }
   
   func parsePrefixExpression() throws -> AstExpression {
-    guard expecting("~") else {
-      return try parsePostfixExpression()
-    }
-    
+    guard expecting("~") else { return try parsePostfixExpression() }
     let startingPosition = symbol.position
     nextSymbol()
     let expression = try parsePrefixExpression()
@@ -484,10 +517,18 @@ private extension SynAn {
   func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
     func parseFunction() throws -> AstExpression {
       let argument = try parseAtomExpression()
-      let call = AstAnonymousFunctionCall(position: expression.position + argument.position,
-                                          function: expression,
-                                          argument: argument)
-      return try parsePostfixExpression_(expression: call)
+      
+      switch expression {
+      case is AstNameExpression:
+        return AstFunctionCallExpression(position: expression.position + argument.position,
+                                         name: (expression as! AstNameExpression).name,
+                                         argument: argument)
+      default:
+        let call = AstAnonymousFunctionCall(position: expression.position + argument.position,
+                                            function: expression,
+                                            argument: argument)
+        return try parsePostfixExpression_(expression: call)
+      }
     }
     
     switch symbol.token {

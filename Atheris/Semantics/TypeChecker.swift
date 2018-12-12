@@ -90,6 +90,23 @@ extension TypeChecker: AstVisitor {
     _ = funEvalStack.popLast()
   }
   
+  func visit(node: AstDatatypeBinding) throws {
+    try node.name.accept(visitor: self)
+    for case_ in node.cases { try case_.accept(visitor: self) }
+  }
+  
+  func visit(node: AstCase) throws {
+    try node.name.accept(visitor: self)
+    guard let typeNode = node.associatedType else { return }
+    try typeNode.accept(visitor: self)
+    guard let type = symbolDescription.type(for: typeNode) else { throw internalError() }
+    let functionType = FunctionType(name: node.name.name,
+                                    parameter: type,
+                                    body: CaseType(name: node.name.name))
+    symbolDescription.setType(for: node.name, type: functionType)
+    symbolDescription.setType(for: node, type: functionType)
+  }
+  
   func visit(node: AstAtomType) throws {
     let atomType = AtomType(type: node.type)
     symbolDescription.setType(for: node, type: atomType)
@@ -125,27 +142,6 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstNameExpression) throws {
-//    switch node.name {
-//    // TODO: - How could we improve this, it's not a good design ...
-//    case "hd":
-//      let elementType = AbstractDummyType(name: dummyName())
-//      let functionType = FunctionType(name: "hd",
-//                                      parameter: ListType(elementType: elementType),
-//                                      body: elementType)
-//      symbolDescription.setType(for: node, type: functionType)
-//      return
-//    case "tl":
-//      let elementType = AbstractDummyType(name: dummyName())
-//      let listType = ListType(elementType: elementType)
-//      let functionType = FunctionType(name: "hd",
-//                                      parameter: listType,
-//                                      body: listType)
-//      symbolDescription.setType(for: node, type: functionType)
-//      return
-//    default:
-//      break
-//    }
-    
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     symbolDescription.setType(for: node, type: type)

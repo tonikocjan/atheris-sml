@@ -138,6 +138,10 @@
 		3790FED221B7E44F005CA8D5 /* ast8 in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED121B7E44F005CA8D5 /* ast8 */; };
 		3790FED421B7FEC2005CA8D5 /* code4.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED321B7FEC2005CA8D5 /* code4.rkt */; };
 		3790FED621B810B4005CA8D5 /* code5.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED521B810B4005CA8D5 /* code5.rkt */; };
+		37B2F8D821C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */; };
+		37B2F8D921C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */; };
+		37B2F8DB21C1526A00C0B9E8 /* CaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */; };
+		37B2F8DC21C1526A00C0B9E8 /* CaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */; };
 		37D396B021BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
 		37D396B121BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
 		37D396B321BA6E0C00C11EB5 /* code7.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37D396B221BA6E0B00C11EB5 /* code7.rkt */; };
@@ -263,6 +267,8 @@
 		3790FED121B7E44F005CA8D5 /* ast8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast8; sourceTree = "<group>"; };
 		3790FED321B7FEC2005CA8D5 /* code4.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code4.rkt; sourceTree = "<group>"; };
 		3790FED521B810B4005CA8D5 /* code5.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code5.rkt; sourceTree = "<group>"; };
+		37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstDatatypeBinding.swift; sourceTree = "<group>"; };
+		37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseType.swift; sourceTree = "<group>"; };
 		37D396AF21BA698800C11EB5 /* AstMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstMatch.swift; sourceTree = "<group>"; };
 		37D396B221BA6E0B00C11EB5 /* code7.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code7.rkt; sourceTree = "<group>"; };
 		37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexanTests.swift; sourceTree = "<group>"; };
@@ -363,6 +369,7 @@
 				3745060521B53EC10051E1E9 /* AbstractTupleType.swift */,
 				3745060821B5449C0051E1E9 /* AbstractDummyType.swift */,
 				3716C93F21BC0FFB00A24765 /* ListType.swift */,
+				37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -536,6 +543,7 @@
 				37F024AC21B3F705006B868E /* AstValBinding.swift */,
 				37F024BF21B3FE16006B868E /* AstFunBinding.swift */,
 				378EB82221B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift */,
+				37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */,
 			);
 			path = Bindings;
 			sourceTree = "<group>";
@@ -751,6 +759,7 @@
 				374505F721B537FE0051E1E9 /* TypeChecker.swift in Sources */,
 				378EB81F21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */,
 				374505C921B50FFE0051E1E9 /* DumpVisitor.swift in Sources */,
+				37B2F8DC21C1526A00C0B9E8 /* CaseType.swift in Sources */,
 				374505CA21B50FFE0051E1E9 /* AstPattern.swift in Sources */,
 				374505CB21B50FFE0051E1E9 /* AstIdentifierPattern.swift in Sources */,
 				3745061721B562880051E1E9 /* AstTupleType.swift in Sources */,
@@ -776,6 +785,7 @@
 				374505D521B50FFE0051E1E9 /* AstValBinding.swift in Sources */,
 				374505D621B50FFE0051E1E9 /* AstFunBinding.swift in Sources */,
 				374505D721B50FFE0051E1E9 /* AstExpression.swift in Sources */,
+				37B2F8D921C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */,
 				374505D821B50FFE0051E1E9 /* AstConstantExpression.swift in Sources */,
 				374505DC21B510020051E1E9 /* main.swift in Sources */,
 				374505D921B50FFE0051E1E9 /* AstNode.swift in Sources */,
@@ -831,6 +841,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3716C93D21BC0D2100A24765 /* AstListExpression.swift in Sources */,
+				37B2F8DB21C1526A00C0B9E8 /* CaseType.swift in Sources */,
 				374505FD21B53C870051E1E9 /* AtomType.swift in Sources */,
 				3745064A21B6DDC00051E1E9 /* Executor.swift in Sources */,
 				374505E221B5183D0051E1E9 /* SymbolTableProtocol.swift in Sources */,
@@ -864,6 +875,7 @@
 				375FF4FC2161E0930088F7A3 /* FileReader.swift in Sources */,
 				37F024C021B3FE16006B868E /* AstFunBinding.swift in Sources */,
 				375FF4FA2161E0930088F7A3 /* LexAn.swift in Sources */,
+				37B2F8D821C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */,
 				375FF5042161E0D60088F7A3 /* ArgumentParser.swift in Sources */,
 				37F024D221B419B8006B868E /* DumpVisitor.swift in Sources */,
 				3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */,

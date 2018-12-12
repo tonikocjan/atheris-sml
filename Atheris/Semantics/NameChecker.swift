@@ -59,6 +59,16 @@ extension NameChecker: AstVisitor {
     symbolTable.oldScope()
   }
   
+  func visit(node: AstDatatypeBinding) throws {
+    try insertBinding(node, name: node.name)
+    for case_ in node.cases { try case_.accept(visitor: self) }
+  }
+  
+  func visit(node: AstCase) throws {
+    try node.name.accept(visitor: self)
+    try node.associatedType?.accept(visitor: self)
+  }
+  
   func visit(node: AstAtomType) throws {
     
   }
@@ -200,5 +210,9 @@ private extension NameChecker {
     } catch {
       throw Error.bindingExists(name, binding.position)
     }
+  }
+  
+  func insertBinding(_ binding: AstBinding, name: AstIdentifierPattern) throws {
+    try insertBinding(binding, name: name.name)
   }
 }

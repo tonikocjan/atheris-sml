@@ -1,20 +1,78 @@
-AstBindings [1:1, 1:37]:
-  AstValBinding [1:1, 1:37]:
-    -> typed: bool
-    AstIdentifierPattern [1:5, 1:6]:
-      -> typed: bool
+AstBindings [1:1, 8:12]:
+  AstDatatypeBinding [1:1, 4:11]:
+    AstIdentifierPattern [1:10, 1:29]:
+      -> typed: 'Z
+      Name: prevozno_sredstvo_t
+    AstCase [2:6, 2:16]:
+      -> typed: fn : int -> Bus
+      AstIdentifierPattern [2:6, 2:9]:
+        -> typed: fn : int -> Bus
+        Name: Bus
+      AstTypeName [2:13, 2:16]:
+        -> typed: int
+        Name: int
+    AstCase [3:8, 3:35]:
+      -> typed: fn : (string * string * int) -> Avto
+      AstIdentifierPattern [3:8, 3:12]:
+        -> typed: fn : (string * string * int) -> Avto
+        Name: Avto
+      AstTupleType [3:16, 3:35]:
+        -> typed: (string * string * int)
+        AstTypeName [3:17, 3:23]:
+          -> typed: string
+          Name: string
+        AstTypeName [3:24, 3:30]:
+          -> typed: string
+          Name: string
+        AstTypeName [3:31, 3:34]:
+          -> typed: int
+          Name: int
+    AstCase [4:8, 4:11]:
+      AstIdentifierPattern [4:8, 4:11]:
+        -> typed: 'Z
+        Name: Pes
+  AstValBinding [6:1, 6:15]:
+    -> typed: Bus
+    AstIdentifierPattern [6:5, 6:6]:
+      -> typed: Bus
       Name: x
-    AstIfExpression [1:9, 1:37]:
-      -> typed: bool
-      AstConstantExpression [1:12, 1:16]:
-        -> typed: bool
-        Value: true
-        Atom type: bool
-      AstConstantExpression [1:22, 1:26]:
-        -> typed: bool
-        Value: true
-        Atom type: bool
-      AstConstantExpression [1:32, 1:37]:
-        -> typed: bool
-        Value: false
-        Atom type: bool
+    AstFunctionCallExpression [6:9, 6:15]:
+      -> defined at:  [2:6, 2:9]:
+      -> typed: Bus
+      Function name: Bus
+      AstConstantExpression [6:13, 6:15]:
+        -> typed: int
+        Value: 10
+        Atom type: int
+  AstValBinding [7:1, 7:31]:
+    -> typed: Avto
+    AstIdentifierPattern [7:5, 7:6]:
+      -> typed: Avto
+      Name: y
+    AstFunctionCallExpression [7:9, 7:31]:
+      -> defined at:  [3:8, 3:12]:
+      -> typed: Avto
+      Function name: Avto
+      AstTupleExpression [7:15, 7:31]:
+        -> typed: (string * string * int)
+        AstConstantExpression [7:15, 7:20]:
+          -> typed: string
+          Value: abc
+          Atom type: string
+        AstConstantExpression [7:22, 7:27]:
+          -> typed: string
+          Value: efg
+          Atom type: string
+        AstConstantExpression [7:29, 7:31]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+  AstValBinding [8:1, 8:12]:
+    -> typed: 'Z
+    AstIdentifierPattern [8:5, 8:6]:
+      -> typed: 'Z
+      Name: z
+    AstNameExpression [8:9, 8:12]:
+      -> defined at:  [4:8, 4:11]:
+      -> typed: 'Z
+      Name: Pes
