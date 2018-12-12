@@ -50,13 +50,11 @@ AstBindings [1:1, 2:30]:
           -> typed: int
           Value: 20
           Atom type: int
-        AstAnonymousFunctionCall [2:11, 2:18]:
+        AstFunctionCallExpression [2:11, 2:18]:
+          -> defined at:  [1:5, 1:8]:
           -> typed: fn : int -> fn : int -> int
+          Function name: mul
           AstConstantExpression [2:16, 2:18]:
             -> typed: int
             Value: 10
             Atom type: int
-          AstNameExpression [2:11, 2:14]:
-            -> defined at:  [1:5, 1:8]:
-            -> typed: fn : int -> fn : int -> fn : int -> int
-            Name: mul
