@@ -73,4 +73,12 @@ extension AtomType {
   static let string = AtomType(type: .string)
   static let real = AtomType(type: .real)
   static let bool = AtomType(type: .bool)
+  static func fromAtomType(_ atomType: AstAtomType.AtomType) -> AtomType {
+    switch atomType {
+    case .int: return int
+    case .real: return real
+    case .string: return string
+    case .bool: return bool
+    }
+  }
 }

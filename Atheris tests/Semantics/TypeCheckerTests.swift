@@ -124,6 +124,36 @@ val z = Pes;
 """
     performFailingTest(code: code)
   }
+  
+  func testCaseExpressionInvalidResultType() {
+    let code = """
+val x = true;
+val y = case x of
+  true => true
+  | false => 2;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testCaseExpressionInvalidPatternType() {
+    let code = """
+val x = true;
+val y = case x of
+  true => 1
+  | 3 => 2;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testCaseExpressionInvalidExpressionType() {
+    let code = """
+val x = true;
+val y = case x of
+  10 => 1
+  | 20 => 2;
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

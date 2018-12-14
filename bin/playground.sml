@@ -1,4 +1,4 @@
 val x = true;
-val y = case x of 
-	true => 1 
-	| false => 2;
+val y = case x of
+	10 => 1
+	| 20 => 2;

@@ -358,6 +358,19 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: listType)
   }
   
+  func visit(node: AstCaseExpression) throws {
+    try node.expression.accept(visitor: self)
+    try node.match.accept(visitor: self)
+    
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
+    guard let matchType = symbolDescription.type(for: node.match) as? RuleType else { throw internalError() }
+    guard matchType.patternType.sameStructureAs(other: expressionType) else { throw Error.operatorError(position: node.match.position,
+                                                                                                        domain: expressionType.description,
+                                                                                                        operand: matchType.patternType) }
+    
+    symbolDescription.setType(for: node, type: matchType.expressionType)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       // TOOD: - Let's try to get rid of this
@@ -403,6 +416,11 @@ extension TypeChecker: AstVisitor {
     
   }
   
+  func visit(node: AstConstantPattern) throws {
+    let atomType = AtomType.fromAtomType(node.type)
+    symbolDescription.setType(for: node, type: atomType)
+  }
+  
   func visit(node: AstTypedPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       symbolDescription.setType(for: node, type: parentNodeType)
@@ -428,11 +446,24 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstMatch) throws {
-    
+    for rule in node.rules { try rule.accept(visitor: self) }
+    let types = node.rules.compactMap { symbolDescription.type(for: $0) as? RuleType }
+    guard let first = types.first else { return }
+    for type in types.dropFirst() {
+      guard type.sameStructureAs(other: first) else {
+        throw Error.operatorError(position: node.position, domain: first.description, operand: type)
+      }
+    }
+    symbolDescription.setType(for: node, type: first)
   }
   
   func visit(node: AstRule) throws {
-    
+    try node.pattern.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
+    let ruleType = RuleType(patternType: patternType, expressionType: expressionType)
+    symbolDescription.setType(for: node, type: ruleType)
   }
 }
 
