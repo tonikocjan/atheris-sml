@@ -183,6 +183,12 @@ private extension SynAn {
   }
   
   func parseAtomPattern() throws -> AstPattern {
+    func constantPattern(type: AstAtomType.AtomType) -> AstConstantPattern {
+      let lexeme = symbol.lexeme
+      nextSymbol()
+      return AstConstantPattern(position: symbol.position, value: lexeme, type: type)
+    }
+    
     switch symbol.token {
     case .wildcard:
       nextSymbol()
@@ -193,6 +199,14 @@ private extension SynAn {
       return try parseTuplePattern()
     case .leftBrace:
       return try parseRecordPattern()
+    case .integerConstant:
+      return constantPattern(type: .int)
+    case .floatingConstant:
+      return constantPattern(type: .real)
+    case .logicalConstant:
+      return constantPattern(type: .bool)
+    case .stringConstant:
+      return constantPattern(type: .string)
     default:
       throw reportError("invalid token, unable to parse pattern", symbol.position)
     }
@@ -290,6 +304,8 @@ private extension SynAn {
       return try parseExpression_(expression: parseIorExpression())
     case .keywordFn:
       return try parseAnonymousFunctionExpression()
+    case .keywordCase:
+      return try parseCaseExpression()
     default:
       throw reportError("unexpected symbol", symbol.position)
     }
@@ -349,6 +365,19 @@ private extension SynAn {
     return AstRule(position: pattern.position + expression.position,
                    pattern: pattern,
                    expression: expression)
+  }
+  
+  func parseCaseExpression() throws -> AstCaseExpression {
+    guard expecting(.keywordCase) else { throw reportError("expecting `case`", symbol.position) }
+    let startingPosition = symbol.position
+    nextSymbol()
+    let expression = try parseExpression()
+    guard expecting(.keywordOf) else { throw reportError("expecting `of`", symbol.position) }
+    nextSymbol()
+    let match = try parseMatch()
+    return AstCaseExpression(position: startingPosition + match.position,
+                             expression: expression,
+                             match: match)
   }
   
   func parseExpression_(expression: AstExpression) throws -> AstExpression {

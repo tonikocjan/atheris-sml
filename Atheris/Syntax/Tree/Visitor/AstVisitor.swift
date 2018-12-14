@@ -31,8 +31,10 @@ protocol AstVisitor {
   func visit(node: AstRecordRow) throws
   func visit(node: AstListExpression) throws
   func visit(node: AstRecordSelectorExpression) throws
+  func visit(node: AstCaseExpression) throws
   func visit(node: AstIdentifierPattern) throws
   func visit(node: AstWildcardPattern) throws
+  func visit(node: AstConstantPattern) throws
   func visit(node: AstTuplePattern) throws
   func visit(node: AstRecordPattern) throws
   func visit(node: AstTypedPattern) throws
@@ -63,9 +65,11 @@ extension AstVisitor {
   func visit(node: AstRecordRow) throws {}
   func visit(node: AstListExpression) throws {}
   func visit(node: AstRecordSelectorExpression) throws {}
+  func visit(node: AstCaseExpression) throws {}
   func visit(node: AstIdentifierPattern) throws {}
   func visit(node: AstWildcardPattern) throws {}
   func visit(node: AstTuplePattern) throws {}
+  func visit(node: AstConstantPattern) throws {}
   func visit(node: AstRecordPattern) throws {}
   func visit(node: AstTypedPattern) throws {}
   func visit(node: AstMatch) throws {}

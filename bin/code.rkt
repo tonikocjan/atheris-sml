@@ -2,13 +2,7 @@
 
 #lang racket
 
-(struct Bus (x0))
-(struct Avto (x0 x1 x2))
-(struct Pes (_))
-
-(define x (Bus 10))
+(define x true)
 x
-(define y (Avto "abc" "efg" 10))
+(define y )
 y
-(define z Pes)
-z
