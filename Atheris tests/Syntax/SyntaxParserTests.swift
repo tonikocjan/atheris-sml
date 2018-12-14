@@ -152,6 +152,17 @@ val z = Pes;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast15")
   }
+  
+  
+  func testCaseExpression() {
+    let code = """
+val x = true;
+val y = case x of
+	true => 1
+	| false => 2;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast16")
+  }
 }
 
 private extension SyntaxParserTests {
