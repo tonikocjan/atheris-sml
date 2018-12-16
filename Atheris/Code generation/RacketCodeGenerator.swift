@@ -148,10 +148,10 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstBinaryExpression) throws {
-    guard
-      let nodeType = symbolDescription.type(for: node),
-      let lhsType = symbolDescription.type(for: node.left),
-      let rhsType = symbolDescription.type(for: node.right) else { return }
+//    guard
+//      let nodeType = symbolDescription.type(for: node),
+//      let lhsType = symbolDescription.type(for: node.left),
+//      let rhsType = symbolDescription.type(for: node.right) else { return }
     
     let operation: String
     switch node.operation {
@@ -173,17 +173,10 @@ extension RacketCodeGenerator: CodeGenerator {
     case .equal:
       operation = "equal?"
     case .append:
-      operation = "append"
+      operation = "cons"
     }
     print("(\(operation) ")
-    if nodeType.isList {
-      guard !lhsType.isList else { return try node.left.accept(visitor: self) }
-      print("(list ")
-      try node.left.accept(visitor: self)
-      print(")")
-    } else {
-      try node.left.accept(visitor: self)
-    }
+    try node.left.accept(visitor: self)
     print(" ")
     try node.right.accept(visitor: self)
     print(")")
@@ -323,8 +316,7 @@ private extension RacketCodeGenerator {
   
   func indentation() -> String {
     return (0..<indent)
-      .map { _ in " " }
-      .joined()
+      .reduce("", { result, _ in result + " " })
   }
   
   func newLine() {
