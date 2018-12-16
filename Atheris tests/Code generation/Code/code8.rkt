@@ -1,12 +1,7 @@
 #lang racket
 
-(define x (list 10 "string" (list false (lambda (x)
-  (* x x)))))
+(define x (list (cons "a" 10) (cons "b" "string") (cons "promise" (list (cons "evaled" false) (cons "f" (lambda (x)
+  (* x x)))))))
 x
-(define a (
-  (car 
-    (cdr 
-      (car 
-        (cdr 
-          (cdr x))))) 10))
+(define a ((cdr (assoc "f" (cdr (assoc "promise" x)))) 10))
 a
