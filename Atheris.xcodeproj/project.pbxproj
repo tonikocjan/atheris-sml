@@ -140,8 +140,8 @@
 		3790FED621B810B4005CA8D5 /* code5.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3790FED521B810B4005CA8D5 /* code5.rkt */; };
 		37B2F8D821C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */; };
 		37B2F8D921C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */; };
-		37B2F8DB21C1526A00C0B9E8 /* CaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */; };
-		37B2F8DC21C1526A00C0B9E8 /* CaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */; };
+		37B2F8DB21C1526A00C0B9E8 /* DatatypeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8DA21C1526A00C0B9E8 /* DatatypeType.swift */; };
+		37B2F8DC21C1526A00C0B9E8 /* DatatypeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B2F8DA21C1526A00C0B9E8 /* DatatypeType.swift */; };
 		37B2F8DE21C1587000C0B9E8 /* code10.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37B2F8DD21C1587000C0B9E8 /* code10.rkt */; };
 		37B2F8E021C158AA00C0B9E8 /* ast15 in Resources */ = {isa = PBXBuildFile; fileRef = 37B2F8DF21C158AA00C0B9E8 /* ast15 */; };
 		37D396B021BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
@@ -279,7 +279,7 @@
 		3790FED321B7FEC2005CA8D5 /* code4.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code4.rkt; sourceTree = "<group>"; };
 		3790FED521B810B4005CA8D5 /* code5.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code5.rkt; sourceTree = "<group>"; };
 		37B2F8D721C1449100C0B9E8 /* AstDatatypeBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstDatatypeBinding.swift; sourceTree = "<group>"; };
-		37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseType.swift; sourceTree = "<group>"; };
+		37B2F8DA21C1526A00C0B9E8 /* DatatypeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatatypeType.swift; sourceTree = "<group>"; };
 		37B2F8DD21C1587000C0B9E8 /* code10.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code10.rkt; sourceTree = "<group>"; };
 		37B2F8DF21C158AA00C0B9E8 /* ast15 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast15; sourceTree = "<group>"; };
 		37D396AF21BA698800C11EB5 /* AstMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstMatch.swift; sourceTree = "<group>"; };
@@ -387,7 +387,7 @@
 				3745060521B53EC10051E1E9 /* AbstractTupleType.swift */,
 				3745060821B5449C0051E1E9 /* AbstractDummyType.swift */,
 				3716C93F21BC0FFB00A24765 /* ListType.swift */,
-				37B2F8DA21C1526A00C0B9E8 /* CaseType.swift */,
+				37B2F8DA21C1526A00C0B9E8 /* DatatypeType.swift */,
 				37E986A421C3D62500D68CA4 /* RuleType.swift */,
 			);
 			path = Type;
@@ -787,7 +787,7 @@
 				374505F721B537FE0051E1E9 /* TypeChecker.swift in Sources */,
 				378EB81F21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */,
 				374505C921B50FFE0051E1E9 /* DumpVisitor.swift in Sources */,
-				37B2F8DC21C1526A00C0B9E8 /* CaseType.swift in Sources */,
+				37B2F8DC21C1526A00C0B9E8 /* DatatypeType.swift in Sources */,
 				374505CA21B50FFE0051E1E9 /* AstPattern.swift in Sources */,
 				374505CB21B50FFE0051E1E9 /* AstIdentifierPattern.swift in Sources */,
 				37E9869D21C3CC7C00D68CA4 /* AstRule.swift in Sources */,
@@ -873,7 +873,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3716C93D21BC0D2100A24765 /* AstListExpression.swift in Sources */,
-				37B2F8DB21C1526A00C0B9E8 /* CaseType.swift in Sources */,
+				37B2F8DB21C1526A00C0B9E8 /* DatatypeType.swift in Sources */,
 				374505FD21B53C870051E1E9 /* AtomType.swift in Sources */,
 				3745064A21B6DDC00051E1E9 /* Executor.swift in Sources */,
 				374505E221B5183D0051E1E9 /* SymbolTableProtocol.swift in Sources */,

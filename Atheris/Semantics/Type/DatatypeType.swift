@@ -1,5 +1,5 @@
 //
-//  CaseType.swift
+//  DatatypeType.swift
 //  Atheris
 //
 //  Created by Toni Kocjan on 12/12/2018.
@@ -8,23 +8,26 @@
 
 import Foundation
 
-class CaseType: Type {
+class DatatypeType: Type {
+  let parent: String
   let name: String
   
-  init(name: String) {
+  init(parent: String, name: String) {
+    self.parent = parent
     self.name = name
   }
   
   var description: String {
-    return name
+    return "[\(parent) => \(name)]"
   }
   
   func sameStructureAs(other: Type) -> Bool {
-    return false
+    guard let datatype = other as? DatatypeType else { return false }
+    return datatype.parent == self.parent
   }
 }
 
-extension CaseType {
+extension DatatypeType {
   func canBeAddedTo(other: Type) -> Bool { return false }
   func canBeSubtractedFrom(other: Type) -> Bool { return false }
   func canBeMultiplyedWith(other: Type) -> Bool { return false }

@@ -20,6 +20,9 @@ class TypeChecker {
   private var typeDistributionStack = [Type]()
   private var funEvalStack = [AstFunBinding]()
   
+  //
+  private var currentDatatypeName: String?
+  
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
     self.symbolDescription = symbolDescription
@@ -92,24 +95,31 @@ extension TypeChecker: AstVisitor {
   
   func visit(node: AstDatatypeBinding) throws {
     try node.name.accept(visitor: self)
+    currentDatatypeName = node.name.name
     for case_ in node.cases { try case_.accept(visitor: self) }
+    currentDatatypeName = nil
   }
   
   func visit(node: AstCase) throws {
+    guard let currentDatatypeName = currentDatatypeName else { throw internalError() }
+    
+    let datatype = DatatypeType(parent: currentDatatypeName,
+                                name: node.name.name)
+    
     try node.name.accept(visitor: self)
     guard let typeNode = node.associatedType else {
-//      let functionType = FunctionType(name: node.name.name,
-//                                      parameter: AbstractDummyType(name: "_"),
-//                                      body: CaseType(name: node.name.name))
-//      symbolDescription.setType(for: node.name, type: functionType)
-//      symbolDescription.setType(for: node, type: functionType)
+      let functionType = FunctionType(name: node.name.name,
+                                      parameter: AbstractDummyType(name: "_"),
+                                      body: datatype)
+      symbolDescription.setType(for: node.name, type: functionType)
+      symbolDescription.setType(for: node, type: functionType)
       return
     }
     try typeNode.accept(visitor: self)
     guard let type = symbolDescription.type(for: typeNode) else { throw internalError() }
     let functionType = FunctionType(name: node.name.name,
                                     parameter: type,
-                                    body: CaseType(name: node.name.name))
+                                    body: datatype)
     symbolDescription.setType(for: node.name, type: functionType)
     symbolDescription.setType(for: node, type: functionType)
   }
@@ -151,7 +161,13 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstNameExpression) throws {
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
-    symbolDescription.setType(for: node, type: type)
+    if type is DatatypeType {
+      symbolDescription.setType(for: node, type: FunctionType(name: node.name,
+                                                              parameter: AbstractDummyType(name: "_"),
+                                                              body: type))
+    } else {
+      symbolDescription.setType(for: node, type: type)
+    }
   }
   
   func visit(node: AstTupleExpression) throws {

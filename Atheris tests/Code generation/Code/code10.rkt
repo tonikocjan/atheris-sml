@@ -8,5 +8,7 @@
 x
 (define y (Avto "abc" "efg" 10))
 y
-(define z Pes)
+(define z (Pes 0))
 z
+(define a (cons x (list y z)))
+a

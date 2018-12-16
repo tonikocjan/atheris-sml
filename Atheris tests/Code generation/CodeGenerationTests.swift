@@ -105,6 +105,7 @@ datatype prevozno_sredstvo_t =
 val x = Bus 10;
 val y = Avto ("abc", "efg", 10);
 val z = Pes;
+val a = x::[y, z];
 """
     performTest(code: code, filepath: "code10.rkt")
   }
