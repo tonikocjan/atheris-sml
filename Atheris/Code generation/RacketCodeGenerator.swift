@@ -237,35 +237,56 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstRecordRow) throws {
+    print("(cons \"")
+    try node.label.accept(visitor: self)
+    print("\" ")
     try node.expression.accept(visitor: self)
+    print(")")
   }
   
   func visit(node: AstRecordSelectorExpression) throws {
-    guard
-      let record = symbolDescription.type(for: node.record)?.toRecord,
-      let rowIndex = record.index(of: node.label.name) else { return }
-    
-    increaseIndent()
-    newLine()
-    print("(car ")
-    for _ in 0..<rowIndex {
-      increaseIndent()
-      newLine()
-      print("(cdr ")
-    }
+    print("(cdr ")
+    print("(assoc ")
+    print("\"")
+    try node.label.accept(visitor: self)
+    print("\" ")
     try node.record.accept(visitor: self)
-    print(")")
-    decreaseIndent()
-    for _ in 0..<rowIndex {
-      print(")")
-      decreaseIndent()
-    }
+    print("))")
   }
   
   func visit(node: AstListExpression) throws {
     print("(list ")
     try perform(on: node.elements, appending: " ")
     print(")")
+  }
+  
+  func visit(node: AstCaseExpression) throws {
+    let rules = node.match.rules
+    print("(cond ")
+    increaseIndent()
+    newLine()
+    try perform(on: rules, appending: "") {
+      self.print("[")
+      self.print("(equal? ")
+      try node.expression.accept(visitor: self)
+      self.print(" ")
+      try $0.pattern.accept(visitor: self)
+      self.print(")")
+      self.print(" ")
+      try $0.expression.accept(visitor: self)
+      self.print("]")
+      self.newLine()
+    }
+    decreaseIndent()
+    print(")")
+  }
+  
+  func visit(node: AstMatch) throws {
+    
+  }
+  
+  func visit(node: AstRule) throws {
+    
   }
   
   func visit(node: AstIdentifierPattern) throws {
@@ -286,16 +307,12 @@ extension RacketCodeGenerator: CodeGenerator {
     
   }
   
+  func visit(node: AstConstantPattern) throws {
+    print(node.value)
+  }
+  
   func visit(node: AstTypedPattern) throws {
     try node.pattern.accept(visitor: self)
-  }
-  
-  func visit(node: AstMatch) throws {
-    
-  }
-  
-  func visit(node: AstRule) throws {
-    
   }
 }
 
@@ -319,11 +336,22 @@ private extension RacketCodeGenerator {
   func increaseIndent() { indent += configuration.indentation }
   func decreaseIndent() { indent -= configuration.indentation }
   
-  func perform(on nodes: [AstNode], appending: String, closure: (()->())?=nil) throws {
+  func perform<T: AstNode>(on nodes: [T], appending: String, closure: ((T) throws -> Void)?=nil) throws {
     for node in nodes.dropLast() {
       try node.accept(visitor: self)
       print(appending)
-      closure?()
+      try closure?(node)
+    }
+    guard let last = nodes.last else { return }
+    try last.accept(visitor: self)
+    try closure?(last)
+  }
+  
+  func perform(on nodes: [AstNode], appending: String, closure: (() throws -> Void)?=nil) throws {
+    for node in nodes.dropLast() {
+      try node.accept(visitor: self)
+      print(appending)
+      try closure?()
     }
     try nodes.last?.accept(visitor: self)
   }

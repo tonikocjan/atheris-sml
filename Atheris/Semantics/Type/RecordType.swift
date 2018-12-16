@@ -21,10 +21,6 @@ class RecordType: Type {
     return rows.first(where: { $0.name == name })?.type
   }
   
-  func index(of row: String) -> Int? {
-    return rows.enumerated().first(where: { $0.element.name == row })?.offset
-  }
-  
   var description: String {
     return "{\(rows.map { $0.name + ":" + $0.type.description }.joined(separator: ", "))}"
   }

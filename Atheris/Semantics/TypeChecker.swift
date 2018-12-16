@@ -97,7 +97,14 @@ extension TypeChecker: AstVisitor {
   
   func visit(node: AstCase) throws {
     try node.name.accept(visitor: self)
-    guard let typeNode = node.associatedType else { return }
+    guard let typeNode = node.associatedType else {
+//      let functionType = FunctionType(name: node.name.name,
+//                                      parameter: AbstractDummyType(name: "_"),
+//                                      body: CaseType(name: node.name.name))
+//      symbolDescription.setType(for: node.name, type: functionType)
+//      symbolDescription.setType(for: node, type: functionType)
+      return
+    }
     try typeNode.accept(visitor: self)
     guard let type = symbolDescription.type(for: typeNode) else { throw internalError() }
     let functionType = FunctionType(name: node.name.name,
