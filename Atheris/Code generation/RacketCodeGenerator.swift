@@ -15,10 +15,11 @@ class RacketCodeGenerator {
   
   private var isRootNode = true
   private var indent = 0
-  private var shouldPrintParents = false
+  private var dontPrintParents = false
   private var debugPrintBindingName = true
   private var expandingDatatypeCaseType = false
   private var expandingDatatypeCaseCounter = 0
+  private var printList = false
   
   init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
@@ -54,9 +55,9 @@ extension RacketCodeGenerator: CodeGenerator {
       try binding.accept(visitor: self)
       newLine()
       if !(binding is AstDatatypeBinding) {
-        shouldPrintParents = true
+        dontPrintParents = true
         try binding.pattern.accept(visitor: self)
-        shouldPrintParents = false
+        dontPrintParents = false
       }
       newLine()
     }
@@ -80,9 +81,9 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstFunBinding) throws {
     print("(define (\(node.identifier.name) ")
-    shouldPrintParents = true
+    dontPrintParents = true
     try node.parameter.accept(visitor: self)
-    shouldPrintParents = false
+    dontPrintParents = false
     print(")")
     increaseIndent()
     newLine()
@@ -150,9 +151,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    if !shouldPrintParents { print("(list ") }
+    if !dontPrintParents { print("(list ") }
     try perform(on: node.expressions, appending: " ")
-    if !shouldPrintParents { print(")") }
+    if !dontPrintParents { print(")") }
   }
   
   func visit(node: AstBinaryExpression) throws {
@@ -215,9 +216,9 @@ extension RacketCodeGenerator: CodeGenerator {
     print("(")
     print(functionName(for: node.name))
     print(" ")
-    shouldPrintParents = true
+    dontPrintParents = true
     try node.argument.accept(visitor: self)
-    shouldPrintParents = false
+    dontPrintParents = false
     print(")")
   }
   
@@ -225,9 +226,9 @@ extension RacketCodeGenerator: CodeGenerator {
     print("(")
     try node.function.accept(visitor: self)
     print(" ")
-    shouldPrintParents = true
+    dontPrintParents = true
     try node.argument.accept(visitor: self)
-    shouldPrintParents = false
+    dontPrintParents = false
     print(")")
   }
   
@@ -267,11 +268,18 @@ extension RacketCodeGenerator: CodeGenerator {
     increaseIndent()
     newLine()
     try perform(on: rules, appending: "") {
+      guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
       self.print("[")
       self.print("(equal? ")
       try node.expression.accept(visitor: self)
       self.print(" ")
-      try $0.pattern.accept(visitor: self)
+      if pattern is TupleType {
+        self.printList = true
+        try $0.pattern.accept(visitor: self)
+        self.printList = false
+      } else {
+        try $0.pattern.accept(visitor: self)
+      }
       self.print(")")
       self.print(" ")
       try $0.expression.accept(visitor: self)
@@ -299,9 +307,12 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTuplePattern) throws {
-    if !shouldPrintParents { print("(") }
+    if !dontPrintParents {
+      print("(")
+      if printList { print("list ") }
+    }
     try perform(on: node.patterns, appending: " ")
-    if !shouldPrintParents { print(")") }
+    if !dontPrintParents { print(")") }
   }
   
   func visit(node: AstRecordPattern) throws {

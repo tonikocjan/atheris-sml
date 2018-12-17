@@ -429,10 +429,15 @@ extension TypeChecker: AstVisitor {
       return
     }
     
+//    for pattern in node.patterns { try pattern.accept(visitor: self) }
+//    let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? AbstractType }
+//    let tuplePatternType = AbstractTupleType(members: types)
+//    symbolDescription.setType(for: node, type: tuplePatternType)
+    
     for pattern in node.patterns { try pattern.accept(visitor: self) }
-    let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? AbstractType }
-    let tuplePatternType = AbstractTupleType(members: types)
-    symbolDescription.setType(for: node, type: tuplePatternType)
+    let types = node.patterns.compactMap { symbolDescription.type(for: $0) }
+    let tuple = TupleType(members: types)
+    symbolDescription.setType(for: node, type: tuple)
   }
   
   func visit(node: AstRecordPattern) throws {
@@ -539,7 +544,6 @@ extension TypeChecker  {
 private extension TypeChecker {
   func dummyName() -> String {
     let name = "'\(TypeChecker.dummyTypeCharacterSet[dummyTypeCount])"
-    
     return name
   }
   
