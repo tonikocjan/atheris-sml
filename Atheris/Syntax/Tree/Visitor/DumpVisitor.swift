@@ -286,6 +286,7 @@ extension DumpVisitor: AstVisitor {
     increaseIndent()
     printSemanticInformation(node: node)
     try node.pattern.accept(visitor: self)
+    try node.associatedValue?.accept(visitor: self)
     try node.expression.accept(visitor: self)
     decreaseIndent()
   }

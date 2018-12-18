@@ -359,11 +359,19 @@ private extension SynAn {
   
   func parseRule() throws -> AstRule {
     let pattern = try parsePattern()
-    guard expecting("=>") else { throw reportError("expecting `=>`", symbol.position) }
-    nextSymbol()
+    let associatedValue: AstPattern?
+    if expecting("=>") {
+      nextSymbol()
+      associatedValue = nil
+    } else {
+      associatedValue = try parsePattern()
+      guard expecting("=>") else { throw reportError("expecting `=>`", symbol.position) }
+      nextSymbol()
+    }
     let expression = try parseExpression()
     return AstRule(position: pattern.position + expression.position,
                    pattern: pattern,
+                   associatedValue: associatedValue,
                    expression: expression)
   }
   

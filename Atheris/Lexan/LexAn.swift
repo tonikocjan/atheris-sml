@@ -107,6 +107,9 @@ private extension LexAn {
         if character == "*", let next = nextCharacter(), next == ")" {
           return parseSymbol()
         }
+        if character == "\n" {
+          currentLocation = Location(row: currentLocation.row + 1, column: 1)
+        }
       }
       return nil
     }

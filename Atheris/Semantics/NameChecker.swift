@@ -61,7 +61,9 @@ extension NameChecker: AstVisitor {
   
   func visit(node: AstDatatypeBinding) throws {
     try insertBinding(node, name: node.name)
-    for case_ in node.cases { try case_.accept(visitor: self) }
+    for case_ in node.cases {
+      try insertBinding(case_, name: case_.name)
+    }
   }
   
   func visit(node: AstCase) throws {
@@ -74,7 +76,9 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstTypeName) throws {
-    
+    if let _ = AstAtomType.AtomType(rawValue: node.name) { return }
+    guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.bindingNotFound(node.name, node.position) }
+    symbolDescription.bindNode(node, binding: binding)
   }
   
   func visit(node: AstTupleType) throws {
@@ -184,11 +188,15 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstMatch) throws {
-    
+    symbolTable.newScope()
+    for rule in node.rules { try rule.accept(visitor: self) }
+    symbolTable.oldScope()
   }
   
   func visit(node: AstRule) throws {
-    
+    try node.pattern.accept(visitor: self)
+    try node.associatedValue?.accept(visitor: self)
+    try node.expression.accept(visitor: self)
   }
 }
 

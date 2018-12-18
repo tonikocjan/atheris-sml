@@ -28,10 +28,13 @@ class AstDatatypeBinding: AstBinding {
   }
 }
 
-class AstCase: AstNode {
+class AstCase: AstBinding {
   let position: Position
   let name: AstIdentifierPattern
   let associatedType: AstType?
+  var pattern: AstPattern {
+    return name
+  }
   
   init(position: Position, name: AstIdentifierPattern, associatedType: AstType?) {
     self.position = position

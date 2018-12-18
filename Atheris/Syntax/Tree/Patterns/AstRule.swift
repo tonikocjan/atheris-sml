@@ -11,11 +11,13 @@ import Foundation
 class AstRule: AstNode {
   let position: Position
   let pattern: AstPattern
+  let associatedValue: AstPattern?
   let expression: AstExpression
   
-  init(position: Position, pattern: AstPattern, expression: AstExpression) {
+  init(position: Position, pattern: AstPattern, associatedValue: AstPattern?, expression: AstExpression) {
     self.position = position
     self.pattern = pattern
+    self.associatedValue = associatedValue
     self.expression = expression
   }
   

@@ -94,9 +94,12 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstDatatypeBinding) throws {
-    try node.name.accept(visitor: self)
+    let datatype = DatatypeType(parent: node.name.name, name: "")
+    symbolDescription.setType(for: node, type: datatype)
     currentDatatypeName = node.name.name
-    for case_ in node.cases { try case_.accept(visitor: self) }
+    for case_ in node.cases {
+      symbolDescription.setType(for: case_, type: DatatypeType(parent: node.name.name, name: case_.name.name))
+    }
     currentDatatypeName = nil
   }
   
@@ -394,6 +397,34 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: matchType.expressionType)
   }
   
+  func visit(node: AstMatch) throws {
+    for rule in node.rules { try rule.accept(visitor: self) }
+    let types = node.rules.compactMap { symbolDescription.type(for: $0) as? RuleType }
+    guard let first = types.first else { return }
+    for type in types.dropFirst() {
+      guard type.sameStructureAs(other: first) else {
+        throw Error.operatorError(position: node.position, domain: first.description, operand: type)
+      }
+    }
+    symbolDescription.setType(for: node, type: first)
+  }
+  
+  func visit(node: AstRule) throws {
+    let associatedValueType: Type?
+    if let associatedValue = node.associatedValue {
+      try node.associatedValue?.accept(visitor: self)
+      associatedValueType = symbolDescription.type(for: associatedValue)
+    } else {
+      associatedValueType = nil
+    }
+    try node.pattern.accept(visitor: self)
+    try node.expression.accept(visitor: self)
+    guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
+    guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
+    let ruleType = RuleType(patternType: patternType, expressionType: expressionType)
+    symbolDescription.setType(for: node, type: ruleType)
+  }
+  
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       // TOOD: - Let's try to get rid of this
@@ -471,27 +502,6 @@ extension TypeChecker: AstVisitor {
     
     symbolDescription.setType(for: node, type: type)
     symbolDescription.setType(for: node.pattern, type: type)
-  }
-  
-  func visit(node: AstMatch) throws {
-    for rule in node.rules { try rule.accept(visitor: self) }
-    let types = node.rules.compactMap { symbolDescription.type(for: $0) as? RuleType }
-    guard let first = types.first else { return }
-    for type in types.dropFirst() {
-      guard type.sameStructureAs(other: first) else {
-        throw Error.operatorError(position: node.position, domain: first.description, operand: type)
-      }
-    }
-    symbolDescription.setType(for: node, type: first)
-  }
-  
-  func visit(node: AstRule) throws {
-    try node.pattern.accept(visitor: self)
-    try node.expression.accept(visitor: self)
-    guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
-    guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
-    let ruleType = RuleType(patternType: patternType, expressionType: expressionType)
-    symbolDescription.setType(for: node, type: ruleType)
   }
 }
 

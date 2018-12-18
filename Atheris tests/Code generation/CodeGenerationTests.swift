@@ -96,6 +96,7 @@ val y = 1::2::[3];
   }
   
   func testDatatype() {
+    // TODO: - 
     let code = """
 datatype prevozno_sredstvo_t =
   Bus of int
@@ -108,6 +109,30 @@ val z = Pes;
 val a = x::[y, z];
 """
     performTest(code: code, filepath: "code10.rkt")
+  }
+  
+  func testRecursiveDatatype() {
+    let code = """
+val x = 10;
+val y = false;
+
+datatype D = X | Y;
+
+val z = case (x, Y) of
+  (10, X) => true
+  | (10, Y) => false;
+
+val e = case (true, (true, true)) of
+  (true, (true, true)) => 0
+  | (true, (true, false)) => 1
+  | (true, (false, true)) => 2
+  | (true, (false, false)) => 3
+  | (false, (true, true)) => 4
+  | (false, (true, false)) => 5
+  | (false, (false, true)) => 6
+  | (false, (false, false)) => 7;
+"""
+    performTest(code: code, filepath: "code11.rkt")
   }
 }
 

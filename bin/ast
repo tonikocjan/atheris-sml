@@ -1,43 +1,67 @@
 AstBindings [1:1, 4:18]:
-  AstValBinding [1:1, 1:13]:
-    -> typed: bool
-    AstIdentifierPattern [1:5, 1:6]:
-      -> typed: bool
-      Name: x
-    AstConstantExpression [1:9, 1:13]:
-      -> typed: bool
-      Value: true
-      Atom type: bool
-  AstValBinding [2:1, 4:18]:
-    -> typed: int
-    AstIdentifierPattern [2:5, 2:6]:
+  AstDatatypeBinding [1:1, 1:42]:
+    -> typed: [natural => ]
+    AstIdentifierPattern [1:10, 1:17]:
+      Name: natural
+    AstCase [1:20, 1:35]:
+      -> typed: [natural => NEXT]
+      AstIdentifierPattern [1:20, 1:24]:
+        Name: NEXT
+      AstTypeName [1:28, 1:35]:
+        Name: natural
+    AstCase [1:38, 1:42]:
+      -> typed: [natural => ZERO]
+      AstIdentifierPattern [1:38, 1:42]:
+        Name: ZERO
+  AstFunBinding [4:1, 4:18]:
+    -> typed: fn : int -> int
+    AstIdentifierPattern [4:5, 4:10]:
+      -> typed: fn : int -> int
+      Name: toInt
+    AstTypedPattern [4:12, 4:18]:
       -> typed: int
-      Name: y
-    AstCaseExpression [2:9, 4:18]:
+      AstIdentifierPattern [4:12, 4:13]:
+        -> typed: int
+        Name: a
+      AstTypeName [4:15, 4:18]:
+        -> typed: int
+        Name: int
+    AstCaseExpression [5:6, 7:34]:
       -> typed: int
-      AstNameExpression [2:14, 2:15]:
-        -> defined at:  [1:5, 1:6]:
-        -> typed: bool
-        Name: x
-      AstMatch [3:11, 4:18]:
-        -> typed: bool => int
-        AstRule [3:11, 3:15]:
-          -> typed: bool => int
-          AstConstantPattern [3:11, 3:13]:
-            -> typed: bool
-            Value: true
-            Type: bool
-          AstConstantExpression [3:14, 3:15]:
+      AstNameExpression [5:11, 5:12]:
+        -> defined at:  [4:12, 4:13]:
+        -> typed: int
+        Name: a
+      AstMatch [6:11, 7:34]:
+        -> typed: 'Z => int
+        AstRule [6:11, 6:20]:
+          -> typed: 'Z => int
+          AstIdentifierPattern [6:11, 6:15]:
+            -> typed: 'Z
+            Name: ZERO
+          AstConstantExpression [6:19, 6:20]:
             -> typed: int
-            Value: 1
+            Value: 0
             Atom type: int
-        AstRule [4:14, 4:18]:
-          -> typed: bool => int
-          AstConstantPattern [4:14, 4:16]:
-            -> typed: bool
-            Value: false
-            Type: bool
-          AstConstantExpression [4:17, 4:18]:
+        AstRule [7:13, 7:34]:
+          -> typed: 'Z => int
+          AstIdentifierPattern [7:13, 7:17]:
+            -> typed: 'Z
+            Name: NEXT
+          AstIdentifierPattern [7:18, 7:19]:
+            -> typed: 'Z
+            Name: i
+          AstBinaryExpression `+` [7:23, 7:34]:
             -> typed: int
-            Value: 2
-            Atom type: int
+            AstConstantExpression [7:23, 7:24]:
+              -> typed: int
+              Value: 1
+              Atom type: int
+            AstFunctionCallExpression [7:27, 7:34]:
+              -> defined at:  [4:5, 4:10]:
+              -> typed: int
+              Function name: toInt
+              AstNameExpression [7:33, 7:34]:
+                -> defined at:  [7:18, 7:19]:
+                -> typed: 'Z
+                Name: i
