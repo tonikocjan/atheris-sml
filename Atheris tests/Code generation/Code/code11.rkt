@@ -4,8 +4,8 @@
 x
 (define y false)
 y
-(struct X (_))
-(struct Y (_))
+(struct X (_) #:transparent)
+(struct Y (_) #:transparent)
 
 (define z (cond 
   [(equal? (list x Y) (list 10 X)) true]
