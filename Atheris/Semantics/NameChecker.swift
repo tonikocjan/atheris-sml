@@ -12,6 +12,8 @@ class NameChecker {
   let symbolTable: SymbolTableProtocol
   let symbolDescription: SymbolDescriptionProtocol
   
+  private var checkingCaseExpression = false
+  
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
     self.symbolDescription = symbolDescription
@@ -167,7 +169,14 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstIdentifierPattern) throws {
-    try insertBinding(node, name: node.name)
+    if checkingCaseExpression {
+      guard let binding = symbolTable.findBinding(name: node.name) else {
+        throw Error.bindingNotFound(node.name, node.position)
+      }
+      symbolDescription.bindNode(node, binding: binding)
+    } else {
+      try insertBinding(node, name: node.name)
+    }
   }
   
   func visit(node: AstWildcardPattern) throws {
@@ -194,7 +203,9 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstRule) throws {
+    checkingCaseExpression = true
     try node.pattern.accept(visitor: self)
+    checkingCaseExpression = false
     try node.associatedValue?.accept(visitor: self)
     try node.expression.accept(visitor: self)
   }

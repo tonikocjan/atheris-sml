@@ -164,7 +164,7 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstNameExpression) throws {
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
-    if type is DatatypeType {
+    if let type = type as? DatatypeType, !type.name.isEmpty {
       symbolDescription.setType(for: node, type: FunctionType(name: node.name,
                                                               parameter: AbstractDummyType(name: "_"),
                                                               body: type))
@@ -303,9 +303,14 @@ extension TypeChecker: AstVisitor {
     try node.argument.accept(visitor: self)
     guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
     
-    guard
-      
-      let functionType = symbolDescription.type(for: binding)?.asFunction else {
+    guard let type = symbolDescription.type(for: binding) else { throw internalError() }
+    
+    if let datatype = type as? DatatypeType {
+      symbolDescription.setType(for: node, type: datatype.parentDatatype)
+      return
+    }
+    
+    guard let functionType = type.asFunction else {
         try node.argument.accept(visitor: self)
         let abstractFunctionType = FunctionType(name: node.name,
                                                 parameter: argumentType,
@@ -393,7 +398,10 @@ extension TypeChecker: AstVisitor {
     guard matchType.patternType.sameStructureAs(other: expressionType) else { throw Error.operatorError(position: node.match.position,
                                                                                                         domain: expressionType.description,
                                                                                                         operand: matchType.patternType) }
-    
+    if let binding = symbolDescription.binding(for: node.expression) {
+      symbolDescription.setType(for: binding, type: matchType.patternType)
+    }
+    symbolDescription.setType(for: node.expression, type: matchType.patternType)
     symbolDescription.setType(for: node, type: matchType.expressionType)
   }
   
@@ -433,6 +441,11 @@ extension TypeChecker: AstVisitor {
     }
     
     if let _ = symbolDescription.type(for: node) {
+      return
+    }
+    
+    if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
+      symbolDescription.setType(for: node, type: type)
       return
     }
     

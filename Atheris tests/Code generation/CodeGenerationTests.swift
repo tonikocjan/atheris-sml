@@ -134,6 +134,21 @@ val e = case (true, (true, true)) of
 """
     performTest(code: code, filepath: "code11.rkt")
   }
+  
+  func testDatatypeMethod() {
+    let code = """
+datatype natural = NEXT of natural | ZERO;
+
+fun toInt (a) =
+  case a of
+    ZERO => 0
+    | NEXT i => 1 + toInt(i);
+
+val x = NEXT(ZERO);
+val a = toInt x;
+"""
+    performTest(code: code, filepath: "code12.rkt")
+  }
 }
 
 private extension CodeGenerationTests {

@@ -22,8 +22,13 @@ class DatatypeType: Type {
   }
   
   func sameStructureAs(other: Type) -> Bool {
+    if other.isAbstract { return true }
     guard let datatype = other as? DatatypeType else { return false }
     return datatype.parent == self.parent
+  }
+  
+  var parentDatatype: DatatypeType {
+    return DatatypeType(parent: self.parent, name: "")
   }
 }
 

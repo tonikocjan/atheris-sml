@@ -122,7 +122,7 @@ extension RacketCodeGenerator: CodeGenerator {
     } else {
       print(" (_)")
     }
-    print(")")
+    print(" #:transparent)")
   }
   
   func visit(node: AstAtomType) throws {
@@ -147,7 +147,12 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstNameExpression) throws {
-    print(node.name)
+    guard let type = symbolDescription.type(for: node) else { return }
+    if let function = type.asFunction, function.body is DatatypeType, let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
+      print("(\(node.name) 0)")
+    } else {
+      print(node.name)
+    }
   }
   
   func visit(node: AstTupleExpression) throws {
@@ -263,29 +268,60 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstCaseExpression) throws {
+//    guard let expressionType = symbolDescription.type(for: node.expression) else { return }
+    
     let rules = node.match.rules
     print("(cond ")
     increaseIndent()
     newLine()
+    
     try perform(on: rules, appending: "") {
       guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
       self.print("[")
-      self.print("(equal? ")
-      try node.expression.accept(visitor: self)
-      self.print(" ")
-      if pattern is TupleType {
-        self.printList = true
-        try $0.pattern.accept(visitor: self)
-        self.printList = false
+      let shouldPrintPattern: Bool
+      if let identifierPattern = $0.pattern as? AstIdentifierPattern, pattern is DatatypeType {
+        self.print("(\(identifierPattern.name)? ")
+        shouldPrintPattern = false
+        try node.expression.accept(visitor: self)
+        
       } else {
-        try $0.pattern.accept(visitor: self)
+        self.print("(equal? ")
+        shouldPrintPattern = true
+        try node.expression.accept(visitor: self)
+        self.print(" ")
+      }
+      if shouldPrintPattern {
+        if pattern is TupleType {
+          self.printList = true
+          try $0.pattern.accept(visitor: self)
+          self.printList = false
+        } else {
+          try $0.pattern.accept(visitor: self)
+        }
       }
       self.print(")")
       self.print(" ")
-      try $0.expression.accept(visitor: self)
+      if let associatedType = $0.associatedValue {
+        self.print("(let ([")
+        try associatedType.accept(visitor: self)
+        self.print(" ")
+        if let identifierPattern = $0.pattern as? AstIdentifierPattern, pattern is DatatypeType {
+          self.print("(\(identifierPattern.name)-x0 ")
+          try node.expression.accept(visitor: self)
+          self.print(")")
+        } else {
+          try node.expression.accept(visitor: self)
+        }
+        self.print("]) ")
+        try $0.expression.accept(visitor: self)
+        self.print(")")
+      } else {
+        try $0.expression.accept(visitor: self)
+      }
       self.print("]")
       self.newLine()
     }
+    
     decreaseIndent()
     print(")")
   }
