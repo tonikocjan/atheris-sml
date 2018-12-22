@@ -64,18 +64,10 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstValBinding) throws {
-    guard let type = symbolDescription.type(for: node.expression) else { return }
-    
     print("(define ")
     try node.pattern.accept(visitor: self)
     print(" ")
-    if let function = type.asFunction, function.body is DatatypeType {
-      print("(")
-      try node.expression.accept(visitor: self)
-      print(" 0)")
-    } else {
-      try node.expression.accept(visitor: self)
-    }
+    try node.expression.accept(visitor: self)
     print(")")
   }
   

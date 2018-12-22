@@ -1,8 +1,8 @@
 #lang racket
 
-(struct Bus (int1))
-(struct Avto (string1 string2 int1))
-(struct Pes (_))
+(struct Bus (x0) #:transparent)
+(struct Avto (x0 x1 x2) #:transparent)
+(struct Pes (_) #:transparent)
 
 (define x (Bus 10))
 x

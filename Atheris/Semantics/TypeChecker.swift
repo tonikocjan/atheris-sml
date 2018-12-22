@@ -46,8 +46,13 @@ extension TypeChecker: AstVisitor {
       guard patternType.sameStructureAs(other: expressionType) else {
         throw Error.typeError(position: node.position, patternType: patternType, expressionType: expressionType)
       }
-      symbolDescription.setType(for: node, type: expressionType)
-      resultType = expressionType
+      if let function = expressionType.asFunction, function.body is DatatypeType, function.parameter.isAbstract {
+        symbolDescription.setType(for: node, type: function.body)
+        resultType = function.body
+      } else {
+        symbolDescription.setType(for: node, type: expressionType)
+        resultType = expressionType
+      }
     } else {
       // expression's type is assigned to pattern and node
       symbolDescription.setType(for: node.pattern, type: expressionType)
@@ -164,7 +169,7 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstNameExpression) throws {
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
-    if let type = type as? DatatypeType, !type.name.isEmpty {
+    if let type = type as? DatatypeType, !type.name.isEmpty, let _ = symbolDescription.binding(for: node) as? AstCase {
       symbolDescription.setType(for: node, type: FunctionType(name: node.name,
                                                               parameter: AbstractDummyType(name: "_"),
                                                               body: type))
