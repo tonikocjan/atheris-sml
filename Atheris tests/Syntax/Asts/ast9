@@ -1,5 +1,5 @@
-AstBindings [1:1, 2:30]:
-  AstFunBinding [1:1, 1:10]:
+AstBindings [1:1, 2:21]:
+  AstFunBinding [1:1, 1:14]:
     -> typed: fn : int -> fn : int -> fn : int -> int
     AstIdentifierPattern [1:5, 1:8]:
       -> typed: fn : int -> fn : int -> fn : int -> int
@@ -33,28 +33,28 @@ AstBindings [1:1, 2:30]:
             -> defined at:  [1:13, 1:14]:
             -> typed: int
             Name: z
-  AstValBinding [2:1, 2:30]:
+  AstValBinding [2:1, 2:21]:
     -> typed: int
     AstIdentifierPattern [2:5, 2:6]:
       -> typed: int
       Name: x
-    AstAnonymousFunctionCall [2:11, 2:30]:
+    AstAnonymousFunctionCall [2:9, 2:21]:
       -> typed: int
-      AstConstantExpression [2:28, 2:30]:
+      AstConstantExpression [2:19, 2:21]:
         -> typed: int
         Value: 30
         Atom type: int
-      AstAnonymousFunctionCall [2:11, 2:24]:
+      AstAnonymousFunctionCall [2:9, 2:18]:
         -> typed: fn : int -> int
-        AstConstantExpression [2:22, 2:24]:
+        AstConstantExpression [2:16, 2:18]:
           -> typed: int
           Value: 20
           Atom type: int
-        AstFunctionCallExpression [2:11, 2:18]:
+        AstFunctionCallExpression [2:9, 2:15]:
           -> defined at:  [1:5, 1:8]:
           -> typed: fn : int -> fn : int -> int
           Function name: mul
-          AstConstantExpression [2:16, 2:18]:
+          AstConstantExpression [2:13, 2:15]:
             -> typed: int
             Value: 10
             Atom type: int

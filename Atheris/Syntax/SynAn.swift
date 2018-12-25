@@ -88,10 +88,11 @@ private extension SynAn {
     nextSymbol()
     let identifier = parseIdentifierPattern()
     let parameter = try parsePattern()
-    let binding = AstFunBinding(position: startingPosition + parameter.position,
+    let body = try parseFunBody()
+    let binding = AstFunBinding(position: startingPosition + body.position,
                                 identifier: identifier,
                                 parameter: parameter,
-                                body: try parseFunBody())
+                                body: body)
     return binding
   }
   
@@ -574,7 +575,7 @@ private extension SynAn {
          .integerConstant,
          .logicalConstant,
          .floatingConstant:
-      return try parseFunction()
+      return try parsePostfixExpression_(expression: parseFunction())
     case .identifier:
       switch symbol.lexeme {
       case "+", "-", "*", "/", "::", "~", "<", ">", "<=", ">=", "^":

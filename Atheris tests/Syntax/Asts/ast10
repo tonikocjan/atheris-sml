@@ -1,5 +1,5 @@
-AstBindings [1:1, 2:8]:
-  AstFunBinding [1:1, 1:8]:
+AstBindings [1:1, 2:26]:
+  AstFunBinding [1:1, 1:28]:
     -> typed: fn : int -> fn : int -> int
     AstIdentifierPattern [1:5, 1:6]:
       -> typed: fn : int -> fn : int -> int
@@ -32,7 +32,7 @@ AstBindings [1:1, 2:8]:
           -> typed: int
           Value: 1
           Atom type: int
-  AstFunBinding [2:1, 2:8]:
+  AstFunBinding [2:1, 2:26]:
     -> typed: fn : int -> fn : int -> int
     AstIdentifierPattern [2:5, 2:6]:
       -> typed: fn : int -> fn : int -> int

@@ -90,7 +90,7 @@ val v = a ("abc", "efg", "cdf");
   func testCurryingSyntaxAndSemantics() {
     let code = """
 fun mul x y z = x * y * z;
-val x = ((mul (10)) (20)) (30);
+val x = mul 10 20 30;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast9")
   }
