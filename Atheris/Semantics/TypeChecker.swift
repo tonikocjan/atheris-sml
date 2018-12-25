@@ -72,18 +72,34 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstFunBinding) throws {
     funEvalStack.append(node)
     try node.identifier.accept(visitor: self)
+    var parameterType: Type?
+    var bodyType: Type?
+    
     for case_ in node.cases {
       try case_.parameter.accept(visitor: self)
       try case_.body.accept(visitor: self)
       try case_.parameter.accept(visitor: self)
-      guard let parameterType = symbolDescription.type(for: case_.parameter) else { throw internalError() }
-      guard let bodyType = symbolDescription.type(for: case_.body) else { throw internalError() }
-      let functionType = FunctionType(name: node.identifier.name,
-                                      parameter: parameterType,
-                                      body: bodyType)
-      symbolDescription.setType(for: node, type: functionType)
-      symbolDescription.setType(for: node.identifier, type: functionType)
+      guard let parameterType_ = symbolDescription.type(for: case_.parameter) else { throw internalError() }
+      guard let bodyType_ = symbolDescription.type(for: case_.body) else { throw internalError() }
+      if let parameterType = parameterType, let bodyType = bodyType {
+        guard parameterType_.sameStructureAs(other: parameterType) else {
+          throw Error.typeError(position: case_.parameter.position, patternType: parameterType, expressionType: parameterType_)
+        }
+        guard bodyType_.sameStructureAs(other: bodyType) else {
+          throw Error.typeError(position: case_.body.position, patternType: bodyType, expressionType: bodyType_)
+        }
+      } else {
+        parameterType = parameterType_
+        bodyType = bodyType_
+      }
     }
+    
+    let functionType = FunctionType(name: node.identifier.name,
+                                    parameter: parameterType!,
+                                    body: bodyType!)
+    symbolDescription.setType(for: node, type: functionType)
+    symbolDescription.setType(for: node.identifier, type: functionType)
+    
     _ = funEvalStack.popLast()
   }
   

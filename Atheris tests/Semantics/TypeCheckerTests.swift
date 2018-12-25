@@ -154,6 +154,30 @@ val y = case x of
 """
     performFailingTest(code: code)
   }
+  
+  func testFunBindingCaseBodyTypeNotMatching() {
+    let code = """
+fun f (false, true) = 1
+  | f (true, true) = true;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testFunBindingCaseParameterTypeNotMatching() {
+    let code = """
+fun f (false, true) = 1
+  | f (10, true) = 2;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testFunBindingCasesShouldSucceed() {
+    let code = """
+fun f (false, true) = 1
+  | f (true, true) = 2;
+"""
+    performSucceedingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {
