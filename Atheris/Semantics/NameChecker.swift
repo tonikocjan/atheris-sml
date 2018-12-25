@@ -48,17 +48,21 @@ extension NameChecker: AstVisitor {
   
   func visit(node: AstFunBinding) throws {
     try node.identifier.accept(visitor: self)
-    symbolTable.newScope()
-    try node.parameter.accept(visitor: self)
-    try node.body.accept(visitor: self)
-    symbolTable.oldScope()
+    for case_ in node.cases {
+      symbolTable.newScope()
+      try case_.parameter.accept(visitor: self)
+      try case_.body.accept(visitor: self)
+      symbolTable.oldScope()
+    }
   }
   
   func visit(node: AstAnonymousFunctionBinding) throws {
-    symbolTable.newScope()
-    try node.parameter.accept(visitor: self)
-    try node.body.accept(visitor: self)
-    symbolTable.oldScope()
+    for case_ in node.cases {
+      symbolTable.newScope()
+      try case_.parameter.accept(visitor: self)
+      try case_.body.accept(visitor: self)
+      symbolTable.oldScope()
+    }
   }
   
   func visit(node: AstDatatypeBinding) throws {

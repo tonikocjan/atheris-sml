@@ -75,27 +75,31 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstFunBinding) throws {
-    print("(define (\(node.identifier.name) ")
-    dontPrintParents = true
-    try node.parameter.accept(visitor: self)
-    dontPrintParents = false
-    print(")")
-    increaseIndent()
-    newLine()
-    try node.body.accept(visitor: self)
-    print(")")
-    decreaseIndent()
+    for case_ in node.cases {
+      print("(define (\(node.identifier.name) ")
+      dontPrintParents = true
+      try case_.parameter.accept(visitor: self)
+      dontPrintParents = false
+      print(")")
+      increaseIndent()
+      newLine()
+      try case_.body.accept(visitor: self)
+      print(")")
+      decreaseIndent()
+    }
   }
   
   func visit(node: AstAnonymousFunctionBinding) throws {
-    print("(lambda (")
-    try node.parameter.accept(visitor: self)
-    print(")")
-    increaseIndent()
-    newLine()
-    try node.body.accept(visitor: self)
-    print(")")
-    decreaseIndent()
+    for case_ in node.cases {
+      print("(lambda (")
+      try case_.parameter.accept(visitor: self)
+      print(")")
+      increaseIndent()
+      newLine()
+      try case_.body.accept(visitor: self)
+      print(")")
+      decreaseIndent()
+    }
   }
   
   func visit(node: AstDatatypeBinding) throws {

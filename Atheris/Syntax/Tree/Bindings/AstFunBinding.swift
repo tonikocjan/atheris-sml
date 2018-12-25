@@ -9,10 +9,14 @@
 import Foundation
 
 class AstFunBinding: AstBinding {
+  struct Case {
+    let parameter: AstPattern
+    let body: AstExpression
+  }
+  
   let position: Position
   let identifier: AstIdentifierPattern
-  let parameter: AstPattern
-  let body: AstExpression
+  let cases: [Case]
   var pattern: AstPattern {
     return identifier
   }
@@ -20,8 +24,13 @@ class AstFunBinding: AstBinding {
   init(position: Position, identifier: AstIdentifierPattern, parameter: AstPattern, body: AstExpression) {
     self.position = position
     self.identifier = identifier
-    self.parameter = parameter
-    self.body = body
+    self.cases = [Case(parameter: parameter, body: body)]
+  }
+  
+  init(position: Position, identifier: AstIdentifierPattern, cases: [Case]) {
+    self.position = position
+    self.identifier = identifier
+    self.cases = cases
   }
   
   func accept(visitor: AstVisitor) throws {

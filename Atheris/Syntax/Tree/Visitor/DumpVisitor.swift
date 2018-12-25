@@ -48,8 +48,10 @@ extension DumpVisitor: AstVisitor {
     increaseIndent()
     printSemanticInformation(node: node)
     try node.identifier.accept(visitor: self)
-    try node.parameter.accept(visitor: self)
-    try node.body.accept(visitor: self)
+    for case_ in node.cases {
+      try case_.parameter.accept(visitor: self)
+      try case_.body.accept(visitor: self)
+    }
     decreaseIndent()
   }
   
@@ -57,8 +59,10 @@ extension DumpVisitor: AstVisitor {
     print("AstAnonymousFunctionBinding", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
-    try node.parameter.accept(visitor: self)
-    try node.body.accept(visitor: self)
+    for case_ in node.cases {
+      try case_.parameter.accept(visitor: self)
+      try case_.body.accept(visitor: self)
+    }
     decreaseIndent()
   }
   

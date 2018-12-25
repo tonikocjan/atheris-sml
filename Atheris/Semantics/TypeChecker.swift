@@ -72,33 +72,23 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstFunBinding) throws {
     funEvalStack.append(node)
     try node.identifier.accept(visitor: self)
-    try node.parameter.accept(visitor: self)
-    try node.body.accept(visitor: self)
-    try node.parameter.accept(visitor: self)
-    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw internalError() }
-    guard let bodyType = symbolDescription.type(for: node.body) else { throw internalError() }
-    let functionType = FunctionType(name: node.identifier.name,
-                                    parameter: parameterType,
-                                    body: bodyType)
-    symbolDescription.setType(for: node, type: functionType)
-    symbolDescription.setType(for: node.identifier, type: functionType)
+    for case_ in node.cases {
+      try case_.parameter.accept(visitor: self)
+      try case_.body.accept(visitor: self)
+      try case_.parameter.accept(visitor: self)
+      guard let parameterType = symbolDescription.type(for: case_.parameter) else { throw internalError() }
+      guard let bodyType = symbolDescription.type(for: case_.body) else { throw internalError() }
+      let functionType = FunctionType(name: node.identifier.name,
+                                      parameter: parameterType,
+                                      body: bodyType)
+      symbolDescription.setType(for: node, type: functionType)
+      symbolDescription.setType(for: node.identifier, type: functionType)
+    }
     _ = funEvalStack.popLast()
   }
   
   func visit(node: AstAnonymousFunctionBinding) throws {
-    funEvalStack.append(node)
-    try node.identifier.accept(visitor: self)
-    try node.parameter.accept(visitor: self)
-    try node.body.accept(visitor: self)
-    try node.parameter.accept(visitor: self)
-    guard let parameterType = symbolDescription.type(for: node.parameter) else { throw internalError() }
-    guard let bodyType = symbolDescription.type(for: node.body) else { throw internalError() }
-    let functionType = FunctionType(name: node.identifier.name,
-                                    parameter: parameterType,
-                                    body: bodyType)
-    symbolDescription.setType(for: node, type: functionType)
-    symbolDescription.setType(for: node.identifier, type: functionType)
-    _ = funEvalStack.popLast()
+    try visit(node: node as AstFunBinding)
   }
   
   func visit(node: AstDatatypeBinding) throws {
