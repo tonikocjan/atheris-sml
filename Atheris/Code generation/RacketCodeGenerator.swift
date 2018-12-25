@@ -20,6 +20,7 @@ class RacketCodeGenerator {
   private var expandingDatatypeCaseType = false
   private var expandingDatatypeCaseCounter = 0
   private var printList = false
+  private var rhs = false
   
   init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
@@ -67,7 +68,9 @@ extension RacketCodeGenerator: CodeGenerator {
     print("(define ")
     try node.pattern.accept(visitor: self)
     print(" ")
+    rhs = true
     try node.expression.accept(visitor: self)
+    rhs = false
     print(")")
   }
   
@@ -140,7 +143,7 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstNameExpression) throws {
     guard let type = symbolDescription.type(for: node) else { return }
-    if let function = type.asFunction, function.body is DatatypeType, let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
+    if rhs, type is DatatypeType || (type as? FunctionType)?.body is DatatypeType, let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
       print("(\(node.name) 0)")
     } else {
       print(node.name)
@@ -266,7 +269,8 @@ extension RacketCodeGenerator: CodeGenerator {
     print("(cond ")
     increaseIndent()
     newLine()
-    
+    let rhs_ = rhs
+    rhs = false
     try perform(on: rules, appending: "") {
       guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
       self.print("[")
@@ -313,7 +317,7 @@ extension RacketCodeGenerator: CodeGenerator {
       self.print("]")
       self.newLine()
     }
-    
+    rhs = rhs_
     decreaseIndent()
     print(")")
   }

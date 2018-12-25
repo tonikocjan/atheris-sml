@@ -308,13 +308,29 @@ extension TypeChecker: AstVisitor {
     
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
     
+    let rhs = valBindingRhs
+    valBindingRhs = false
     try node.argument.accept(visitor: self)
+    valBindingRhs = rhs
     guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
     
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     
     if let datatype = type as? DatatypeType {
-      symbolDescription.setType(for: node, type: datatype.parentDatatype)
+      guard let case_ = binding as? AstCase else { throw internalError() }
+      guard let associatedType = case_.associatedType else {
+        symbolDescription.setType(for: node, type: datatype.parentDatatype)
+        return
+      }
+      
+      try associatedType.accept(visitor: self)
+      guard let type = symbolDescription.type(for: associatedType) else { throw internalError() }
+      guard argumentType.sameStructureAs(other: type) else {
+        throw Error.operatorError(position: node.position,
+                                  domain: type.description,
+                                  operand: argumentType)
+      }
+      symbolDescription.setType(for: node, type: datatype)
       return
     }
     

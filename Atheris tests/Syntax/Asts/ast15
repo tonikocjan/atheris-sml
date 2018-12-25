@@ -1,20 +1,18 @@
 AstBindings [1:1, 8:12]:
   AstDatatypeBinding [1:1, 4:11]:
+    -> typed: [prevozno_sredstvo_t => ]
     AstIdentifierPattern [1:10, 1:29]:
-      -> typed: 'Z
       Name: prevozno_sredstvo_t
     AstCase [2:6, 2:16]:
-      -> typed: fn : int -> [prevozno_sredstvo_t => Bus]
+      -> typed: [prevozno_sredstvo_t => Bus]
       AstIdentifierPattern [2:6, 2:9]:
-        -> typed: fn : int -> [prevozno_sredstvo_t => Bus]
         Name: Bus
       AstTypeName [2:13, 2:16]:
         -> typed: int
         Name: int
     AstCase [3:8, 3:35]:
-      -> typed: fn : (string * string * int) -> [prevozno_sredstvo_t => Avto]
+      -> typed: [prevozno_sredstvo_t => Avto]
       AstIdentifierPattern [3:8, 3:12]:
-        -> typed: fn : (string * string * int) -> [prevozno_sredstvo_t => Avto]
         Name: Avto
       AstTupleType [3:16, 3:35]:
         -> typed: (string * string * int)
@@ -28,9 +26,8 @@ AstBindings [1:1, 8:12]:
           -> typed: int
           Name: int
     AstCase [4:8, 4:11]:
-      -> typed: fn : _ -> [prevozno_sredstvo_t => Pes]
+      -> typed: [prevozno_sredstvo_t => Pes]
       AstIdentifierPattern [4:8, 4:11]:
-        -> typed: fn : _ -> [prevozno_sredstvo_t => Pes]
         Name: Pes
   AstValBinding [6:1, 6:15]:
     -> typed: [prevozno_sredstvo_t => Bus]
@@ -38,7 +35,7 @@ AstBindings [1:1, 8:12]:
       -> typed: [prevozno_sredstvo_t => Bus]
       Name: x
     AstFunctionCallExpression [6:9, 6:15]:
-      -> defined at:  [2:6, 2:9]:
+      -> defined at:  [2:6, 2:16]:
       -> typed: [prevozno_sredstvo_t => Bus]
       Function name: Bus
       AstConstantExpression [6:13, 6:15]:
@@ -51,7 +48,7 @@ AstBindings [1:1, 8:12]:
       -> typed: [prevozno_sredstvo_t => Avto]
       Name: y
     AstFunctionCallExpression [7:9, 7:31]:
-      -> defined at:  [3:8, 3:12]:
+      -> defined at:  [3:8, 3:35]:
       -> typed: [prevozno_sredstvo_t => Avto]
       Function name: Avto
       AstTupleExpression [7:15, 7:31]:
@@ -69,9 +66,9 @@ AstBindings [1:1, 8:12]:
           Value: 10
           Atom type: int
   AstValBinding [8:1, 8:12]:
-    -> typed: fn : _ -> [prevozno_sredstvo_t => Pes]
+    -> typed: [prevozno_sredstvo_t => Pes]
     AstIdentifierPattern [8:5, 8:6]:
-      -> typed: fn : _ -> [prevozno_sredstvo_t => Pes]
+      -> typed: [prevozno_sredstvo_t => Pes]
       Name: z
     AstNameExpression [8:9, 8:12]:
       -> defined at:  [4:8, 4:11]:
