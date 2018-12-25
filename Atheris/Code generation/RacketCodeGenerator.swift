@@ -75,18 +75,45 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstFunBinding) throws {
-    for case_ in node.cases {
+    func handleOneCase() throws {
       print("(define (\(node.identifier.name) ")
       dontPrintParents = true
-      try case_.parameter.accept(visitor: self)
+      try node.cases.first!.parameter.accept(visitor: self)
       dontPrintParents = false
       print(")")
       increaseIndent()
       newLine()
-      try case_.body.accept(visitor: self)
+      try node.cases.first!.body.accept(visitor: self)
       print(")")
       decreaseIndent()
     }
+    
+    func handleMoreCases() throws {
+      let varName = "x"
+      print("(define (\(node.identifier.name) \(varName))")
+      increaseIndent()
+      newLine()
+      print("(cond")
+      increaseIndent()
+      newLine()
+      for (idx, case_) in node.cases.enumerated() {
+        guard let pattern = self.symbolDescription.type(for: case_.parameter) else { return }
+        self.print("[(equal? ")
+        try case_.parameter.accept(visitor: self)
+        self.print(" x) ")
+        try case_.body.accept(visitor: self)
+        self.print("]")
+        if idx <= node.cases.count {
+          newLine()
+        }
+      }
+      decreaseIndent()
+      decreaseIndent()
+      print("))")
+    }
+      
+    if node.cases.count == 1 { try handleOneCase() }
+    else { try handleMoreCases() }
   }
   
   func visit(node: AstAnonymousFunctionBinding) throws {
@@ -267,8 +294,6 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstCaseExpression) throws {
-//    guard let expressionType = symbolDescription.type(for: node.expression) else { return }
-    
     let rules = node.match.rules
     print("(cond ")
     increaseIndent()
@@ -283,7 +308,6 @@ extension RacketCodeGenerator: CodeGenerator {
         self.print("(\(identifierPattern.name)? ")
         shouldPrintPattern = false
         try node.expression.accept(visitor: self)
-        
       } else {
         self.print("(equal? ")
         shouldPrintPattern = true

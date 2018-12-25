@@ -149,6 +149,17 @@ val a = toInt x;
 """
     performTest(code: code, filepath: "code12.rkt")
   }
+  
+  func testFunBindingWithCasesSimpleBoolean() {
+    let code = """
+fun f true = 1
+  | f false = 2;
+
+val x = f true;
+val y = f false;
+"""
+    performTest(code: code, filepath: "code13.rkt")
+  }
 }
 
 private extension CodeGenerationTests {
