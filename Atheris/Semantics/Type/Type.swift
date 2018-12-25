@@ -67,11 +67,12 @@ protocol Type: class, CustomStringConvertible {
   func canOrElseWith(other: Type) -> Bool
   
   func isBinaryOperationValid(_ operation: Operation, other: Type) -> Type?
+  var isConcrete: Bool { get }
+  var isAbstract: Bool { get }
 }
 
 extension Type {
-  var isConcrete: Bool { return !(self is AbstractDummyType) }
-  var isAbstract: Bool { return self is AbstractDummyType }
+  var isConcrete: Bool { return !self.isAbstract }
 }
 
 extension Type {

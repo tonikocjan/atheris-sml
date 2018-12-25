@@ -171,6 +171,14 @@ fun f (false, true) = 1
     performFailingTest(code: code)
   }
   
+  func testFunBindingRedundantCase() {
+    let code = """
+fun f (false, true) = 1
+  | f (a, true) = 2;
+"""
+    performFailingTest(code: code)
+  }
+  
   func testFunBindingCasesShouldSucceed() {
     let code = """
 fun f (false, true) = 1

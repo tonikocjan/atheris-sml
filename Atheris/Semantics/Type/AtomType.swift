@@ -24,6 +24,8 @@ class AtomType: Type {
   var description: String {
     return type.rawValue
   }
+  
+  var isAbstract: Bool { return false }
 }
 
 extension AtomType {

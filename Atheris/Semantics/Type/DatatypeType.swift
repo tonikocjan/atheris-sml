@@ -30,6 +30,8 @@ class DatatypeType: Type {
   var parentDatatype: DatatypeType {
     return DatatypeType(parent: self.parent, name: "")
   }
+  
+  var isAbstract: Bool { return false }
 }
 
 extension DatatypeType {

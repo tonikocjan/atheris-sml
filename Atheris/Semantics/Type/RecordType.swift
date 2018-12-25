@@ -40,6 +40,13 @@ class RecordType: Type {
           tuple.0.name == tuple.1.name
       })
   }
+  
+  var isAbstract: Bool {
+    for row in rows {
+      if row.type.isAbstract { return true }
+    }
+    return false
+  }
 }
 
 extension RecordType {

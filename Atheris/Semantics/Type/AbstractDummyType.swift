@@ -22,6 +22,8 @@ class AbstractDummyType: AbstractType {
   func sameStructureAs(other: Type) -> Bool {
     return true
   }
+  
+  var isAbstract: Bool { return true }
 }
 
 extension AbstractDummyType {

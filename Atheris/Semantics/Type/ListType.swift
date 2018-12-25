@@ -23,6 +23,8 @@ class ListType: Type {
     guard let list = other.toList else { return false }
     return list.type.sameStructureAs(other: self)
   }
+  
+  var isAbstract: Bool { return false }
 }
 
 extension ListType {

@@ -81,6 +81,12 @@ extension TypeChecker: AstVisitor {
       try case_.parameter.accept(visitor: self)
       guard let parameterType_ = symbolDescription.type(for: case_.parameter) else { throw internalError() }
       guard let bodyType_ = symbolDescription.type(for: case_.body) else { throw internalError() }
+      if node.cases.count > 1 {
+        guard !parameterType_.isAbstract else {
+          throw Error.redundantCaseError(position: case_.parameter.position)
+        }
+      }
+      
       if let parameterType = parameterType, let bodyType = bodyType {
         guard parameterType_.sameStructureAs(other: parameterType) else {
           throw Error.typeError(position: case_.parameter.position, patternType: parameterType, expressionType: parameterType_)
@@ -559,6 +565,7 @@ extension TypeChecker  {
     case operatorError(position: Position, domain: String, operand: Type)
     case testExpressionError(position: Position, testExpressionType: Type)
     case branchesTypeMistmatchError(position: Position, trueBranchType: Type, falseBranchType: Type)
+    case redundantCaseError(position: Position)
     
     var errorMessage: String {
       switch self {
@@ -592,6 +599,8 @@ extension TypeChecker  {
         then branch: \(trueBranchType.description)
         else branch: \(falseBranchType.description)
         """
+      case .redundantCaseError(let position):
+        return "error \(position.description): redundant case"
       }
     }
   }

@@ -22,6 +22,8 @@ class FunctionType: Type {
   var description: String {
     return "fn : \(parameter.description) -> \(body.description)"
   }
+  
+  var isAbstract: Bool { return false }
 }
 
 extension FunctionType {

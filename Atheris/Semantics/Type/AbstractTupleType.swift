@@ -26,6 +26,8 @@ class AbstractTupleType: AbstractType {
     return zip(members, other.rows)
       .reduce(true, { (acc, tuple) in acc && tuple.0.sameStructureAs(other: tuple.1.type) })
   }
+  
+  var isAbstract: Bool { return true }
 }
 
 extension AbstractTupleType {

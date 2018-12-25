@@ -20,6 +20,8 @@ class RuleType: Type {
   var description: String {
     return "\(patternType.description) => \(expressionType.description)"
   }
+  
+  var isAbstract: Bool { return false }
 }
 
 extension RuleType {
