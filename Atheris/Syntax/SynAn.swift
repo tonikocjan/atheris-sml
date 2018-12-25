@@ -87,12 +87,21 @@ private extension SynAn {
     let startingPosition = symbol.position
     nextSymbol()
     let identifier = parseIdentifierPattern()
-    let parameter = try parsePattern()
-    let body = try parseFunBody()
-    let binding = AstFunBinding(position: startingPosition + body.position,
+    var cases = [AstFunBinding.Case]()
+    repeat {
+      let parameter = try parsePattern()
+      let body = try parseFunBody()
+      cases.append(AstFunBinding.Case(parameter: parameter, body: body))
+      if expecting(.pipe) {
+        nextSymbol()
+        let caseIdentifier = parseIdentifierPattern()
+        guard caseIdentifier.name == identifier.name else { throw Error.syntaxError("clauses do not all have same function name") }
+      }
+      else { break }
+    } while true
+    let binding = AstFunBinding(position: startingPosition + cases.last!.body.position,
                                 identifier: identifier,
-                                parameter: parameter,
-                                body: body)
+                                cases: cases)
     return binding
   }
   
