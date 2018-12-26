@@ -173,6 +173,23 @@ val y = f Y;
 """
     performTest(code: code, filepath: "code14.rkt")
   }
+  
+  func testFunBindingWithCasesDatatypeAndBoolean() {
+    let code = """
+datatype A = X | Y;
+
+fun f (X, true) = 1
+  | f (X, false) = 2
+  | f (Y, true) = 3
+  | f (Y, false) = 4;
+
+val a = f (X, true);
+val b = f (X, false);
+val c = f (Y, true);
+val d = f (Y, false);
+"""
+    performTest(code: code, filepath: "code15.rkt")
+  }
 }
 
 private extension CodeGenerationTests {

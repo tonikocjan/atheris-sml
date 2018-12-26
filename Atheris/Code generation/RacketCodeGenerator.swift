@@ -104,7 +104,11 @@ extension RacketCodeGenerator: CodeGenerator {
           self.print(" x) ")
         } else {
           self.print("equal? ")
+          if pattern.isTuple {
+            printList = true
+          }
           try case_.parameter.accept(visitor: self)
+          printList = false
           self.print(" x) ")
         }
         try case_.body.accept(visitor: self)
@@ -180,7 +184,7 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstNameExpression) throws {
     guard let type = symbolDescription.type(for: node) else { return }
-    if rhs, type is DatatypeType || (type as? FunctionType)?.body is DatatypeType, let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
+    if rhs && !printList, type is DatatypeType || (type as? FunctionType)?.body is DatatypeType, let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
       print("(\(node.name) 0)")
     } else {
       print(node.name)
@@ -188,9 +192,9 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    if !dontPrintParents { print("(list ") }
+    if printList { print("(list ") }
     try perform(on: node.expressions, appending: " ")
-    if !dontPrintParents { print(")") }
+    if printList { print(")") }
   }
   
   func visit(node: AstBinaryExpression) throws {
@@ -250,11 +254,18 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
+    let binding = symbolDescription.binding(for: node) as? AstFunBinding
     print("(")
     print(functionName(for: node.name))
     print(" ")
     dontPrintParents = true
-    try node.argument.accept(visitor: self)
+    if let binding = binding, binding.cases.count > 1 {
+      printList = true
+      try node.argument.accept(visitor: self)
+      printList = false
+    } else {
+      try node.argument.accept(visitor: self)
+    }
     dontPrintParents = false
     print(")")
   }
@@ -321,13 +332,11 @@ extension RacketCodeGenerator: CodeGenerator {
         self.print(" ")
       }
       if shouldPrintPattern {
-        if pattern is TupleType {
+        if pattern.isTuple {
           self.printList = true
-          try $0.pattern.accept(visitor: self)
-          self.printList = false
-        } else {
-          try $0.pattern.accept(visitor: self)
         }
+        try $0.pattern.accept(visitor: self)
+        self.printList = false
       }
       self.print(")")
       self.print(" ")
