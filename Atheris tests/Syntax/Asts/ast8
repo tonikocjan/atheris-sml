@@ -189,7 +189,7 @@ AstBindings [1:1, 7:31]:
       -> typed: string
       Name: v
     AstFunctionCallExpression [7:9, 7:31]:
-      -> defined at:  [1:5, 1:6]:
+      -> defined at:  [1:1, 1:28]:
       -> typed: string
       Function name: a
       AstTupleExpression [7:12, 7:31]:

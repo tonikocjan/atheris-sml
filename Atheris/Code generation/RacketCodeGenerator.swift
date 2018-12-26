@@ -260,7 +260,9 @@ extension RacketCodeGenerator: CodeGenerator {
     print(" ")
     dontPrintParents = true
     if let binding = binding, binding.cases.count > 1 {
-      printList = true
+      if let parameter = symbolDescription.type(for: binding.cases.first!.parameter), parameter.isTuple {
+        printList = true
+      }
       try node.argument.accept(visitor: self)
       printList = false
     } else {
@@ -328,7 +330,9 @@ extension RacketCodeGenerator: CodeGenerator {
       } else {
         self.print("(equal? ")
         shouldPrintPattern = true
+        self.printList = true
         try node.expression.accept(visitor: self)
+        self.printList = false
         self.print(" ")
       }
       if shouldPrintPattern {
