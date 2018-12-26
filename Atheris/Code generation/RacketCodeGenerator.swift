@@ -98,9 +98,15 @@ extension RacketCodeGenerator: CodeGenerator {
       newLine()
       for (idx, case_) in node.cases.enumerated() {
         guard let pattern = self.symbolDescription.type(for: case_.parameter) else { return }
-        self.print("[(equal? ")
-        try case_.parameter.accept(visitor: self)
-        self.print(" x) ")
+        print("[(")
+        if let datatype = pattern as? DatatypeType {
+          print("\(datatype.name)?")
+          self.print(" x) ")
+        } else {
+          self.print("equal? ")
+          try case_.parameter.accept(visitor: self)
+          self.print(" x) ")
+        }
         try case_.body.accept(visitor: self)
         self.print("]")
         if idx <= node.cases.count {
@@ -304,8 +310,8 @@ extension RacketCodeGenerator: CodeGenerator {
       guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
       self.print("[")
       let shouldPrintPattern: Bool
-      if let identifierPattern = $0.pattern as? AstIdentifierPattern, pattern is DatatypeType {
-        self.print("(\(identifierPattern.name)? ")
+      if let datatype = pattern as? DatatypeType {
+        self.print("(\(datatype.name)? ")
         shouldPrintPattern = false
         try node.expression.accept(visitor: self)
       } else {

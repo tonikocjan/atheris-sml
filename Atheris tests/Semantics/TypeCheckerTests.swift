@@ -186,6 +186,16 @@ fun f (false, true) = 1
 """
     performSucceedingTest(code: code)
   }
+  
+  func testFunBindingCasesWithDatatypeShouldSucceed() {
+    let code = """
+datatype A = X | Y;
+
+fun f X = 1
+  | f Y = 2;
+"""
+    performSucceedingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

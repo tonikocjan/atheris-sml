@@ -488,6 +488,11 @@ extension TypeChecker: AstVisitor {
       return
     }
     
+    if let binding = symbolTable.findBinding(name: node.name), let type = symbolDescription.type(for: binding) {
+      symbolDescription.setType(for: node, type: type)
+      return
+    }
+    
     let dummyPatternType = AbstractDummyType(name: dummyName()) // TODO: -
     symbolDescription.setType(for: node, type: dummyPatternType)
   }
