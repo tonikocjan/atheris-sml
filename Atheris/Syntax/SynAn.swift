@@ -26,6 +26,8 @@ class SynAn: SyntaxParser {
   
   let lexan: LexicalAnalyzer
   private var symbol: Symbol
+  private var wildcardVarBindingsCounter = 0
+  private let wildcardValBindingName = "x"
   
   init(lexan: LexicalAnalyzer) {
     self.lexan = lexan
@@ -55,7 +57,11 @@ private extension SynAn {
     case .keywordDatatype:
       return try parseDatatypeBinding()
     default:
-      throw reportError("removing", symbol.position, symbol.lexeme)
+      wildcardVarBindingsCounter += 1
+      let expression = try parseExpression()
+      return AstValBinding(position: expression.position,
+                           pattern: AstIdentifierPattern(position: expression.position, name: wildcardValBindingName + String(wildcardVarBindingsCounter)),
+                           expression: expression)
     }
   }
   

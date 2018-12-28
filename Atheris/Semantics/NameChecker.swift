@@ -234,7 +234,8 @@ extension NameChecker {
 private extension NameChecker {
   func insertBinding(_ binding: AstBinding, name: String) throws {
     do {
-      try symbolTable.addBindingToCurrentScope(name: name, binding: binding)
+      try symbolTable.addBindingToCurrentScope(name: name,
+                                               binding: binding)
     } catch {
       throw Error.bindingExists(name, binding.position)
     }
