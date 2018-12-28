@@ -12,6 +12,7 @@ class AstFunBinding: AstBinding {
   struct Case {
     let parameter: AstPattern
     let body: AstExpression
+    let resultType: AstType?
   }
   
   let position: Position
@@ -24,7 +25,7 @@ class AstFunBinding: AstBinding {
   init(position: Position, identifier: AstIdentifierPattern, parameter: AstPattern, body: AstExpression) {
     self.position = position
     self.identifier = identifier
-    self.cases = [Case(parameter: parameter, body: body)]
+    self.cases = [Case(parameter: parameter, body: body, resultType: nil)]
   }
   
   init(position: Position, identifier: AstIdentifierPattern, cases: [Case]) {

@@ -1,0 +1,24 @@
+AstBindings [1:1, 2:27]:
+  AstFunBinding [1:1, 1:20]:
+    AstIdentifierPattern [1:5, 1:6]:
+      Name: f
+    AstIdentifierPattern [1:7, 1:8]:
+      Name: x
+    AstTypeName [1:10, 1:13]:
+      Name: int
+    AstConstantExpression [1:16, 1:20]:
+      Value: true
+      Atom type: bool
+  AstFunBinding [2:1, 2:27]:
+    AstIdentifierPattern [2:5, 2:6]:
+      Name: g
+    AstTypedPattern [2:8, 2:14]:
+      AstIdentifierPattern [2:8, 2:9]:
+        Name: x
+      AstTypeName [2:11, 2:14]:
+        Name: int
+    AstTypeName [2:17, 2:20]:
+      Name: int
+    AstConstantExpression [2:23, 2:27]:
+      Value: true
+      Atom type: bool

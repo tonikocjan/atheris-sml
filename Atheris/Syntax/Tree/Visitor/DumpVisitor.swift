@@ -50,6 +50,7 @@ extension DumpVisitor: AstVisitor {
     try node.identifier.accept(visitor: self)
     for case_ in node.cases {
       try case_.parameter.accept(visitor: self)
+      try case_.resultType?.accept(visitor: self)
       try case_.body.accept(visitor: self)
     }
     decreaseIndent()

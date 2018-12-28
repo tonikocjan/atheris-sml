@@ -89,9 +89,16 @@ private extension SynAn {
     let identifier = parseIdentifierPattern()
     var cases = [AstFunBinding.Case]()
     repeat {
-      let parameter = try parsePattern()
+      let parameter = try parseAtomPattern()
+      let resultType: AstType?
+      if expecting(.colon) {
+        nextSymbol()
+        resultType = try parseType()
+      } else {
+        resultType = nil
+      }
       let body = try parseFunBody()
-      cases.append(AstFunBinding.Case(parameter: parameter, body: body))
+      cases.append(AstFunBinding.Case(parameter: parameter, body: body, resultType: resultType))
       if expecting(.pipe) {
         nextSymbol()
         let caseIdentifier = parseIdentifierPattern()

@@ -163,6 +163,14 @@ val y = case x of
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast16")
   }
+  
+  func testFunBindingWithResultType() {
+    let code = """
+fun f x: int = true;
+fun g (x: int): int = true;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast17")
+  }
 }
 
 private extension SyntaxParserTests {
