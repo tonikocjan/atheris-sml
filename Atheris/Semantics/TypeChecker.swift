@@ -342,6 +342,7 @@ extension TypeChecker: AstVisitor {
         symbolDescription.setType(for: node, type: type)
       }
       try node.argument.accept(visitor: self)
+      symbolDescription.setType(for: node, type: AbstractDummyType(name: dummyName()))
       return
     }
     
@@ -453,7 +454,7 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstCaseExpression) throws {
-    let parsingRhs = valBindingRhs
+    var parsingRhs = valBindingRhs
     valBindingRhs = false
     try node.expression.accept(visitor: self)
     valBindingRhs = parsingRhs
@@ -468,7 +469,13 @@ extension TypeChecker: AstVisitor {
       symbolDescription.setType(for: binding, type: matchType.patternType)
     }
     symbolDescription.setType(for: node.expression, type: matchType.patternType)
-    symbolDescription.setType(for: node, type: matchType.expressionType)
+    symbolDescription.setType(for: node, type: matchType.expressionType.isAbstract ? matchType.patternType : matchType.expressionType)
+    
+    parsingRhs = valBindingRhs
+    valBindingRhs = false
+    try node.expression.accept(visitor: self)
+    valBindingRhs = parsingRhs
+    try node.match.accept(visitor: self)
   }
   
   func visit(node: AstMatch) throws {
