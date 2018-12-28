@@ -169,7 +169,19 @@ val y = case x of
 fun f x: int = true;
 fun g (x: int): int = true;
 """
-    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast17")
+    testSyntaxParsing(code: code, expected: "ast17")
+  }
+  
+  func testFunctionBindingWithResultTypeTypeInference() {
+    let code = """
+fun f x: int =
+	let
+		val y = x
+	in
+		x + y
+	end;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast18")
   }
 }
 

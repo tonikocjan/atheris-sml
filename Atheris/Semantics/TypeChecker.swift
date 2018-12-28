@@ -73,14 +73,29 @@ extension TypeChecker: AstVisitor {
     funEvalStack.append(node)
     try node.identifier.accept(visitor: self)
     var parameterType: Type?
+    var resultType: Type?
     var bodyType: Type?
     
     for case_ in node.cases {
       try case_.parameter.accept(visitor: self)
+      try case_.resultType?.accept(visitor: self)
       try case_.body.accept(visitor: self)
       try case_.parameter.accept(visitor: self)
-      guard let parameterType_ = symbolDescription.type(for: case_.parameter) else { throw internalError() }
-      guard let bodyType_ = symbolDescription.type(for: case_.body) else { throw internalError() }
+      guard var parameterType_ = symbolDescription.type(for: case_.parameter) else { throw internalError() }
+      guard var bodyType_ = symbolDescription.type(for: case_.body) else { throw internalError() }
+      let resultType_ = case_.resultType == nil ?
+        nil :
+        symbolDescription.type(for: case_.resultType!)
+      if let resultType_ = resultType_ {
+        guard resultType_.sameStructureAs(other: bodyType_) else {
+          throw Error.typeError(position: case_.body.position, patternType: resultType_, expressionType: bodyType_)
+        }
+        symbolDescription.setType(for: case_.body, type: resultType_)
+        bodyType_ = resultType_
+        try case_.body.accept(visitor: self)
+        try case_.parameter.accept(visitor: self)
+        parameterType_ = symbolDescription.type(for: case_.parameter)!
+      }
       if node.cases.count > 1 {
         guard !parameterType_.isAbstract else {
           throw Error.redundantCaseError(position: case_.parameter.position)
@@ -94,9 +109,15 @@ extension TypeChecker: AstVisitor {
         guard bodyType_.sameStructureAs(other: bodyType) else {
           throw Error.typeError(position: case_.body.position, patternType: bodyType, expressionType: bodyType_)
         }
+        if let resultType_ = resultType_, let resultType = resultType {
+          guard resultType_.sameStructureAs(other: resultType) else {
+            throw Error.typeError(position: case_.resultType!.position, patternType: resultType_, expressionType: resultType)
+          }
+        }
       } else {
         parameterType = parameterType_
         bodyType = bodyType_
+        resultType = resultType_
       }
     }
     
@@ -183,6 +204,12 @@ extension TypeChecker: AstVisitor {
   
   func visit(node: AstNameExpression) throws {
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
+    
+    if let alreadyCalculatedType = symbolDescription.type(for: node), !alreadyCalculatedType.isAbstract {
+      symbolDescription.setType(for: binding, type: alreadyCalculatedType)
+      return
+    }
+  
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     if valBindingRhs, let type = type as? DatatypeType, !type.name.isEmpty, let _ = symbolDescription.binding(for: node) as? AstCase {
       symbolDescription.setType(for: node, type: FunctionType(name: node.name,
@@ -553,9 +580,9 @@ extension TypeChecker: AstVisitor {
         throw internalError()
     }
     
-    guard patternType.sameStructureAs(other: type) else {
-      throw Error.constraintError(position: node.position, patternType: patternType, constraintType: type)
-    }
+//    guard patternType.sameStructureAs(other: type) else {
+//      throw Error.constraintError(position: node.position, patternType: patternType, constraintType: type)
+//    }
     
     symbolDescription.setType(for: node, type: type)
     symbolDescription.setType(for: node.pattern, type: type)

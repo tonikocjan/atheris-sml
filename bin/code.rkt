@@ -2,12 +2,8 @@
 
 #lang racket
 
-(struct NEXT (x0))
-(struct ZERO (_))
-
-(define (toInt a)
-  (cond 
-    [(equal? a ZERO) 0]
-    [(equal? a NEXT) (+ 1 (toInt i))]
-    ))
-toInt
+(define (f x)
+  (define y x)
+  y
+  (+ x y))
+f

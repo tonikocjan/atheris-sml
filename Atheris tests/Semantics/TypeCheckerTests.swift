@@ -196,6 +196,20 @@ fun f X = 1
 """
     performSucceedingTest(code: code)
   }
+  
+  func testResultTypeBodyTypeDontMatch() {
+    let code = """
+fun f x: int = true;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testResultTypeBodyTypeDoMatch() {
+    let code = """
+fun f x: int = 10;
+"""
+    performSucceedingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {
