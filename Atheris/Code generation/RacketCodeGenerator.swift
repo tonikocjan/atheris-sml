@@ -129,7 +129,9 @@ extension RacketCodeGenerator: CodeGenerator {
   func visit(node: AstAnonymousFunctionBinding) throws {
     for case_ in node.cases {
       print("(lambda (")
+      self.dontPrintParents = true
       try case_.parameter.accept(visitor: self)
+      self.dontPrintParents = false
       print(")")
       increaseIndent()
       newLine()

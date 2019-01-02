@@ -73,8 +73,11 @@ val x = ((mul (10)) (20)) (30);
   func testAnonymousFunctionAsApplication() {
     let code = """
 val x = fn x => fn y => fn z => z (x, y);
-val y = ((x (20)) (30)) (fn (x, y) => x + y);
-val z = ((x ("abc")) ("efg")) (fn (x, y) => x ^ y);
+
+val a = ((x (20)) (30)) (fn (x, y) => x + y);
+val b = ((x ("abc")) ("efg")) (fn (x, y) => x ^ y);
+val c = x 20 30 (fn (x, y) => x + y);
+val d = x "abc" "efg" (fn (x, y) => x ^ y);
 """
     performTest(code: code, filepath: "code7.rkt")
   }

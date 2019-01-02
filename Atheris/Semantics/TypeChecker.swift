@@ -129,10 +129,7 @@ extension TypeChecker: AstVisitor {
     _ = funEvalStack.popLast()
     
     for case_ in node.cases {
-      try case_.parameter.accept(visitor: self)
-      try case_.resultType?.accept(visitor: self)
       try case_.body.accept(visitor: self)
-      try case_.parameter.accept(visitor: self)
     }
   }
   
@@ -508,12 +505,11 @@ extension TypeChecker: AstVisitor {
   
   func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
-      // TOOD: - Let's try to get rid of this
       symbolDescription.setType(for: node, type: parentNodeType)
       return
     }
     
-    if let _ = symbolDescription.type(for: node) {
+    if let alreadyCalculatedType = symbolDescription.type(for: node), !alreadyCalculatedType.isAbstract {
       return
     }
     
@@ -521,13 +517,8 @@ extension TypeChecker: AstVisitor {
       symbolDescription.setType(for: node, type: type)
       return
     }
-    
-    if let binding = symbolTable.findBinding(name: node.name), let type = symbolDescription.type(for: binding) {
-      symbolDescription.setType(for: node, type: type)
-      return
-    }
-    
-    let dummyPatternType = AbstractDummyType(name: dummyName()) // TODO: -
+
+    let dummyPatternType = AbstractDummyType(name: dummyName())
     symbolDescription.setType(for: node, type: dummyPatternType)
   }
   
@@ -545,6 +536,7 @@ extension TypeChecker: AstVisitor {
       }
       return
     }
+    
     let alreadyCalculatedTypes = node.patterns.compactMap { symbolDescription.type(for: $0) }
     guard alreadyCalculatedTypes.count != node.patterns.count else {
       symbolDescription.setType(for: node, type: TupleType(members: alreadyCalculatedTypes))

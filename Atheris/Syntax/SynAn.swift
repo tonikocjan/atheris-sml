@@ -596,7 +596,8 @@ private extension SynAn {
          .charConstant,
          .integerConstant,
          .logicalConstant,
-         .floatingConstant:
+         .floatingConstant,
+         .stringConstant:
       return try parsePostfixExpression_(expression: parseFunction())
     case .identifier:
       switch symbol.lexeme {

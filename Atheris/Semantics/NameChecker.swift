@@ -50,7 +50,9 @@ extension NameChecker: AstVisitor {
     try insertBinding(node, name: node.identifier.name)
     for case_ in node.cases {
       symbolTable.newScope()
+      checkingCaseExpression = node.cases.count > 1
       try case_.parameter.accept(visitor: self)
+      checkingCaseExpression = false
       try case_.body.accept(visitor: self)
       symbolTable.oldScope()
     }

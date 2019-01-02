@@ -234,10 +234,6 @@ private extension TypeCheckerTests {
       if !shouldSucceed { XCTFail() }
     } catch {
       guard !shouldSucceed else { return XCTFail() }
-      guard let _ = error as? TypeChecker.Error else {
-        XCTFail()
-        return
-      }
     }
   }
 }
