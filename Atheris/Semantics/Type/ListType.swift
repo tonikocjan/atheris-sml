@@ -20,8 +20,9 @@ class ListType: Type {
   }
   
   func sameStructureAs(other: Type) -> Bool {
+    if other.isAbstract { return true }
     guard let list = other.toList else { return false }
-    return list.type.sameStructureAs(other: self)
+    return list.type.sameStructureAs(other: type)
   }
   
   var isAbstract: Bool { return false }

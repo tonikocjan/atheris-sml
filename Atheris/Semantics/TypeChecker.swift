@@ -20,6 +20,9 @@ class TypeChecker {
   private var typeDistributionStack = [Type]()
   private var funEvalStack = [AstFunBinding]()
   
+  // MARK: - Builtin methods
+  private let builtinFunctions = ["hd", "tl", "null"]
+  
   //
   private var valBindingRhs = false
   
@@ -328,7 +331,41 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-    if let currentFunctionBinding = funEvalStack.last, currentFunctionBinding.identifier.name == node.name {
+    if builtinFunctions.contains(node.name) {
+      func expectsListAsArgument() -> Bool {
+        return node.name == "hd" || node.name == "tail" || node.name == "null"
+      }
+      
+      func applyType(argumentType: Type) {
+        guard argumentType.isAbstract else { return }
+        let type = ListType(elementType: AbstractDummyType(name: dummyName()))
+        symbolDescription.setType(for: node.argument, type: type)
+        if let binding = symbolDescription.binding(for: node.argument) {
+          symbolDescription.setType(for: binding, type: type)
+        }
+      }
+      
+      try node.argument.accept(visitor: self)
+      guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
+      
+      if expectsListAsArgument() && !(argumentType.isAbstract || argumentType.isList) { throw Error.operatorError(position: node.argument.position,
+                                                                                     domain: "'Z list",
+                                                                                     operand: argumentType) }
+      
+      if node.name == "null" {
+        symbolDescription.setType(for: node, type: AtomType.bool)
+        applyType(argumentType: argumentType)
+      } else if node.name == "hd", let list = argumentType.toList {
+        symbolDescription.setType(for: node, type: list.type)
+        applyType(argumentType: argumentType)
+      } else if node.name == "tl" {
+        symbolDescription.setType(for: node, type: argumentType)
+        applyType(argumentType: argumentType)
+      }
+      return
+    }
+    
+    if let _ = funEvalStack.first(where: { $0.identifier.name == node.name}) {
       if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
         symbolDescription.setType(for: node, type: type)
       }
@@ -476,7 +513,9 @@ extension TypeChecker: AstVisitor {
     guard let first = types.first else { return }
     for type in types.dropFirst() {
       guard type.sameStructureAs(other: first) else {
-        throw Error.operatorError(position: node.position, domain: first.description, operand: type)
+        throw Error.operatorError(position: node.position,
+                                  domain: first.description,
+                                  operand: type)
       }
     }
     symbolDescription.setType(for: node, type: first)

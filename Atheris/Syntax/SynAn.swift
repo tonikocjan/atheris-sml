@@ -103,6 +103,8 @@ private extension SynAn {
       } else {
         resultType = nil
       }
+//      guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
+      
       let body = try parseFunBody()
       cases.append(AstFunBinding.Case(parameter: parameter, body: body, resultType: resultType))
       if expecting(.pipe) {

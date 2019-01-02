@@ -21,6 +21,7 @@ class RacketCodeGenerator {
   private var expandingDatatypeCaseCounter = 0
   private var printList = false
   private var rhs = false
+  private var wildcardPatternCounter = 0
   
   init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
@@ -121,7 +122,7 @@ extension RacketCodeGenerator: CodeGenerator {
       decreaseIndent()
       print("))")
     }
-      
+    
     if node.cases.count == 1 { try handleOneCase() }
     else { try handleMoreCases() }
   }
@@ -200,10 +201,10 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstBinaryExpression) throws {
-//    guard
-//      let nodeType = symbolDescription.type(for: node),
-//      let lhsType = symbolDescription.type(for: node.left),
-//      let rhsType = symbolDescription.type(for: node.right) else { return }
+    //    guard
+    //      let nodeType = symbolDescription.type(for: node),
+    //      let lhsType = symbolDescription.type(for: node.left),
+    //      let rhsType = symbolDescription.type(for: node.right) else { return }
     
     let operation: String
     switch node.operation {
@@ -309,6 +310,10 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstListExpression) throws {
+    guard !node.elements.isEmpty else {
+      print("null")
+      return
+    }
     print("(list ")
     try perform(on: node.elements, appending: " ")
     print(")")
@@ -417,7 +422,8 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstWildcardPattern) throws {
-    
+    print("w\(wildcardPatternCounter)")
+    wildcardPatternCounter += 1
   }
   
   func visit(node: AstTuplePattern) throws {
@@ -487,5 +493,6 @@ private extension RacketCodeGenerator {
   
   static let builtinFunctionsMapping =
     ["hd": "car",
-     "tl": "cdr"]
+     "tl": "cdr",
+     "null": "null?"]
 }
