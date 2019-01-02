@@ -201,9 +201,11 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstMatch) throws {
-    symbolTable.newScope()
-    for rule in node.rules { try rule.accept(visitor: self) }
-    symbolTable.oldScope()
+    for rule in node.rules {
+      symbolTable.newScope()
+      try rule.accept(visitor: self)
+      symbolTable.oldScope()
+    }
   }
   
   func visit(node: AstRule) throws {

@@ -11,10 +11,18 @@ import Foundation
 class DatatypeType: Type {
   let parent: String
   let name: String
+  let associatedType: Type?
   
   init(parent: String, name: String) {
     self.parent = parent
     self.name = name
+    self.associatedType = nil
+  }
+  
+  init(parent: String, name: String, associatedType: Type?) {
+    self.parent = parent
+    self.name = name
+    self.associatedType = associatedType
   }
   
   var description: String {

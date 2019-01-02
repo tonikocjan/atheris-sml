@@ -21,7 +21,6 @@ class TypeChecker {
   private var funEvalStack = [AstFunBinding]()
   
   //
-  private var currentDatatypeName: String?
   private var valBindingRhs = false
   
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
@@ -128,6 +127,13 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node.identifier, type: functionType)
     
     _ = funEvalStack.popLast()
+    
+    for case_ in node.cases {
+      try case_.parameter.accept(visitor: self)
+      try case_.resultType?.accept(visitor: self)
+      try case_.body.accept(visitor: self)
+      try case_.parameter.accept(visitor: self)
+    }
   }
   
   func visit(node: AstAnonymousFunctionBinding) throws {
@@ -137,35 +143,23 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstDatatypeBinding) throws {
     let datatype = DatatypeType(parent: node.name.name, name: "")
     symbolDescription.setType(for: node, type: datatype)
-    currentDatatypeName = node.name.name
     for case_ in node.cases {
-      symbolDescription.setType(for: case_, type: DatatypeType(parent: node.name.name, name: case_.name.name))
+      let associatedType: Type?
+      if let associatedTypeNode = case_.associatedType {
+        try associatedTypeNode.accept(visitor: self)
+        associatedType = symbolDescription.type(for: associatedTypeNode)
+      } else {
+        associatedType = nil
+      }
+      let caseType = DatatypeType(parent: node.name.name,
+                                  name: case_.name.name,
+                                  associatedType: associatedType)
+      symbolDescription.setType(for: case_, type: caseType)
     }
-    currentDatatypeName = nil
   }
   
   func visit(node: AstCase) throws {
-    guard let currentDatatypeName = currentDatatypeName else { throw internalError() }
-    
-    let datatype = DatatypeType(parent: currentDatatypeName,
-                                name: node.name.name)
-    
-    try node.name.accept(visitor: self)
-    guard let typeNode = node.associatedType else {
-      let functionType = FunctionType(name: node.name.name,
-                                      parameter: AbstractDummyType(name: "_"),
-                                      body: datatype)
-      symbolDescription.setType(for: node.name, type: functionType)
-      symbolDescription.setType(for: node, type: functionType)
-      return
-    }
-    try typeNode.accept(visitor: self)
-    guard let type = symbolDescription.type(for: typeNode) else { throw internalError() }
-    let functionType = FunctionType(name: node.name.name,
-                                    parameter: type,
-                                    body: datatype)
-    symbolDescription.setType(for: node.name, type: functionType)
-    symbolDescription.setType(for: node, type: functionType)
+    ///
   }
   
   func visit(node: AstAtomType) throws {
@@ -462,9 +456,10 @@ extension TypeChecker: AstVisitor {
     
     guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
     guard let matchType = symbolDescription.type(for: node.match) as? RuleType else { throw internalError() }
-    guard matchType.patternType.sameStructureAs(other: expressionType) else { throw Error.operatorError(position: node.match.position,
-                                                                                                        domain: expressionType.description,
-                                                                                                        operand: matchType.patternType) }
+    guard matchType.patternType.sameStructureAs(other: expressionType) else {
+      throw Error.operatorError(position: node.match.position,
+                                domain: expressionType.description,
+                                operand: matchType.patternType) }
     if let binding = symbolDescription.binding(for: node.expression) {
       symbolDescription.setType(for: binding, type: matchType.patternType)
     }
@@ -491,18 +486,23 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstRule) throws {
-    let associatedValueType: Type?
-    if let associatedValue = node.associatedValue {
-      try node.associatedValue?.accept(visitor: self)
-      associatedValueType = symbolDescription.type(for: associatedValue)
-    } else {
-      associatedValueType = nil
-    }
     try node.pattern.accept(visitor: self)
-    try node.expression.accept(visitor: self)
     guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
+    
+    if let associatedValue = node.associatedValue, let datatype = patternType as? DatatypeType, let associatedType = datatype.associatedType {
+      symbolDescription.setType(for: associatedValue, type: associatedType)
+      
+      typeDistributionStack.append(associatedType)
+      try associatedValue.accept(visitor: self)
+      _ = typeDistributionStack.popLast()
+    }
+    
+    try node.expression.accept(visitor: self)
+    
     guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
-    let ruleType = RuleType(patternType: patternType, expressionType: expressionType)
+
+    let ruleType = RuleType(patternType: patternType,
+                            expressionType: expressionType)
     symbolDescription.setType(for: node, type: ruleType)
   }
   
