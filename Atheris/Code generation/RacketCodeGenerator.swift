@@ -313,12 +313,40 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstCaseExpression) throws {
+    var tuplePatternsCounter = 0
+    func expandTuple(tuple: AstTuplePattern, rule: AstRule) throws {
+      increaseIndent()
+      newLine()
+      for pattern in tuple.patterns {
+        if let subPattern = pattern as? AstTuplePattern {
+          try expandTuple(tuple: subPattern, rule: rule)
+          continue
+        }
+        
+        print("[")
+        try pattern.accept(visitor: self)
+        print(" (")
+        try rule.pattern.accept(visitor: self)
+        print("-x\(tuplePatternsCounter)")
+        tuplePatternsCounter += 1
+        print(" ")
+        try node.expression.accept(visitor: self)
+        print(")]")
+        if pattern === tuple.patterns.last {}
+        else { newLine() }
+      }
+      print(")")
+      decreaseIndent()
+      newLine()
+    }
+    
     let rules = node.match.rules
     print("(cond ")
     increaseIndent()
     newLine()
     let rhs_ = rhs
     rhs = false
+    
     try perform(on: rules, appending: "") {
       guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
       self.print("[")
@@ -345,17 +373,22 @@ extension RacketCodeGenerator: CodeGenerator {
       self.print(")")
       self.print(" ")
       if let associatedType = $0.associatedValue {
-        self.print("(let ([")
-        try associatedType.accept(visitor: self)
-        self.print(" ")
-        if let identifierPattern = $0.pattern as? AstIdentifierPattern, pattern is DatatypeType {
-          self.print("(\(identifierPattern.name)-x0 ")
-          try node.expression.accept(visitor: self)
-          self.print(")")
+        self.print("(let (")
+        if let tuple = associatedType as? AstTuplePattern {
+          try expandTuple(tuple: tuple, rule: $0)
         } else {
-          try node.expression.accept(visitor: self)
+          self.print("[")
+          try associatedType.accept(visitor: self)
+          self.print(" ")
+          if let identifierPattern = $0.pattern as? AstIdentifierPattern, pattern is DatatypeType {
+            self.print("(\(identifierPattern.name)-x0 ")
+            try node.expression.accept(visitor: self)
+            self.print(")")
+          } else {
+            try node.expression.accept(visitor: self)
+          }
+          self.print("]) ")
         }
-        self.print("]) ")
         try $0.expression.accept(visitor: self)
         self.print(")")
       } else {

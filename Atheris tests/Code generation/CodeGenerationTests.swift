@@ -190,6 +190,38 @@ val d = f (Y, false);
 """
     performTest(code: code, filepath: "code15.rkt")
   }
+  
+  func testBinaryTreeDatatype() {
+    let code = """
+datatype tree = NODE of (int * tree * tree) | LEAF of int;
+
+fun min (tree: tree): int =
+  case tree of
+    LEAF x => x
+    | NODE (x, left, right) => let
+      val l = min left
+      val r = min right
+    in
+      if x < l andalso x < r then x
+      else if l < r then l
+      else r
+    end;
+val big_tree = NODE(1,
+          NODE(2,
+            LEAF 5,
+            LEAF 7),
+          NODE(10,
+            LEAF 10,
+            NODE(1,
+              NODE(100,
+                LEAF 10,
+                LEAF 100),
+              LEAF 500)));
+min(LEAF 10);
+min(big_tree);
+"""
+    performTest(code: code, filepath: "code16.rkt")
+  }
 }
 
 private extension CodeGenerationTests {
