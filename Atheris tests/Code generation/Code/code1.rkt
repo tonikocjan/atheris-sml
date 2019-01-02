@@ -12,3 +12,5 @@ a
 b
 (define c (string-append "123" "456"))
 c
+(define d (- 0 1))
+d

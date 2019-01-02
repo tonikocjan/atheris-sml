@@ -281,6 +281,15 @@ extension TypeChecker: AstVisitor {
   
   func visit(node: AstUnaryExpression) throws {
     try node.expression.accept(visitor: self)
+    guard let type = symbolDescription.type(for: node.expression) else { throw internalError() }
+    
+    switch node.operation {
+    case .negate:
+      guard type.isInt else {
+        throw Error.operatorError(position: node.position, domain: "[~ ty]", operand: type)
+      }
+      symbolDescription.setType(for: node, type: type)
+    }
   }
   
   func visit(node: AstIfExpression) throws {

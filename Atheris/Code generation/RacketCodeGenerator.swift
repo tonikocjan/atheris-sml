@@ -236,7 +236,12 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstUnaryExpression) throws {
-    
+    switch node.operation {
+    case .negate:
+      print("(- 0 ")
+      try node.expression.accept(visitor: self)
+      print(")")
+    }
   }
   
   func visit(node: AstIfExpression) throws {

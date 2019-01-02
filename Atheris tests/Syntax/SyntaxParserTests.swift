@@ -183,6 +183,13 @@ fun f x: int =
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast18")
   }
+  
+  func testUnaryNegate() {
+    let code = """
+val x = ~1;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast19")
+  }
 }
 
 private extension SyntaxParserTests {
