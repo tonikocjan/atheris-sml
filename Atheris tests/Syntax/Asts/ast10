@@ -1,11 +1,11 @@
 AstBindings [1:1, 2:26]:
   AstFunBinding [1:1, 1:28]:
-    -> typed: fn : int -> fn : int -> int
+    -> typed: fn : fn : int -> int -> fn : int -> int
     AstIdentifierPattern [1:5, 1:6]:
-      -> typed: fn : int -> fn : int -> int
+      -> typed: fn : fn : int -> int -> fn : int -> int
       Name: f
     AstIdentifierPattern [1:7, 1:8]:
-      -> typed: int
+      -> typed: fn : int -> int
       Name: g
     AstAnonymousFunctionBinding [1:9, 1:28]:
       -> typed: fn : int -> int
@@ -33,12 +33,12 @@ AstBindings [1:1, 2:26]:
           Value: 1
           Atom type: int
   AstFunBinding [2:1, 2:26]:
-    -> typed: fn : int -> fn : int -> int
+    -> typed: fn : fn : int -> int -> fn : int -> int
     AstIdentifierPattern [2:5, 2:6]:
-      -> typed: fn : int -> fn : int -> int
+      -> typed: fn : fn : int -> int -> fn : int -> int
       Name: g
     AstIdentifierPattern [2:7, 2:8]:
-      -> typed: int
+      -> typed: fn : int -> int
       Name: g
     AstAnonymousFunctionBinding [2:9, 2:26]:
       -> typed: fn : int -> int

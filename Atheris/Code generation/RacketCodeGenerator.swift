@@ -20,6 +20,7 @@ class RacketCodeGenerator {
   private var expandingDatatypeCaseType = false
   private var expandingDatatypeCaseCounter = 0
   private var printList = false
+  private var printTuple = true
   private var rhs = false
   private var wildcardPatternCounter = 0
   
@@ -195,9 +196,14 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
-    if printList { print("(list ") }
+    let list = printList
+    let tuple = printTuple
+    if list { print("(list ") }
+    else if tuple { print("(cons ") }
     try perform(on: node.expressions, appending: " ")
-    if printList { print(")") }
+    if list || tuple { print(")") }
+    printList = list
+    printTuple = tuple
   }
   
   func visit(node: AstBinaryExpression) throws {
@@ -217,6 +223,8 @@ extension RacketCodeGenerator: CodeGenerator {
          .lessThanOrEqual,
          .greaterThanOrEqual:
       operation = node.operation.rawValue
+    case .modulo:
+      operation = "modulo"
     case .andalso:
       operation = "and"
     case .orelse:
@@ -241,6 +249,10 @@ extension RacketCodeGenerator: CodeGenerator {
       print("(- 0 ")
       try node.expression.accept(visitor: self)
       print(")")
+    case .not:
+      print("(not ")
+      try node.expression.accept(visitor: self)
+      print(")")
     }
   }
   
@@ -249,9 +261,12 @@ extension RacketCodeGenerator: CodeGenerator {
     try node.condition.accept(visitor: self)
     increaseIndent()
     newLine()
+    let rhs_ = rhs
+    rhs = true
     try node.trueBranch.accept(visitor: self)
     newLine()
     try node.falseBranch.accept(visitor: self)
+    rhs = rhs_
     decreaseIndent()
     print(")")
   }
@@ -262,6 +277,7 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
+    printTuple = false
     let binding = symbolDescription.binding(for: node) as? AstFunBinding
     print("(")
     print(functionName(for: node.name))
@@ -278,6 +294,7 @@ extension RacketCodeGenerator: CodeGenerator {
     }
     dontPrintParents = false
     print(")")
+    printTuple = true
   }
   
   func visit(node: AstAnonymousFunctionCall) throws {
@@ -371,16 +388,20 @@ extension RacketCodeGenerator: CodeGenerator {
         self.print("(equal? ")
         shouldPrintPattern = true
         self.printList = true
+        self.printTuple = false
         try node.expression.accept(visitor: self)
         self.printList = false
+        self.printTuple = true
         self.print(" ")
       }
       if shouldPrintPattern {
         if pattern.isTuple {
           self.printList = true
         }
+        self.printTuple = false
         try $0.pattern.accept(visitor: self)
         self.printList = false
+        self.printTuple = false
       }
       self.print(")")
       self.print(" ")

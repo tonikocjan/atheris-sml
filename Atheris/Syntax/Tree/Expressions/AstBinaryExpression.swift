@@ -32,6 +32,7 @@ extension AstBinaryExpression {
     case subtract = "-"
     case multiply = "*"
     case divide = "/"
+    case modulo = "mod"
     case concat = "^"
     case lessThan = "<"
     case greaterThan = ">"

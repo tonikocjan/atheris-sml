@@ -18,6 +18,8 @@ val a = 5 <= 10 andalso 2.5 >= 3.2;
 val b = true = true andalso 5 = 5 andalso "abc" = "efg" andalso 5 * 5 < 13 orelse 3.3 - 2.3 > 0.0;
 val c = "123" ^ "456";
 val d = ~1;
+val e = 5 mod 2;
+val f = not true;
 """
     performTest(code: code, filepath: "code1.rkt")
   }
@@ -195,36 +197,23 @@ val d = f (Y, false);
     performTest(code: code, filepath: "code15.rkt")
   }
   
-  func testBinaryTreeDatatype() {
+  func testHugeExample1() {
+    performTest(code: loadSMLCode("sml1.sml"),
+                filepath: "code16.rkt")
+  }
+  
+  func testHugeExample2() {
+    performTest(code: loadSMLCode("sml2.sml"),
+                filepath: "code17.rkt")
+  }
+  
+  func testDatatypeWithTypeConstructor() {
+    // TODO: -
     let code = """
-datatype tree = NODE of (int * tree * tree) | LEAF of int;
-
-fun min (tree: tree): int =
-  case tree of
-    LEAF x => x
-    | NODE (x, left, right) => let
-      val l = min left
-      val r = min right
-    in
-      if x < l andalso x < r then x
-      else if l < r then l
-      else r
-    end;
-val big_tree = NODE(1,
-          NODE(2,
-            LEAF 5,
-            LEAF 7),
-          NODE(10,
-            LEAF 10,
-            NODE(1,
-              NODE(100,
-                LEAF 10,
-                LEAF 100),
-              LEAF 500)));
-min(LEAF 10);
-min(big_tree);
+datatype ('a) Opcija = JE of 'a | NI;
+fun f x: int Opcija = NI;
 """
-    performTest(code: code, filepath: "code16.rkt")
+    performTest(code: code, filepath: "code17.rkt")
   }
 }
 
@@ -248,14 +237,14 @@ private extension CodeGenerationTests {
                                                                                                printWelcome: false),
                                               symbolDescription: symbolDescription)
       try codeGenerator.visit(node: ast)
-      XCTAssertEqual(outputStream.buffer, loadCode(filepath))
+      XCTAssertEqual(outputStream.buffer, loadRacketCode(filepath))
     } catch {
       print((error as? AtherisError)?.errorMessage ?? error.localizedDescription)
       XCTFail()
     }
   }
   
-  func loadCode(_ file: String?) -> String? {
+  func loadRacketCode(_ file: String?) -> String? {
     guard let file = file else { return nil }
     let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Code generation/Code/\(file)"
       .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
@@ -269,6 +258,22 @@ private extension CodeGenerationTests {
     } catch {
       print(error.localizedDescription)
       return nil
+    }
+  }
+  
+  func loadSMLCode(_ file: String) -> String {
+    let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Code generation/Code/\(file)"
+      .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+    do {
+      let fileReader = try FileReader(fileUrl: URL(string: path)!)
+      var result = ""
+      while let line = fileReader.readLine() {
+        result += line + "\n"
+      }
+      return result
+    } catch {
+      print(error.localizedDescription)
+      return ""
     }
   }
 }

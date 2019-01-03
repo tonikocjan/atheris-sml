@@ -27,5 +27,6 @@ class AstUnaryExpression: AstExpression {
 extension AstUnaryExpression {
   enum Operation: String {
     case negate = "~"
+    case not = "not"
   }
 }

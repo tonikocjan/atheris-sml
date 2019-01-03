@@ -228,11 +228,26 @@ extension TypeChecker: AstVisitor {
       symbolDescription.setType(for: node.left, type: leftType)
       
       if let leftBinding = symbolDescription.binding(for: node.left) {
-        symbolDescription.setType(for: leftBinding, type: leftType)
+        if let call = node.left as? AstFunctionCallExpression {
+          let parameter = symbolDescription.type(for: call.argument)!
+          symbolDescription.setType(for: leftBinding, type: FunctionType(name: call.name,
+                                                                         parameter: parameter,
+                                                                         body: leftType))
+        } else {
+          symbolDescription.setType(for: leftBinding, type: leftType)
+        }
       }
       
       if let rightBinding = symbolDescription.binding(for: node.right) {
         symbolDescription.setType(for: rightBinding, type: rightType)
+        if let call = node.right as? AstFunctionCallExpression {
+          let parameter = symbolDescription.type(for: call.argument)!
+          symbolDescription.setType(for: node.right, type: FunctionType(name: call.name,
+                                                                        parameter: parameter,
+                                                                        body: rightType))
+        } else {
+          symbolDescription.setType(for: rightBinding, type: rightType)
+        }
       }
     }
     
@@ -289,6 +304,11 @@ extension TypeChecker: AstVisitor {
         throw Error.operatorError(position: node.position, domain: "[~ ty]", operand: type)
       }
       symbolDescription.setType(for: node, type: type)
+    case .not:
+      guard type.isBool else {
+        throw Error.operatorError(position: node.position, domain: "bool", operand: type)
+      }
+      symbolDescription.setType(for: node, type: AtomType.bool)
     }
   }
   
@@ -299,15 +319,24 @@ extension TypeChecker: AstVisitor {
       symbolDescription.setType(for: node.falseBranch, type: type)
       
       if let conditionBinding = symbolDescription.binding(for: node.condition) {
-        symbolDescription.setType(for: conditionBinding, type: type)
+        let bindingType = symbolDescription.type(for: conditionBinding)
+        if bindingType == nil || bindingType!.isAbstract {
+          symbolDescription.setType(for: conditionBinding, type: type)
+        }
       }
       
       if let trueBranchBinding = symbolDescription.binding(for: node.trueBranch) {
-        symbolDescription.setType(for: trueBranchBinding, type: type)
+        let bindingType = symbolDescription.type(for: trueBranchBinding)
+        if bindingType == nil || bindingType!.isAbstract {
+          symbolDescription.setType(for: trueBranchBinding, type: type)
+        }
       }
       
       if let falseBranchBinding = symbolDescription.binding(for: node.falseBranch) {
-        symbolDescription.setType(for: falseBranchBinding, type: type)
+        let bindingType = symbolDescription.type(for: falseBranchBinding)
+        if bindingType == nil || bindingType!.isAbstract {
+          symbolDescription.setType(for: falseBranchBinding, type: type)
+        }
       }
     }
     

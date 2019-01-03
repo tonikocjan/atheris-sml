@@ -343,7 +343,8 @@ private extension SynAn {
          .logicalConstant,
          .stringConstant,
          .keywordLet,
-         .identifier:
+         .identifier,
+         .keywordNot:
       return try parseExpression_(expression: parseIorExpression())
     case .keywordFn:
       return try parseAnonymousFunctionExpression()
@@ -575,6 +576,9 @@ private extension SynAn {
       default:
         return expression
       }
+    case .keywordModulo:
+      nextSymbol()
+      return try parseMulExpression_(expression: binaryExpression(operation: .modulo))
     default:
       return expression
     }
@@ -588,6 +592,13 @@ private extension SynAn {
       let expression = try parsePrefixExpression()
       return AstUnaryExpression(position: startingPosition + expression.position,
                                 operation: .negate,
+                                expression: expression)
+    case "not":
+      let startingPosition = symbol.position
+      nextSymbol()
+      let expression = try parsePrefixExpression()
+      return AstUnaryExpression(position: startingPosition + expression.position,
+                                operation: .not,
                                 expression: expression)
     default:
       return try parsePostfixExpression()

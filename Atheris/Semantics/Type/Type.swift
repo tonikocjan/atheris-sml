@@ -17,6 +17,7 @@ enum Operation: String {
   case lessThan = "<"
   case greaterThan = ">"
   case equal = "="
+  case modulo = "mod"
   case lessThanOrEqual = "<="
   case greaterThanOrEqual = ">="
   case andalso = "andalso"
@@ -40,6 +41,7 @@ enum Operation: String {
     case .multiply: return AtomType.int
     case .divide: return AtomType.real
     case .concat: return AtomType.string
+    case .modulo: return AtomType.int
     case .lessThan: return AtomType.bool
     case .greaterThan: return AtomType.bool
     case .equal: return AtomType.bool
@@ -113,6 +115,12 @@ extension Type {
       return self.canBeMultiplyedWith(other: other) ? self.isConcrete ? self : other : nil
     case .divide:
       return self.canBeDividedBy(other: other) ? self.isConcrete ? self : other : nil
+    case .modulo:
+      if self.isInt && other.isInt { return self }
+      if self.isAbstract && other.isInt { return other }
+      if self.isInt && other.isAbstract { return self }
+      if self.isAbstract && other.isAbstract { return AtomType.int }
+      return nil
     case .concat:
       return self.canBeConcatenatedWith(other: other) ? self.isConcrete ? self : other : nil
     case .lessThan,

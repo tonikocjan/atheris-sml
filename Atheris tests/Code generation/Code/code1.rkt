@@ -14,3 +14,7 @@ b
 c
 (define d (- 0 1))
 d
+(define e (modulo 5 2))
+e
+(define f (not true))
+f
