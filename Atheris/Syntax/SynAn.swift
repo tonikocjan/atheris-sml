@@ -99,7 +99,7 @@ private extension SynAn {
       let resultType: AstType?
       if expecting(.colon) {
         nextSymbol()
-        resultType = try parseType()
+        resultType = try parseAtomType()
       } else {
         resultType = nil
       }
@@ -199,7 +199,7 @@ private extension SynAn {
     switch symbol.token {
     case .colon:
       nextSymbol()
-      let type = try parseType()
+      let type = try parseAtomType()
       return AstTypedPattern(position: pattern.position + type.position, pattern: pattern, type: type)
     // TODO: ....
     default:
@@ -274,6 +274,23 @@ private extension SynAn {
 
 private extension SynAn {
   func parseType() throws -> AstType {
+    let type = try parseAtomType()
+    return try parseType_(type: type)
+  }
+  
+  func parseType_(type: AstType) throws -> AstType {
+    guard expecting("*") else { return type }
+    var types = [type]
+    while expecting("*") {
+      nextSymbol()
+      let newType = try parseAtomType()
+      types.append(newType)
+    }
+    return AstTupleType(position: type.position + types.last!.position,
+                        types: types)
+  }
+  
+  func parseAtomType() throws -> AstType {
     switch symbol.token {
     case .identifier:
       let currentSymbol = symbol
@@ -287,7 +304,8 @@ private extension SynAn {
     }
   }
   
-  func parseTupleType() throws -> AstTupleType {
+  func parseTupleType() throws ->
+    AstTupleType {
     guard expecting(.leftParent) else { throw reportError("expected `(`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
@@ -300,14 +318,14 @@ private extension SynAn {
   }
   
   func parseStarSeparatedTypes() throws -> [AstType] {
-    let type = try parseType()
+    let type = try parseAtomType()
     return try parseStarSeparatedTypes_(type: type)
   }
   
   func parseStarSeparatedTypes_(type: AstType) throws -> [AstType] {
     guard expecting(.identifier), symbol.lexeme == "*" else { return [type] }
     nextSymbol()
-    let newType = try parseType()
+    let newType = try parseAtomType()
     return [type] + (try parseStarSeparatedTypes_(type: newType))
   }
 }
@@ -563,13 +581,17 @@ private extension SynAn {
   }
   
   func parsePrefixExpression() throws -> AstExpression {
-    guard expecting("~") else { return try parsePostfixExpression() }
-    let startingPosition = symbol.position
-    nextSymbol()
-    let expression = try parsePrefixExpression()
-    return AstUnaryExpression(position: startingPosition + expression.position,
-                              operation: .negate,
-                              expression: expression)
+    switch symbol.lexeme {
+    case "~":
+      let startingPosition = symbol.position
+      nextSymbol()
+      let expression = try parsePrefixExpression()
+      return AstUnaryExpression(position: startingPosition + expression.position,
+                                operation: .negate,
+                                expression: expression)
+    default:
+      return try parsePostfixExpression()
+    }
   }
   
   func parsePostfixExpression() throws -> AstExpression {
@@ -603,7 +625,7 @@ private extension SynAn {
       return try parsePostfixExpression_(expression: parseFunction())
     case .identifier:
       switch symbol.lexeme {
-      case "+", "-", "*", "/", "::", "~", "<", ">", "<=", ">=", "^":
+      case "+", "-", "*", "/", "::", "<", ">", "<=", ">=", "^":
         return expression
       default:
         return try parseFunction()
@@ -648,6 +670,8 @@ private extension SynAn {
       switch symbol.lexeme {
       case "#":
         return try parseRecordSelectorExpression()
+      case "~":
+        return try parsePrefixExpression()
       default:
         let identifier = symbol
         nextSymbol()

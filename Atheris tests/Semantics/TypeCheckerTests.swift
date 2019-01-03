@@ -210,6 +210,14 @@ fun f x: int = 10;
 """
     performSucceedingTest(code: code)
   }
+  
+  func testUnaryExpressionFunctionCall() {
+    let code = """
+fun f x = x;
+f ~10;
+"""
+    performSucceedingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {
