@@ -250,11 +250,8 @@ private extension CodeGenerationTests {
       .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     do {
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
-      var result = ""
-      while let line = fileReader.readLine() {
-        result += line + "\n"
-      }
-      return result
+      let lines = fileReader.readLines()
+      return lines.joined(separator: "\n").appending("\n")
     } catch {
       print(error.localizedDescription)
       return nil
@@ -266,11 +263,8 @@ private extension CodeGenerationTests {
       .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     do {
       let fileReader = try FileReader(fileUrl: URL(string: path)!)
-      var result = ""
-      while let line = fileReader.readLine() {
-        result += line + "\n"
-      }
-      return result
+      let lines = fileReader.readLines()
+      return lines.joined(separator: "\n")
     } catch {
       print(error.localizedDescription)
       return ""

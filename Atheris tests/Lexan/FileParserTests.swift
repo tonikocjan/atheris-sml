@@ -64,4 +64,15 @@ class FileParserTests: XCTestCase {
       XCTFail()
     }
   }
+  
+  func testReadLines() {
+    do {
+      let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Lexan/file_parser_test_2".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+      let fileReader = try FileReader(fileUrl: URL(string: path)!)
+      let lines = fileReader.readLines()
+      XCTAssertEqual(["line1", "line2", "line3", "", "line4"], lines)
+    } catch {
+      XCTFail()
+    }
+  }
 }

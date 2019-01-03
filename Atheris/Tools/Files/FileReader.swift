@@ -16,6 +16,7 @@ protocol FileReaderProtocol {
   func readChar() throws -> Character
   func readLine() -> String?
   func readString(size: Int) -> String?
+  func readLines() -> [String]
 }
 
 class FileReader: FileReaderProtocol {
@@ -58,6 +59,14 @@ class FileReader: FileReaderProtocol {
   
   func readString(size: Int) -> String? {
     return String(data: readBytes(count: size), encoding: .utf8)
+  }
+  
+  func readLines() -> [String] {
+    var lines = [String]()
+    while let line = readLine() {
+      lines.append(line)
+    }
+    return lines
   }
 }
 
