@@ -154,6 +154,11 @@
 		37C4125F21DE3D860039A618 /* sml1.sml in Resources */ = {isa = PBXBuildFile; fileRef = 37C4125E21DE3D860039A618 /* sml1.sml */; };
 		37C4126121DE3D900039A618 /* sml2.sml in Resources */ = {isa = PBXBuildFile; fileRef = 37C4126021DE3D900039A618 /* sml2.sml */; };
 		37C4126321DE3DEB0039A618 /* code17.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37C4126221DE3DEA0039A618 /* code17.rkt */; };
+		37C4126521DE54F90039A618 /* AstEmptyListPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C4126421DE54F90039A618 /* AstEmptyListPattern.swift */; };
+		37C4126621DE54F90039A618 /* AstEmptyListPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C4126421DE54F90039A618 /* AstEmptyListPattern.swift */; };
+		37C4126821DE57DA0039A618 /* AstListPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C4126721DE57DA0039A618 /* AstListPattern.swift */; };
+		37C4126921DE57DA0039A618 /* AstListPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C4126721DE57DA0039A618 /* AstListPattern.swift */; };
+		37C4126B21DF88BC0039A618 /* code18.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37C4126A21DF88BC0039A618 /* code18.rkt */; };
 		37D396B021BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
 		37D396B121BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
 		37D396B321BA6E0C00C11EB5 /* code7.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37D396B221BA6E0B00C11EB5 /* code7.rkt */; };
@@ -304,6 +309,9 @@
 		37C4125E21DE3D860039A618 /* sml1.sml */ = {isa = PBXFileReference; lastKnownFileType = text; path = sml1.sml; sourceTree = "<group>"; };
 		37C4126021DE3D900039A618 /* sml2.sml */ = {isa = PBXFileReference; lastKnownFileType = text; path = sml2.sml; sourceTree = "<group>"; };
 		37C4126221DE3DEA0039A618 /* code17.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code17.rkt; sourceTree = "<group>"; };
+		37C4126421DE54F90039A618 /* AstEmptyListPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstEmptyListPattern.swift; sourceTree = "<group>"; };
+		37C4126721DE57DA0039A618 /* AstListPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstListPattern.swift; sourceTree = "<group>"; };
+		37C4126A21DF88BC0039A618 /* code18.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code18.rkt; sourceTree = "<group>"; };
 		37D396AF21BA698800C11EB5 /* AstMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstMatch.swift; sourceTree = "<group>"; };
 		37D396B221BA6E0B00C11EB5 /* code7.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code7.rkt; sourceTree = "<group>"; };
 		37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexanTests.swift; sourceTree = "<group>"; };
@@ -463,6 +471,7 @@
 				37917CD921D3516D009B6730 /* code15.rkt */,
 				37C4125A21DCC0C90039A618 /* code16.rkt */,
 				37C4126221DE3DEA0039A618 /* code17.rkt */,
+				37C4126A21DF88BC0039A618 /* code18.rkt */,
 				37C4125E21DE3D860039A618 /* sml1.sml */,
 				37C4126021DE3D900039A618 /* sml2.sml */,
 			);
@@ -661,9 +670,11 @@
 				37F024CC21B413B2006B868E /* AstTuplePattern.swift */,
 				37F024CE21B41697006B868E /* AstRecordPattern.swift */,
 				37F024D521B428E4006B868E /* AstTypedPattern.swift */,
+				37E986A121C3CF1400D68CA4 /* AstConstantPattern.swift */,
 				37D396AF21BA698800C11EB5 /* AstMatch.swift */,
 				37E9869B21C3CC7C00D68CA4 /* AstRule.swift */,
-				37E986A121C3CF1400D68CA4 /* AstConstantPattern.swift */,
+				37C4126421DE54F90039A618 /* AstEmptyListPattern.swift */,
+				37C4126721DE57DA0039A618 /* AstListPattern.swift */,
 			);
 			path = Patterns;
 			sourceTree = "<group>";
@@ -786,6 +797,7 @@
 				37B2F8DE21C1587000C0B9E8 /* code10.rkt in Resources */,
 				37D396B321BA6E0C00C11EB5 /* code7.rkt in Resources */,
 				3716C94321BC137E00A24765 /* ast14 in Resources */,
+				37C4126B21DF88BC0039A618 /* code18.rkt in Resources */,
 				3790FED221B7E44F005CA8D5 /* ast8 in Resources */,
 				3745064521B6D9260051E1E9 /* code2.rkt in Resources */,
 				3745061921B58F140051E1E9 /* ast4 in Resources */,
@@ -867,6 +879,8 @@
 				374505DC21B510020051E1E9 /* main.swift in Sources */,
 				374505D921B50FFE0051E1E9 /* AstNode.swift in Sources */,
 				374505DA21B50FFE0051E1E9 /* SyntaxParser.swift in Sources */,
+				37C4126621DE54F90039A618 /* AstEmptyListPattern.swift in Sources */,
+				37C4126921DE57DA0039A618 /* AstListPattern.swift in Sources */,
 				374505DB21B50FFE0051E1E9 /* SynAn.swift in Sources */,
 				3745060121B53C980051E1E9 /* TupleType.swift in Sources */,
 				3790FECD21B7BCFC005CA8D5 /* AstFunctionCallExpression.swift in Sources */,
@@ -928,11 +942,13 @@
 				37F024CF21B41697006B868E /* AstRecordPattern.swift in Sources */,
 				3745060921B5449C0051E1E9 /* AbstractDummyType.swift in Sources */,
 				37F024AD21B3F705006B868E /* AstValBinding.swift in Sources */,
+				37C4126821DE57DA0039A618 /* AstListPattern.swift in Sources */,
 				3716C92C21BBC14800A24765 /* RecordType.swift in Sources */,
 				378EB82321B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */,
 				37F024AF21B3F7C9006B868E /* AstBinding.swift in Sources */,
 				3790FECF21B7C813005CA8D5 /* FunctionType.swift in Sources */,
 				37F024A421B3F40B006B868E /* AstVisitor.swift in Sources */,
+				37C4126521DE54F90039A618 /* AstEmptyListPattern.swift in Sources */,
 				3716C92921BBBCA600A24765 /* AstRecordExpression.swift in Sources */,
 				3745060621B53EC10051E1E9 /* AbstractTupleType.swift in Sources */,
 				37F024A721B3F483006B868E /* SyntaxParser.swift in Sources */,

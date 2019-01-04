@@ -380,10 +380,60 @@ extension RacketCodeGenerator: CodeGenerator {
       guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
       self.print("[")
       let shouldPrintPattern: Bool
+      
       if let datatype = pattern as? DatatypeType {
         self.print("(\(datatype.name)? ")
         shouldPrintPattern = false
         try node.expression.accept(visitor: self)
+      } else if let list = pattern as? ListType {
+        func listPatternSize(_ pattern: AstListPattern) -> Int {
+          var size = 0
+          var pattern: AstPattern = pattern
+          while true {
+            if let list = pattern as? AstListPattern {
+              size += 1
+              pattern = list.tail
+            } else {
+              break
+            }
+          }
+          return size
+        }
+        
+        func printListPattern(_ pattern: AstListPattern, depth: Int = 0) throws {
+          self.newLine()
+          self.print("[")
+          try pattern.head.accept(visitor: self)
+          self.print(" (car ")
+          for _ in 0..<depth { self.print("(cdr ") }
+          try node.expression.accept(visitor: self)
+          for _ in 0..<depth + 1 { self.print(")") }
+          self.print("]")
+          if let list = pattern.tail as? AstListPattern {
+            try printListPattern(list, depth: depth + 1)
+          } else {
+            self.print(")")
+          }
+        }
+        
+        shouldPrintPattern = false
+        switch $0.pattern {
+        case is AstEmptyListPattern:
+          self.print("(= (length ")
+          try node.expression.accept(visitor: self)
+          self.print(") 0)")
+        case is AstListPattern:
+          self.print("(> (length ")
+          try node.expression.accept(visitor: self)
+          let size = listPatternSize($0.pattern as! AstListPattern)
+          self.print(") \(size))")
+          self.print(" (let (")
+          self.increaseIndent()
+          try printListPattern($0.pattern as! AstListPattern)
+          self.decreaseIndent()
+        default:
+          break
+        }
       } else {
         self.print("(equal? ")
         shouldPrintPattern = true
@@ -403,7 +453,9 @@ extension RacketCodeGenerator: CodeGenerator {
         self.printList = false
         self.printTuple = false
       }
-      self.print(")")
+      if !($0.pattern is AstListPattern || $0.pattern is AstEmptyListPattern) {
+        self.print(")")
+      }
       self.print(" ")
       if let associatedType = $0.associatedValue {
         self.print("(let (")
@@ -427,6 +479,9 @@ extension RacketCodeGenerator: CodeGenerator {
       } else {
         try $0.expression.accept(visitor: self)
       }
+      if $0.pattern is AstListPattern {
+        self.print(")")
+      }
       self.print("]")
       self.newLine()
     }
@@ -434,15 +489,7 @@ extension RacketCodeGenerator: CodeGenerator {
     decreaseIndent()
     print(")")
   }
-  
-  func visit(node: AstMatch) throws {
-    
-  }
-  
-  func visit(node: AstRule) throws {
-    
-  }
-  
+
   func visit(node: AstIdentifierPattern) throws {
     print(node.name)
   }
@@ -461,16 +508,20 @@ extension RacketCodeGenerator: CodeGenerator {
     if !dontPrintParents { print(")") }
   }
   
-  func visit(node: AstRecordPattern) throws {
-    
-  }
-  
   func visit(node: AstConstantPattern) throws {
     print(node.value)
   }
   
   func visit(node: AstTypedPattern) throws {
     try node.pattern.accept(visitor: self)
+  }
+  
+  func visit(node: AstEmptyListPattern) throws {
+    print("null")
+  }
+  
+  func visit(node: AstListPattern) throws {
+    
   }
 }
 

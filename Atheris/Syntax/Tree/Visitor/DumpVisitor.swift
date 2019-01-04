@@ -269,6 +269,22 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstEmptyListPattern) throws {
+    print("AstEmptyListPattern", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstListPattern) throws {
+    print("AstListPattern", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.head.accept(visitor: self)
+    try node.tail.accept(visitor: self)
+    decreaseIndent()
+  }
+  
   func visit(node: AstTypedPattern) throws {
     print("AstTypedPattern", node.position)
     increaseIndent()

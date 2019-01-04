@@ -599,10 +599,6 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: dummyPatternType)
   }
   
-  func visit(node: AstWildcardPattern) throws {
-    
-  }
-  
   func visit(node: AstTuplePattern) throws {
     if let parentNodeType = typeDistributionStack.last as? TupleType {
       symbolDescription.setType(for: node, type: parentNodeType)
@@ -631,9 +627,6 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: tuple)
   }
   
-  func visit(node: AstRecordPattern) throws {
-    
-  }
   
   func visit(node: AstConstantPattern) throws {
     let atomType = AtomType.fromAtomType(node.type)
@@ -662,6 +655,20 @@ extension TypeChecker: AstVisitor {
     
     symbolDescription.setType(for: node, type: type)
     symbolDescription.setType(for: node.pattern, type: type)
+  }
+  
+  func visit(node: AstEmptyListPattern) throws {
+    let abstractList = ListType(elementType: AbstractDummyType(name: dummyName()))
+    symbolDescription.setType(for: node, type: abstractList)
+  }
+  
+  func visit(node: AstListPattern) throws {
+    try node.head.accept(visitor: self)
+    try node.tail.accept(visitor: self)
+    guard let head = symbolDescription.type(for: node.head) else { throw internalError() }
+    guard let _ = symbolDescription.type(for: node.tail) else { throw internalError() }
+    let list = ListType(elementType: head)
+    symbolDescription.setType(for: node, type: list)
   }
 }
 

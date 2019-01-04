@@ -207,6 +207,19 @@ val d = f (Y, false);
                 filepath: "code17.rkt")
   }
   
+  func testListPatternMatching() {
+    let code = """
+val x = [2, 3, 4, 5];
+case x of
+  [] => 1
+  | h1::h2::h3::t => h1 + h2 + h3
+  | h1::h2::t => h1 + h2
+  | h::t => h + 100;
+"""
+    performTest(code: code,
+                filepath: "code18.rkt")
+  }
+  
   func testDatatypeWithTypeConstructor() {
     // TODO: -
     let code = """
@@ -214,6 +227,14 @@ datatype ('a) Opcija = JE of 'a | NI;
 fun f x: int Opcija = NI;
 """
     performTest(code: code, filepath: "code17.rkt")
+  }
+  
+  func testFunctionWithAbstractType() {
+    // TODO: -
+    let code = """
+fun f (a: 'a -> int) = a;
+"""
+    performTest(code: code, filepath: "code18.rkt")
   }
 }
 

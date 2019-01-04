@@ -82,23 +82,11 @@ extension NameChecker: AstVisitor {
     try node.name.accept(visitor: self)
     try node.associatedType?.accept(visitor: self)
   }
-  
-  func visit(node: AstAtomType) throws {
-    
-  }
-  
+
   func visit(node: AstTypeName) throws {
     if let _ = AstAtomType.AtomType(rawValue: node.name) { return }
     guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.bindingNotFound(node.name, node.position) }
     symbolDescription.bindNode(node, binding: binding)
-  }
-  
-  func visit(node: AstTupleType) throws {
-    
-  }
-  
-  func visit(node: AstConstantExpression) throws {
-    
   }
   
   func visit(node: AstNameExpression) throws {
@@ -174,8 +162,10 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstCaseExpression) throws {
+    symbolTable.newScope()
     try node.expression.accept(visitor: self)
     try node.match.accept(visitor: self)
+    symbolTable.oldScope()
   }
   
   func visit(node: AstIdentifierPattern) throws {
@@ -189,21 +179,21 @@ extension NameChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstWildcardPattern) throws {
-    ///
-  }
-  
   func visit(node: AstTuplePattern) throws {
     for pattern in node.patterns { try pattern.accept(visitor: self) }
-  }
-  
-  func visit(node: AstRecordPattern) throws {
-    
   }
   
   func visit(node: AstTypedPattern) throws {
     try node.pattern.accept(visitor: self)
     try node.type.accept(visitor: self)
+  }
+  
+  func visit(node: AstListPattern) throws {
+    let checkingCaseExpression_ = checkingCaseExpression
+    checkingCaseExpression = false
+    try node.head.accept(visitor: self)
+    try node.tail.accept(visitor: self)
+    checkingCaseExpression = checkingCaseExpression_
   }
   
   func visit(node: AstMatch) throws {

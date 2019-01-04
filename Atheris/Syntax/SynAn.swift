@@ -201,7 +201,17 @@ private extension SynAn {
       nextSymbol()
       let type = try parseAtomType()
       return AstTypedPattern(position: pattern.position + type.position, pattern: pattern, type: type)
-    // TODO: ....
+    case .identifier:
+      switch symbol.lexeme {
+      case "::":
+        nextSymbol()
+        let tail = try parsePattern()
+        return AstListPattern(position: pattern.position + tail.position,
+                              head: pattern,
+                              tail: tail)
+      default:
+        return pattern
+      }
     default:
       return pattern
     }
@@ -224,6 +234,13 @@ private extension SynAn {
       return try parseTuplePattern()
     case .leftBrace:
       return try parseRecordPattern()
+    case .leftBracket:
+      let position = symbol.position
+      nextSymbol()
+      guard expecting(.rightBracket) else { throw reportError("expecting `]`", symbol.position) }
+      let pattern = AstEmptyListPattern(position: position + symbol.position)
+      nextSymbol()
+      return pattern
     case .integerConstant:
       return constantPattern(type: .int)
     case .floatingConstant:
