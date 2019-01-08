@@ -8,18 +8,18 @@ y
 (struct Y (_) #:transparent)
 
 (define z (cond 
-  [(equal? (list x Y) (list 10 X)) true]
-  [(equal? (list x Y) (list 10 Y)) false]
+  [(equal? (cons 10 X) (cons x Y)) (let () true)]
+  [(equal? (cons 10 Y) (cons x Y)) (let () false)]
   ))
 z
 (define e (cond 
-  [(equal? (list true (list true true)) (list true (list true true))) 0]
-  [(equal? (list true (list true true)) (list true (list true false))) 1]
-  [(equal? (list true (list true true)) (list true (list false true))) 2]
-  [(equal? (list true (list true true)) (list true (list false false))) 3]
-  [(equal? (list true (list true true)) (list false (list true true))) 4]
-  [(equal? (list true (list true true)) (list false (list true false))) 5]
-  [(equal? (list true (list true true)) (list false (list false true))) 6]
-  [(equal? (list true (list true true)) (list false (list false false))) 7]
+  [(equal? (cons true (cons true true)) (cons true (cons true true))) (let () 0)]
+  [(equal? (cons true (cons true false)) (cons true (cons true true))) (let () 1)]
+  [(equal? (cons true (cons false true)) (cons true (cons true true))) (let () 2)]
+  [(equal? (cons true (cons false false)) (cons true (cons true true))) (let () 3)]
+  [(equal? (cons false (cons true true)) (cons true (cons true true))) (let () 4)]
+  [(equal? (cons false (cons true false)) (cons true (cons true true))) (let () 5)]
+  [(equal? (cons false (cons false true)) (cons true (cons true true))) (let () 6)]
+  [(equal? (cons false (cons false false)) (cons true (cons true true))) (let () 7)]
   ))
 e

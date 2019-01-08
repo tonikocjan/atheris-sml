@@ -192,10 +192,27 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstNameExpression) throws {
     guard let type = symbolDescription.type(for: node) else { return }
-    if rhs && !printList, type is DatatypeType || (type as? FunctionType)?.body is DatatypeType, let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
-      print("(\(node.name) 0)")
-    } else {
+    
+    func isDatatypeConstructorWithoutAssociatedValue() -> Bool {
+      guard rhs && !printList else { return false }
+      guard type is DatatypeType || (type as? FunctionType)?.body is DatatypeType else { return false }
+      if let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
+        return true
+      }
+      return false
+    }
+    
+    switch caseTraversalState {
+    case .rootPattern, .nestedPattern:
       print(node.name)
+    case .binding:
+      print(node.name)
+    case .none:
+      if isDatatypeConstructorWithoutAssociatedValue() {
+        print("(\(node.name) 0)")
+      } else {
+        print(node.name)
+      }
     }
   }
   
@@ -378,7 +395,7 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstMatch) throws {
     func handlePattern(rule: AstRule) throws {
-      caseTraversalStateStack.append(.pattern)
+      caseTraversalStateStack.append(.rootPattern)
       try rule.pattern.accept(visitor: self)
       _ = caseTraversalStateStack.popLast()
     }
@@ -432,10 +449,25 @@ extension RacketCodeGenerator: CodeGenerator {
       for _ in node.patterns.dropLast() { print(")") }
     }
     
-    switch caseTraversalState {
-    case .pattern:
+    func handleRootPattern() throws {
+      guard let expression = caseExpressionStack.last?.expression else { return }
+      print("(equal? ")
+      caseTraversalStateStack.append(.nestedPattern)
       try expandTuple()
-    case .binding, .none:
+      _ = caseTraversalStateStack.popLast()
+      print(" ")
+      try expression.accept(visitor: self)
+      print(")")
+    }
+    
+    switch caseTraversalState {
+    case .rootPattern:
+      try handleRootPattern()
+    case .nestedPattern:
+      try expandTuple()
+    case .binding:
+      break
+    case .none:
       if !dontPrintParents {
         print("(")
         if printList { print("list ") }
@@ -455,11 +487,13 @@ extension RacketCodeGenerator: CodeGenerator {
   
   func visit(node: AstEmptyListPattern) throws {
     switch caseTraversalState {
-    case .pattern:
+    case .rootPattern:
       guard let expression = caseExpressionStack.last?.expression else { return }
       print("(empty? ")
       try expression.accept(visitor: self)
       print(")")
+    case .nestedPattern:
+      print("todo")
     case .binding:
       break
     case .none:
@@ -468,7 +502,7 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstListPattern) throws {
-    func handlePatternState() throws {
+    func handleRootPatternState() throws {
       func elementsCount() -> Int {
         var size = 0
         var pattern: AstPattern = node
@@ -504,7 +538,9 @@ extension RacketCodeGenerator: CodeGenerator {
         print("(equal? (car ")
         try expression.expression.accept(visitor: self)
         print(") ")
+        caseTraversalStateStack.append(.nestedPattern)
         try node.head.accept(visitor: self)
+        _ = caseTraversalStateStack.popLast()
         print(")")
       }
       
@@ -554,8 +590,10 @@ extension RacketCodeGenerator: CodeGenerator {
     }
     
     switch caseTraversalState {
-    case .pattern:
-      try handlePatternState()
+    case .rootPattern:
+      try handleRootPatternState()
+    case .nestedPattern:
+      print("TODO")
     case .binding:
       try handleBindingState()
     case .none:
@@ -613,10 +651,10 @@ private extension RacketCodeGenerator {
      "null": "null?"]
 }
 
-
 private extension RacketCodeGenerator {
   enum CaseExpressionTraversalState {
-    case pattern
+    case rootPattern
+    case nestedPattern
     case binding
     case none
   }

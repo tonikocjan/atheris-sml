@@ -110,7 +110,7 @@ val a = x::[y, z];
     performTest(code: code, filepath: "code10.rkt")
   }
   
-  func testRecursiveDatatype() {
+  func testNestedDatatypePatternMatching() {
     let code = """
 val x = 10;
 val y = false;
