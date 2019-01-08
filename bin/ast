@@ -1,34 +1,63 @@
-AstBindings [1:1, 3:20]:
-  AstFunBinding [1:1, 3:20]:
-    -> typed: fn : int -> int
-    AstIdentifierPattern [1:5, 1:6]:
-      -> typed: fn : int -> int
-      Name: f
-    AstIdentifierPattern [1:7, 1:8]:
+AstBindings [1:1, 5:22]:
+  AstValBinding [1:1, 1:31]:
+    -> typed: bool list
+    AstIdentifierPattern [1:5, 1:7]:
+      -> typed: bool list
+      Name: xs
+    AstListExpression [1:10, 1:31]:
+      -> typed: bool list
+      AstConstantExpression [1:11, 1:16]:
+        -> typed: bool
+        Value: false
+        Atom type: bool
+      AstConstantExpression [1:18, 1:23]:
+        -> typed: bool
+        Value: false
+        Atom type: bool
+      AstConstantExpression [1:25, 1:29]:
+        -> typed: bool
+        Value: true
+        Atom type: bool
+  AstValBinding [3:1, 5:22]:
+    -> typed: int
+    AstIdentifierPattern [3:1, 5:22]:
       -> typed: int
-      Name: x
-    AstTypeName [1:10, 1:13]:
+      Name: x1
+    AstCaseExpression [3:1, 5:22]:
       -> typed: int
-      Name: int
-    AstLetExpression [2:6, 3:20]:
-      -> typed: int
-      AstBindings [3:11, 3:20]:
-        AstValBinding [3:11, 3:20]:
-          -> typed: int
-          AstIdentifierPattern [3:15, 3:16]:
+      AstNameExpression [3:6, 3:8]:
+        -> defined at:  [1:5, 1:7]:
+        -> typed: bool list
+        Name: xs
+      AstMatch [4:10, 5:22]:
+        -> typed: bool list => int
+        AstRule [4:10, 4:19]:
+          -> typed: bool list => int
+          AstListPattern [4:10, 4:14]:
+            -> typed: bool list
+            AstConstantPattern [4:10, 4:12]:
+              -> typed: bool
+              Value: true
+              Type: bool
+            AstIdentifierPattern [4:12, 4:14]:
+              -> typed: 'Z
+              Name: tl
+          AstConstantExpression [4:18, 4:19]:
             -> typed: int
-            Name: y
-          AstNameExpression [3:19, 3:20]:
-            -> defined at:  [1:7, 1:8]:
+            Value: 1
+            Atom type: int
+        AstRule [5:13, 5:22]:
+          -> typed: bool list => int
+          AstListPattern [5:13, 5:17]:
+            -> typed: bool list
+            AstConstantPattern [5:13, 5:15]:
+              -> typed: bool
+              Value: false
+              Type: bool
+            AstIdentifierPattern [5:15, 5:17]:
+              -> typed: 'Z
+              Name: tl
+          AstConstantExpression [5:21, 5:22]:
             -> typed: int
-            Name: x
-      AstBinaryExpression `+` [5:11, 5:16]:
-        -> typed: int
-        AstNameExpression [5:11, 5:12]:
-          -> defined at:  [1:7, 1:8]:
-          -> typed: int
-          Name: x
-        AstNameExpression [5:15, 5:16]:
-          -> defined at:  [3:15, 3:16]:
-          -> typed: int
-          Name: y
+            Value: 2
+            Atom type: int

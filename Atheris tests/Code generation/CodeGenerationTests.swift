@@ -31,13 +31,6 @@ val x = if 3 < 4 then "a" else "b";
     performTest(code: code, filepath: "code2.rkt")
   }
   
-  func testTupleBinding() {
-    let code = """
-val (x, y, z) = (10, 20, 30);
-"""
-    performTest(code: code, filepath: "code3.rkt")
-  }
-  
   func testFunctionBindingsAndCall() {
     let code = """
 fun a (x, y, z) a = x ^ y ^ z;
@@ -235,6 +228,13 @@ fun f x: int Opcija = NI;
 fun f (a: 'a -> int) = a;
 """
     performTest(code: code, filepath: "code18.rkt")
+  }
+  
+  func testTupleBinding() {
+    let code = """
+val (x, y, z) = (10, 20, 30);
+"""
+    performTest(code: code, filepath: "code3.rkt")
   }
 }
 
