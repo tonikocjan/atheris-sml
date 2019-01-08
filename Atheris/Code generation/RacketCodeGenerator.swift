@@ -24,6 +24,10 @@ class RacketCodeGenerator {
   private var rhs = false
   private var wildcardPatternCounter = 0
   
+  // MARK: - Pattern matching
+  private var caseExpressionStack = [AstCaseExpression]()
+  private var caseTraversalStateStack = [CaseExpressionTraversalState]()
+  
   init(outputStream: OutputStream, configuration: Configuration, symbolDescription: SymbolDescriptionProtocol) {
     self.outputStream = outputStream
     self.configuration = configuration
@@ -196,12 +200,37 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTupleExpression) throws {
+    func asList() throws {
+      print("(list ")
+      try perform(on: node.expressions, appending: " ")
+      print(")")
+    }
+    
+    func asTuple() throws {
+      for expression in node.expressions.dropLast() {
+        print("(cons ")
+        try expression.accept(visitor: self)
+        print(" ")
+      }
+      try node.expressions.last?.accept(visitor: self)
+      for _ in node.expressions.dropLast() { print(")") }
+    }
+    
+    func onlyValues() throws {
+      try perform(on: node.expressions, appending: " ")
+    }
+    
     let list = printList
     let tuple = printTuple
-    if list { print("(list ") }
-    else if tuple { print("(cons ") }
-    try perform(on: node.expressions, appending: " ")
-    if list || tuple { print(")") }
+    
+    if list {
+      try asList()
+    } else if tuple {
+      try asTuple()
+    } else {
+      try onlyValues()
+    }
+    
     printList = list
     printTuple = tuple
   }
@@ -342,152 +371,45 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstCaseExpression) throws {
-    var tuplePatternsCounter = 0
-    func expandTuple(tuple: AstTuplePattern, rule: AstRule) throws {
-      increaseIndent()
-      newLine()
-      for pattern in tuple.patterns {
-        if let subPattern = pattern as? AstTuplePattern {
-          try expandTuple(tuple: subPattern, rule: rule)
-          continue
-        }
-        
-        print("[")
-        try pattern.accept(visitor: self)
-        print(" (")
-        try rule.pattern.accept(visitor: self)
-        print("-x\(tuplePatternsCounter)")
-        tuplePatternsCounter += 1
-        print(" ")
-        try node.expression.accept(visitor: self)
-        print(")]")
-        if pattern === tuple.patterns.last {}
-        else { newLine() }
-      }
-      print(")")
-      decreaseIndent()
-      newLine()
+    caseExpressionStack.append(node)
+    try node.match.accept(visitor: self)
+    _ = caseExpressionStack.popLast()
+  }
+  
+  func visit(node: AstMatch) throws {
+    func handlePattern(rule: AstRule) throws {
+      caseTraversalStateStack.append(.pattern)
+      try rule.pattern.accept(visitor: self)
+      _ = caseTraversalStateStack.popLast()
     }
     
-    let rules = node.match.rules
+    func handleBinding(rule: AstRule) throws {
+      caseTraversalStateStack.append(.binding)
+      print("(let (")
+      try rule.pattern.accept(visitor: self)
+      print(")")
+      _ = caseTraversalStateStack.popLast()
+    }
+    
     print("(cond ")
     increaseIndent()
     newLine()
-    let rhs_ = rhs
-    rhs = false
-    
-    try perform(on: rules, appending: "") {
-      guard let pattern = self.symbolDescription.type(for: $0.pattern) else { return }
-      self.print("[")
-      let shouldPrintPattern: Bool
-      
-      if let datatype = pattern as? DatatypeType {
-        self.print("(\(datatype.name)? ")
-        shouldPrintPattern = false
-        try node.expression.accept(visitor: self)
-      } else if let list = pattern as? ListType {
-        func listPatternSize(_ pattern: AstListPattern) -> Int {
-          var size = 0
-          var pattern: AstPattern = pattern
-          while true {
-            if let list = pattern as? AstListPattern {
-              size += 1
-              pattern = list.tail
-            } else {
-              break
-            }
-          }
-          return size
-        }
-        
-        func printListPattern(_ pattern: AstListPattern, depth: Int = 0) throws {
-          self.newLine()
-          self.print("[")
-          try pattern.head.accept(visitor: self)
-          self.print(" (car ")
-          for _ in 0..<depth { self.print("(cdr ") }
-          try node.expression.accept(visitor: self)
-          for _ in 0..<depth + 1 { self.print(")") }
-          self.print("]")
-          if let list = pattern.tail as? AstListPattern {
-            try printListPattern(list, depth: depth + 1)
-          } else {
-            self.print(")")
-          }
-        }
-        
-        shouldPrintPattern = false
-        switch $0.pattern {
-        case is AstEmptyListPattern:
-          self.print("(= (length ")
-          try node.expression.accept(visitor: self)
-          self.print(") 0)")
-        case is AstListPattern:
-          self.print("(> (length ")
-          try node.expression.accept(visitor: self)
-          let size = listPatternSize($0.pattern as! AstListPattern)
-          self.print(") \(size))")
-          self.print(" (let (")
-          self.increaseIndent()
-          try printListPattern($0.pattern as! AstListPattern)
-          self.decreaseIndent()
-        default:
-          break
-        }
-      } else {
-        self.print("(equal? ")
-        shouldPrintPattern = true
-        self.printList = true
-        self.printTuple = false
-        try node.expression.accept(visitor: self)
-        self.printList = false
-        self.printTuple = true
-        self.print(" ")
-      }
-      if shouldPrintPattern {
-        if pattern.isTuple {
-          self.printList = true
-        }
-        self.printTuple = false
-        try $0.pattern.accept(visitor: self)
-        self.printList = false
-        self.printTuple = false
-      }
-      if !($0.pattern is AstListPattern || $0.pattern is AstEmptyListPattern) {
-        self.print(")")
-      }
-      self.print(" ")
-      if let associatedType = $0.associatedValue {
-        self.print("(let (")
-        if let tuple = associatedType as? AstTuplePattern {
-          try expandTuple(tuple: tuple, rule: $0)
-        } else {
-          self.print("[")
-          try associatedType.accept(visitor: self)
-          self.print(" ")
-          if let identifierPattern = $0.pattern as? AstIdentifierPattern, pattern is DatatypeType {
-            self.print("(\(identifierPattern.name)-x0 ")
-            try node.expression.accept(visitor: self)
-            self.print(")")
-          } else {
-            try node.expression.accept(visitor: self)
-          }
-          self.print("]) ")
-        }
-        try $0.expression.accept(visitor: self)
-        self.print(")")
-      } else {
-        try $0.expression.accept(visitor: self)
-      }
-      if $0.pattern is AstListPattern {
-        self.print(")")
-      }
-      self.print("]")
-      self.newLine()
+    for rule in node.rules {
+      print("[")
+      try handlePattern(rule: rule)
+      print(" ")
+      try handleBinding(rule: rule)
+      print(" ")
+      try rule.expression.accept(visitor: self)
+      print(")]")
+      newLine()
     }
-    rhs = rhs_
-    decreaseIndent()
     print(")")
+    decreaseIndent()
+  }
+  
+  func visit(node: AstRule) throws {
+    
   }
 
   func visit(node: AstIdentifierPattern) throws {
@@ -500,12 +422,27 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstTuplePattern) throws {
-    if !dontPrintParents {
-      print("(")
-      if printList { print("list ") }
+    func expandTuple() throws {
+      for pattern in node.patterns.dropLast() {
+        print("(cons ")
+        try pattern.accept(visitor: self)
+        print(" ")
+      }
+      try node.patterns.last?.accept(visitor: self)
+      for _ in node.patterns.dropLast() { print(")") }
     }
-    try perform(on: node.patterns, appending: " ")
-    if !dontPrintParents { print(")") }
+    
+    switch caseTraversalState {
+    case .pattern:
+      try expandTuple()
+    case .binding, .none:
+      if !dontPrintParents {
+        print("(")
+        if printList { print("list ") }
+      }
+      try perform(on: node.patterns, appending: " ")
+      if !dontPrintParents { print(")") }
+    }
   }
   
   func visit(node: AstConstantPattern) throws {
@@ -517,11 +454,113 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstEmptyListPattern) throws {
-    print("null")
+    switch caseTraversalState {
+    case .pattern:
+      guard let expression = caseExpressionStack.last?.expression else { return }
+      print("(empty? ")
+      try expression.accept(visitor: self)
+      print(")")
+    case .binding:
+      break
+    case .none:
+      print("null")
+    }
   }
   
   func visit(node: AstListPattern) throws {
+    func handlePatternState() throws {
+      func elementsCount() -> Int {
+        var size = 0
+        var pattern: AstPattern = node
+        while let list = pattern as? AstListPattern {
+          size += 1
+          pattern = list.tail
+        }
+        return size - 1
+      }
+      
+      func conditionsCount() -> Int {
+        var count = 0
+        var pattern: AstPattern = node
+        while let list = pattern as? AstListPattern {
+          count += list.head is AstIdentifierPattern ? 0 : 1
+          pattern = list.tail
+        }
+        return count
+      }
+      
+      guard let expression = caseExpressionStack.last else { return }
+      let size = elementsCount()
+      let conditions = conditionsCount()
+      
+      for _ in 0..<conditions { print("(and ") }
+      
+      print("(> (length ")
+      try expression.expression.accept(visitor: self)
+      print(") \(size)) ")
+      
+      if node.head is AstIdentifierPattern {}
+      else {
+        print("(equal? (car ")
+        try expression.expression.accept(visitor: self)
+        print(") ")
+        try node.head.accept(visitor: self)
+        print(")")
+      }
+      
+      for _ in 0..<conditions { print(")") }
+    }
     
+    func handleBindingState() throws {
+      guard let expression = caseExpressionStack.last else { return }
+      increaseIndent()
+      newLine()
+      
+      var node = node
+      var depth = 0
+      
+      while true {
+        if node.head is AstIdentifierPattern {
+          print("[")
+          try node.head.accept(visitor: self)
+          print(" ")
+          
+          print("(car ")
+          for _ in 0..<depth { print("(cdr ") }
+          try expression.expression.accept(visitor: self)
+          for _ in 0..<depth + 1 { print(")") }
+          print("]")
+          newLine()
+        }
+        if let list = node.tail as? AstListPattern {
+          node = list
+          depth += 1
+        } else if node.tail is AstIdentifierPattern {
+          print("[")
+          try node.tail.accept(visitor: self)
+          print(" ")
+          
+          for _ in 0..<depth + 1 { print("(cdr ") }
+          try expression.expression.accept(visitor: self)
+          for _ in 0..<depth + 1 { print(")") }
+          print("]")
+          
+          break
+        } else {
+          break
+        }
+      }
+      decreaseIndent()
+    }
+    
+    switch caseTraversalState {
+    case .pattern:
+      try handlePatternState()
+    case .binding:
+      try handleBindingState()
+    case .none:
+      break
+    }
   }
 }
 
@@ -572,4 +611,17 @@ private extension RacketCodeGenerator {
     ["hd": "car",
      "tl": "cdr",
      "null": "null?"]
+}
+
+
+private extension RacketCodeGenerator {
+  enum CaseExpressionTraversalState {
+    case pattern
+    case binding
+    case none
+  }
+  
+  var caseTraversalState: CaseExpressionTraversalState {
+    return caseTraversalStateStack.last ?? .none
+  }
 }

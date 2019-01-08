@@ -3,16 +3,18 @@
 (define x (list 2 3 4 5))
 x
 (define x1 (cond 
-  [(= (length x) 0) 1]
-  [(> (length x) 3) (let (
+  [(empty? x) (let () 1)]
+  [(> (length x) 2)  (let (
     [h1 (car x)]
     [h2 (car (cdr x))]
     [h3 (car (cdr (cdr x)))]
-    [t ]) (+ (+ h1 h2) h3))]
-  [(> (length x) 2) (let (
+    [t (cdr (cdr (cdr x)))]) 2)]
+  [(> (length x) 1)  (let (
     [h1 (car x)]
-    [h2 (car (cdr x))]) (+ h1 h2))]
-  [(> (length x) 1) (let (
-    [h (car x)]) (+ h 100))]
+    [h2 (car (cdr x))]
+    [t (cdr (cdr x))]) 3)]
+  [(> (length x) 0)  (let (
+    [h (car x)]
+    [t (cdr x)]) 4)]
   ))
 x1

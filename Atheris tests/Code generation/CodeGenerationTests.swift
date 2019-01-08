@@ -205,12 +205,30 @@ val d = f (Y, false);
 val x = [2, 3, 4, 5];
 case x of
   [] => 1
-  | h1::h2::h3::t => h1 + h2 + h3
-  | h1::h2::t => h1 + h2
-  | h::t => h + 100;
+  | h1::h2::h3::t => 2
+  | h1::h2::t => 3
+  | h::t => 4;
 """
     performTest(code: code,
                 filepath: "code18.rkt")
+  }
+  
+  func testRecursiveListPatternMatching() {
+    let code = """
+val xs = [false, false, true];
+
+case xs of
+  true::tl => 1
+  | false::tl => 2;
+
+val xss = [(true, 20, true), (true, 20, false), (false, 30, false)];
+case xss of
+  (true, 20, true)::tl => 1
+  | (false, 10, true)::tl => 2
+  | (true, 12, true)::tl => 3;
+"""
+    performTest(code: code,
+                filepath: "code19.rkt")
   }
   
   func testDatatypeWithTypeConstructor() {
