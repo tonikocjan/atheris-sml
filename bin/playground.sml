@@ -1,11 +1,9 @@
-val xs = [false, false, true];
+datatype natural = NEXT of natural | ZERO;
 
-case xs of
-	true::tl => 1
-	| false::tl => 2;
+fun toInt (a) =
+  case a of
+    ZERO => 0
+    | NEXT i => 1 + toInt(i);
 
-val xss = [(true, 10), (true, 20), (false, 30)];
-case xss of
-	(true, 10)::tl => 1
-	| (false, 10)::tl => 2
-	| (true, 12)::tl => 3;
+val x = NEXT(ZERO);
+val a = toInt x;

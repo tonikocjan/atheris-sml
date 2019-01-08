@@ -2,14 +2,16 @@
 
 #lang racket
 
-(define xs (list false false true))
-xs
-(define x1 (cond [(and (> (length xs) 1) (car xs)) (let ([tl (cdr xs)]) 1)]
-                 [(and (> (length xs) 1) (not (car xs))) (let ([tl (cdr xs)]) 2)]))
-x1
+(struct NEXT (x0) #:transparent)
+(struct ZERO (_) #:transparent)
 
-(define xss (list (cons false 10) (cons true 20) (cons false 30)))
-xss
-(define x2 (cond [(and (> (length xss) 1) (and (car (car xss)) (= 10 (cdr (car xss))))) (let ([tl (cdr xss)]) 1)]
-                 [(and (> (length xss) 1) (and (not (car (car xss))) (= 10 (cdr (car xss))))) (let ([tl (cdr xss)]) 2)]))
-x2
+(define (toInt a)
+  (cond 
+    [(ZERO? a) (let () 0)]
+    [(NEXT? a) (let ([i (NEXT-x0 a)]) (+ 1 (toInt i)))]
+    ))
+toInt
+(define x (NEXT (ZERO 0)))
+x
+(define a (toInt x))
+a
