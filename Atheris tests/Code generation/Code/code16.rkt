@@ -5,7 +5,7 @@
 
 (define (toInt a)
   (cond 
-    [(ZERO? a) 0]
+    [(ZERO? a) (let () 0)]
     [(NEXT? a) (let ([i (NEXT-x0 a)]) (+ 1 (toInt i)))]
     ))
 toInt
@@ -19,7 +19,7 @@ x3
 x4
 (define (add a b)
   (cond 
-    [(ZERO? b) a]
+    [(ZERO? b) (let () a)]
     [(NEXT? b) (let ([i (NEXT-x0 b)]) (add (NEXT a) i))]
     ))
 add
@@ -48,8 +48,8 @@ x9
     [(NODE? tree) (let (
       [x (NODE-x0 tree)]
       [left (NODE-x1 tree)]
-      [right (NODE-x2 tree)])
-    (define l (min left))
+      [right (NODE-x2 tree)]
+    ) (define l (min left))
     l
     (define r (min right))
     r
@@ -72,8 +72,8 @@ x11
     [(NODE? tree) (let (
       [x (NODE-x0 tree)]
       [left (NODE-x1 tree)]
-      [right (NODE-x2 tree)])
-    (define l (max left))
+      [right (NODE-x2 tree)]
+    ) (define l (max left))
     l
     (define r (max right))
     r
@@ -94,8 +94,8 @@ x13
     [(NODE? tree) (let (
       [a (NODE-x0 tree)]
       [left (NODE-x1 tree)]
-      [right (NODE-x2 tree)])
-    (or (or (equal? a x) (contains left x)) (contains right x)))]
+      [right (NODE-x2 tree)]
+    ) (or (or (equal? a x) (contains left x)) (contains right x)))]
     ))
 contains
 (define x14 (contains big_tree 123))
@@ -114,8 +114,8 @@ x18
     [(NODE? tree) (let (
       [w1 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
-      [r (NODE-x2 tree)])
-    (+ (countLeaves l) (countLeaves r)))]
+      [r (NODE-x2 tree)]
+    ) (+ (countLeaves l) (countLeaves r)))]
     ))
 countLeaves
 (define x19 (countLeaves big_tree))
@@ -126,8 +126,8 @@ x19
     [(NODE? tree) (let (
       [w3 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
-      [r (NODE-x2 tree)])
-    (+ (+ 1 (countBranches l)) (countBranches r)))]
+      [r (NODE-x2 tree)]
+    ) (+ (+ 1 (countBranches l)) (countBranches r)))]
     ))
 countBranches
 (define x20 (countBranches big_tree))
@@ -138,8 +138,8 @@ x20
     [(NODE? tree) (let (
       [w5 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
-      [r (NODE-x2 tree)])
-    (define left (+ 1 (height l)))
+      [r (NODE-x2 tree)]
+    ) (define left (+ 1 (height l)))
     left
     (define right (+ 1 (height r)))
     right
@@ -180,8 +180,8 @@ x23
     [(NODE? tree) (let (
       [i (NODE-x0 tree)]
       [l (NODE-x1 tree)]
-      [r (NODE-x2 tree)])
-    (append_lst (append_lst (toList l) (list i)) (toList r)))]
+      [r (NODE-x2 tree)]
+    ) (append_lst (append_lst (toList l) (list i)) (toList r)))]
     ))
 toList
 (define x24 (toList big_tree))
@@ -192,8 +192,8 @@ x24
     [(NODE? tree) (let (
       [w7 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
-      [r (NODE-x2 tree)])
-    (define height_diff (- (height l) (height r)))
+      [r (NODE-x2 tree)]
+    ) (define height_diff (- (height l) (height r)))
     height_diff
     (and (<= height_diff 1) (>= height_diff (- 0 1))))]
     ))
@@ -211,8 +211,8 @@ x27
       [(NODE? tree) (let (
         [x (NODE-x0 tree)]
         [w8 (NODE-x1 tree)]
-        [w9 (NODE-x2 tree)])
-      x)]
+        [w9 (NODE-x2 tree)]
+      ) x)]
       ))
   eval
   (cond 
@@ -220,8 +220,8 @@ x27
     [(NODE? tree) (let (
       [x (NODE-x0 tree)]
       [l (NODE-x1 tree)]
-      [r (NODE-x2 tree)])
-    (define left (eval l))
+      [r (NODE-x2 tree)]
+    ) (define left (eval l))
     left
     (define right (eval r))
     right

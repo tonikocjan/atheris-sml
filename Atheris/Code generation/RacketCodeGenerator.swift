@@ -401,9 +401,67 @@ extension RacketCodeGenerator: CodeGenerator {
     }
     
     func handleBinding(rule: AstRule) throws {
+      func handleAssociatedValue(_ associatedValue: AstPattern) throws {
+        func expandTuple(tuple: AstTuplePattern, expression: AstExpression) throws {
+          var tuplePatternsCounter = 0
+          func expand(tuple: AstTuplePattern) throws {
+            increaseIndent()
+            newLine()
+            for pattern in tuple.patterns {
+              if let subPattern = pattern as? AstTuplePattern {
+                try expandTuple(tuple: subPattern, expression: expression)
+                continue
+              }
+              
+              print("[")
+              try pattern.accept(visitor: self)
+              print(" (")
+              try rule.pattern.accept(visitor: self)
+              print("-x\(tuplePatternsCounter)")
+              tuplePatternsCounter += 1
+              print(" ")
+              try expression.accept(visitor: self)
+              print(")]")
+              if pattern === tuple.patterns.last {}
+              else { newLine() }
+            }
+          }
+          try expand(tuple: tuple)
+          decreaseIndent()
+          newLine()
+        }
+        
+        guard let expression = caseExpressionStack.last?.expression else { return }
+        guard let type = symbolDescription.type(for: rule) as? RuleType else { return }
+
+        if let tuple = associatedValue as? AstTuplePattern {
+          try expandTuple(tuple: tuple, expression: expression)
+        } else {
+          self.print("[")
+          try associatedValue.accept(visitor: self)
+          self.print(" ")
+          if let identifierPattern = rule.pattern as? AstIdentifierPattern, type.patternType is DatatypeType {
+            self.print("(\(identifierPattern.name)-x0 ")
+            try expression.accept(visitor: self)
+            self.print(")")
+          } else {
+            try expression.accept(visitor: self)
+          }
+          self.print("]")
+        }
+      }
+      
       caseTraversalStateStack.append(.binding)
       print("(let (")
-      try rule.pattern.accept(visitor: self)
+      if let associatedValue = rule.associatedValue {
+        try handleAssociatedValue(associatedValue)
+      } else {
+        guard let type = symbolDescription.type(for: rule) as? RuleType else { return }
+        if type.patternType is DatatypeType {}
+        else {
+          try rule.pattern.accept(visitor: self)
+        }
+      }
       print(")")
       _ = caseTraversalStateStack.popLast()
     }
@@ -430,7 +488,27 @@ extension RacketCodeGenerator: CodeGenerator {
   }
 
   func visit(node: AstIdentifierPattern) throws {
-    print(node.name)
+    func handleRootPattern() throws {
+      guard let expression = caseExpressionStack.last?.expression else { return }
+      print("(\(node.name)? ")
+      try expression.accept(visitor: self)
+      print(")")
+    }
+    
+    func handleBinding() throws {
+      print(node.name)
+    }
+    
+    switch caseTraversalState {
+    case .rootPattern:
+      try handleRootPattern()
+    case .nestedPattern:
+      print(node.name)
+    case .binding:
+      try handleBinding()
+    case .none:
+      print(node.name)
+    }
   }
   
   func visit(node: AstWildcardPattern) throws {

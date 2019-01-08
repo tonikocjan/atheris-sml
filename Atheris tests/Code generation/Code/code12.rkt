@@ -5,7 +5,7 @@
 
 (define (toInt a)
   (cond 
-    [(ZERO? a) 0]
+    [(ZERO? a) (let () 0)]
     [(NEXT? a) (let ([i (NEXT-x0 a)]) (+ 1 (toInt i)))]
     ))
 toInt

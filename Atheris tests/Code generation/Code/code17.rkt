@@ -55,7 +55,7 @@ x11
 (define (isEven a)
   (define (toInt a)
     (cond 
-      [(ZERO? a) 0]
+      [(ZERO? a) (let () 0)]
       [(NEXT? a) (let ([b (NEXT-x0 a)]) (+ 1 (toInt b)))]
       ))
   toInt
@@ -82,7 +82,7 @@ x18
 x19
 (define (previous a)
   (cond 
-    [(ZERO? a) ZERO]
+    [(ZERO? a) (let () ZERO)]
     [(NEXT? a) (let ([prev (NEXT-x0 a)]) prev)]
     ))
 previous
@@ -92,12 +92,12 @@ x20
 x21
 (define (subtract a b)
   (cond 
-    [(ZERO? a) (cond 
-      [(ZERO? b) ZERO]
+    [(ZERO? a) (let () (cond 
+      [(ZERO? b) (let () ZERO)]
       [(NEXT? b) (let ([w0 (NEXT-x0 b)]) ZERO)]
-      )]
+      ))]
     [(NEXT? a) (let ([x (NEXT-x0 a)]) (cond 
-      [(ZERO? b) a]
+      [(ZERO? b) (let () a)]
       [(NEXT? b) (let ([y (NEXT-x0 b)]) (subtract x y))]
       ))]
     ))
