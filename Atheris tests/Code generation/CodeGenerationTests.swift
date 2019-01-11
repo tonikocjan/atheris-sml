@@ -231,6 +231,17 @@ case xss of
                 filepath: "code19.rkt")
   }
   
+  func testConstantExpressionPatternMatching() {
+    let code = """
+case 3 of
+  1 => "a"
+  | 2 => "b"
+  | 3 => "c";
+"""
+    performTest(code: code,
+                filepath: "code20.rkt")
+  }
+  
   func testDatatypeWithTypeConstructor() {
     // TODO: -
     let code = """

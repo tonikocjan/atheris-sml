@@ -556,7 +556,19 @@ extension RacketCodeGenerator: CodeGenerator {
   }
   
   func visit(node: AstConstantPattern) throws {
-    print(node.value)
+    switch caseTraversalState {
+    case .rootPattern:
+      guard let expression = caseExpressionStack.last?.expression else { return }
+      print("(equal? ")
+      try expression.accept(visitor: self)
+      print(" ")
+      print(node.value)
+      print(")")
+    case .binding:
+        break
+    case .nestedPattern, .none:
+      print(node.value)
+    }
   }
   
   func visit(node: AstTypedPattern) throws {
