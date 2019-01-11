@@ -110,17 +110,8 @@ val a = x::[y, z];
     performTest(code: code, filepath: "code10.rkt")
   }
   
-  func testNestedDatatypePatternMatching() {
+  func testNestedTuplePatternMatching() {
     let code = """
-val x = 10;
-val y = false;
-
-datatype D = X | Y;
-
-val z = case (x, Y) of
-  (10, X) => true
-  | (10, Y) => false;
-
 val e = case (true, (true, true)) of
   (true, (true, true)) => 0
   | (true, (true, false)) => 1
@@ -244,7 +235,7 @@ case 3 of
   
   func testRecursiveNestedTuplePatternMatching() {
     let code = """
-val y = ((false, true, [1, 2, 3]), false);
+val y = ((true, true, [1, 2, 3]), true);
 case y of
   ((true, true, hd::tl), true) => 1
   | ((true, false, hd::tl), false) => 2;
