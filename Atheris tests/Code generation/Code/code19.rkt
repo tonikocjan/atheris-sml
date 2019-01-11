@@ -6,7 +6,7 @@ x
   [(null? x)
    (let () 1)]
   [(and 
-    (> (length x) 3)
+    (> (length x) 2)
     (equal? (car x) 2)
     (equal? (car (cdr x)) 3)
     )
@@ -15,14 +15,14 @@ x
     [t (cdr (cdr (cdr x)))]
     ) 2)]
   [(and 
-    (> (length x) 2)
+    (not (empty? x))
     (equal? (car (cdr x)) 5)
     )
    (let (
     [h1 (car x)]
     [t (cdr (cdr x))]
     ) 3)]
-  [(> (length x) 1)
+  [(not (empty? x))
    (let (
     [h (car x)]
     [t (cdr x)]
@@ -41,7 +41,7 @@ xs
     )
    (let () 1)]
   [(and 
-    (> (length xs) 3)
+    (> (length xs) 2)
     (equal? (car xs) true)
     (equal? (car (cdr xs)) true)
     (equal? (car (cdr (cdr xs))) true)
@@ -50,7 +50,7 @@ xs
     [tl (cdr (cdr (cdr xs)))]
     ) 2)]
   [(and 
-    (> (length xs) 1)
+    (not (empty? xs))
     (equal? (car xs) false)
     )
    (let (
@@ -64,7 +64,7 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 1)
+    (not (empty? (cdr (cdr (car y)))))
     (equal? (car (cdr (cdr (car y)))) 4)
     (equal? (cdr y) true)
     )
@@ -74,7 +74,7 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 2)
+    (> (length (cdr (cdr (car y)))) 1)
     (equal? (car (cdr (cdr (car y)))) 2)
     (equal? (car (cdr (cdr (cdr (car y))))) 2)
     (equal? (cdr y) true)
@@ -85,7 +85,7 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 1)
+    (not (empty? (cdr (cdr (car y)))))
     (equal? (cdr y) true)
     )
    (let (
@@ -95,7 +95,7 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 2)
+    (not (empty? (cdr (cdr (car y)))))
     (equal? (car (cdr (cdr (cdr (car y))))) 10)
     (equal? (cdr y) false)
     )
@@ -106,7 +106,7 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 1)
+    (not (empty? (cdr (cdr (car y)))))
     (equal? (cdr y) false)
     )
    (let (
@@ -116,7 +116,7 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 1)
+    (not (empty? (cdr (cdr (car y)))))
     (equal? (cdr y) false)
     )
    (let (

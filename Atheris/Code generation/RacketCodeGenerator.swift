@@ -30,7 +30,6 @@ class RacketCodeGenerator {
   private var caseExpressionStack = [AstCaseExpression]()
   private var bindingCodeStack = [String]()
   private var caseTraversalStateStack = [CaseExpressionTraversalState]()
-  private var depthWidthCountersStack = [(width: Int, depth: Int)]()
   // each node in stack is used for single `AstCaseExpr
   // new nestedPatterns and counters are pushed for each nested `AstCaseExpr`
   private var nestedPatternsStack = [[(pattern: AstPattern, binding: String)]]()
@@ -426,25 +425,35 @@ extension RacketCodeGenerator: CodeGenerator {
     }
     
     func handleBinding(rule: AstRule) throws {
-
-      
       caseTraversalStateStack.append(.binding)
       print("(let (")
       if let associatedValue = rule.associatedValue {
-//        try handleAssociatedValue(associatedValue)
+        try handleAssociatedValue(associatedValue, rule: rule)
+        _ = nestedPatternsStack.popLast()
       } else {
         guard let type = symbolDescription.type(for: rule) as? RuleType else { return }
-        if type.patternType is DatatypeType {}
-        else {
-          guard let patterns = nestedPatternsStack.last else { return }
+        if type.patternType is DatatypeType {
+          _ = nestedPatternsStack.popLast()
+        } else {
           increaseIndent()
-          newLine()
+          var shouldPrintNewLine = true
+          
+          guard let patterns = nestedPatternsStack.last else { return }
           for (pattern, code) in patterns {
-            if pattern is AstConstantPattern { continue }
             bindingCodeStack.append(code)
+            self.buffer = ""
             try pattern.accept(visitor: self)
             _ = bindingCodeStack.popLast()
-            newLine()
+            if let buffer = self.buffer, !buffer.isEmpty {
+              self.buffer = nil
+              if shouldPrintNewLine {
+                newLine()
+                shouldPrintNewLine = false
+              }
+              print(buffer)
+              newLine()
+            }
+            self.buffer = nil
           }
           decreaseIndent()
           _ = nestedPatternsStack.popLast()
@@ -511,20 +520,9 @@ extension RacketCodeGenerator: CodeGenerator {
       for _ in node.patterns.dropLast() { print(")") }
     }
     
-    func handleRootPattern() throws {
-      guard let expression = caseExpressionStack.last?.expression else { return }
-      print("(equal? ")
-      caseTraversalStateStack.append(.nestedPattern)
-      try expandTuple()
-      _ = caseTraversalStateStack.popLast()
-      print(" ")
-      try expression.accept(visitor: self)
-      print(")")
-    }
-    
     switch caseTraversalState {
     case .rootPattern:
-      try handleRootPattern()
+      break
     case .nestedPattern:
       try expandTuple()
     case .binding:
@@ -558,12 +556,10 @@ extension RacketCodeGenerator: CodeGenerator {
   func visit(node: AstEmptyListPattern) throws {
     switch caseTraversalState {
     case .rootPattern:
-      guard let expression = caseExpressionStack.last?.expression else { return }
-      print("(empty? ")
-      try expression.accept(visitor: self)
-      print(")")
+      guard let code = bindingCodeStack.last else { return }
+      print("(null? \(code))")
     case .nestedPattern:
-      print("todo")
+      throw NSError()
     case .binding:
       break
     case .none:
@@ -574,47 +570,24 @@ extension RacketCodeGenerator: CodeGenerator {
   func visit(node: AstListPattern) throws {
     func handleRootPatternState() throws {
       func elementsCount() -> Int {
-        var size = 0
+        var index = 0
+        var result = -1
         var pattern: AstPattern = node
         while let list = pattern as? AstListPattern {
-          size += 1
+          if list.head is AstIdentifierPattern { result = index }
+          index += 1
           pattern = list.tail
         }
-        return size - 1
+        return result > -1 ? result : index - 1
       }
       
-      func conditionsCount() -> Int {
-        var count = 0
-        var pattern: AstPattern = node
-        while let list = pattern as? AstListPattern {
-          count += list.head is AstIdentifierPattern ? 0 : 1
-          pattern = list.tail
-        }
-        return count
+      guard let code = bindingCodeStack.last else { return }
+      let count = elementsCount()
+      if count == 0 {
+        print("(not (empty? \(code)))")
+      } else {
+        print("(> (length \(code)) \(count))")
       }
-      
-      guard let expression = caseExpressionStack.last else { return }
-      let size = elementsCount()
-      let conditions = conditionsCount()
-      
-      for _ in 0..<conditions { print("(and ") }
-      
-      print("(> (length ")
-      try expression.expression.accept(visitor: self)
-      print(") \(size)) ")
-      
-      if node.head is AstIdentifierPattern {}
-      else {
-        print("(equal? (car ")
-        try expression.expression.accept(visitor: self)
-        print(") ")
-        caseTraversalStateStack.append(.nestedPattern)
-        try node.head.accept(visitor: self)
-        _ = caseTraversalStateStack.popLast()
-        print(")")
-      }
-      
-      for _ in 0..<conditions { print(")") }
     }
     
     func handleBindingState() throws {
@@ -689,8 +662,8 @@ private extension RacketCodeGenerator {
   
   func newLine() {
     guard configuration.pretty else { return }
-    outputStream.printLine("")
-    outputStream.print(indentation())
+    print("\n")
+    print(indentation())
   }
   
   func increaseIndent() { indent += configuration.indentation }
@@ -733,10 +706,20 @@ private extension RacketCodeGenerator {
     
     switch pattern {
     case is AstTuplePattern:
-      depthWidthCountersStack.append((width: 0, depth: 0))
       try resolveTuplePattern(pattern: pattern as! AstTuplePattern,
                               expressionCode: expressionCode)
-      _ = depthWidthCountersStack.popLast()
+    case is AstConstantPattern:
+      try resolveConstantPattern(pattern: pattern as! AstConstantPattern,
+                                 expressionCode: expressionCode)
+    case is AstListPattern:
+      try resolveListPattern(pattern: pattern as! AstListPattern,
+                             expressionCode: expressionCode)
+    case is AstEmptyListPattern:
+      try resolveEmptyListPattern(pattern: pattern as! AstEmptyListPattern,
+                                  expressionCode: expressionCode)
+    case is AstIdentifierPattern:
+      try resolveIdentifierPattern(pattern: pattern as! AstIdentifierPattern,
+                                   expressionCode: expressionCode)
     default:
       break
     }
@@ -748,11 +731,11 @@ private extension RacketCodeGenerator {
       for _ in 0..<index { code += "(cdr " }
       code += expressionCode
       for _ in 0..<index { code += ")" }
+      if index + 1 == pattern.patterns.count {
+        return code
+      }
       return "(car \(code))"
     }
-    
-    guard let (width, depth) = depthWidthCountersStack.last else { return }
-    
     
     for (index, subpattern) in pattern.patterns.enumerated() {
       let indexed = wrapExpression(index: index)
@@ -762,9 +745,11 @@ private extension RacketCodeGenerator {
         try resolveTuplePattern(pattern: subpattern as! AstTuplePattern,
                                 expressionCode: indexed)
       case is AstEmptyListPattern:
-        pushPattern(subpattern, binding: indexed)
+        try resolveEmptyListPattern(pattern: subpattern as! AstEmptyListPattern,
+                                    expressionCode: indexed)
       case is AstListPattern:
-        pushPattern(subpattern, binding: indexed)
+        try resolveListPattern(pattern: subpattern as! AstListPattern,
+                               expressionCode: indexed)
       case is AstConstantPattern:
         pushPattern(subpattern, binding: indexed)
       case is AstIdentifierPattern:
@@ -772,8 +757,60 @@ private extension RacketCodeGenerator {
       default:
         break
       }
-      depthWidthCountersStack.append((width: width + 1, depth: depth))
     }
+  }
+  
+  func resolveConstantPattern(pattern: AstConstantPattern, expressionCode: String) throws {
+    pushPattern(pattern, binding: expressionCode)
+  }
+  
+  func resolveListPattern(pattern: AstListPattern, expressionCode: String) throws {
+    func wrapExpression(index: Int, car: Bool) -> String {
+      var code = ""
+      for _ in 0..<index { code += "(cdr " }
+      code += expressionCode
+      for _ in 0..<index { code += ")" }
+      if car {
+        return "(car \(code))"
+      }
+      return code
+    }
+    
+    pushPattern(pattern, binding: expressionCode)
+    
+    var pattern: AstPattern = pattern
+    var index = 0
+    while let list = pattern as? AstListPattern {
+      let wrapped = wrapExpression(index: index, car: true)
+      
+      switch list.head {
+      case is AstListPattern:
+        try resolveListPattern(pattern: list.head as! AstListPattern,
+                               expressionCode: wrapped)
+      case is AstTuplePattern:
+        try resolveTuplePattern(pattern: list.head as! AstTuplePattern,
+                                expressionCode: wrapped)
+      case is AstConstantPattern:
+        pushPattern(list.head, binding: wrapped)
+      case is AstEmptyListPattern:
+        pushPattern(list.head, binding: wrapped)
+      default:
+        break
+      }
+      index += 1
+      pattern = list.tail
+    }
+    if let empty = pattern as? AstEmptyListPattern {
+      pushPattern(empty, binding: wrapExpression(index: index, car: false))
+    }
+  }
+  
+  func resolveEmptyListPattern(pattern: AstEmptyListPattern, expressionCode: String) throws {
+    pushPattern(pattern, binding: expressionCode)
+  }
+  
+  func resolveIdentifierPattern(pattern: AstIdentifierPattern, expressionCode: String) throws {
+    pushPattern(pattern, binding: expressionCode)
   }
   
   func generateCode(for node: AstNode) throws -> String {
@@ -794,55 +831,55 @@ private extension RacketCodeGenerator {
     }
   }
   
-//  func handleAssociatedValue(_ associatedValue: AstPattern) throws {
-//    func expandTuple(tuple: AstTuplePattern, expression: AstExpression) throws {
-//      var tuplePatternsCounter = 0
-//      func expand(tuple: AstTuplePattern) throws {
-//        increaseIndent()
-//        newLine()
-//        for pattern in tuple.patterns {
-//          if let subPattern = pattern as? AstTuplePattern {
-//            try expandTuple(tuple: subPattern, expression: expression)
-//            continue
-//          }
-//
-//          print("[")
-//          try pattern.accept(visitor: self)
-//          print(" (")
-//          try rule.pattern.accept(visitor: self)
-//          print("-x\(tuplePatternsCounter)")
-//          tuplePatternsCounter += 1
-//          print(" ")
-//          try expression.accept(visitor: self)
-//          print(")]")
-//          if pattern === tuple.patterns.last {}
-//          else { newLine() }
-//        }
-//      }
-//      try expand(tuple: tuple)
-//      decreaseIndent()
-//      newLine()
-//    }
-//
-//    guard let expression = caseExpressionStack.last?.expression else { return }
-//    guard let type = symbolDescription.type(for: rule) as? RuleType else { return }
-//
-//    if let tuple = associatedValue as? AstTuplePattern {
-//      try expandTuple(tuple: tuple, expression: expression)
-//    } else {
-//      self.print("[")
-//      try associatedValue.accept(visitor: self)
-//      self.print(" ")
-//      if let identifierPattern = rule.pattern as? AstIdentifierPattern, type.patternType is DatatypeType {
-//        self.print("(\(identifierPattern.name)-x0 ")
-//        try expression.accept(visitor: self)
-//        self.print(")")
-//      } else {
-//        try expression.accept(visitor: self)
-//      }
-//      self.print("]")
-//    }
-//  }
+  func handleAssociatedValue(_ associatedValue: AstPattern, rule: AstRule) throws {
+    func expandTuple(tuple: AstTuplePattern, expression: AstExpression) throws {
+      var tuplePatternsCounter = 0
+      func expand(tuple: AstTuplePattern) throws {
+        increaseIndent()
+        newLine()
+        for pattern in tuple.patterns {
+          if let subPattern = pattern as? AstTuplePattern {
+            try expandTuple(tuple: subPattern, expression: expression)
+            continue
+          }
+          
+          print("[")
+          try pattern.accept(visitor: self)
+          print(" (")
+          try rule.pattern.accept(visitor: self)
+          print("-x\(tuplePatternsCounter)")
+          tuplePatternsCounter += 1
+          print(" ")
+          try expression.accept(visitor: self)
+          print(")]")
+          if pattern === tuple.patterns.last {}
+          else { newLine() }
+        }
+      }
+      try expand(tuple: tuple)
+      decreaseIndent()
+      newLine()
+    }
+    
+    guard let expression = caseExpressionStack.last?.expression else { return }
+    guard let type = symbolDescription.type(for: rule) as? RuleType else { return }
+    
+    if let tuple = associatedValue as? AstTuplePattern {
+      try expandTuple(tuple: tuple, expression: expression)
+    } else {
+      self.print("[")
+      try associatedValue.accept(visitor: self)
+      self.print(" ")
+      if let identifierPattern = rule.pattern as? AstIdentifierPattern, type.patternType is DatatypeType {
+        self.print("(\(identifierPattern.name)-x0 ")
+        try expression.accept(visitor: self)
+        self.print(")")
+      } else {
+        try expression.accept(visitor: self)
+      }
+      self.print("]")
+    }
+  }
 }
 
 private extension RacketCodeGenerator {
