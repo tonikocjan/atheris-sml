@@ -90,14 +90,13 @@ extension NameChecker: AstVisitor {
   }
   
   func visit(node: AstNameExpression) throws {
-    switch node.name {
-    case "hd", "tl":
-      return
-    default:
-      break
-    }
-    
     guard let binding = symbolTable.findBinding(name: node.name) else {
+      switch node.name {
+      case "hd", "tl":
+        return
+      default:
+        break
+      }
       throw Error.bindingNotFound(node.name, node.position)
     }
     symbolDescription.bindNode(node, binding: binding)
