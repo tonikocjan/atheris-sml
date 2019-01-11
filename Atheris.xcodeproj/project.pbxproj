@@ -176,6 +176,7 @@
 		37E5FCB721E4DB280091317C /* code19.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCB621E4DB280091317C /* code19.rkt */; };
 		37E5FCB921E88E160091317C /* code20.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCB821E88E160091317C /* code20.rkt */; };
 		37E5FCBB21E8B9660091317C /* code21.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCBA21E8B9650091317C /* code21.rkt */; };
+		37E5FCBD21E9397E0091317C /* code22.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCBC21E9397E0091317C /* code22.rkt */; };
 		37E9869C21C3CC7C00D68CA4 /* AstRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E9869B21C3CC7C00D68CA4 /* AstRule.swift */; };
 		37E9869D21C3CC7C00D68CA4 /* AstRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E9869B21C3CC7C00D68CA4 /* AstRule.swift */; };
 		37E9869F21C3CC9C00D68CA4 /* AstCaseExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E9869E21C3CC9C00D68CA4 /* AstCaseExpression.swift */; };
@@ -325,6 +326,7 @@
 		37E5FCB621E4DB280091317C /* code19.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code19.rkt; sourceTree = "<group>"; };
 		37E5FCB821E88E160091317C /* code20.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code20.rkt; sourceTree = "<group>"; };
 		37E5FCBA21E8B9650091317C /* code21.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code21.rkt; sourceTree = "<group>"; };
+		37E5FCBC21E9397E0091317C /* code22.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code22.rkt; sourceTree = "<group>"; };
 		37E9869B21C3CC7C00D68CA4 /* AstRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstRule.swift; sourceTree = "<group>"; };
 		37E9869E21C3CC9C00D68CA4 /* AstCaseExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstCaseExpression.swift; sourceTree = "<group>"; };
 		37E986A121C3CF1400D68CA4 /* AstConstantPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstConstantPattern.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				37E5FCB621E4DB280091317C /* code19.rkt */,
 				37E5FCB821E88E160091317C /* code20.rkt */,
 				37E5FCBA21E8B9650091317C /* code21.rkt */,
+				37E5FCBC21E9397E0091317C /* code22.rkt */,
 				37C4125E21DE3D860039A618 /* sml1.sml */,
 				37C4126021DE3D900039A618 /* sml2.sml */,
 			);
@@ -827,6 +830,7 @@
 				37917CD621D2D43A009B6730 /* code13.rkt in Resources */,
 				3745061121B556700051E1E9 /* ast3 in Resources */,
 				37FFBFB021D626F500BFFF9A /* ast18 in Resources */,
+				37E5FCBD21E9397E0091317C /* code22.rkt in Resources */,
 				37E5FCB921E88E160091317C /* code20.rkt in Resources */,
 				375FF4F52160C0EF0088F7A3 /* file_parser_test_1 in Resources */,
 				3790FECA21B7A95B005CA8D5 /* ast7 in Resources */,

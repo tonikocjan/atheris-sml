@@ -5,8 +5,10 @@
 
 (define (toInt a)
   (cond 
-    [(ZERO? a) (let () 0)]
-    [(NEXT? a) (let ([i (NEXT-x0 a)]) (+ 1 (toInt i)))]
+    [(ZERO? a)
+     (let () 0)]
+    [(NEXT? a)
+     (let ([i (NEXT-x0 a)]) (+ 1 (toInt i)))]
     ))
 toInt
 (define x1 (toInt (ZERO 0)))
@@ -19,8 +21,10 @@ x3
 x4
 (define (add a b)
   (cond 
-    [(ZERO? b) (let () a)]
-    [(NEXT? b) (let ([i (NEXT-x0 b)]) (add (NEXT a) i))]
+    [(ZERO? b)
+     (let () a)]
+    [(NEXT? b)
+     (let ([i (NEXT-x0 b)]) (add (NEXT a) i))]
     ))
 add
 (define two (NEXT (NEXT (ZERO 0))))
@@ -44,8 +48,10 @@ x9
 
 (define (min tree)
   (cond 
-    [(LEAF? tree) (let ([x (LEAF-x0 tree)]) x)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([x (LEAF-x0 tree)]) x)]
+    [(NODE? tree)
+     (let (
       [x (NODE-x0 tree)]
       [left (NODE-x1 tree)]
       [right (NODE-x2 tree)]
@@ -68,8 +74,10 @@ x10
 x11
 (define (max tree)
   (cond 
-    [(LEAF? tree) (let ([x (LEAF-x0 tree)]) x)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([x (LEAF-x0 tree)]) x)]
+    [(NODE? tree)
+     (let (
       [x (NODE-x0 tree)]
       [left (NODE-x1 tree)]
       [right (NODE-x2 tree)]
@@ -90,8 +98,10 @@ x12
 x13
 (define (contains tree x)
   (cond 
-    [(LEAF? tree) (let ([a (LEAF-x0 tree)]) (equal? a x))]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([a (LEAF-x0 tree)]) (equal? a x))]
+    [(NODE? tree)
+     (let (
       [a (NODE-x0 tree)]
       [left (NODE-x1 tree)]
       [right (NODE-x2 tree)]
@@ -110,8 +120,10 @@ x17
 x18
 (define (countLeaves tree)
   (cond 
-    [(LEAF? tree) (let ([w0 (LEAF-x0 tree)]) 1)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([w0 (LEAF-x0 tree)]) 1)]
+    [(NODE? tree)
+     (let (
       [w1 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
       [r (NODE-x2 tree)]
@@ -122,8 +134,10 @@ countLeaves
 x19
 (define (countBranches tree)
   (cond 
-    [(LEAF? tree) (let ([w2 (LEAF-x0 tree)]) 0)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([w2 (LEAF-x0 tree)]) 0)]
+    [(NODE? tree)
+     (let (
       [w3 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
       [r (NODE-x2 tree)]
@@ -134,8 +148,10 @@ countBranches
 x20
 (define (height tree)
   (cond 
-    [(LEAF? tree) (let ([w4 (LEAF-x0 tree)]) 1)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([w4 (LEAF-x0 tree)]) 1)]
+    [(NODE? tree)
+     (let (
       [w5 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
       [r (NODE-x2 tree)]
@@ -176,8 +192,10 @@ append_lst
 x23
 (define (toList tree)
   (cond 
-    [(LEAF? tree) (let ([i (LEAF-x0 tree)]) (list i))]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([i (LEAF-x0 tree)]) (list i))]
+    [(NODE? tree)
+     (let (
       [i (NODE-x0 tree)]
       [l (NODE-x1 tree)]
       [r (NODE-x2 tree)]
@@ -188,8 +206,10 @@ toList
 x24
 (define (isBalanced tree)
   (cond 
-    [(LEAF? tree) (let ([w6 (LEAF-x0 tree)]) true)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([w6 (LEAF-x0 tree)]) true)]
+    [(NODE? tree)
+     (let (
       [w7 (NODE-x0 tree)]
       [l (NODE-x1 tree)]
       [r (NODE-x2 tree)]
@@ -207,8 +227,10 @@ x27
 (define (isBST tree)
   (define (eval tree)
     (cond 
-      [(LEAF? tree) (let ([x (LEAF-x0 tree)]) x)]
-      [(NODE? tree) (let (
+      [(LEAF? tree)
+       (let ([x (LEAF-x0 tree)]) x)]
+      [(NODE? tree)
+       (let (
         [x (NODE-x0 tree)]
         [w8 (NODE-x1 tree)]
         [w9 (NODE-x2 tree)]
@@ -216,8 +238,10 @@ x27
       ))
   eval
   (cond 
-    [(LEAF? tree) (let ([w10 (LEAF-x0 tree)]) true)]
-    [(NODE? tree) (let (
+    [(LEAF? tree)
+     (let ([w10 (LEAF-x0 tree)]) true)]
+    [(NODE? tree)
+     (let (
       [x (NODE-x0 tree)]
       [l (NODE-x1 tree)]
       [r (NODE-x2 tree)]

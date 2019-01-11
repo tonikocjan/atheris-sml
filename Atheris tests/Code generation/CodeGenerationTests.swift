@@ -233,6 +233,22 @@ case y of
                 filepath: "code21.rkt")
   }
   
+  func testNestedCaseExpression() {
+    let code = """
+val x = (true, false);
+val y = ([1, 2], [(true, false), (true, true)]);
+case 1 of
+  1 => (case x of
+    (true, true) => 1
+    | (true, false) => (case y of
+      (1::tl1, (true, false)::(true, true)::[]) => 2
+      | (1::tl1, (true, false)::(true, false)::tl2) => 3))
+  | 2 => 4;
+"""
+    performTest(code: code,
+                filepath: "code22.rkt")
+  }
+  
   func testHugeExample1() {
     performTest(code: loadSMLCode("sml1.sml"),
                 filepath: "code16.rkt")
