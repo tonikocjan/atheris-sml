@@ -242,6 +242,17 @@ case 3 of
                 filepath: "code20.rkt")
   }
   
+  func testRecursiveNestedTuplePatternMatching() {
+    let code = """
+val y = ((false, true, [1, 2, 3]), false);
+case y of
+  ((true, true, hd::tl), true) => 1
+  | ((true, false, hd::tl), false) => 2;
+"""
+    performTest(code: code,
+                filepath: "code21.rkt")
+  }
+  
   func testDatatypeWithTypeConstructor() {
     // TODO: -
     let code = """
