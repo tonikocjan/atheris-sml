@@ -181,42 +181,29 @@ val d = f (Y, false);
     performTest(code: code, filepath: "code15.rkt")
   }
   
-  func testHugeExample1() {
-    performTest(code: loadSMLCode("sml1.sml"),
-                filepath: "code16.rkt")
-  }
-  
-  func testHugeExample2() {
-    performTest(code: loadSMLCode("sml2.sml"),
-                filepath: "code17.rkt")
-  }
-  
-  func testListPatternMatching() {
+  func testRecursiveListPatternMatching() {
     let code = """
 val x = [2, 3, 4, 5];
 case x of
   [] => 1
-  | h1::h2::h3::t => 2
-  | h1::h2::t => 3
+  | 2::3::h3::t => 2
+  | h1::5::t => 3
   | h::t => 4;
-"""
-    performTest(code: code,
-                filepath: "code18.rkt")
-  }
-  
-  func testRecursiveListPatternMatching() {
-    let code = """
-val xs = [false, false, true];
 
+val xs = [true, true, true, false];
 case xs of
-  true::tl => 1
-  | false::tl => 2;
+  true::true::true::[] => 1
+  | true::true::true::tl => 2
+  | false::tl => 3;
 
-val xss = [(true, 20, true), (true, 20, false), (false, 30, false)];
-case xss of
-  (true, 20, true)::tl => 1
-  | (false, 10, true)::tl => 2
-  | (true, 12, true)::tl => 3;
+val y = ((true, true, [1, 2, 3]), true);
+case y of
+  ((true, true, 4::tl), true) => 1
+  | ((true, true, 2::2::tl), true) => 2
+  | ((true, true, hd::tl), true) => 3
+  | ((true, true, hd::10::tl), false) => 4
+  | ((true, true, hd::tl), false) => 5
+  | ((true, true, hd::tl), false) => 6;
 """
     performTest(code: code,
                 filepath: "code19.rkt")
@@ -237,11 +224,23 @@ case 3 of
     let code = """
 val y = ((true, true, [1, 2, 3]), true);
 case y of
-  ((true, true, hd::tl), true) => 1
-  | ((true, false, hd::tl), false) => 2;
+  ((true, true, 1::2::[]), true) => 1
+  | ((true, true, hd::2::tl), true) => 2
+  | ((true, true, hd::tl), true) => 3
+  | ((true, false, hd::tl), false) => 4;
 """
     performTest(code: code,
                 filepath: "code21.rkt")
+  }
+  
+  func testHugeExample1() {
+    performTest(code: loadSMLCode("sml1.sml"),
+                filepath: "code16.rkt")
+  }
+  
+  func testHugeExample2() {
+    performTest(code: loadSMLCode("sml2.sml"),
+                filepath: "code17.rkt")
   }
   
   func testDatatypeWithTypeConstructor() {

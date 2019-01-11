@@ -6,22 +6,43 @@ y
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) true)
-    (> (length (cdr (cdr (car y)))) 0) 
+    (> (length (cdr (cdr (car y)))) 1)
+    (equal? (car (cdr (cdr (car y)))) 1)
+    (equal? (car (cdr (cdr (cdr (car y))))) 2)
+    (null? (cdr (cdr (cdr (cdr (car y))))))
+    (equal? (cdr y) true)
+    )
+   (let () 1)]
+  [(and 
+    (equal? (car (car y)) true)
+    (equal? (car (cdr (car y))) true)
+    (> (length (cdr (cdr (car y)))) 2)
+    (equal? (car (cdr (cdr (cdr (car y))))) 2)
+    (equal? (cdr y) true)
+    )
+   (let (
+    [hd (car (cdr (cdr (car y))))]
+    [tl (cdr (cdr (cdr (cdr (car y)))))]
+    ) 2)]
+  [(and 
+    (equal? (car (car y)) true)
+    (equal? (car (cdr (car y))) true)
+    (> (length (cdr (cdr (car y)))) 1)
     (equal? (cdr y) true)
     )
    (let (
     [hd (car (cdr (cdr (car y))))]
     [tl (cdr (cdr (cdr (car y))))]
-    ) 1)]
+    ) 3)]
   [(and 
     (equal? (car (car y)) true)
     (equal? (car (cdr (car y))) false)
-    (> (length (cdr (cdr (car y)))) 0) 
+    (> (length (cdr (cdr (car y)))) 1)
     (equal? (cdr y) false)
     )
    (let (
     [hd (car (cdr (cdr (car y))))]
     [tl (cdr (cdr (cdr (car y))))]
-    ) 2)]
+    ) 4)]
   ))
 x1
