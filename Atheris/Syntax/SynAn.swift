@@ -103,7 +103,7 @@ private extension SynAn {
       } else {
         resultType = nil
       }
-//      guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
+      //      guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
       
       let body = try parseFunBody()
       cases.append(AstFunBinding.Case(parameter: parameter, body: body, resultType: resultType))
@@ -348,40 +348,61 @@ private extension SynAn {
   }
   
   func parseType_(type: AstType) throws -> AstType {
+//    guard symbol.token == .identifier else { return type }
+//    switch symbol.lexeme {
+//    case "*":
+//      return type
+//    default:
+//      let identifier = try parseIdentifierPattern()
+//      let typeName = AstTypeConstructor(position: type.position + identifier.position,
+//                                        name: identifier.name,
+//                                        types: [type])
+//      return try parseAtomType_(type: typeName)
+    return type
+  }
+  
+  func parseAtomType() throws -> AstType {
+    let type = try parseAtomType2()
+    return try parseAtomType_(type: type)
+  }
+  
+  func parseAtomType_(type: AstType) throws -> AstType {
     guard expecting("*") else { return type }
     var types = [type]
     while expecting("*") {
       nextSymbol()
-      let newType = try parseAtomType()
+      let newType = try parseAtomType2()
       types.append(newType)
     }
     return AstTupleType(position: type.position + types.last!.position,
                         types: types)
   }
   
-  func parseAtomType() throws -> AstType {
+  func parseAtomType2() throws -> AstType {
     switch symbol.token {
     case .identifier:
       switch symbol.lexeme {
       case "'", "''":
         let anonymousType = try parseAnonymousTypeBinding()
-        return AstTypeName(position: anonymousType.position,
-                           name: anonymousType.name)
+        let typeName = AstTypeName(position: anonymousType.position,
+                                   name: anonymousType.name)
+        return typeName
       default:
         let currentSymbol = symbol
         nextSymbol()
-        return AstTypeName(position: currentSymbol.position,
-                           name: currentSymbol.lexeme)
+        let typeName = AstTypeName(position: currentSymbol.position,
+                                   name: currentSymbol.lexeme)
+        return typeName
       }
     case .leftParent:
-      return try parseTupleType()
+      let tuple = try parseTupleType()
+      return tuple
     default:
       throw reportError("failed to parse type", symbol.position)
     }
   }
   
-  func parseTupleType() throws ->
-    AstTupleType {
+  func parseTupleType() throws -> AstTupleType {
     guard expecting(.leftParent) else { throw reportError("expected `(`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
@@ -394,14 +415,14 @@ private extension SynAn {
   }
   
   func parseStarSeparatedTypes() throws -> [AstType] {
-    let type = try parseAtomType()
+    let type = try parseAtomType2()
     return try parseStarSeparatedTypes_(type: type)
   }
   
   func parseStarSeparatedTypes_(type: AstType) throws -> [AstType] {
     guard expecting(.identifier), symbol.lexeme == "*" else { return [type] }
     nextSymbol()
-    let newType = try parseAtomType()
+    let newType = try parseAtomType2()
     return [type] + (try parseStarSeparatedTypes_(type: newType))
   }
 }
@@ -684,7 +705,7 @@ private extension SynAn {
   func parsePostfixExpression() throws -> AstExpression {
     return try parsePostfixExpression_(expression: try parseAppendExpression())
   }
-
+  
   func parsePostfixExpression_(expression: AstExpression) throws -> AstExpression {
     func parseFunction() throws -> AstExpression {
       let argument = try parseAtomExpression()

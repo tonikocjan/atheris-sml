@@ -18,6 +18,7 @@ protocol AstVisitor {
   func visit(node: AstTypeBinding) throws
   func visit(node: AstAtomType) throws
   func visit(node: AstTypeName) throws
+  func visit(node: AstTypeConstructor) throws
   func visit(node: AstTupleType) throws
   func visit(node: AstConstantExpression) throws
   func visit(node: AstNameExpression) throws
@@ -55,6 +56,7 @@ extension AstVisitor {
   func visit(node: AstTypeBinding) throws {}
   func visit(node: AstAtomType) throws {}
   func visit(node: AstTypeName) throws {}
+  func visit(node: AstTypeConstructor) throws {}
   func visit(node: AstTupleType) throws {}
   func visit(node: AstConstantExpression) throws {}
   func visit(node: AstNameExpression) throws {}

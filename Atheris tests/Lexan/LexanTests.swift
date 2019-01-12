@@ -177,13 +177,13 @@ val x = 20.15;
     XCTAssertEqual(TokenType.identifier, generateSymbols("abc_")[0].token)
 
     XCTAssertEqual(TokenType.identifier, generateSymbols("a'a").first?.token)
-    XCTAssertEqual("a'a", generateSymbols("a").first?.lexeme)
+    XCTAssertEqual("a'a", generateSymbols("a'a").first?.lexeme)
 
     XCTAssertEqual(TokenType.identifier, generateSymbols("#&#?@").first?.token)
     XCTAssertEqual("#&#?@", generateSymbols("#&#?@").first?.lexeme)
 
     XCTAssertEqual(TokenType.identifier, generateSymbols("!%&$#+-/:<=>?@\\~'^|*").first?.token)
-    XCTAssertEqual("!%&$#+-/:<=>?@\\~‘^|*", generateSymbols("!%&$#+-/:<=>?@\\~'^|*").first?.lexeme)
+    XCTAssertEqual("!%&$#+-/:<=>?@\\~'^|*", generateSymbols("!%&$#+-/:<=>?@\\~'^|*").first?.lexeme)
 
     XCTAssertEqual(3, generateSymbols("ident@#").count)
 

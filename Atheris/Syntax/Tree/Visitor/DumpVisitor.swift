@@ -112,6 +112,15 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
+  func visit(node: AstTypeConstructor) throws {
+    print("AstSpecificTypeName", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    print("Name: " + node.name)
+    for type in node.types { try type.accept(visitor: self) }
+    decreaseIndent()
+  }
+  
   func visit(node: AstTupleType) throws {
     print("AstTupleType", node.position)
     increaseIndent()

@@ -121,8 +121,8 @@
 		3761650A21553D2A0058BD03 /* LexicalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */; };
 		3761650B21553D2A0058BD03 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650821553D2A0058BD03 /* Symbol.swift */; };
 		3761650C21553D2A0058BD03 /* TokenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761650921553D2A0058BD03 /* TokenType.swift */; };
-		37805BF021EA1ADC00F7A7E2 /* AstSpecificTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37805BEF21EA1ADC00F7A7E2 /* AstSpecificTypeName.swift */; };
-		37805BF121EA1ADC00F7A7E2 /* AstSpecificTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37805BEF21EA1ADC00F7A7E2 /* AstSpecificTypeName.swift */; };
+		37805BF021EA1ADC00F7A7E2 /* AstTypeConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37805BEF21EA1ADC00F7A7E2 /* AstTypeConstructor.swift */; };
+		37805BF121EA1ADC00F7A7E2 /* AstTypeConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37805BEF21EA1ADC00F7A7E2 /* AstTypeConstructor.swift */; };
 		378EB81E21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */; };
 		378EB81F21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */; };
 		378EB82121B8FA0700E576E6 /* ast9 in Resources */ = {isa = PBXBuildFile; fileRef = 378EB82021B8FA0700E576E6 /* ast9 */; };
@@ -293,7 +293,7 @@
 		3761650721553D2A0058BD03 /* LexicalAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LexicalAnalyzer.swift; path = Lexan/LexicalAnalyzer.swift; sourceTree = "<group>"; };
 		3761650821553D2A0058BD03 /* Symbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Symbol.swift; path = Lexan/Symbol.swift; sourceTree = "<group>"; };
 		3761650921553D2A0058BD03 /* TokenType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenType.swift; path = Lexan/TokenType.swift; sourceTree = "<group>"; };
-		37805BEF21EA1ADC00F7A7E2 /* AstSpecificTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstSpecificTypeName.swift; sourceTree = "<group>"; };
+		37805BEF21EA1ADC00F7A7E2 /* AstTypeConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstTypeConstructor.swift; sourceTree = "<group>"; };
 		378EB81D21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstAnonymousFunctionCall.swift; sourceTree = "<group>"; };
 		378EB82021B8FA0700E576E6 /* ast9 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast9; sourceTree = "<group>"; };
 		378EB82221B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstAnonymousFunctionBinding.swift; sourceTree = "<group>"; };
@@ -659,7 +659,7 @@
 				37F024B321B3F8B1006B868E /* AstAtomType.swift */,
 				37F024D321B424EE006B868E /* AstTypeName.swift */,
 				3745061521B562880051E1E9 /* AstTupleType.swift */,
-				37805BEF21EA1ADC00F7A7E2 /* AstSpecificTypeName.swift */,
+				37805BEF21EA1ADC00F7A7E2 /* AstTypeConstructor.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -903,7 +903,7 @@
 				374505DC21B510020051E1E9 /* main.swift in Sources */,
 				374505D921B50FFE0051E1E9 /* AstNode.swift in Sources */,
 				374505DA21B50FFE0051E1E9 /* SyntaxParser.swift in Sources */,
-				37805BF121EA1ADC00F7A7E2 /* AstSpecificTypeName.swift in Sources */,
+				37805BF121EA1ADC00F7A7E2 /* AstTypeConstructor.swift in Sources */,
 				37C4126621DE54F90039A618 /* AstEmptyListPattern.swift in Sources */,
 				37C4126921DE57DA0039A618 /* AstListPattern.swift in Sources */,
 				374505DB21B50FFE0051E1E9 /* SynAn.swift in Sources */,
@@ -966,7 +966,7 @@
 				374505FD21B53C870051E1E9 /* AtomType.swift in Sources */,
 				3745064A21B6DDC00051E1E9 /* Executor.swift in Sources */,
 				374505E221B5183D0051E1E9 /* SymbolTableProtocol.swift in Sources */,
-				37805BF021EA1ADC00F7A7E2 /* AstSpecificTypeName.swift in Sources */,
+				37805BF021EA1ADC00F7A7E2 /* AstTypeConstructor.swift in Sources */,
 				37F024CF21B41697006B868E /* AstRecordPattern.swift in Sources */,
 				3745060921B5449C0051E1E9 /* AbstractDummyType.swift in Sources */,
 				37F024AD21B3F705006B868E /* AstValBinding.swift in Sources */,
