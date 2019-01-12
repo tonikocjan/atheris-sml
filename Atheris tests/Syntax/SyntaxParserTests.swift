@@ -190,6 +190,21 @@ val x = ~1;
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast19")
   }
+  
+  func testTypeConstructorParsing() {
+    let code = """
+val x: (string*string*int) = ("a", "b", 10);
+datatype (''a,'b) X =
+	A of ''a
+	| B of 'b;
+
+val a: (int, int) X = A 10;
+val b: (bool, int) X = A true;
+val c: int list list = [];
+val d: (int * int, int list list) X list = [];
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: false, expected: "ast20")
+  }
 }
 
 private extension SyntaxParserTests {

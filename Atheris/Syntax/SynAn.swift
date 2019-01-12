@@ -251,7 +251,7 @@ private extension SynAn {
     switch symbol.token {
     case .colon:
       nextSymbol()
-      let type = try parseAtomType()
+      let type = try parseType()
       return AstTypedPattern(position: pattern.position + type.position, pattern: pattern, type: type)
     case .identifier:
       switch symbol.lexeme {
@@ -343,22 +343,45 @@ private extension SynAn {
 
 private extension SynAn {
   func parseType() throws -> AstType {
-    let type = try parseAtomType()
-    return try parseType_(type: type)
+    switch symbol.token {
+    case .leftParent:
+      nextSymbol()
+      let types = try parseCommaSeparatedTypes()
+      guard expecting(.rightParent) else { throw reportError("expected `)`", symbol.position) }
+      nextSymbol()
+      return try parseType_(types: types)
+    default:
+      let type = try parseAtomType()
+      if expecting(.identifier) {
+        return try parseType_(types: [type])
+      }
+      return type
+    }
   }
   
-  func parseType_(type: AstType) throws -> AstType {
-//    guard symbol.token == .identifier else { return type }
-//    switch symbol.lexeme {
-//    case "*":
-//      return type
-//    default:
-//      let identifier = try parseIdentifierPattern()
-//      let typeName = AstTypeConstructor(position: type.position + identifier.position,
-//                                        name: identifier.name,
-//                                        types: [type])
-//      return try parseAtomType_(type: typeName)
-    return type
+  func parseCommaSeparatedTypes() throws -> [AstType] {
+    let type = try parseType()
+    return try parseCommaSeparatedTypes(type: type)
+  }
+  
+  func parseCommaSeparatedTypes(type: AstType) throws -> [AstType] {
+    guard expecting(.comma) else { return [type] }
+    nextSymbol()
+    let newType = try parseType()
+    return [type] + (try parseCommaSeparatedTypes(type: newType))
+  }
+  
+  func parseType_(types: [AstType]) throws -> AstType {
+    guard expecting(.identifier) else { return types.first! }
+    
+    let identifier = try parseIdentifierPattern()
+    let typeName = AstTypeConstructor(position: types.first!.position + identifier.position,
+                                      name: identifier.name,
+                                      types: types)
+    if expecting(.identifier) {
+      return try parseType_(types: [typeName])
+    }
+    return typeName
   }
   
   func parseAtomType() throws -> AstType {

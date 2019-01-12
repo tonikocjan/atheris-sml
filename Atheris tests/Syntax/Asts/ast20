@@ -1,0 +1,108 @@
+AstBindings [1:1, 9:46]:
+  AstValBinding [1:1, 1:43]:
+    AstTypedPattern [1:5, 1:26]:
+      AstIdentifierPattern [1:5, 1:6]:
+        Name: x
+      AstTupleType [1:9, 1:26]:
+        AstTypeName [1:9, 1:15]:
+          Name: string
+        AstTypeName [1:16, 1:22]:
+          Name: string
+        AstTypeName [1:23, 1:26]:
+          Name: int
+    AstTupleExpression [1:31, 1:43]:
+      AstConstantExpression [1:31, 1:34]:
+        Value: a
+        Atom type: string
+      AstConstantExpression [1:36, 1:39]:
+        Value: b
+        Atom type: string
+      AstConstantExpression [1:41, 1:43]:
+        Value: 10
+        Atom type: int
+  AstDatatypeBinding [2:1, 4:15]:
+    AstIdentifierPattern [2:19, 2:20]:
+      Name: X
+    AstTypeBinding [2:11, 2:14]:
+      AstIdentifierPattern [2:13, 2:14]:
+        Name: a
+      Type: ''
+    AstTypeBinding [2:15, 2:17]:
+      AstIdentifierPattern [2:16, 2:17]:
+        Name: b
+      Type: '
+    AstCase [3:6, 3:14]:
+      AstIdentifierPattern [3:6, 3:7]:
+        Name: A
+      AstTypeName [3:11, 3:14]:
+        -> defined at:  [2:11, 2:14]:
+        Name: ''a
+    AstCase [4:8, 4:15]:
+      AstIdentifierPattern [4:8, 4:9]:
+        Name: B
+      AstTypeName [4:13, 4:15]:
+        -> defined at:  [2:15, 2:17]:
+        Name: 'b
+  AstValBinding [6:1, 6:27]:
+    AstTypedPattern [6:5, 6:20]:
+      AstIdentifierPattern [6:5, 6:6]:
+        Name: a
+      AstTypeConstructor [6:9, 6:20]:
+        Name: X
+        AstTypeName [6:9, 6:12]:
+          Name: int
+        AstTypeName [6:14, 6:17]:
+          Name: int
+    AstFunctionCallExpression [6:23, 6:27]:
+      -> defined at:  [3:6, 3:14]:
+      Function name: A
+      AstConstantExpression [6:25, 6:27]:
+        Value: 10
+        Atom type: int
+  AstValBinding [7:1, 7:30]:
+    AstTypedPattern [7:5, 7:21]:
+      AstIdentifierPattern [7:5, 7:6]:
+        Name: b
+      AstTypeConstructor [7:9, 7:21]:
+        Name: X
+        AstTypeName [7:9, 7:13]:
+          Name: bool
+        AstTypeName [7:15, 7:18]:
+          Name: int
+    AstFunctionCallExpression [7:24, 7:30]:
+      -> defined at:  [3:6, 3:14]:
+      Function name: A
+      AstConstantExpression [7:26, 7:30]:
+        Value: true
+        Atom type: bool
+  AstValBinding [8:1, 8:26]:
+    AstTypedPattern [8:5, 8:21]:
+      AstIdentifierPattern [8:5, 8:6]:
+        Name: c
+      AstTypeConstructor [8:8, 8:21]:
+        Name: list
+        AstTypeConstructor [8:8, 8:16]:
+          Name: list
+          AstTypeName [8:8, 8:11]:
+            Name: int
+    AstListExpression [8:24, 8:26]:
+  AstValBinding [9:1, 9:46]:
+    AstTypedPattern [9:5, 9:41]:
+      AstIdentifierPattern [9:5, 9:6]:
+        Name: d
+      AstTypeConstructor [9:9, 9:41]:
+        Name: list
+        AstTypeConstructor [9:9, 9:36]:
+          Name: X
+          AstTupleType [9:9, 9:18]:
+            AstTypeName [9:9, 9:12]:
+              Name: int
+            AstTypeName [9:15, 9:18]:
+              Name: int
+          AstTypeConstructor [9:20, 9:33]:
+            Name: list
+            AstTypeConstructor [9:20, 9:28]:
+              Name: list
+              AstTypeName [9:20, 9:23]:
+                Name: int
+    AstListExpression [9:44, 9:46]:

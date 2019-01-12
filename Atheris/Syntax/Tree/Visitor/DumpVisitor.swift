@@ -113,7 +113,7 @@ extension DumpVisitor: AstVisitor {
   }
   
   func visit(node: AstTypeConstructor) throws {
-    print("AstSpecificTypeName", node.position)
+    print("AstTypeConstructor", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
     print("Name: " + node.name)

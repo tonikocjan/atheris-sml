@@ -10,11 +10,11 @@ AstBindings [1:1, 8:12]:
       AstTypeName [2:13, 2:16]:
         -> typed: int
         Name: int
-    AstCase [3:8, 3:35]:
+    AstCase [3:8, 3:34]:
       -> typed: [prevozno_sredstvo_t => Avto]
       AstIdentifierPattern [3:8, 3:12]:
         Name: Avto
-      AstTupleType [3:16, 3:35]:
+      AstTupleType [3:17, 3:34]:
         -> typed: (string * string * int)
         AstTypeName [3:17, 3:23]:
           -> typed: string
@@ -48,7 +48,7 @@ AstBindings [1:1, 8:12]:
       -> typed: [prevozno_sredstvo_t => Avto]
       Name: y
     AstFunctionCallExpression [7:9, 7:31]:
-      -> defined at:  [3:8, 3:35]:
+      -> defined at:  [3:8, 3:34]:
       -> typed: [prevozno_sredstvo_t => Avto]
       Function name: Avto
       AstTupleExpression [7:15, 7:31]:
