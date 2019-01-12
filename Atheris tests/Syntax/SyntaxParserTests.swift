@@ -228,7 +228,8 @@ private extension SyntaxParserTests {
   func astToString(_ ast: AstBindings?, symbolDescription: SymbolDescription?=nil) -> String {
     guard let ast = ast else { return "" }
     let stream = TextOutputStream()
-    let visitor = DumpVisitor(outputStream: stream, symbolDescription: symbolDescription)
+    let visitor = DumpVisitor(outputStream: stream,
+                              symbolDescription: symbolDescription)
     try? visitor.visit(node: ast)
     return stream.buffer
   }

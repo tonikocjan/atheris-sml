@@ -168,27 +168,27 @@ val x = 20.15;
   func testIdentifier() {
     XCTAssertEqual(TokenType.identifier, generateSymbols("ident1").first?.token)
     XCTAssertEqual("ident1", generateSymbols("ident1").first?.lexeme)
-    
+
     XCTAssertEqual(TokenType.integerConstant, generateSymbols("1ident").first?.token)
     XCTAssertEqual("ident", generateSymbols("1ident")[1].lexeme)
     XCTAssertEqual(TokenType.integerConstant, generateSymbols("1ident").first?.token)
-    
+
     XCTAssertEqual("abc_", generateSymbols("abc_")[0].lexeme)
     XCTAssertEqual(TokenType.identifier, generateSymbols("abc_")[0].token)
-    
+
     XCTAssertEqual(TokenType.identifier, generateSymbols("a'a").first?.token)
-    XCTAssertEqual("a'a", generateSymbols("a'a").first?.lexeme)
-    
+    XCTAssertEqual("a'a", generateSymbols("a").first?.lexeme)
+
     XCTAssertEqual(TokenType.identifier, generateSymbols("#&#?@").first?.token)
     XCTAssertEqual("#&#?@", generateSymbols("#&#?@").first?.lexeme)
-    
-    XCTAssertEqual(TokenType.identifier, generateSymbols("!%&$#+-/:<=>?@\\~‘^|*").first?.token)
-    XCTAssertEqual("!%&$#+-/:<=>?@\\~‘^|*", generateSymbols("!%&$#+-/:<=>?@\\~‘^|*").first?.lexeme)
-    
+
+    XCTAssertEqual(TokenType.identifier, generateSymbols("!%&$#+-/:<=>?@\\~'^|*").first?.token)
+    XCTAssertEqual("!%&$#+-/:<=>?@\\~‘^|*", generateSymbols("!%&$#+-/:<=>?@\\~'^|*").first?.lexeme)
+
     XCTAssertEqual(3, generateSymbols("ident@#").count)
-    
+
     XCTAssertEqual("[1:1, 1:3] IDENTIFIER: &&", generateSymbols("&&").first?.description)
-    
+
     // TODO: -
     XCTAssertEqual("[1:1, 1:3] IDENTIFIER: ==", generateSymbols("==").first?.description)
     XCTAssertEqual("[1:1, 1:3] IDENTIFIER: ||", generateSymbols("||").first?.description)

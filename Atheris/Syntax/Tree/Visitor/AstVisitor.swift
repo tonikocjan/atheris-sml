@@ -15,6 +15,7 @@ protocol AstVisitor {
   func visit(node: AstAnonymousFunctionBinding) throws
   func visit(node: AstDatatypeBinding) throws
   func visit(node: AstCase) throws
+  func visit(node: AstTypeBinding) throws
   func visit(node: AstAtomType) throws
   func visit(node: AstTypeName) throws
   func visit(node: AstTupleType) throws
@@ -51,6 +52,7 @@ extension AstVisitor {
   func visit(node: AstAnonymousFunctionBinding) throws {}
   func visit(node: AstDatatypeBinding) throws {}
   func visit(node: AstCase) throws {}
+  func visit(node: AstTypeBinding) throws {}
   func visit(node: AstAtomType) throws {}
   func visit(node: AstTypeName) throws {}
   func visit(node: AstTupleType) throws {}

@@ -12,15 +12,17 @@ class AstDatatypeBinding: AstBinding {
   let position: Position
   let name: AstIdentifierPattern
   let cases: [AstCase]
+  let types: [AstTypeBinding]
   
   var pattern: AstPattern {
     return name
   }
   
-  init(position: Position, name: AstIdentifierPattern, cases: [AstCase]) {
+  init(position: Position, name: AstIdentifierPattern, cases: [AstCase], types: [AstTypeBinding]) {
     self.position = position
     self.name = name
     self.cases = cases
+    self.types = types
   }
   
   func accept(visitor: AstVisitor) throws {

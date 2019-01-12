@@ -184,7 +184,10 @@ private extension LexAn {
     }
     
     let newPosition = position(count: lexeme.count)
-    return Symbol(token: tokenType(), lexeme: lexeme, position: newPosition)
+    let type = tokenType()
+    return Symbol(token: type,
+                  lexeme: lexeme,
+                  position: newPosition)
   }
 }
 
@@ -324,5 +327,5 @@ private extension LexAn {
     ["true": .logicalConstant,
      "false": .logicalConstant]
   
-  private static let symbolicIdentifierCharacterSet = "!%&$#+-/:<=>?@\\~‘^|*"
+  private static let symbolicIdentifierCharacterSet = "!%&$#+-/:<=>?@\\~'^|*"
 }

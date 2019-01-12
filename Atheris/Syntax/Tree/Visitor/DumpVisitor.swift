@@ -72,6 +72,7 @@ extension DumpVisitor: AstVisitor {
     increaseIndent()
     printSemanticInformation(node: node)
     try node.name.accept(visitor: self)
+    for type in node.types { try type.accept(visitor: self) }
     for case_ in node.cases { try case_.accept(visitor: self) }
     decreaseIndent()
   }
@@ -82,6 +83,15 @@ extension DumpVisitor: AstVisitor {
     printSemanticInformation(node: node)
     try node.name.accept(visitor: self)
     try node.associatedType?.accept(visitor: self)
+    decreaseIndent()
+  }
+  
+  func visit(node: AstTypeBinding) throws {
+    print("AstTypeBinding", node.position)
+    increaseIndent()
+    printSemanticInformation(node: node)
+    try node.identifier.accept(visitor: self)
+    print("Type: \(node.type == .normal ? "'" : "''")")
     decreaseIndent()
   }
   

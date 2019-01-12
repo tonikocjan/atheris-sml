@@ -76,6 +76,15 @@ extension NameChecker: AstVisitor {
     for case_ in node.cases {
       try insertBinding(case_, name: case_.name)
     }
+    
+    symbolTable.newScope()
+    for type in node.types {
+      try insertBinding(type, name: type.name)
+    }
+    for case_ in node.cases {
+      try case_.associatedType?.accept(visitor: self)
+    }
+    symbolTable.oldScope()
   }
   
   func visit(node: AstCase) throws {

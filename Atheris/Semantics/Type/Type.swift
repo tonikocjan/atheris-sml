@@ -55,6 +55,8 @@ enum Operation: String {
   }
 }
 
+// TODO: - Should refactor type system using enums and pattern matching
+
 protocol Type: class, CustomStringConvertible {
   func sameStructureAs(other: Type) -> Bool
   
@@ -75,6 +77,7 @@ protocol Type: class, CustomStringConvertible {
 
 extension Type {
   var isConcrete: Bool { return !self.isAbstract }
+  var isPolymorphic: Bool { return self is PolymorphicType }
 }
 
 extension Type {

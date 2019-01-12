@@ -143,6 +143,11 @@ extension TypeChecker: AstVisitor {
   func visit(node: AstDatatypeBinding) throws {
     let datatype = DatatypeType(parent: node.name.name, name: "")
     symbolDescription.setType(for: node, type: datatype)
+    
+    for type in node.types {
+      try type.accept(visitor: self)
+    }
+    
     for case_ in node.cases {
       let associatedType: Type?
       if let associatedTypeNode = case_.associatedType {
@@ -158,8 +163,9 @@ extension TypeChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstCase) throws {
-    ///
+  func visit(node: AstTypeBinding) throws {
+    let type = PolymorphicType(binding: node)
+    symbolDescription.setType(for: node, type: type)
   }
   
   func visit(node: AstAtomType) throws {
@@ -178,6 +184,11 @@ extension TypeChecker: AstVisitor {
     if let atomType = builtinType(name: node.name) {
       symbolDescription.setType(for: node, type: atomType)
     } else {
+      if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
+        symbolDescription.setType(for: node, type: type)
+        return
+      }
+      
       guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
       guard let type = symbolDescription.type(for: binding) else { throw internalError() }
       symbolDescription.setType(for: node, type: type)
@@ -431,10 +442,18 @@ extension TypeChecker: AstVisitor {
       
       try associatedType.accept(visitor: self)
       guard let type = symbolDescription.type(for: associatedType) else { throw internalError() }
-      guard argumentType.sameStructureAs(other: type) else {
-        throw Error.operatorError(position: node.position,
-                                  domain: type.description,
-                                  operand: argumentType)
+      if let poly = type as? PolymorphicType {
+        guard poly.canAccept(type: argumentType) else {
+          throw Error.operatorError(position: node.position,
+                                    domain: type.description,
+                                    operand: argumentType)
+        }
+      } else {
+        guard argumentType.sameStructureAs(other: type) else {
+          throw Error.operatorError(position: node.position,
+                                    domain: type.description,
+                                    operand: argumentType)
+        }
       }
       symbolDescription.setType(for: node, type: datatype)
       return

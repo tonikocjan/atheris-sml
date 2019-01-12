@@ -92,7 +92,7 @@ private extension SynAn {
     guard expecting(.keywordFun) else { throw reportError("expecting `fun`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
-    let identifier = parseIdentifierPattern()
+    let identifier = try parseIdentifierPattern()
     var cases = [AstFunBinding.Case]()
     repeat {
       let parameter = try parseAtomPattern()
@@ -109,7 +109,7 @@ private extension SynAn {
       cases.append(AstFunBinding.Case(parameter: parameter, body: body, resultType: resultType))
       if expecting(.pipe) {
         nextSymbol()
-        let caseIdentifier = parseIdentifierPattern()
+        let caseIdentifier = try parseIdentifierPattern()
         guard caseIdentifier.name == identifier.name else { throw Error.syntaxError("clauses do not all have same function name") }
       }
       else { break }
@@ -158,18 +158,25 @@ private extension SynAn {
     guard expecting(.keywordDatatype) else { throw reportError("expecting `datatype`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
-    let identifier = parseIdentifierPattern()
+    let types: [AstTypeBinding]
+    if expecting(.leftParent) || expecting("'") {
+      types = try parseAnonymousTypeBindings()
+    } else {
+      types = []
+    }
+    let identifier = try parseIdentifierPattern()
     guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
     nextSymbol()
     let cases = try parseCases(datatypeCase: try parseCase())
     return AstDatatypeBinding(position: startingPosition + cases.last!.position,
                               name: identifier,
-                              cases: cases)
+                              cases: cases,
+                              types: types)
   }
   
   func parseCase() throws -> AstCase {
     let type: AstType?
-    let identifier = parseIdentifierPattern()
+    let identifier = try parseIdentifierPattern()
     if expecting(.keywordOf) {
       nextSymbol()
       type = try parseType()
@@ -186,6 +193,51 @@ private extension SynAn {
     nextSymbol()
     let newCase = try parseCase()
     return [datatypeCase] + (try parseCases(datatypeCase: newCase))
+  }
+}
+
+private extension SynAn {
+  func parseAnonymousTypeBinding() throws -> AstTypeBinding {
+    func parse(type: AstTypeBinding.Kind) throws -> AstTypeBinding {
+      let position = symbol.position
+      nextSymbol()
+      let identifier = try parseIdentifierPattern()
+      return AstTypeBinding(position: position + identifier.position,
+                            identifier: identifier,
+                            type: type)
+    }
+    
+    switch symbol.lexeme {
+    case "'":
+      return try parse(type: .normal)
+    case "''":
+      return try parse(type: .equatable)
+    default:
+      throw reportError("invalid symbol", symbol.position)
+    }
+  }
+  
+  func parseAnonymousTypeBindings() throws -> [AstTypeBinding] {
+    func parse() throws -> [AstTypeBinding] {
+      var bindings = [AstTypeBinding]()
+      while true {
+        let type = try parseAnonymousTypeBinding()
+        bindings.append(type)
+        if symbol.token != .comma { break }
+        nextSymbol()
+      }
+      return bindings
+    }
+    
+    if expecting(.leftParent) {
+      nextSymbol()
+      let bindings = try parse()
+      guard expecting(.rightParent) else { throw reportError("expecting `)`", symbol.position) }
+      nextSymbol()
+      return bindings
+    } else {
+      return try parse()
+    }
   }
 }
 
@@ -229,7 +281,7 @@ private extension SynAn {
       nextSymbol()
       return AstWildcardPattern(position: symbol.position)
     case .identifier:
-      return parseIdentifierPattern()
+      return try parseIdentifierPattern()
     case .leftParent:
       return try parseTuplePattern()
     case .leftBrace:
@@ -254,7 +306,7 @@ private extension SynAn {
     }
   }
   
-  func parseIdentifierPattern() -> AstIdentifierPattern {
+  func parseIdentifierPattern() throws -> AstIdentifierPattern {
     let identifier = symbol
     nextSymbol()
     return AstIdentifierPattern(position: identifier.position, name: identifier.lexeme)
@@ -310,10 +362,17 @@ private extension SynAn {
   func parseAtomType() throws -> AstType {
     switch symbol.token {
     case .identifier:
-      let currentSymbol = symbol
-      nextSymbol()
-      return AstTypeName(position: currentSymbol.position,
-                         name: currentSymbol.lexeme)
+      switch symbol.lexeme {
+      case "'", "''":
+        let anonymousType = try parseAnonymousTypeBinding()
+        return AstTypeName(position: anonymousType.position,
+                           name: anonymousType.name)
+      default:
+        let currentSymbol = symbol
+        nextSymbol()
+        return AstTypeName(position: currentSymbol.position,
+                           name: currentSymbol.lexeme)
+      }
     case .leftParent:
       return try parseTupleType()
     default:
@@ -809,7 +868,7 @@ private extension SynAn {
   }
   
   func parseRecordRow() throws -> AstRecordRow {
-    let identifier = parseIdentifierPattern()
+    let identifier = try parseIdentifierPattern()
     guard expecting("=") else { throw reportError("expecting `=`", symbol.position) }
     nextSymbol()
     let expression = try parseExpression()
@@ -822,7 +881,7 @@ private extension SynAn {
     guard expecting("#") else { throw reportError("expecting `#`", symbol.position) }
     let startingPosition = symbol.position
     nextSymbol()
-    let label = parseIdentifierPattern()
+    let label = try parseIdentifierPattern()
     let record = try parseExpression()
     return AstRecordSelectorExpression(position: startingPosition + label.position,
                                        label: label,
@@ -856,7 +915,9 @@ private extension SynAn {
   }
   
   func reportError(_ error: String, _ position: Position, _ others: CustomStringConvertible...) -> Error {
-    let errorMessage = error + " " + others.map { "`\($0.description)`" }.joined(separator: " ")
+    let errorMessage = error + " " + others
+      .map { "`\($0.description)`" }
+      .joined(separator: " ")
     return Error.syntaxError("Syntax error \(position.description): " + errorMessage)
   }
   
