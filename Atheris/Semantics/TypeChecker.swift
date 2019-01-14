@@ -141,12 +141,14 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstDatatypeBinding) throws {
-    let datatype = DatatypeType(parent: node.name.name, name: "")
-    symbolDescription.setType(for: node, type: datatype)
-    
     for type in node.types {
       try type.accept(visitor: self)
     }
+    
+    let constructorTypes = node.types.compactMap { symbolDescription.type(for: $0) as? PolymorphicType }
+    
+    let datatype = DatatypeType(parent: node.name.name, name: "", constructorTypes: constructorTypes)
+    symbolDescription.setType(for: node, type: datatype)
     
     for case_ in node.cases {
       let associatedType: Type?
@@ -158,6 +160,7 @@ extension TypeChecker: AstVisitor {
       }
       let caseType = DatatypeType(parent: node.name.name,
                                   name: case_.name.name,
+                                  constructorTypes: constructorTypes,
                                   associatedType: associatedType)
       symbolDescription.setType(for: case_, type: caseType)
     }
@@ -193,6 +196,36 @@ extension TypeChecker: AstVisitor {
       guard let type = symbolDescription.type(for: binding) else { throw internalError() }
       symbolDescription.setType(for: node, type: type)
     }
+  }
+  
+  func visit(node: AstTypeConstructor) throws {
+    guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
+    guard let type = symbolDescription.type(for: binding) as? DatatypeType else { throw internalError() }
+    
+    guard node.types.count == type.constructorTypes.count else {
+      throw Error.typeConstructorError(name: node.name,
+                                       given: node.types.count,
+                                       received: type.constructorTypes.count)
+    }
+    for type in node.types {
+      try type.accept(visitor: self)
+    }
+    let types = node.types.compactMap { symbolDescription.type(for: $0) }
+    
+    for (given, required) in zip(types, type.constructorTypes) {
+      guard let polymorphic = required as? PolymorphicType else { continue }
+      guard polymorphic.canAccept(type: given) else {
+        throw Error.typeError(position: node.position,
+                              patternType: given,
+                              expressionType: required)
+      }
+    }
+    
+    let datatype = DatatypeType(parent: type.parent,
+                                name: type.name,
+                                constructorTypes: types,
+                                associatedType: type.associatedType)
+    symbolDescription.setType(for: node, type: datatype)
   }
   
   func visit(node: AstTupleType) throws {
@@ -700,6 +733,7 @@ extension TypeChecker  {
     case testExpressionError(position: Position, testExpressionType: Type)
     case branchesTypeMistmatchError(position: Position, trueBranchType: Type, falseBranchType: Type)
     case redundantCaseError(position: Position)
+    case typeConstructorError(name: String, given: Int, received: Int)
     
     var errorMessage: String {
       switch self {
@@ -735,6 +769,8 @@ extension TypeChecker  {
         """
       case .redundantCaseError(let position):
         return "error \(position.description): redundant case"
+      case .typeConstructorError(let name, let given, let received):
+        return "type constructor \(name) given \(given) arguments, wants \(received)"
       }
     }
   }

@@ -11,17 +11,20 @@ import Foundation
 class DatatypeType: Type {
   let parent: String
   let name: String
+  let constructorTypes: [Type]
   let associatedType: Type?
   
-  init(parent: String, name: String) {
+  init(parent: String, name: String, constructorTypes: [Type]) {
     self.parent = parent
     self.name = name
+    self.constructorTypes = constructorTypes
     self.associatedType = nil
   }
   
-  init(parent: String, name: String, associatedType: Type?) {
+  init(parent: String, name: String, constructorTypes: [Type], associatedType: Type?) {
     self.parent = parent
     self.name = name
+    self.constructorTypes = constructorTypes
     self.associatedType = associatedType
   }
   
@@ -36,7 +39,9 @@ class DatatypeType: Type {
   }
   
   var parentDatatype: DatatypeType {
-    return DatatypeType(parent: self.parent, name: "")
+    return DatatypeType(parent: self.parent,
+                        name: "",
+                        constructorTypes: constructorTypes)
   }
   
   var isAbstract: Bool { return false }
