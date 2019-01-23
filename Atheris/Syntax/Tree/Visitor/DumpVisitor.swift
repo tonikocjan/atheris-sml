@@ -342,7 +342,7 @@ private extension DumpVisitor {
   }
   
   func withIndent(_ string: String) -> String {
-    return (0..<indent).map { _ in " " }.joined() + string
+    return (0..<indent).reduce("", { acc, _ in acc + " " }) + string
   }
   
   func increaseIndent() { indent += indentIncrement }
