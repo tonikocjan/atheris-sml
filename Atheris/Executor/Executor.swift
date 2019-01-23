@@ -19,6 +19,7 @@ class Executor: ExecutorProtocol {
     let task = Process()
     task.arguments = [file]
     task.currentDirectoryPath = FileManager.default.currentDirectoryPath
+    // TODO: - Need to add `Racket` inside project
     task.launchPath = "/Applications/Racket v7.1/bin/racket"
     task.launch()
     task.waitUntilExit()
