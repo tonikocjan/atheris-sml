@@ -313,6 +313,7 @@ private extension CodeGenerationTests {
   
   func loadRacketCode(_ file: String?) -> String? {
     guard let file = file else { return nil }
+    // TODO: - Fix absolute paths!
     let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Code generation/Code/\(file)"
       .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     do {
@@ -326,6 +327,7 @@ private extension CodeGenerationTests {
   }
   
   func loadSMLCode(_ file: String) -> String {
+    // TODO: - Fix absolute paths!
     let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Code generation/Code/\(file)"
       .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     do {

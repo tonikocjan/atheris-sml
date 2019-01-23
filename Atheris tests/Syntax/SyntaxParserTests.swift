@@ -251,6 +251,7 @@ private extension SyntaxParserTests {
   
   func openAst(_ ast: String?) -> String? {
     guard let ast = ast else { return nil }
+    // TODO: - Fix absolute paths!
     let path = "/Users/tonikocjan/swift/Atheris/Atheris tests/Syntax/Asts/\(ast)"
       .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     do {
