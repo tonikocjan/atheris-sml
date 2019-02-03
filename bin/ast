@@ -1,91 +1,41 @@
-AstBindings [1:1, 9:16]:
-  AstDatatypeBinding [1:1, 1:42]:
-    -> typed: [natural => ]
-    AstIdentifierPattern [1:10, 1:17]:
-      Name: natural
-    AstCase [1:20, 1:35]:
-      -> typed: [natural => NEXT]
-      AstIdentifierPattern [1:20, 1:24]:
-        Name: NEXT
-      AstTypeName [1:28, 1:35]:
-        -> typed: [natural => ]
-        Name: natural
-    AstCase [1:38, 1:42]:
-      -> typed: [natural => ZERO]
-      AstIdentifierPattern [1:38, 1:42]:
-        Name: ZERO
-  AstFunBinding [3:1, 6:28]:
-    -> typed: fn : [natural => NEXT] -> 'Z
-    AstIdentifierPattern [3:5, 3:10]:
-      -> typed: fn : [natural => ZERO] -> int
-      Name: toInt
-    AstIdentifierPattern [3:12, 3:13]:
-      -> typed: [natural => ZERO]
-      Name: a
-    AstCaseExpression [4:3, 6:28]:
-      -> typed: int
-      AstNameExpression [4:8, 4:9]:
-        -> defined at:  [3:12, 3:13]:
-        -> typed: [natural => ZERO]
+AstBindings [1:1, 2:25]:
+  AstDatatypeBinding [1:1, 1:37]:
+    -> typed: [Opcija => ]
+    AstIdentifierPattern [1:15, 1:21]:
+      Name: Opcija
+    AstTypeBinding [1:11, 1:13]:
+      -> typed: 'a
+      AstIdentifierPattern [1:12, 1:13]:
         Name: a
-      AstMatch [5:5, 6:28]:
-        -> typed: [natural => ZERO] => int
-        AstRule [5:5, 5:14]:
-          -> typed: [natural => ZERO] => int
-          AstIdentifierPattern [5:5, 5:9]:
-            -> defined at:  [1:38, 1:42]:
-            -> typed: [natural => ZERO]
-            Name: ZERO
-          AstConstantExpression [5:13, 5:14]:
-            -> typed: int
-            Value: 0
-            Atom type: int
-        AstRule [6:7, 6:28]:
-          -> typed: [natural => NEXT] => int
-          AstIdentifierPattern [6:7, 6:11]:
-            -> defined at:  [1:20, 1:35]:
-            -> typed: [natural => NEXT]
-            Name: NEXT
-          AstIdentifierPattern [6:12, 6:13]:
-            -> typed: [natural => ZERO]
-            Name: i
-          AstBinaryExpression `+` [6:17, 6:28]:
-            -> typed: int
-            AstConstantExpression [6:17, 6:18]:
-              -> typed: int
-              Value: 1
-              Atom type: int
-            AstFunctionCallExpression [6:21, 6:28]:
-              -> defined at:  [3:1, 6:28]:
-              -> typed: fn : [natural => ZERO] -> int
-              Function name: toInt
-              AstNameExpression [6:27, 6:28]:
-                -> defined at:  [6:12, 6:13]:
-                -> typed: [natural => ZERO]
-                Name: i
-  AstValBinding [8:1, 8:18]:
-    -> typed: [natural => NEXT]
-    AstIdentifierPattern [8:5, 8:6]:
-      -> typed: [natural => NEXT]
+      Type: '
+    AstCase [1:24, 1:32]:
+      -> typed: [Opcija => JE]
+      AstIdentifierPattern [1:24, 1:26]:
+        Name: JE
+      AstTypeName [1:30, 1:32]:
+        -> defined at:  [1:11, 1:13]:
+        -> typed: 'a
+        Name: 'a
+    AstCase [1:35, 1:37]:
+      -> typed: [Opcija => NI]
+      AstIdentifierPattern [1:35, 1:37]:
+        Name: NI
+  AstFunBinding [2:1, 2:25]:
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: 'Z
+      Name: f
+    AstIdentifierPattern [2:7, 2:8]:
+      -> typed: 'Z
       Name: x
-    AstFunctionCallExpression [8:9, 8:18]:
-      -> defined at:  [1:20, 1:35]:
-      -> typed: [natural => NEXT]
-      Function name: NEXT
-      AstNameExpression [8:14, 8:18]:
-        -> defined at:  [1:38, 1:42]:
-        -> typed: [natural => ZERO]
-        Name: ZERO
-  AstValBinding [9:1, 9:16]:
-    -> typed: 'Z
-    AstIdentifierPattern [9:5, 9:6]:
-      -> typed: 'Z
-      Name: a
-    AstFunctionCallExpression [9:9, 9:16]:
-      -> defined at:  [3:1, 6:28]:
-      -> typed: 'Z
-      Function name: toInt
-      AstNameExpression [9:15, 9:16]:
-        -> defined at:  [8:5, 8:6]:
-        -> typed: [natural => NEXT]
-        Name: x
+    AstTypeName [2:10, 2:13]:
+      -> typed: int
+      Name: int
+    AstAnonymousFunctionBinding [2:14, 2:25]:
+      -> typed: fn : 'Z -> [Opcija => NI]
+      AstIdentifierPattern [2:14, 2:20]:
+        -> typed: 'Z
+        Name: Opcija
+      AstNameExpression [2:23, 2:25]:
+        -> defined at:  [1:35, 1:37]:
+        -> typed: [Opcija => NI]
+        Name: NI

@@ -1,9 +1,2 @@
-datatype natural = NEXT of natural | ZERO;
-
-fun toInt (a) =
-  case a of
-    ZERO => 0
-    | NEXT i => 1 + toInt(i);
-
-val x = NEXT(ZERO);
-val a = toInt x;
+datatype ('a, 'b) Opcija = JE of ('a * 'b) | NI;
+val a: ('a, 'b) Opcija = NI;
