@@ -218,6 +218,24 @@ f ~10;
 """
     performSucceedingTest(code: code)
   }
+  
+  func testDataTypeWithPolymorphicTypeNotFoundShouldFail() {
+    let code = """
+datatype ('a, 'b) Opcija = JE of ('c * int * 'b) | NI;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidTypeShouldFail() {
+    let code = """
+datatype ('a, 'b) Opcija =
+  JE of ('a * 'a * int * 'b)
+  | NI;
+  
+val a: (int, int) Opcija = JE (10, false, 10, false);
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

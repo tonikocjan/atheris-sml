@@ -51,7 +51,7 @@ extension TypeChecker: AstVisitor {
       guard patternType.sameStructureAs(other: expressionType) else {
         throw Error.typeError(position: node.position, patternType: patternType, expressionType: expressionType)
       }
-      if let function = expressionType.asFunction, function.body is DataType, function.parameter.isAbstract {
+      if let function = expressionType.asFunction, function.body is CaseType, function.parameter.isAbstract {
         symbolDescription.setType(for: node, type: function.body)
         resultType = function.body
       } else {
@@ -145,23 +145,41 @@ extension TypeChecker: AstVisitor {
       try type.accept(visitor: self)
     }
     
-    let constructorTypes = node.types.compactMap { symbolDescription.type(for: $0) as? PolymorphicType }
+    let constructorTypes: [(String, Type)] = node.types.compactMap {
+      guard let type = symbolDescription.type(for: $0) as? PolymorphicType else { return nil }
+      return ($0.type.rawValue + $0.identifier.name, type)
+    }
     
-    let datatype = DataType(parent: node.name.name, name: "", constructorTypes: constructorTypes)
+    var cases = [String: Type]()
+    for case_ in node.cases {
+      switch case_.associatedType {
+      case .some(let associatedTypeNode):
+        try associatedTypeNode.accept(visitor: self)
+        guard let associatedType = symbolDescription.type(for: associatedTypeNode) else { throw internalError() }
+        cases[case_.name.name] = associatedType
+      case .none:
+        break
+      }
+    }
+    
+    let datatype = DataType(name: node.name.name,
+                            constructorTypes: constructorTypes,
+                            cases: cases)
     symbolDescription.setType(for: node, type: datatype)
     
     for case_ in node.cases {
       let associatedType: Type?
-      if let associatedTypeNode = case_.associatedType {
+      switch case_.associatedType {
+      case .some(let associatedTypeNode):
         try associatedTypeNode.accept(visitor: self)
         associatedType = symbolDescription.type(for: associatedTypeNode)
-      } else {
+      case .none:
         associatedType = nil
       }
-      let caseType = DataType(parent: node.name.name,
-                                  name: case_.name.name,
-                                  constructorTypes: constructorTypes,
-                                  associatedType: associatedType)
+      
+      let caseType = CaseType(parent: datatype,
+                              name: case_.name.name,
+                              associatedType: associatedType)
       symbolDescription.setType(for: case_, type: caseType)
     }
   }
@@ -186,46 +204,65 @@ extension TypeChecker: AstVisitor {
     
     if let atomType = builtinType(name: node.name) {
       symbolDescription.setType(for: node, type: atomType)
-    } else {
-      if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
-        symbolDescription.setType(for: node, type: type)
+      return
+    }
+    
+    if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
+      symbolDescription.setType(for: node, type: type)
+      return
+    }
+    
+    guard let binding = symbolTable.findBinding(name: node.name) else {
+      if let firstChar = node.name.first, firstChar == "'" {
+        let type: AstTypeBinding.Kind = node.name[node.name.index(node.name.startIndex,
+                                                                  offsetBy: 1)] == "'" ? .equatable : .normal
+        let polymorphicType = PolymorphicType(name: node.name,
+                                              type: type)
+        symbolDescription.setType(for: node, type: polymorphicType)
         return
       }
-      
-      guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
-      guard let type = symbolDescription.type(for: binding) else { throw internalError() }
-      symbolDescription.setType(for: node, type: type)
+      throw internalError()
     }
+    guard let type = symbolDescription.type(for: binding) else { throw internalError() }
+    symbolDescription.setType(for: node, type: type)
   }
   
   func visit(node: AstTypeConstructor) throws {
     guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
-    guard let type = symbolDescription.type(for: binding) as? DataType else { throw internalError() }
+    guard let datatype = symbolDescription.type(for: binding) as? DataType else { throw internalError() }
     
-    guard node.types.count == type.constructorTypes.count else {
+    guard node.types.count == datatype.constructorTypes.count else {
       throw Error.typeConstructorError(name: node.name,
                                        given: node.types.count,
-                                       received: type.constructorTypes.count)
+                                       received: datatype.constructorTypes.count)
     }
     for type in node.types {
       try type.accept(visitor: self)
     }
     let types = node.types.compactMap { symbolDescription.type(for: $0) }
     
-    for (given, required) in zip(types, type.constructorTypes) {
-      guard let polymorphic = required as? PolymorphicType else { continue }
+    for (given, required) in zip(types, datatype.constructorTypes) {
+      guard let polymorphic = required.type as? PolymorphicType else { continue }
       guard polymorphic.canAccept(type: given) else {
         throw Error.typeError(position: node.position,
                               patternType: given,
-                              expressionType: required)
+                              expressionType: required.type)
       }
     }
+    let constructorTypes = zip(types, datatype.constructorTypes)
+      .map { ($0.1.name, $0.0) }
     
-    let datatype = DataType(parent: type.parent,
-                                name: type.name,
-                                constructorTypes: types,
-                                associatedType: type.associatedType)
-    symbolDescription.setType(for: node, type: datatype)
+    var updatedCases = [String: Type]()
+    for (name, type) in datatype.cases {
+      let replacedType = replacePolymorphicTypesWithActual(type: type,
+                                                           mapping: constructorTypes)
+      updatedCases[name] = replacedType
+    }
+    
+    let updatedDatatype = DataType(name: datatype.name,
+                                   constructorTypes: constructorTypes,
+                                   cases: updatedCases)
+    symbolDescription.setType(for: node, type: updatedDatatype)
   }
   
   func visit(node: AstTupleType) throws {
@@ -247,7 +284,7 @@ extension TypeChecker: AstVisitor {
       symbolDescription.setType(for: binding, type: alreadyCalculatedType)
       return
     }
-  
+    
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     if valBindingRhs, let type = type as? DataType, !type.name.isEmpty, let _ = symbolDescription.binding(for: node) as? AstCase {
       symbolDescription.setType(for: node, type: FunctionType(name: node.name,
@@ -413,7 +450,7 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstFunctionCallExpression) throws {
-    if builtinFunctions.contains(node.name) {
+    func handleBuiltInFunction() throws {
       func expectsListAsArgument() -> Bool {
         return node.name == "hd" || node.name == "tail" || node.name == "null"
       }
@@ -431,8 +468,8 @@ extension TypeChecker: AstVisitor {
       guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
       
       if expectsListAsArgument() && !(argumentType.isAbstract || argumentType.isList) { throw Error.operatorError(position: node.argument.position,
-                                                                                     domain: "'Z list",
-                                                                                     operand: argumentType) }
+                                                                                                                  domain: "'Z list",
+                                                                                                                  operand: argumentType) }
       
       switch node.name {
       case "null":
@@ -448,15 +485,23 @@ extension TypeChecker: AstVisitor {
       default:
         break
       }
-      return
     }
     
-    if let _ = funEvalStack.first(where: { $0.identifier.name == node.name}) {
+    func handleRecursiveCall() throws {
       if let binding = symbolDescription.binding(for: node), let type = symbolDescription.type(for: binding) {
         symbolDescription.setType(for: node, type: type)
       }
       try node.argument.accept(visitor: self)
       symbolDescription.setType(for: node, type: AbstractDummyType(name: dummyName()))
+    }
+    
+    if builtinFunctions.contains(node.name) {
+      try handleBuiltInFunction()
+      return
+    }
+    
+    if let _ = funEvalStack.first(where: { $0.identifier.name == node.name}) {
+      try handleRecursiveCall()
       return
     }
     
@@ -466,44 +511,39 @@ extension TypeChecker: AstVisitor {
     valBindingRhs = false
     try node.argument.accept(visitor: self)
     valBindingRhs = rhs
-    guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
     
+    guard let argumentType = symbolDescription.type(for: node.argument) else { throw internalError() }
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     
-    if let datatype = type as? DataType {
+    if let caseType = type as? CaseType {
       guard let case_ = binding as? AstCase else { throw internalError() }
       guard let associatedType = case_.associatedType else {
-        symbolDescription.setType(for: node, type: datatype.parentDatatype)
+        symbolDescription.setType(for: node, type: caseType.parent)
         return
       }
       
       try associatedType.accept(visitor: self)
       guard let type = symbolDescription.type(for: associatedType) else { throw internalError() }
-      if let poly = type as? PolymorphicType {
-        guard poly.canAccept(type: argumentType) else {
-          throw Error.operatorError(position: node.position,
-                                    domain: type.description,
-                                    operand: argumentType)
-        }
-      } else {
-        guard argumentType.sameStructureAs(other: type) else {
-          throw Error.operatorError(position: node.position,
-                                    domain: type.description,
-                                    operand: argumentType)
-        }
+      guard argumentType.sameStructureAs(other: type) else {
+        throw Error.operatorError(position: node.position,
+                                  domain: type.description,
+                                  operand: argumentType)
       }
-      symbolDescription.setType(for: node, type: datatype)
+      let newCaseType = CaseType(parent: caseType.parent,
+                                 name: caseType.name,
+                                 associatedType: argumentType)
+      symbolDescription.setType(for: node, type: newCaseType)
       return
     }
     
     guard let functionType = type.asFunction else {
-        try node.argument.accept(visitor: self)
-        let abstractFunctionType = FunctionType(name: node.name,
-                                                parameter: argumentType,
-                                                body: AbstractDummyType(name: dummyName()))
-        symbolDescription.setType(for: node, type: abstractFunctionType.body)
-        symbolDescription.setType(for: binding, type: abstractFunctionType)
-        return
+      try node.argument.accept(visitor: self)
+      let abstractFunctionType = FunctionType(name: node.name,
+                                              parameter: argumentType,
+                                              body: AbstractDummyType(name: dummyName()))
+      symbolDescription.setType(for: node, type: abstractFunctionType.body)
+      symbolDescription.setType(for: binding, type: abstractFunctionType)
+      return
     }
     
     guard argumentType.sameStructureAs(other: functionType.parameter) else {
@@ -545,7 +585,7 @@ extension TypeChecker: AstVisitor {
     guard let record = type.toRecord else {
       throw Error.operatorError(position: node.record.position,
                                 domain: "{\(node.label.name): 'X}; 'Z}",
-                                operand: type)
+        operand: type)
     }
     let label = node.label.name
     guard let row = record.row(for: label) else {
@@ -563,7 +603,7 @@ extension TypeChecker: AstVisitor {
         guard first.sameStructureAs(other: type) else {
           throw Error.operatorError(position: node.position,
                                     domain: "[\(first.description)] * [\(first.description)] list",
-                                    operand: TupleType.formPair(first, type))
+            operand: TupleType.formPair(first, type))
         }
       }
     }
@@ -619,7 +659,7 @@ extension TypeChecker: AstVisitor {
     try node.pattern.accept(visitor: self)
     guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
     
-    if let associatedValue = node.associatedValue, let datatype = patternType as? DataType, let associatedType = datatype.associatedType {
+    if let associatedValue = node.associatedValue, let caseType = patternType as? CaseType, let associatedType = caseType.associatedType {
       symbolDescription.setType(for: associatedValue, type: associatedType)
       
       typeDistributionStack.append(associatedType)
@@ -630,7 +670,7 @@ extension TypeChecker: AstVisitor {
     try node.expression.accept(visitor: self)
     
     guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
-
+    
     let ruleType = RuleType(patternType: patternType,
                             expressionType: expressionType)
     symbolDescription.setType(for: node, type: ruleType)
@@ -650,7 +690,7 @@ extension TypeChecker: AstVisitor {
       symbolDescription.setType(for: node, type: type)
       return
     }
-
+    
     let dummyPatternType = AbstractDummyType(name: dummyName())
     symbolDescription.setType(for: node, type: dummyPatternType)
   }
@@ -672,10 +712,10 @@ extension TypeChecker: AstVisitor {
       return
     }
     
-//    for pattern in node.patterns { try pattern.accept(visitor: self) }
-//    let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? AbstractType }
-//    let tuplePatternType = AbstractTupleType(members: types)
-//    symbolDescription.setType(for: node, type: tuplePatternType)
+    //    for pattern in node.patterns { try pattern.accept(visitor: self) }
+    //    let types = node.patterns.compactMap { symbolDescription.type(for: $0) as? AbstractType }
+    //    let tuplePatternType = AbstractTupleType(members: types)
+    //    symbolDescription.setType(for: node, type: tuplePatternType)
     
     for pattern in node.patterns { try pattern.accept(visitor: self) }
     let types = node.patterns.compactMap { symbolDescription.type(for: $0) }
@@ -705,9 +745,9 @@ extension TypeChecker: AstVisitor {
         throw internalError()
     }
     
-//    guard patternType.sameStructureAs(other: type) else {
-//      throw Error.constraintError(position: node.position, patternType: patternType, constraintType: type)
-//    }
+    //    guard patternType.sameStructureAs(other: type) else {
+    //      throw Error.constraintError(position: node.position, patternType: patternType, constraintType: type)
+    //    }
     
     symbolDescription.setType(for: node, type: type)
     symbolDescription.setType(for: node.pattern, type: type)
@@ -788,5 +828,31 @@ private extension TypeChecker {
   
   func internalError() -> Error {
     return Error.internalError
+  }
+  
+  func replacePolymorphicTypesWithActual(type: Type, mapping: [(String, Type)]) -> Type {
+    switch type {
+    case let polymoprhic as PolymorphicType:
+      guard let realType = mapping.first(where: { $0.0 == polymoprhic.name })?.1 else { return type }
+      return realType
+    case let tuple as TupleType:
+      let realTypes = tuple.rows.map { replacePolymorphicTypesWithActual(type: $0.type,
+                                                                         mapping: mapping) }
+      let updatedTuple = TupleType(members: realTypes)
+      return updatedTuple
+    case let record as RecordType:
+      let realTypes = record.rows.map { ($0.0,
+                                         replacePolymorphicTypesWithActual(type: $0.type,
+                                                                           mapping: mapping)) }
+      let updatedRecord = RecordType(rows: realTypes)
+      return updatedRecord
+    case let list as ListType:
+      let realType = replacePolymorphicTypesWithActual(type: list.type,
+                                                       mapping: mapping)
+      let updatedList = ListType(elementType: realType)
+      return updatedList
+    default:
+      return type
+    }
   }
 }

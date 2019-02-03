@@ -9,39 +9,30 @@
 import Foundation
 
 class DataType: Type {
-  let parent: String
   let name: String
-  let constructorTypes: [Type]
-  let associatedType: Type?
+  let constructorTypes: [(name: String, type: Type)]
+  let cases: [String: Type]
   
-  init(parent: String, name: String, constructorTypes: [Type]) {
-    self.parent = parent
+  init(name: String, constructorTypes: [(String, Type)], cases: [String: Type]) {
     self.name = name
     self.constructorTypes = constructorTypes
-    self.associatedType = nil
-  }
-  
-  init(parent: String, name: String, constructorTypes: [Type], associatedType: Type?) {
-    self.parent = parent
-    self.name = name
-    self.constructorTypes = constructorTypes
-    self.associatedType = associatedType
+    self.cases = cases
   }
   
   var description: String {
-    return "[\(parent) => \(name)]"
+    let constructors = constructorTypes
+      .map { $0.1.description }
+      .joined(separator: ", ")
+    return "(\(constructors)) \(name)"
   }
   
   func sameStructureAs(other: Type) -> Bool {
     if other.isAbstract { return true }
-    guard let datatype = other as? DataType else { return false }
-    return datatype.parent == self.parent
-  }
-  
-  var parentDatatype: DataType {
-    return DataType(parent: self.parent,
-                        name: "",
-                        constructorTypes: constructorTypes)
+    guard let caseType = other as? CaseType else { return false }
+    guard caseType.parent.name == self.name else { return false }
+    guard let selectedCase = cases[caseType.name] else { return true }
+    guard let associatedType = caseType.associatedType else { return false }
+    return selectedCase.sameStructureAs(other: associatedType)
   }
 }
 

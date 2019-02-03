@@ -205,6 +205,15 @@ val d: (int * int, int list list) X list = [];
 """
     testSyntaxParsingAndSemantics(code: code, typeCheck: false, expected: "ast20")
   }
+  
+  func testDatatypeWithPolymorphicTypes() {
+    let code = """
+datatype ('a, 'b) Opcija = JE of ('a * int * 'b) | NI;
+val a = JE (10, 10, false);
+val b: ('a, 'b) Opcija = NI;
+"""
+    testSyntaxParsingAndSemantics(code: code, typeCheck: true, expected: "ast21")
+  }
 }
 
 private extension SyntaxParserTests {

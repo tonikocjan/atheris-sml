@@ -98,6 +98,12 @@ extension NameChecker: AstVisitor {
     symbolDescription.bindNode(node, binding: binding)
   }
   
+  func visit(node: AstTupleType) throws {
+    for type in node.types {
+      try type.accept(visitor: self)
+    }
+  }
+  
   func visit(node: AstNameExpression) throws {
     guard let binding = symbolTable.findBinding(name: node.name) else {
       switch node.name {

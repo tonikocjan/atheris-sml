@@ -2,18 +2,10 @@
 
 #lang racket
 
-<<<<<<< Updated upstream
-(define (f x)
-  (+ x 10))
-f
-(define x1 (f 10))
-x1
-(define x2 (f 20))
-x2
-=======
-(struct A (x0) #:transparent)
-(struct B (x0) #:transparent)
+(struct JE (x0 x1 x2 x3 x4) #:transparent)
+(struct NI (_) #:transparent)
 
-(define a (A false))
+(define a JE)
 a
->>>>>>> Stashed changes
+(define b (NI 0))
+b
