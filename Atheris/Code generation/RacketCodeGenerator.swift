@@ -111,8 +111,8 @@ extension RacketCodeGenerator: CodeGenerator {
       for (idx, case_) in node.cases.enumerated() {
         guard let pattern = self.symbolDescription.type(for: case_.parameter) else { return }
         print("[(")
-        if let datatype = pattern as? DataType {
-          print("\(datatype.name)?")
+        if let caseType = pattern as? CaseType {
+          print("\(caseType.name)?")
           self.print(" x) ")
         } else {
           self.print("equal? ")
@@ -201,7 +201,7 @@ extension RacketCodeGenerator: CodeGenerator {
     
     func isDatatypeConstructorWithoutAssociatedValue() -> Bool {
       guard rhs && !printList else { return false }
-      guard type is DataType || (type as? FunctionType)?.body is DataType else { return false }
+      guard type is CaseType || (type as? FunctionType)?.body is CaseType else { return false }
       if let binding = symbolDescription.binding(for: node) as? AstCase, binding.associatedType == nil {
         return true
       }
@@ -432,7 +432,7 @@ extension RacketCodeGenerator: CodeGenerator {
         _ = nestedPatternsStack.popLast()
       } else {
         guard let type = symbolDescription.type(for: rule) as? RuleType else { return }
-        if type.patternType is DataType {
+        if type.patternType is CaseType {
           _ = nestedPatternsStack.popLast()
         } else {
           increaseIndent()
@@ -870,7 +870,7 @@ private extension RacketCodeGenerator {
       self.print("[")
       try associatedValue.accept(visitor: self)
       self.print(" ")
-      if let identifierPattern = rule.pattern as? AstIdentifierPattern, type.patternType is DataType {
+      if let identifierPattern = rule.pattern as? AstIdentifierPattern, type.patternType is CaseType {
         self.print("(\(identifierPattern.name)-x0 ")
         try expression.accept(visitor: self)
         self.print(")")

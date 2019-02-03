@@ -51,7 +51,7 @@ val z = x ("abc") ("efg") (fn (x, y) => x + y);
     let code = """
 val x = {1 = 10, 3 = 20};
 val y = {1 = 10, 2 = 20};
-val c = x = y;
+x = y;
 """
     performFailingTest(code: code)
   }
@@ -215,6 +215,89 @@ fun f x: int = 10;
     let code = """
 fun f x = x;
 f ~10;
+"""
+    performSucceedingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeNotFoundShouldFail() {
+    let code = """
+datatype ('a, 'b) Opcija = JE of ('c * int * 'b) | NI;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidTypeShouldFail() {
+    let code = """
+datatype ('a, 'b) Opcija =
+  JE of ('a * 'a * int * 'b)
+  | NI;
+  
+val a: (int, int) Opcija = JE (10, false, 10, false);
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeWrongTypeShouldFail() {
+    let code = """
+datatype (''a,'b) X =
+  A of ''a
+  | B of 'b;
+
+val a: (int, int) X = A false;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidArgumentsShouldFail() {
+    let code = """
+datatype ('a, 'b) X =
+  A of ('a * ('a * 'b) * string)
+  | B of 'b;
+
+val a: (int, bool) X = A (10);
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidArguments2ShouldFail() {
+    let code = """
+datatype ('a, 'b) X =
+  A of ('a * ('a * 'b) * string)
+  | B of 'b;
+
+val a: (int, bool) X = A (10, ("a", true), "ab");
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidArguments3ShouldFail() {
+    let code = """
+datatype ('a, 'b) X =
+  A of ('a * ('a * 'b) * string)
+  | B of 'b;
+
+val a: (int, bool) X = B 10;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testListAsDataTypeInvalidArguments() {
+    let code = """
+val x: (int, bool) list = [1, 2, 3];
+"""
+    performFailingTest(code: code)
+  }
+
+  func testListAsDataTypeInvalidArguments2() {
+    let code = """
+val x: list = [1, 2, 3];
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testListAsDataTypeShouldSucceed() {
+    let code = """
+val x: int list = [1, 2, 3];
 """
     performSucceedingTest(code: code)
   }

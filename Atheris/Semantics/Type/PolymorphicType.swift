@@ -9,27 +9,35 @@
 import Foundation
 
 class PolymorphicType: Type {
-  let binding: AstTypeBinding
+  let name: String
+  let type: AstTypeBinding.Kind
   
   var description: String {
-    return binding.name
+    return name
   }
   
   var isAbstract: Bool {
     return false
   }
   
-  init(binding: AstTypeBinding) {
-    self.binding = binding
+  init(binding: AstTypeBinding) { // TODO: - Shouldnt be aware of `asttypebinding`
+    self.name = binding.name
+    self.type = binding.type
+  }
+  
+  init(name: String, type: AstTypeBinding.Kind) {
+    self.name = name
+    self.type = type
   }
   
   func sameStructureAs(other: Type) -> Bool {
-    guard let other = other as? PolymorphicType else { return false }
-    return other.description == description
+//    guard let other = other as? PolymorphicType else { return false }
+//    return other.description == description
+    return canAccept(type: other)
   }
   
   func canAccept(type: Type) -> Bool {
-    switch binding.type {
+    switch self.type {
     case .normal:
       return true
     case .equatable:
