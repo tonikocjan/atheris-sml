@@ -223,17 +223,6 @@ val x = 20.15;
     XCTAssertEqual("[1:8, 1:13] LOG_CONST: false", symbols[2].description)
     XCTAssertEqual("[1:13, 1:14] EOF: $", symbols[3].description)
   }
-  
-  func testEndToEndTest() {
-    //    let reader = try! FileReader(fileUrl: URL(string: "/Users/tonikocjan/swift/Atheris tests/Lexan/test.ar")!)
-    //    let stream = FileInputStream(fileReader: reader)
-    //    let lexan = LexAn(stream: stream)
-    //    while true {
-    //      let symbol = lexan.nextSymbol()
-    //
-    //      if symbol.token == .eof { break }
-    //    }
-  }
 }
 
 private extension LexanTests {

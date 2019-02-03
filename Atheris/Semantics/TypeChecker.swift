@@ -51,7 +51,7 @@ extension TypeChecker: AstVisitor {
       guard patternType.sameStructureAs(other: expressionType) else {
         throw Error.typeError(position: node.position, patternType: patternType, expressionType: expressionType)
       }
-      if let function = expressionType.asFunction, function.body is DatatypeType, function.parameter.isAbstract {
+      if let function = expressionType.asFunction, function.body is DataType, function.parameter.isAbstract {
         symbolDescription.setType(for: node, type: function.body)
         resultType = function.body
       } else {
@@ -147,7 +147,7 @@ extension TypeChecker: AstVisitor {
     
     let constructorTypes = node.types.compactMap { symbolDescription.type(for: $0) as? PolymorphicType }
     
-    let datatype = DatatypeType(parent: node.name.name, name: "", constructorTypes: constructorTypes)
+    let datatype = DataType(parent: node.name.name, name: "", constructorTypes: constructorTypes)
     symbolDescription.setType(for: node, type: datatype)
     
     for case_ in node.cases {
@@ -158,7 +158,7 @@ extension TypeChecker: AstVisitor {
       } else {
         associatedType = nil
       }
-      let caseType = DatatypeType(parent: node.name.name,
+      let caseType = DataType(parent: node.name.name,
                                   name: case_.name.name,
                                   constructorTypes: constructorTypes,
                                   associatedType: associatedType)
@@ -200,7 +200,7 @@ extension TypeChecker: AstVisitor {
   
   func visit(node: AstTypeConstructor) throws {
     guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
-    guard let type = symbolDescription.type(for: binding) as? DatatypeType else { throw internalError() }
+    guard let type = symbolDescription.type(for: binding) as? DataType else { throw internalError() }
     
     guard node.types.count == type.constructorTypes.count else {
       throw Error.typeConstructorError(name: node.name,
@@ -221,7 +221,7 @@ extension TypeChecker: AstVisitor {
       }
     }
     
-    let datatype = DatatypeType(parent: type.parent,
+    let datatype = DataType(parent: type.parent,
                                 name: type.name,
                                 constructorTypes: types,
                                 associatedType: type.associatedType)
@@ -249,7 +249,7 @@ extension TypeChecker: AstVisitor {
     }
   
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
-    if valBindingRhs, let type = type as? DatatypeType, !type.name.isEmpty, let _ = symbolDescription.binding(for: node) as? AstCase {
+    if valBindingRhs, let type = type as? DataType, !type.name.isEmpty, let _ = symbolDescription.binding(for: node) as? AstCase {
       symbolDescription.setType(for: node, type: FunctionType(name: node.name,
                                                               parameter: AbstractDummyType(name: "_"),
                                                               body: type))
@@ -434,15 +434,19 @@ extension TypeChecker: AstVisitor {
                                                                                      domain: "'Z list",
                                                                                      operand: argumentType) }
       
-      if node.name == "null" {
+      switch node.name {
+      case "null":
         symbolDescription.setType(for: node, type: AtomType.bool)
         applyType(argumentType: argumentType)
-      } else if node.name == "hd", let list = argumentType.toList {
+      case "hd":
+        guard let list = argumentType.toList else { return }
         symbolDescription.setType(for: node, type: list.type)
         applyType(argumentType: argumentType)
-      } else if node.name == "tl" {
+      case "tl":
         symbolDescription.setType(for: node, type: argumentType)
         applyType(argumentType: argumentType)
+      default:
+        break
       }
       return
     }
@@ -466,7 +470,7 @@ extension TypeChecker: AstVisitor {
     
     guard let type = symbolDescription.type(for: binding) else { throw internalError() }
     
-    if let datatype = type as? DatatypeType {
+    if let datatype = type as? DataType {
       guard let case_ = binding as? AstCase else { throw internalError() }
       guard let associatedType = case_.associatedType else {
         symbolDescription.setType(for: node, type: datatype.parentDatatype)
@@ -615,7 +619,7 @@ extension TypeChecker: AstVisitor {
     try node.pattern.accept(visitor: self)
     guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
     
-    if let associatedValue = node.associatedValue, let datatype = patternType as? DatatypeType, let associatedType = datatype.associatedType {
+    if let associatedValue = node.associatedValue, let datatype = patternType as? DataType, let associatedType = datatype.associatedType {
       symbolDescription.setType(for: associatedValue, type: associatedType)
       
       typeDistributionStack.append(associatedType)

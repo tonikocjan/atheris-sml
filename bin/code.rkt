@@ -2,6 +2,7 @@
 
 #lang racket
 
+<<<<<<< Updated upstream
 (define (f x)
   (+ x 10))
 f
@@ -9,3 +10,10 @@ f
 x1
 (define x2 (f 20))
 x2
+=======
+(struct A (x0) #:transparent)
+(struct B (x0) #:transparent)
+
+(define a (A false))
+a
+>>>>>>> Stashed changes

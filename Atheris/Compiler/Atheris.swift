@@ -64,7 +64,8 @@ class Atheris {
       // Code generation
       let codeOutputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "code.rkt")!))
       let codeGenerator = RacketCodeGenerator(outputStream: codeOutputStream,
-                                              configuration: .standard, symbolDescription: symbolTable.symbolDescription)
+                                              configuration: .standard,
+                                              symbolDescription: symbolTable.symbolDescription)
       try codeGenerator.visit(node: ast)
       
       // Execute racket

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DatatypeType: Type {
+class DataType: Type {
   let parent: String
   let name: String
   let constructorTypes: [Type]
@@ -34,12 +34,12 @@ class DatatypeType: Type {
   
   func sameStructureAs(other: Type) -> Bool {
     if other.isAbstract { return true }
-    guard let datatype = other as? DatatypeType else { return false }
+    guard let datatype = other as? DataType else { return false }
     return datatype.parent == self.parent
   }
   
-  var parentDatatype: DatatypeType {
-    return DatatypeType(parent: self.parent,
+  var parentDatatype: DataType {
+    return DataType(parent: self.parent,
                         name: "",
                         constructorTypes: constructorTypes)
   }
@@ -47,7 +47,7 @@ class DatatypeType: Type {
   var isAbstract: Bool { return false }
 }
 
-extension DatatypeType {
+extension DataType {
   func canBeAddedTo(other: Type) -> Bool { return false }
   func canBeSubtractedFrom(other: Type) -> Bool { return false }
   func canBeMultiplyedWith(other: Type) -> Bool { return false }
@@ -57,4 +57,5 @@ extension DatatypeType {
   func canBeCompared(other: Type) -> Bool { return false }
   func canAndAlsoWith(other: Type) -> Bool { return false }
   func canOrElseWith(other: Type) -> Bool { return false }
+  var isAbstract: Bool { return false }
 }
