@@ -21,7 +21,6 @@ class DataType: Type {
   
   var description: String {
     if constructorTypes.isEmpty { return name }
-    
     let constructors = constructorTypes
       .map { $0.1.description }
       .joined(separator: ", ")

@@ -51,7 +51,7 @@ val z = x ("abc") ("efg") (fn (x, y) => x + y);
     let code = """
 val x = {1 = 10, 3 = 20};
 val y = {1 = 10, 2 = 20};
-val c = x = y;
+x = y;
 """
     performFailingTest(code: code)
   }
@@ -279,6 +279,27 @@ datatype ('a, 'b) X =
 val a: (int, bool) X = B 10;
 """
     performFailingTest(code: code)
+  }
+  
+  func testListAsDataTypeInvalidArguments() {
+    let code = """
+val x: (int, bool) list = [1, 2, 3];
+"""
+    performFailingTest(code: code)
+  }
+
+  func testListAsDataTypeInvalidArguments2() {
+    let code = """
+val x: list = [1, 2, 3];
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testListAsDataTypeShouldSucceed() {
+    let code = """
+val x: int list = [1, 2, 3];
+"""
+    performSucceedingTest(code: code)
   }
 }
 

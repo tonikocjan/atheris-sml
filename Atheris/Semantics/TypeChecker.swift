@@ -217,7 +217,7 @@ extension TypeChecker: AstVisitor {
     }
     
     guard let binding = symbolTable.findBinding(name: node.name) else {
-      if let firstChar = node.name.first, firstChar == "'" {
+      if node.name.starts(with: "'") {
         let type: AstTypeBinding.Kind = node.name[node.name.index(node.name.startIndex,
                                                                   offsetBy: 1)] == "'" ? .equatable : .normal
         let polymorphicType = PolymorphicType(name: node.name,
@@ -228,7 +228,7 @@ extension TypeChecker: AstVisitor {
       throw internalError()
     }
     guard let type = symbolDescription.type(for: binding) else {
-      if let datatypeBinding = binding as? AstDatatypeBinding, let parsingDataType = parsingDatatype, datatypeBinding.name.name == parsingDatatype {
+      if let datatypeBinding = binding as? AstDatatypeBinding, let parsingDataType = parsingDatatype, datatypeBinding.name.name == parsingDataType {
         symbolDescription.setType(for: node, type: AbstractDummyType(name: "_"))
         return
       }
@@ -238,13 +238,26 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstTypeConstructor) throws {
+    if node.name == "list" {
+      guard node.types.count == 1 else {
+        throw Error.typeConstructorError(name: "list",
+                                         given: node.types.count,
+                                         wants: 1)
+      }
+      try node.types[0].accept(visitor: self)
+      guard let type = symbolDescription.type(for: node.types[0]) else { throw internalError() }
+      let listType = ListType(elementType: type)
+      symbolDescription.setType(for: node, type: listType)
+      return
+    }
+    
     guard let binding = symbolTable.findBinding(name: node.name) else { throw internalError() }
     guard let datatype = symbolDescription.type(for: binding) as? DataType else { throw internalError() }
     
     guard node.types.count == datatype.constructorTypes.count else {
       throw Error.typeConstructorError(name: node.name,
                                        given: node.types.count,
-                                       received: datatype.constructorTypes.count)
+                                       wants: datatype.constructorTypes.count)
     }
     for type in node.types {
       try type.accept(visitor: self)
@@ -787,7 +800,7 @@ extension TypeChecker  {
     case testExpressionError(position: Position, testExpressionType: Type)
     case branchesTypeMistmatchError(position: Position, trueBranchType: Type, falseBranchType: Type)
     case redundantCaseError(position: Position)
-    case typeConstructorError(name: String, given: Int, received: Int)
+    case typeConstructorError(name: String, given: Int, wants: Int)
     
     var errorMessage: String {
       switch self {
@@ -823,8 +836,8 @@ extension TypeChecker  {
         """
       case .redundantCaseError(let position):
         return "error \(position.description): redundant case"
-      case .typeConstructorError(let name, let given, let received):
-        return "type constructor \(name) given \(given) arguments, wants \(received)"
+      case .typeConstructorError(let name, let given, let wants):
+        return "type constructor \(name) given \(given) arguments, wants \(wants)"
       }
     }
   }

@@ -94,6 +94,7 @@ extension NameChecker: AstVisitor {
 
   func visit(node: AstTypeName) throws {
     if let _ = AstAtomType.AtomType(rawValue: node.name) { return }
+    if node.name.starts(with: "'") { return }
     guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.bindingNotFound(node.name, node.position) }
     symbolDescription.bindNode(node, binding: binding)
   }
