@@ -236,6 +236,50 @@ val a: (int, int) Opcija = JE (10, false, 10, false);
 """
     performFailingTest(code: code)
   }
+  
+  func testDataTypeWithPolymorphicTypeWrongTypeShouldFail() {
+    let code = """
+datatype (''a,'b) X =
+  A of ''a
+  | B of 'b;
+
+val a: (int, int) X = A false;
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidArgumentsShouldFail() {
+    let code = """
+datatype ('a, 'b) X =
+  A of ('a * ('a * 'b) * string)
+  | B of 'b;
+
+val a: (int, bool) X = A (10);
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidArguments2ShouldFail() {
+    let code = """
+datatype ('a, 'b) X =
+  A of ('a * ('a * 'b) * string)
+  | B of 'b;
+
+val a: (int, bool) X = A (10, ("a", true), "ab");
+"""
+    performFailingTest(code: code)
+  }
+  
+  func testDataTypeWithPolymorphicTypeInvalidArguments3ShouldFail() {
+    let code = """
+datatype ('a, 'b) X =
+  A of ('a * ('a * 'b) * string)
+  | B of 'b;
+
+val a: (int, bool) X = B 10;
+"""
+    performFailingTest(code: code)
+  }
 }
 
 private extension TypeCheckerTests {

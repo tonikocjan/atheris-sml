@@ -94,8 +94,7 @@ val y = 1::2::[3];
     performTest(code: code, filepath: "code9.rkt")
   }
   
-  func testDatatype() {
-    // TODO: - 
+  func testListWithDatatypeCases() {
     let code = """
 datatype prevozno_sredstvo_t =
   Bus of int
@@ -125,7 +124,7 @@ val e = case (true, (true, true)) of
     performTest(code: code, filepath: "code11.rkt")
   }
   
-  func testDatatypeMethod() {
+  func testRecursiveDatatype() {
     let code = """
 datatype natural = NEXT of natural | ZERO;
 
@@ -259,8 +258,7 @@ case 1 of
                 filepath: "code17.rkt")
   }
   
-  func testDatatypeWithTypeConstructor() {
-    // TODO: -
+  func testDatatypeWithTypePolymorphicTypes() {
     let code = """
 datatype ('a) Opcija = JE of 'a | NI;
 fun f x: int Opcija = NI;

@@ -25,6 +25,7 @@ class TypeChecker {
   
   //
   private var valBindingRhs = false
+  private var parsingDatatype: String?
   
   init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
@@ -141,6 +142,7 @@ extension TypeChecker: AstVisitor {
   }
   
   func visit(node: AstDatatypeBinding) throws {
+    parsingDatatype = node.name.name
     for type in node.types {
       try type.accept(visitor: self)
     }
@@ -182,6 +184,8 @@ extension TypeChecker: AstVisitor {
                               associatedType: associatedType)
       symbolDescription.setType(for: case_, type: caseType)
     }
+    
+    parsingDatatype = nil
   }
   
   func visit(node: AstTypeBinding) throws {
@@ -223,7 +227,13 @@ extension TypeChecker: AstVisitor {
       }
       throw internalError()
     }
-    guard let type = symbolDescription.type(for: binding) else { throw internalError() }
+    guard let type = symbolDescription.type(for: binding) else {
+      if let datatypeBinding = binding as? AstDatatypeBinding, let parsingDataType = parsingDatatype, datatypeBinding.name.name == parsingDatatype {
+        symbolDescription.setType(for: node, type: AbstractDummyType(name: "_"))
+        return
+      }
+      throw internalError()
+    }
     symbolDescription.setType(for: node, type: type)
   }
   

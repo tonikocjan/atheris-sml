@@ -20,6 +20,8 @@ class DataType: Type {
   }
   
   var description: String {
+    if constructorTypes.isEmpty { return name }
+    
     let constructors = constructorTypes
       .map { $0.1.description }
       .joined(separator: ", ")
@@ -28,6 +30,7 @@ class DataType: Type {
   
   func sameStructureAs(other: Type) -> Bool {
     if other.isAbstract { return true }
+    if let dataType = other as? DataType { return dataType.name == name }
     guard let caseType = other as? CaseType else { return false }
     guard caseType.parent.name == self.name else { return false }
     guard let selectedCase = cases[caseType.name] else { return true }
