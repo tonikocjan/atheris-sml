@@ -8,15 +8,15 @@
 
 import Foundation
 
-class TextStream: InputStream {
-  let string: String
+public class TextStream: InputStream {
+  public let string: String
   private var it = 0
   
-  init(string: String) {
+  public init(string: String) {
     self.string = string
   }
   
-  func next() throws -> Character {
+  public func next() throws -> Character {
     guard it < string.count else { throw NSError(domain: "Empty string", code: 0, userInfo: nil) }
     it += 1
     return string[string.index(string.startIndex, offsetBy: it - 1)]
