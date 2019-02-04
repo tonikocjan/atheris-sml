@@ -9,16 +9,11 @@
 import Foundation
 
 public class Atheris {
-  public let argumentParser: ArgumentParserProtocol
   public var logger: LoggerProtocol = LoggerFactory.logger
+  private let inputStream: InputStream
   
-  public init(argumentParser: ArgumentParserProtocol) {
-    self.argumentParser = argumentParser
-  }
-  
-  public func parseArguments(_ args: [String]) -> Atheris {
-    argumentParser.parseArguments(args)
-    return self
+  public init(inputStream: InputStream) throws {
+    self.inputStream = inputStream
   }
   
   public func compile() throws {
@@ -27,16 +22,7 @@ public class Atheris {
     
     do {
       logger.log(message: "SML -> Racket 🚀 [0.0.1 (pre-alpha)]:")
-      
-      guard let sourceFile = argumentParser.string(for: ArgumentParser.Arguments.sourceFile.rawValue) else {
-        throw Error.invalidArguments(errorMessage: "Source file missing!")
-      }
-      
-      logger.log(message: "Compiling \(sourceFile) ... ")
-      
-      guard let url = URL(string: sourceFile) else { throw Error.invalidPath(sourceFile) }
-      let fileReader = try FileReader(fileUrl: url)
-      let lexan = LexAn(inputStream: FileInputStream(fileReader: fileReader))
+      let lexan = LexAn(inputStream: inputStream)
       //    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
       //    for symbol in lexan {
       //      outputStream.printLine(symbol.description)
