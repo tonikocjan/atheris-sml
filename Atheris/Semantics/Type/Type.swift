@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Operation: String {
+public enum Operation: String {
   case add = "+"
   case subtract = "-"
   case multiply = "*"
@@ -25,16 +25,16 @@ enum Operation: String {
   case append = "::"
   case unknown
 
-  var domain: String {
+  public var domain: String {
     if self == .andalso || self == .orelse { return "bool * bool" }
     return "[\(rawValue) ty] * [\(rawValue) ty]"
   }
   
-  static func convert(_ op: AstBinaryExpression.Operation) -> Operation {
+  public static func convert(_ op: AstBinaryExpression.Operation) -> Operation {
     return Operation.init(rawValue: op.rawValue) ?? .unknown
   }
   
-  var defaultType: Type {
+  public var defaultType: Type {
     switch self {
     case .add: return AtomType.int
     case .subtract: return AtomType.int
@@ -57,7 +57,7 @@ enum Operation: String {
 
 // TODO: - Should refactor type system using enums and pattern matching
 
-protocol Type: class, CustomStringConvertible {
+public protocol Type: class, CustomStringConvertible {
   func sameStructureAs(other: Type) -> Bool
   
   func canBeAddedTo(other: Type) -> Bool
@@ -75,12 +75,12 @@ protocol Type: class, CustomStringConvertible {
   var isAbstract: Bool { get }
 }
 
-extension Type {
+public extension Type {
   var isConcrete: Bool { return !self.isAbstract }
   var isPolymorphic: Bool { return self is PolymorphicType }
 }
 
-extension Type {
+public extension Type {
   var isAtom: Bool { return self is AtomType }
   var toAtom: AtomType? { return self as? AtomType}
   
@@ -90,25 +90,25 @@ extension Type {
   var isString: Bool { return (toAtom?.type ?? .int) == .string }
 }
 
-extension Type {
+public extension Type {
   var isTuple: Bool { return self is TupleType }
   var toTuple: TupleType? { return self as? TupleType}
   var isRecord: Bool { return self is RecordType }
   var toRecord: RecordType? { return self as? RecordType}
 }
 
-extension Type {
+public extension Type {
   var isFunction: Bool { return self is FunctionType }
   var asFunction: FunctionType? { return self as? FunctionType}
 }
 
-extension Type {
+public extension Type {
   var isList: Bool { return self is ListType }
   var toList: ListType? { return self as? ListType}
 }
 
-extension Type {
-  func isBinaryOperationValid(_ operation: Operation, other: Type) -> Type? {
+public extension Type {
+  public func isBinaryOperationValid(_ operation: Operation, other: Type) -> Type? {
     switch operation {
     case .add:
       return self.canBeAddedTo(other: other) ? self.isConcrete ? self : other : nil

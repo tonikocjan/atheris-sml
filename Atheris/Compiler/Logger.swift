@@ -8,26 +8,26 @@
 
 import Foundation
 
-protocol LoggerProtocol {
+public protocol LoggerProtocol {
   func log(message: String)
   func error(message: String)
   func warning(message: String)
 }
 
-class Logger: LoggerProtocol {
-  func log(message: String) {
+public class Logger: LoggerProtocol {
+  public func log(message: String) {
     print(message)
   }
   
-  func error(message: String) {
+  public func error(message: String) {
     print("❗️ " + message)
   }
   
-  func warning(message: String) {
+  public func warning(message: String) {
     print("⚠ " + message)
   }
 }
 
-class LoggerFactory {
-  static let logger: LoggerProtocol = Logger()
+public class LoggerFactory {
+  public static let logger: LoggerProtocol = Logger()
 }

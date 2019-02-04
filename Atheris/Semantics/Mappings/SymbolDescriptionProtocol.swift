@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SymbolDescriptionProtocol {
+public protocol SymbolDescriptionProtocol {
   func setScope(for node: AstBinding, scope: Int)
   func scope(for node: AstBinding) -> Int?
   func bindNode(_ node: AstNode, binding: AstBinding)

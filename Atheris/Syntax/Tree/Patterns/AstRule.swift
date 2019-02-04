@@ -8,20 +8,20 @@
 
 import Foundation
 
-class AstRule: AstNode {
-  let position: Position
-  let pattern: AstPattern
-  let associatedValue: AstPattern?
-  let expression: AstExpression
+public class AstRule: AstNode {
+  public let position: Position
+  public let pattern: AstPattern
+  public let associatedValue: AstPattern?
+  public let expression: AstExpression
   
-  init(position: Position, pattern: AstPattern, associatedValue: AstPattern?, expression: AstExpression) {
+  public init(position: Position, pattern: AstPattern, associatedValue: AstPattern?, expression: AstExpression) {
     self.position = position
     self.pattern = pattern
     self.associatedValue = associatedValue
     self.expression = expression
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

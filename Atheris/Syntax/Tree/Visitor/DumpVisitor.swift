@@ -26,7 +26,7 @@ class DumpVisitor {
 }
 
 extension DumpVisitor: AstVisitor {
-  func visit(node: AstBindings) throws {
+  public func visit(node: AstBindings) throws {
     print("AstBindings", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -34,7 +34,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstValBinding) throws {
+  public func visit(node: AstValBinding) throws {
     print("AstValBinding", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -43,7 +43,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstFunBinding) throws {
+  public func visit(node: AstFunBinding) throws {
     print("AstFunBinding", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -56,7 +56,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstAnonymousFunctionBinding) throws {
+  public func visit(node: AstAnonymousFunctionBinding) throws {
     print("AstAnonymousFunctionBinding", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -67,7 +67,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstDatatypeBinding) throws {
+  public func visit(node: AstDatatypeBinding) throws {
     print("AstDatatypeBinding", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -77,7 +77,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstCase) throws {
+  public func visit(node: AstCase) throws {
     print("AstCase", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -86,7 +86,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTypeBinding) throws {
+  public func visit(node: AstTypeBinding) throws {
     print("AstTypeBinding", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -95,7 +95,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstAtomType) throws {
+  public func visit(node: AstAtomType) throws {
     print("AstAtomType", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -104,7 +104,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTypeName) throws {
+  public func visit(node: AstTypeName) throws {
     print("AstTypeName", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -112,7 +112,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTypeConstructor) throws {
+  public func visit(node: AstTypeConstructor) throws {
     print("AstTypeConstructor", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -121,7 +121,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTupleType) throws {
+  public func visit(node: AstTupleType) throws {
     print("AstTupleType", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -129,7 +129,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstConstantExpression) throws {
+  public func visit(node: AstConstantExpression) throws {
     print("AstConstantExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -138,7 +138,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstNameExpression) throws {
+  public func visit(node: AstNameExpression) throws {
     print("AstNameExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -146,7 +146,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTupleExpression) throws {
+  public func visit(node: AstTupleExpression) throws {
     print("AstTupleExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -154,7 +154,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstBinaryExpression) throws {
+  public func visit(node: AstBinaryExpression) throws {
     print("AstBinaryExpression `\(node.operation.rawValue)`", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -163,7 +163,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstUnaryExpression) throws {
+  public func visit(node: AstUnaryExpression) throws {
     print("AstUnaryExpression `\(node.operation.rawValue)`", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -171,7 +171,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstIfExpression) throws {
+  public func visit(node: AstIfExpression) throws {
     print("AstIfExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -181,7 +181,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstLetExpression) throws {
+  public func visit(node: AstLetExpression) throws {
     print("AstLetExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -190,7 +190,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstFunctionCallExpression) throws {
+  public func visit(node: AstFunctionCallExpression) throws {
     print("AstFunctionCallExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -199,7 +199,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstAnonymousFunctionCall) throws {
+  public func visit(node: AstAnonymousFunctionCall) throws {
     print("AstAnonymousFunctionCall", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -208,7 +208,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstRecordExpression) throws {
+  public func visit(node: AstRecordExpression) throws {
     print("AstRecordExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -216,7 +216,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstCaseExpression) throws {
+  public func visit(node: AstCaseExpression) throws {
     print("AstCaseExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -225,7 +225,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstRecordRow) throws {
+  public func visit(node: AstRecordRow) throws {
     print("AstRecordRow", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -234,7 +234,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstListExpression) throws {
+  public func visit(node: AstListExpression) throws {
     print("AstListExpression", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -242,7 +242,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstRecordSelectorExpression) throws {
+  public func visit(node: AstRecordSelectorExpression) throws {
     print("AstRecordRow", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -251,7 +251,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstIdentifierPattern) throws {
+  public func visit(node: AstIdentifierPattern) throws {
     print("AstIdentifierPattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -259,12 +259,12 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstWildcardPattern) throws {
+  public func visit(node: AstWildcardPattern) throws {
     print("AstWildcardPattern", node.position)
     printSemanticInformation(node: node)
   }
   
-  func visit(node: AstTuplePattern) throws {
+  public func visit(node: AstTuplePattern) throws {
     print("AstTuplePattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -272,14 +272,14 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstRecordPattern) throws {
+  public func visit(node: AstRecordPattern) throws {
     print("AstRecordPattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
     decreaseIndent()
   }
   
-  func visit(node: AstConstantPattern) throws {
+  public func visit(node: AstConstantPattern) throws {
     print("AstConstantPattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -288,14 +288,14 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstEmptyListPattern) throws {
+  public func visit(node: AstEmptyListPattern) throws {
     print("AstEmptyListPattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
     decreaseIndent()
   }
   
-  func visit(node: AstListPattern) throws {
+  public func visit(node: AstListPattern) throws {
     print("AstListPattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -304,7 +304,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstTypedPattern) throws {
+  public func visit(node: AstTypedPattern) throws {
     print("AstTypedPattern", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -313,7 +313,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstMatch) throws {
+  public func visit(node: AstMatch) throws {
     print("AstMatch", node.position)
     increaseIndent()
     printSemanticInformation(node: node)
@@ -321,7 +321,7 @@ extension DumpVisitor: AstVisitor {
     decreaseIndent()
   }
   
-  func visit(node: AstRule) throws {
+  public func visit(node: AstRule) throws {
     print("AstRule", node.position)
     increaseIndent()
     printSemanticInformation(node: node)

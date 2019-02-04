@@ -8,5 +8,4 @@
 
 import Foundation
 
-protocol AstPattern: AstNode {
-}
+public protocol AstPattern: AstNode {}

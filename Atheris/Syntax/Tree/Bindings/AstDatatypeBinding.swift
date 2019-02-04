@@ -8,43 +8,43 @@
 
 import Foundation
 
-class AstDatatypeBinding: AstBinding {
-  let position: Position
-  let name: AstIdentifierPattern
-  let cases: [AstCase]
-  let types: [AstTypeBinding]
+public class AstDatatypeBinding: AstBinding {
+  public let position: Position
+  public let name: AstIdentifierPattern
+  public let cases: [AstCase]
+  public let types: [AstTypeBinding]
   
-  var pattern: AstPattern {
+  public var pattern: AstPattern {
     return name
   }
   
-  init(position: Position, name: AstIdentifierPattern, cases: [AstCase], types: [AstTypeBinding]) {
+  public init(position: Position, name: AstIdentifierPattern, cases: [AstCase], types: [AstTypeBinding]) {
     self.position = position
     self.name = name
     self.cases = cases
     self.types = types
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }
 
-class AstCase: AstBinding {
-  let position: Position
-  let name: AstIdentifierPattern
-  let associatedType: AstType?
-  var pattern: AstPattern {
+public class AstCase: AstBinding {
+  public let position: Position
+  public let name: AstIdentifierPattern
+  public let associatedType: AstType?
+  public var pattern: AstPattern {
     return name
   }
   
-  init(position: Position, name: AstIdentifierPattern, associatedType: AstType?) {
+  public init(position: Position, name: AstIdentifierPattern, associatedType: AstType?) {
     self.position = position
     self.name = name
     self.associatedType = associatedType
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

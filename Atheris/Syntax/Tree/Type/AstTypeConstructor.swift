@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstTypeConstructor: AstType {
-  let position: Position
-  let name: String
-  let types: [AstType]
+public class AstTypeConstructor: AstType {
+  public let position: Position
+  public let name: String
+  public let types: [AstType]
   
-  init(position: Position, name: String, types: [AstType]) {
+  public init(position: Position, name: String, types: [AstType]) {
     self.position = position
     self.name = name
     self.types = types
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

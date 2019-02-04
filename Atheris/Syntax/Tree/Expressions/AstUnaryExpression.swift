@@ -8,24 +8,24 @@
 
 import Foundation
 
-class AstUnaryExpression: AstExpression {
-  let position: Position
-  let operation: Operation
-  let expression: AstExpression
+public class AstUnaryExpression: AstExpression {
+  public let position: Position
+  public let operation: Operation
+  public let expression: AstExpression
   
-  init(position: Position, operation: Operation, expression: AstExpression) {
+  public init(position: Position, operation: Operation, expression: AstExpression) {
     self.position = position
     self.operation = operation
     self.expression = expression
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }
 
 extension AstUnaryExpression {
-  enum Operation: String {
+  public enum Operation: String {
     case negate = "~"
     case not = "not"
   }

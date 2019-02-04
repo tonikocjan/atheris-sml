@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstBindings: AstNode {
-  let position: Position
-  let bindings: [AstBinding]
+public class AstBindings: AstNode {
+  public let position: Position
+  public let bindings: [AstBinding]
   
-  init(position: Position, bindings: [AstBinding]) {
+  public init(position: Position, bindings: [AstBinding]) {
     self.position = position
     self.bindings = bindings
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

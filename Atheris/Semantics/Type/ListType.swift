@@ -8,34 +8,34 @@
 
 import Foundation
 
-class ListType: Type {
-  let type: Type
+public class ListType: Type {
+  public let type: Type
   
-  init(elementType type: Type) {
+  public init(elementType type: Type) {
     self.type = type
   }
   
-  var description: String {
+  public var description: String {
     return "\(type.description) list"
   }
   
-  func sameStructureAs(other: Type) -> Bool {
+  public func sameStructureAs(other: Type) -> Bool {
     if other.isAbstract { return true }
     guard let list = other.toList else { return false }
     return list.type.sameStructureAs(other: type)
   }
   
-  var isAbstract: Bool { return false }
+  public var isAbstract: Bool { return false }
 }
 
 extension ListType {
-  func canBeAddedTo(other: Type) -> Bool { return false }
-  func canBeSubtractedFrom(other: Type) -> Bool { return false }
-  func canBeMultiplyedWith(other: Type) -> Bool { return false }
-  func canBeDividedBy(other: Type) -> Bool { return false }
-  func canBeConcatenatedWith(other: Type) -> Bool { return false }
-  func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
-  func canBeCompared(other: Type) -> Bool { return false }
-  func canAndAlsoWith(other: Type) -> Bool { return false }
-  func canOrElseWith(other: Type) -> Bool { return false }
+  public func canBeAddedTo(other: Type) -> Bool { return false }
+  public func canBeSubtractedFrom(other: Type) -> Bool { return false }
+  public func canBeMultiplyedWith(other: Type) -> Bool { return false }
+  public func canBeDividedBy(other: Type) -> Bool { return false }
+  public func canBeConcatenatedWith(other: Type) -> Bool { return false }
+  public func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
+  public func canBeCompared(other: Type) -> Bool { return false }
+  public func canAndAlsoWith(other: Type) -> Bool { return false }
+  public func canOrElseWith(other: Type) -> Bool { return false }
 }

@@ -34,11 +34,11 @@ class TypeChecker {
 }
 
 extension TypeChecker: AstVisitor {
-  func visit(node: AstBindings) throws {
+  public func visit(node: AstBindings) throws {
     for binding in node.bindings { try binding.accept(visitor: self) }
   }
   
-  func visit(node: AstValBinding) throws {
+  public func visit(node: AstValBinding) throws {
     valBindingRhs = true
     try node.expression.accept(visitor: self)
     valBindingRhs = false
@@ -72,7 +72,7 @@ extension TypeChecker: AstVisitor {
     _ = typeDistributionStack.popLast()
   }
   
-  func visit(node: AstFunBinding) throws {
+  public func visit(node: AstFunBinding) throws {
     funEvalStack.append(node)
     try node.identifier.accept(visitor: self)
     var parameterType: Type?
@@ -137,11 +137,11 @@ extension TypeChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstAnonymousFunctionBinding) throws {
+  public func visit(node: AstAnonymousFunctionBinding) throws {
     try visit(node: node as AstFunBinding)
   }
   
-  func visit(node: AstDatatypeBinding) throws {
+  public func visit(node: AstDatatypeBinding) throws {
     parsingDatatype = node.name.name
     for type in node.types {
       try type.accept(visitor: self)
@@ -188,17 +188,17 @@ extension TypeChecker: AstVisitor {
     parsingDatatype = nil
   }
   
-  func visit(node: AstTypeBinding) throws {
+  public func visit(node: AstTypeBinding) throws {
     let type = PolymorphicType(binding: node)
     symbolDescription.setType(for: node, type: type)
   }
   
-  func visit(node: AstAtomType) throws {
+  public func visit(node: AstAtomType) throws {
     let atomType = AtomType(type: node.type)
     symbolDescription.setType(for: node, type: atomType)
   }
   
-  func visit(node: AstTypeName) throws {
+  public func visit(node: AstTypeName) throws {
     func builtinType(name: String) -> AtomType? {
       return ["int": AtomType(type: .int),
               "string": AtomType(type: .string),
@@ -237,7 +237,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: type)
   }
   
-  func visit(node: AstTypeConstructor) throws {
+  public func visit(node: AstTypeConstructor) throws {
     if node.name == "list" {
       guard node.types.count == 1 else {
         throw Error.typeConstructorError(name: "list",
@@ -288,19 +288,19 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: updatedDatatype)
   }
   
-  func visit(node: AstTupleType) throws {
+  public func visit(node: AstTupleType) throws {
     for type in node.types { try type.accept(visitor: self) }
     let types = node.types.compactMap { symbolDescription.type(for: $0) }
     let tupleType = TupleType(members: types)
     symbolDescription.setType(for: node, type: tupleType)
   }
   
-  func visit(node: AstConstantExpression) throws {
+  public func visit(node: AstConstantExpression) throws {
     let atomType = AtomType(type: node.type)
     symbolDescription.setType(for: node, type: atomType)
   }
   
-  func visit(node: AstNameExpression) throws {
+  public func visit(node: AstNameExpression) throws {
     guard let binding = symbolDescription.binding(for: node) else { throw internalError() }
     
     if let alreadyCalculatedType = symbolDescription.type(for: node), !alreadyCalculatedType.isAbstract {
@@ -318,14 +318,14 @@ extension TypeChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstTupleExpression) throws {
+  public func visit(node: AstTupleExpression) throws {
     for expression in node.expressions { try expression.accept(visitor: self) }
     let types = node.expressions.compactMap { symbolDescription.type(for: $0) }
     let tupleType = TupleType(members: types)
     symbolDescription.setType(for: node, type: tupleType)
   }
   
-  func visit(node: AstBinaryExpression) throws {
+  public func visit(node: AstBinaryExpression) throws {
     func applyType(_ resultType: Type, leftType: Type, rightType: Type) {
       symbolDescription.setType(for: node, type: resultType)
       symbolDescription.setType(for: node.right, type: rightType)
@@ -398,7 +398,7 @@ extension TypeChecker: AstVisitor {
     applyType(resultType, leftType: leftType!, rightType: rightType!)
   }
   
-  func visit(node: AstUnaryExpression) throws {
+  public func visit(node: AstUnaryExpression) throws {
     try node.expression.accept(visitor: self)
     guard let type = symbolDescription.type(for: node.expression) else { throw internalError() }
     
@@ -416,7 +416,7 @@ extension TypeChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstIfExpression) throws {
+  public func visit(node: AstIfExpression) throws {
     func applyType(_ type: Type) {
       symbolDescription.setType(for: node, type: type)
       symbolDescription.setType(for: node.trueBranch, type: type)
@@ -465,14 +465,14 @@ extension TypeChecker: AstVisitor {
     applyType(concreteType)
   }
   
-  func visit(node: AstLetExpression) throws {
+  public func visit(node: AstLetExpression) throws {
     try node.bindings.accept(visitor: self)
     try node.expression.accept(visitor: self)
     guard let expressionType = symbolDescription.type(for: node.expression) else { throw internalError() }
     symbolDescription.setType(for: node, type: expressionType)
   }
   
-  func visit(node: AstFunctionCallExpression) throws {
+  public func visit(node: AstFunctionCallExpression) throws {
     func handleBuiltInFunction() throws {
       func expectsListAsArgument() -> Bool {
         return node.name == "hd" || node.name == "tail" || node.name == "null"
@@ -579,14 +579,14 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: functionType.body)
   }
   
-  func visit(node: AstAnonymousFunctionCall) throws {
+  public func visit(node: AstAnonymousFunctionCall) throws {
     try node.argument.accept(visitor: self)
     try node.function.accept(visitor: self)
     guard let resultType = symbolDescription.type(for: node.function) else { throw internalError() }
     symbolDescription.setType(for: node, type: resultType.asFunction?.body ?? resultType)
   }
   
-  func visit(node: AstRecordExpression) throws {
+  public func visit(node: AstRecordExpression) throws {
     for row in node.rows { try row.accept(visitor: self) }
     let types = node.rows.compactMap { symbolDescription.type(for: $0) }
     let rows = zip(node.rows, types).map { ($0.0.label.name, $0.1) }
@@ -594,7 +594,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: recordType)
   }
   
-  func visit(node: AstRecordRow) throws {
+  public func visit(node: AstRecordRow) throws {
     try node.label.accept(visitor: self)
     try node.expression.accept(visitor: self)
     guard let type = symbolDescription.type(for: node.expression) else { throw internalError() }
@@ -602,7 +602,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: type)
   }
   
-  func visit(node: AstRecordSelectorExpression) throws {
+  public func visit(node: AstRecordSelectorExpression) throws {
     try node.record.accept(visitor: self)
     guard let type = symbolDescription.type(for: node.record) else { throw internalError() }
     guard let record = type.toRecord else {
@@ -619,7 +619,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: row)
   }
   
-  func visit(node: AstListExpression) throws {
+  public func visit(node: AstListExpression) throws {
     func areSame(types: [Type]) throws {
       guard let first = types.first else { return }
       for type in types.dropFirst() {
@@ -638,7 +638,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: listType)
   }
   
-  func visit(node: AstCaseExpression) throws {
+  public func visit(node: AstCaseExpression) throws {
     var parsingRhs = valBindingRhs
     valBindingRhs = false
     try node.expression.accept(visitor: self)
@@ -664,7 +664,7 @@ extension TypeChecker: AstVisitor {
     try node.match.accept(visitor: self)
   }
   
-  func visit(node: AstMatch) throws {
+  public func visit(node: AstMatch) throws {
     for rule in node.rules { try rule.accept(visitor: self) }
     let types = node.rules.compactMap { symbolDescription.type(for: $0) as? RuleType }
     guard let first = types.first else { return }
@@ -678,7 +678,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: first)
   }
   
-  func visit(node: AstRule) throws {
+  public func visit(node: AstRule) throws {
     try node.pattern.accept(visitor: self)
     guard let patternType = symbolDescription.type(for: node.pattern) else { throw internalError() }
     
@@ -699,7 +699,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: ruleType)
   }
   
-  func visit(node: AstIdentifierPattern) throws {
+  public func visit(node: AstIdentifierPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       symbolDescription.setType(for: node, type: parentNodeType)
       return
@@ -718,7 +718,7 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node, type: dummyPatternType)
   }
   
-  func visit(node: AstTuplePattern) throws {
+  public func visit(node: AstTuplePattern) throws {
     if let parentNodeType = typeDistributionStack.last as? TupleType {
       symbolDescription.setType(for: node, type: parentNodeType)
       for (row, pattern) in zip(parentNodeType.rows, node.patterns) {
@@ -747,12 +747,12 @@ extension TypeChecker: AstVisitor {
   }
   
   
-  func visit(node: AstConstantPattern) throws {
+  public func visit(node: AstConstantPattern) throws {
     let atomType = AtomType.fromAtomType(node.type)
     symbolDescription.setType(for: node, type: atomType)
   }
   
-  func visit(node: AstTypedPattern) throws {
+  public func visit(node: AstTypedPattern) throws {
     if let parentNodeType = typeDistributionStack.last {
       symbolDescription.setType(for: node, type: parentNodeType)
       try node.pattern.accept(visitor: self)
@@ -776,12 +776,12 @@ extension TypeChecker: AstVisitor {
     symbolDescription.setType(for: node.pattern, type: type)
   }
   
-  func visit(node: AstEmptyListPattern) throws {
+  public func visit(node: AstEmptyListPattern) throws {
     let abstractList = ListType(elementType: AbstractDummyType(name: dummyName()))
     symbolDescription.setType(for: node, type: abstractList)
   }
   
-  func visit(node: AstListPattern) throws {
+  public func visit(node: AstListPattern) throws {
     try node.head.accept(visitor: self)
     try node.tail.accept(visitor: self)
     guard let head = symbolDescription.type(for: node.head) else { throw internalError() }

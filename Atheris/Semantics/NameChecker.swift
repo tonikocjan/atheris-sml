@@ -8,13 +8,13 @@
 
 import Foundation
 
-class NameChecker {
-  let symbolTable: SymbolTableProtocol
-  let symbolDescription: SymbolDescriptionProtocol
+public class NameChecker {
+  public let symbolTable: SymbolTableProtocol
+  public let symbolDescription: SymbolDescriptionProtocol
   
   private var checkingCaseExpression = false
   
-  init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
+  public init(symbolTable: SymbolTableProtocol, symbolDescription: SymbolDescriptionProtocol) {
     self.symbolTable = symbolTable
     self.symbolDescription = symbolDescription
     
@@ -41,16 +41,16 @@ class NameChecker {
 }
 
 extension NameChecker: AstVisitor {
-  func visit(node: AstBindings) throws {
+  public func visit(node: AstBindings) throws {
     for binding in node.bindings { try binding.accept(visitor: self) }
   }
   
-  func visit(node: AstValBinding) throws {
+  public func visit(node: AstValBinding) throws {
     try node.pattern.accept(visitor: self)
     try node.expression.accept(visitor: self)
   }
   
-  func visit(node: AstFunBinding) throws {
+  public func visit(node: AstFunBinding) throws {
     try insertBinding(node, name: node.identifier.name)
     for case_ in node.cases {
       symbolTable.newScope()
@@ -62,7 +62,7 @@ extension NameChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstAnonymousFunctionBinding) throws {
+  public func visit(node: AstAnonymousFunctionBinding) throws {
     for case_ in node.cases {
       symbolTable.newScope()
       try case_.parameter.accept(visitor: self)
@@ -71,7 +71,7 @@ extension NameChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstDatatypeBinding) throws {
+  public func visit(node: AstDatatypeBinding) throws {
     try insertBinding(node, name: node.name)
     for case_ in node.cases {
       try insertBinding(case_, name: case_.name)
@@ -87,25 +87,25 @@ extension NameChecker: AstVisitor {
     symbolTable.oldScope()
   }
   
-  func visit(node: AstCase) throws {
+  public func visit(node: AstCase) throws {
     try node.name.accept(visitor: self)
     try node.associatedType?.accept(visitor: self)
   }
 
-  func visit(node: AstTypeName) throws {
+  public func visit(node: AstTypeName) throws {
     if let _ = AstAtomType.AtomType(rawValue: node.name) { return }
     if node.name.starts(with: "'") { return }
     guard let binding = symbolTable.findBinding(name: node.name) else { throw Error.bindingNotFound(node.name, node.position) }
     symbolDescription.bindNode(node, binding: binding)
   }
   
-  func visit(node: AstTupleType) throws {
+  public func visit(node: AstTupleType) throws {
     for type in node.types {
       try type.accept(visitor: self)
     }
   }
   
-  func visit(node: AstNameExpression) throws {
+  public func visit(node: AstNameExpression) throws {
     guard let binding = symbolTable.findBinding(name: node.name) else {
       switch node.name {
       case "hd", "tl":
@@ -118,33 +118,33 @@ extension NameChecker: AstVisitor {
     symbolDescription.bindNode(node, binding: binding)
   }
   
-  func visit(node: AstTupleExpression) throws {
+  public func visit(node: AstTupleExpression) throws {
     for expression in node.expressions { try expression.accept(visitor: self) }
   }
   
-  func visit(node: AstBinaryExpression) throws {
+  public func visit(node: AstBinaryExpression) throws {
     try node.left.accept(visitor: self)
     try node.right.accept(visitor: self)
   }
   
-  func visit(node: AstUnaryExpression) throws {
+  public func visit(node: AstUnaryExpression) throws {
     try node.expression.accept(visitor: self)
   }
   
-  func visit(node: AstIfExpression) throws {
+  public func visit(node: AstIfExpression) throws {
     try node.condition.accept(visitor: self)
     try node.trueBranch.accept(visitor: self)
     try node.falseBranch.accept(visitor: self)
   }
   
-  func visit(node: AstLetExpression) throws {
+  public func visit(node: AstLetExpression) throws {
     symbolTable.newScope()
     try node.bindings.accept(visitor: self)
     try node.expression.accept(visitor: self)
     symbolTable.oldScope()
   }
   
-  func visit(node: AstFunctionCallExpression) throws {
+  public func visit(node: AstFunctionCallExpression) throws {
     guard let binding = symbolTable.findBinding(name: node.name) else {
       throw Error.bindingNotFound(node.name, node.position)
     }
@@ -152,38 +152,38 @@ extension NameChecker: AstVisitor {
     try node.argument.accept(visitor: self)
   }
   
-  func visit(node: AstAnonymousFunctionCall) throws {
+  public func visit(node: AstAnonymousFunctionCall) throws {
     try node.argument.accept(visitor: self)
     try node.function.accept(visitor: self)
   }
   
-  func visit(node: AstRecordExpression) throws {
+  public func visit(node: AstRecordExpression) throws {
     symbolTable.newScope()
     for row in node.rows { try row.accept(visitor: self) }
     symbolTable.oldScope()
   }
   
-  func visit(node: AstRecordSelectorExpression) throws {
+  public func visit(node: AstRecordSelectorExpression) throws {
     try node.record.accept(visitor: self)
   }
   
-  func visit(node: AstRecordRow) throws {
+  public func visit(node: AstRecordRow) throws {
     try node.label.accept(visitor: self)
     try node.expression.accept(visitor: self)
   }
   
-  func visit(node: AstListExpression) throws {
+  public func visit(node: AstListExpression) throws {
     for element in node.elements { try element.accept(visitor: self) }
   }
   
-  func visit(node: AstCaseExpression) throws {
+  public func visit(node: AstCaseExpression) throws {
     symbolTable.newScope()
     try node.expression.accept(visitor: self)
     try node.match.accept(visitor: self)
     symbolTable.oldScope()
   }
   
-  func visit(node: AstIdentifierPattern) throws {
+  public func visit(node: AstIdentifierPattern) throws {
     if checkingCaseExpression {
       guard let binding = symbolTable.findBinding(name: node.name) else {
         throw Error.bindingNotFound(node.name, node.position)
@@ -194,16 +194,16 @@ extension NameChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstTuplePattern) throws {
+  public func visit(node: AstTuplePattern) throws {
     for pattern in node.patterns { try pattern.accept(visitor: self) }
   }
   
-  func visit(node: AstTypedPattern) throws {
+  public func visit(node: AstTypedPattern) throws {
     try node.pattern.accept(visitor: self)
     try node.type.accept(visitor: self)
   }
   
-  func visit(node: AstListPattern) throws {
+  public func visit(node: AstListPattern) throws {
     let checkingCaseExpression_ = checkingCaseExpression
     checkingCaseExpression = false
     try node.head.accept(visitor: self)
@@ -211,7 +211,7 @@ extension NameChecker: AstVisitor {
     checkingCaseExpression = checkingCaseExpression_
   }
   
-  func visit(node: AstMatch) throws {
+  public func visit(node: AstMatch) throws {
     for rule in node.rules {
       symbolTable.newScope()
       try rule.accept(visitor: self)
@@ -219,7 +219,7 @@ extension NameChecker: AstVisitor {
     }
   }
   
-  func visit(node: AstRule) throws {
+  public func visit(node: AstRule) throws {
     checkingCaseExpression = true
     try node.pattern.accept(visitor: self)
     checkingCaseExpression = false
@@ -229,11 +229,11 @@ extension NameChecker: AstVisitor {
 }
 
 extension NameChecker {
-  enum Error: AtherisError {
+  public enum Error: AtherisError {
     case bindingNotFound(String, Position)
     case bindingExists(String, Position)
     
-    var errorMessage: String {
+    public var errorMessage: String {
       switch self {
       case .bindingNotFound(let name, let position):
         return "error \(position.description): use of undeclared name `\(name)`"

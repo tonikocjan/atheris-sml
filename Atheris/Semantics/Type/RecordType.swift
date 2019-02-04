@@ -8,24 +8,23 @@
 
 import Foundation
 
-class RecordType: Type {
-  typealias Rows = [(name: String, type: Type)]
-  let rows: Rows
+public class RecordType: Type {
+  public typealias Rows = [(name: String, type: Type)]
+  public let rows: Rows
   
-  init(rows: Rows) {
+  public init(rows: Rows) {
     self.rows = rows
   }
-  
 
-  func row(for name: String) -> Type? {
+  public func row(for name: String) -> Type? {
     return rows.first(where: { $0.name == name })?.type
   }
   
-  var description: String {
+  public var description: String {
     return "{\(rows.map { $0.name + ":" + $0.type.description }.joined(separator: ", "))}"
   }
   
-  func sameStructureAs(other: Type) -> Bool {
+  public func sameStructureAs(other: Type) -> Bool {
     guard let record = other.toRecord else {
       if rows.count == 1, let other = other.toAtom, let first = rows.first?.type {
         return first.sameStructureAs(other: other)
@@ -41,7 +40,7 @@ class RecordType: Type {
       })
   }
   
-  var isAbstract: Bool {
+  public var isAbstract: Bool {
     for row in rows {
       if row.type.isAbstract { return true }
     }
@@ -50,39 +49,39 @@ class RecordType: Type {
 }
 
 extension RecordType {
-  func canBeAddedTo(other: Type) -> Bool {
+  public func canBeAddedTo(other: Type) -> Bool {
     return false
   }
   
-  func canBeSubtractedFrom(other: Type) -> Bool {
+  public func canBeSubtractedFrom(other: Type) -> Bool {
     return false
   }
   
-  func canBeMultiplyedWith(other: Type) -> Bool {
+  public func canBeMultiplyedWith(other: Type) -> Bool {
     return false
   }
   
-  func canBeDividedBy(other: Type) -> Bool {
+  public func canBeDividedBy(other: Type) -> Bool {
     return false
   }
   
-  func canBeConcatenatedWith(other: Type) -> Bool {
+  public func canBeConcatenatedWith(other: Type) -> Bool {
     return false
   }
   
-  func canBeComparedAsEqualTo(other: Type) -> Bool {
+  public func canBeComparedAsEqualTo(other: Type) -> Bool {
     return self.sameStructureAs(other: other)
   }
   
-  func canBeCompared(other: Type) -> Bool {
+  public func canBeCompared(other: Type) -> Bool {
     return false
   }
   
-  func canAndAlsoWith(other: Type) -> Bool {
+  public func canAndAlsoWith(other: Type) -> Bool {
     return false
   }
   
-  func canOrElseWith(other: Type) -> Bool {
+  public func canOrElseWith(other: Type) -> Bool {
     return false
   }
 }

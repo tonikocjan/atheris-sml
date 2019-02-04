@@ -8,15 +8,15 @@
 
 import Foundation
 
-protocol AtherisError: Error {
+public protocol AtherisError: Error {
   var errorMessage: String { get }
 }
 
-class SynAn: SyntaxParser {
-  enum Error: AtherisError {
+public class SynAn: SyntaxParser {
+  public enum Error: AtherisError {
     case syntaxError(String)
     
-    var errorMessage: String {
+    public var errorMessage: String {
       switch self {
       case .syntaxError(let error):
         return error
@@ -24,17 +24,17 @@ class SynAn: SyntaxParser {
     }
   }
   
-  let lexan: LexicalAnalyzer
+  public let lexan: LexicalAnalyzer
   private var symbol: Symbol
   private var wildcardVarBindingsCounter = 0
   private let wildcardValBindingName = "x"
   
-  init(lexan: LexicalAnalyzer) {
+  public init(lexan: LexicalAnalyzer) {
     self.lexan = lexan
     self.symbol = lexan.nextSymbol()
   }
   
-  func parse() throws -> AstBindings {
+  public func parse() throws -> AstBindings {
     return try parseBindings(separated: ";", stop: .eof)
   }
 }

@@ -8,18 +8,18 @@
 
 import Foundation
 
-class DataType: Type {
-  let name: String
-  let constructorTypes: [(name: String, type: Type)]
-  let cases: [String: Type]
+public class DataType: Type {
+  public let name: String
+  public let constructorTypes: [(name: String, type: Type)]
+  public let cases: [String: Type]
   
-  init(name: String, constructorTypes: [(String, Type)], cases: [String: Type]) {
+  public init(name: String, constructorTypes: [(String, Type)], cases: [String: Type]) {
     self.name = name
     self.constructorTypes = constructorTypes
     self.cases = cases
   }
   
-  var description: String {
+  public var description: String {
     if constructorTypes.isEmpty { return name }
     let constructors = constructorTypes
       .map { $0.1.description }
@@ -27,7 +27,7 @@ class DataType: Type {
     return "(\(constructors)) \(name)"
   }
   
-  func sameStructureAs(other: Type) -> Bool {
+  public func sameStructureAs(other: Type) -> Bool {
     if other.isAbstract { return true }
     if let dataType = other as? DataType { return dataType.name == name }
     guard let caseType = other as? CaseType else { return false }
@@ -39,14 +39,14 @@ class DataType: Type {
 }
 
 extension DataType {
-  func canBeAddedTo(other: Type) -> Bool { return false }
-  func canBeSubtractedFrom(other: Type) -> Bool { return false }
-  func canBeMultiplyedWith(other: Type) -> Bool { return false }
-  func canBeDividedBy(other: Type) -> Bool { return false }
-  func canBeConcatenatedWith(other: Type) -> Bool { return false }
-  func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
-  func canBeCompared(other: Type) -> Bool { return false }
-  func canAndAlsoWith(other: Type) -> Bool { return false }
-  func canOrElseWith(other: Type) -> Bool { return false }
-  var isAbstract: Bool { return false }
+  public func canBeAddedTo(other: Type) -> Bool { return false }
+  public func canBeSubtractedFrom(other: Type) -> Bool { return false }
+  public func canBeMultiplyedWith(other: Type) -> Bool { return false }
+  public func canBeDividedBy(other: Type) -> Bool { return false }
+  public func canBeConcatenatedWith(other: Type) -> Bool { return false }
+  public func canBeComparedAsEqualTo(other: Type) -> Bool { return false }
+  public func canBeCompared(other: Type) -> Bool { return false }
+  public func canAndAlsoWith(other: Type) -> Bool { return false }
+  public func canOrElseWith(other: Type) -> Bool { return false }
+  public var isAbstract: Bool { return false }
 }

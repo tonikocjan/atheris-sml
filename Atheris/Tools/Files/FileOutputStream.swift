@@ -8,18 +8,18 @@
 
 import Foundation
 
-class FileOutputStream: OutputStream {
-  let fileWriter: FileWriterProtocol
+public class FileOutputStream: OutputStream {
+  public let fileWriter: FileWriterProtocol
   
-  init(fileWriter: FileWriterProtocol) {
+  public init(fileWriter: FileWriterProtocol) {
     self.fileWriter = fileWriter
   }
   
-  func print(_ string: String) {
+  public func print(_ string: String) {
     fileWriter.writeString(string)
   }
   
-  func printLine(_ string: String) {
+  public func printLine(_ string: String) {
     fileWriter.writeLine(string)
   }
 }

@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstLetExpression: AstExpression {
-  let position: Position
-  let bindings: AstBindings
-  let expression: AstExpression
+public class AstLetExpression: AstExpression {
+  public let position: Position
+  public let bindings: AstBindings
+  public let expression: AstExpression
   
-  init(position: Position, bindings: AstBindings, expression: AstExpression) {
+  public init(position: Position, bindings: AstBindings, expression: AstExpression) {
     self.position = position
     self.bindings = bindings
     self.expression = expression
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

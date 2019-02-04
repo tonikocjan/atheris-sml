@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstValBinding: AstBinding {
-  let position: Position
-  let pattern: AstPattern
-  let expression: AstExpression
+public class AstValBinding: AstBinding {
+  public let position: Position
+  public let pattern: AstPattern
+  public let expression: AstExpression
   
-  init(position: Position, pattern: AstPattern, expression: AstExpression) {
+  public init(position: Position, pattern: AstPattern, expression: AstExpression) {
     self.position = position
     self.pattern = pattern
     self.expression = expression
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

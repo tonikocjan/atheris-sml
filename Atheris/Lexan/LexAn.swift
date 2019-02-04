@@ -8,17 +8,17 @@
 
 import Foundation
 
-class LexAn: LexicalAnalyzer {
-  let inputStream: InputStream
+public class LexAn: LexicalAnalyzer {
+  public let inputStream: InputStream
   
   private var currentLocation = Location(row: 1, column: 1)
   private var bufferCharacter: Character?
   
-  init(inputStream: InputStream) {
+  public init(inputStream: InputStream) {
     self.inputStream = inputStream
   }
   
-  func nextSymbol() -> Symbol {
+  public func nextSymbol() -> Symbol {
     guard let symbol = parseSymbol() else {
       let symbol = Symbol(token: .eof, lexeme: "$", position: Position(startLocation: currentLocation,
                                                                            endLocation: Location(row: currentLocation.row,
@@ -30,15 +30,15 @@ class LexAn: LexicalAnalyzer {
 }
 
 extension LexAn: Sequence {
-  struct Iterator: IteratorProtocol {
-    let lexan: LexAn
+  public struct Iterator: IteratorProtocol {
+    public let lexan: LexAn
     private var didEnd = false
     
-    init(lexan: LexAn) {
+    public init(lexan: LexAn) {
       self.lexan = lexan
     }
     
-    mutating func next() -> Symbol? {
+    public mutating func next() -> Symbol? {
       guard !didEnd else { return nil }
       let symbol = lexan.nextSymbol()
       didEnd = symbol.token == .eof
@@ -46,7 +46,7 @@ extension LexAn: Sequence {
     }
   }
   
-  func parseSymbol() -> Symbol? {
+  public func parseSymbol() -> Symbol? {
     while let character = nextCharacter() {
       if character == " " { continue }
       if character == "\n" {
@@ -82,7 +82,7 @@ extension LexAn: Sequence {
     return nil
   }
   
-  func makeIterator() -> LexAn.Iterator {
+  public func makeIterator() -> LexAn.Iterator {
     return Iterator(lexan: self)
   }
 }

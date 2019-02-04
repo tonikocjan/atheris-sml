@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstNameExpression: AstExpression {
-  let position: Position
-  let name: String
+public class AstNameExpression: AstExpression {
+  public let position: Position
+  public let name: String
   
-  init(position: Position, name: String) {
+  public init(position: Position, name: String) {
     self.position = position
     self.name = name
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

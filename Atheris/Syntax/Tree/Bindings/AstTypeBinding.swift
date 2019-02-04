@@ -8,30 +8,30 @@
 
 import Foundation
 
-class AstTypeBinding: AstBinding {
-  let position: Position
-  let identifier: AstIdentifierPattern
-  let type: Kind
-  var pattern: AstPattern { return identifier }
+public class AstTypeBinding: AstBinding {
+  public let position: Position
+  public let identifier: AstIdentifierPattern
+  public let type: Kind
+  public var pattern: AstPattern { return identifier }
   
-  init(position: Position, identifier: AstIdentifierPattern, type: Kind) {
+  public init(position: Position, identifier: AstIdentifierPattern, type: Kind) {
     self.position = position
     self.identifier = identifier
     self.type = type
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }
 
 extension AstTypeBinding {
-  enum Kind: String {
+  public enum Kind: String {
     case normal = "'"
     case equatable = "''"
   }
   
-  var name: String {
+  public var name: String {
     return type.rawValue + identifier.name
   }
 }

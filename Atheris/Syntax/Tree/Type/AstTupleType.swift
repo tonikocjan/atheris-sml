@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstTupleType: AstType {
-  let position: Position
-  let types: [AstType]
+public class AstTupleType: AstType {
+  public let position: Position
+  public let types: [AstType]
   
-  init(position: Position, types: [AstType]) {
+  public init(position: Position, types: [AstType]) {
     self.position = position
     self.types = types
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

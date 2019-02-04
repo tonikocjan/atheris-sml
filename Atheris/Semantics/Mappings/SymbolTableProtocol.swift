@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SymbolTableProtocol {
+public protocol SymbolTableProtocol {
   func newScope()
   func oldScope()
   func addBindingToCurrentScope(name: String, binding: AstBinding) throws

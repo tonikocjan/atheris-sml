@@ -8,10 +8,10 @@
 
 import Foundation
 
-protocol Visitable {
+public protocol Visitable {
   func accept(visitor: AstVisitor) throws
 }
 
-protocol AstNode: class, Visitable {
+public protocol AstNode: class, Visitable {
   var position: Position { get }
 }

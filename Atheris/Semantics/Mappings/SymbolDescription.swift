@@ -8,32 +8,32 @@
 
 import Foundation
 
-class SymbolDescription: SymbolDescriptionProtocol {
+public class SymbolDescription: SymbolDescriptionProtocol {
   private var scopeMapping: [NodeWrapper: Int] = [:]
   private var definitionsMapping: [NodeWrapper: AstBinding] = [:]
   private var typeMapping: [NodeWrapper: Type] = [:]
   
-  func setScope(for node: AstBinding, scope: Int) {
+  public func setScope(for node: AstBinding, scope: Int) {
     scopeMapping[NodeWrapper(node)] = scope
   }
   
-  func scope(for node: AstBinding) -> Int? {
+  public func scope(for node: AstBinding) -> Int? {
     return scopeMapping[NodeWrapper(node)]
   }
   
-  func bindNode(_ node: AstNode, binding: AstBinding) {
+  public func bindNode(_ node: AstNode, binding: AstBinding) {
     definitionsMapping[NodeWrapper(node)] = binding
   }
   
-  func binding(for node: AstNode) -> AstBinding? {
+  public func binding(for node: AstNode) -> AstBinding? {
     return definitionsMapping[NodeWrapper(node)]
   }
   
-  func type(for node: AstNode) -> Type? {
+  public func type(for node: AstNode) -> Type? {
     return typeMapping[NodeWrapper(node)]
   }
   
-  func setType(for node: AstNode, type: Type) {
+  public func setType(for node: AstNode, type: Type) {
     typeMapping[NodeWrapper(node)] = type
   }
 }

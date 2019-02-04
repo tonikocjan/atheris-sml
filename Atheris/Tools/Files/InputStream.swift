@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol InputStream {
+public protocol InputStream {
   func next() throws -> Character
 }

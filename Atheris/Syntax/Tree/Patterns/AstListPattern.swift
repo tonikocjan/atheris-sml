@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstListPattern: AstPattern {
-  let position: Position
-  let head: AstPattern
-  let tail: AstPattern
+public class AstListPattern: AstPattern {
+  public let position: Position
+  public let head: AstPattern
+  public let tail: AstPattern
   
-  init(position: Position, head: AstPattern, tail: AstPattern) {
+  public init(position: Position, head: AstPattern, tail: AstPattern) {
     self.position = position
     self.head = head
     self.tail = tail
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

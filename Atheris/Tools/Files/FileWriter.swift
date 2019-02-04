@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol FileWriterProtocol {
+public protocol FileWriterProtocol {
   init(fileUrl url: URL) throws
   func closeFile()
   func writeChar(_ char: Character)
@@ -17,40 +17,40 @@ protocol FileWriterProtocol {
   func writeData(_ data: Data)
 }
 
-class FileWriter: FileWriterProtocol {
+public class FileWriter: FileWriterProtocol {
   private let fileHandle: FileHandle
   
-  required init(fileUrl url: URL) throws {
+  public required init(fileUrl url: URL) throws {
     FileManager.default.createFile(atPath: url.absoluteString,
                                    contents: nil,
                                    attributes: nil)
     self.fileHandle = try FileHandle(forWritingTo: url)
   }
   
-  func closeFile() {
+  public func closeFile() {
     fileHandle.closeFile()
   }
   
-  func writeChar(_ char: Character) {
+  public func writeChar(_ char: Character) {
     writeString(char.description)
   }
   
-  func writeString(_ string: String) {
+  public func writeString(_ string: String) {
     guard let data = string.data(using: .utf8) else { return }
     writeData(data)
   }
   
-  func writeLine(_ string: String) {
+  public func writeLine(_ string: String) {
     writeString(string + "\n")
   }
   
-  func writeData(_ data: Data) {
+  public func writeData(_ data: Data) {
     fileHandle.write(data)
   }
 }
 
-extension FileWriter {
-  enum Error: Swift.Error {
+public extension FileWriter {
+  public enum Error: Swift.Error {
     case encodingError
   }
 }

@@ -1,3 +1,4 @@
+// swift-tools-version:4.0
 //
 //  Package.swift
 //  Atheris
@@ -9,15 +10,15 @@
 import PackageDescription
 
 let package = Package(
-  name: "AtherisSML",
-  pkgConfig: nil,
-  targets: [
-    .target(
-      name: "AtherisSML",
-      dependencies: []),
-    .testTarget(
-      name: "Atheris tests",
-      dependencies: ["AtherisSML"]),
+    name: "AtherisSML",
+    products: [
+        .library(name: "AtherisSML", targets: ["Atheris"]),
+    ],
+    dependencies: [],
+    targets: [
+        .target(
+            name: "Atheris",
+            dependencies: [],
+            path: "Atheris")
     ]
-  dependencies: []
 )

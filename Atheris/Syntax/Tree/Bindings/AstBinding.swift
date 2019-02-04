@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol AstBinding: AstNode {
+public protocol AstBinding: AstNode {
   var pattern: AstPattern { get }
 }

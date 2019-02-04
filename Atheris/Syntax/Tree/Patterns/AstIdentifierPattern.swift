@@ -8,17 +8,17 @@
 
 import Foundation
 
-class AstIdentifierPattern: AstPattern, AstBinding, AstExpression {
-  let position: Position
-  let name: String
-  var pattern: AstPattern { return self }
+public class AstIdentifierPattern: AstPattern, AstBinding, AstExpression {
+  public let position: Position
+  public let name: String
+  public var pattern: AstPattern { return self }
   
-  init(position: Position, name: String) {
+  public init(position: Position, name: String) {
     self.position = position
     self.name = name
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

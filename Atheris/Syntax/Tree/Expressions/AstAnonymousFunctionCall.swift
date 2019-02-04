@@ -8,15 +8,15 @@
 
 import Foundation
 
-class AstAnonymousFunctionCall: AstFunctionCallExpression {
-  let function: AstExpression
+public class AstAnonymousFunctionCall: AstFunctionCallExpression {
+  public let function: AstExpression
   
-  init(position: Position, function: AstExpression, argument: AstExpression) {
+  public init(position: Position, function: AstExpression, argument: AstExpression) {
     self.function = function
     super.init(position: position, name: "Anonymous", argument: argument)
   }
   
-  override func accept(visitor: AstVisitor) throws {
+  public override func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

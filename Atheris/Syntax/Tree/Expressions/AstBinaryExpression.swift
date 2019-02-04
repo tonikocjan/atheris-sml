@@ -8,26 +8,26 @@
 
 import Foundation
 
-class AstBinaryExpression: AstExpression {
-  let position: Position
-  let operation: Operation
-  let left: AstExpression
-  let right: AstExpression
+public class AstBinaryExpression: AstExpression {
+  public let position: Position
+  public let operation: Operation
+  public let left: AstExpression
+  public let right: AstExpression
   
-  init(position: Position, operation: Operation, left: AstExpression, right: AstExpression) {
+  public init(position: Position, operation: Operation, left: AstExpression, right: AstExpression) {
     self.position = position
     self.operation = operation
     self.left = left
     self.right = right
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }
 
 extension AstBinaryExpression {
-  enum Operation: String {
+  public enum Operation: String {
     case add = "+"
     case subtract = "-"
     case multiply = "*"

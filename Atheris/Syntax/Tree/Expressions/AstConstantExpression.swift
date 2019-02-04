@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstConstantExpression: AstExpression {
-  let position: Position
-  let value: String
-  let type: AstAtomType.AtomType
+public class AstConstantExpression: AstExpression {
+  public let position: Position
+  public let value: String
+  public let type: AstAtomType.AtomType
   
-  init(position: Position, value: String, type: AstAtomType.AtomType) {
+  public init(position: Position, value: String, type: AstAtomType.AtomType) {
     self.position = position
     self.value = value
     self.type = type
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

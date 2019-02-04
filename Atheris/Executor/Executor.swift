@@ -8,12 +8,12 @@
 
 import Foundation
 
-protocol ExecutorProtocol {
+public protocol ExecutorProtocol {
   func execute(file: String) throws
 }
 
-class Executor: ExecutorProtocol {
-  func execute(file: String) throws {
+public class Executor: ExecutorProtocol {
+  public func execute(file: String) throws {
     print("Executing \(file) ...")
     
     let task = Process()

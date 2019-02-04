@@ -8,15 +8,15 @@
 
 import Foundation
 
-class AstAnonymousFunctionBinding: AstFunBinding, AstExpression {
-  init(position: Position, parameter: AstPattern, body: AstExpression) {
+public class AstAnonymousFunctionBinding: AstFunBinding, AstExpression {
+  public init(position: Position, parameter: AstPattern, body: AstExpression) {
     super.init(position: position,
                identifier: AstIdentifierPattern(position: position, name: "Anonymous"),
                parameter: parameter,
                body: body)
   }
   
-  override func accept(visitor: AstVisitor) throws {
+  public override func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

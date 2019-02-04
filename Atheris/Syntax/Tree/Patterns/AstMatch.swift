@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstMatch: AstNode {
-  let position: Position
-  let rules: [AstRule]
+public class AstMatch: AstNode {
+  public let position: Position
+  public let rules: [AstRule]
   
-  init(position: Position, rules: [AstRule]) {
+  public init(position: Position, rules: [AstRule]) {
     self.position = position
     self.rules = rules
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

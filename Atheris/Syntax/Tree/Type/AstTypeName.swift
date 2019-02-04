@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstTypeName: AstType {
-  let position: Position
-  let name: String
+public class AstTypeName: AstType {
+  public let position: Position
+  public let name: String
   
-  init(position: Position, name: String) {
+  public init(position: Position, name: String) {
     self.position = position
     self.name = name
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

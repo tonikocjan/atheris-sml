@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstRecordSelectorExpression: AstExpression {
-  let position: Position
-  let label: AstIdentifierPattern
-  let record: AstExpression
+public class AstRecordSelectorExpression: AstExpression {
+  public let position: Position
+  public let label: AstIdentifierPattern
+  public let record: AstExpression
   
-  init(position: Position, label: AstIdentifierPattern, record: AstExpression) {
+  public init(position: Position, label: AstIdentifierPattern, record: AstExpression) {
     self.position = position
     self.label = label
     self.record = record
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

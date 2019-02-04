@@ -8,20 +8,20 @@
 
 import Foundation
 
-class AstIfExpression: AstExpression {
-  let position: Position
-  let condition: AstExpression
-  let trueBranch: AstExpression
-  let falseBranch: AstExpression
+public class AstIfExpression: AstExpression {
+  public let position: Position
+  public let condition: AstExpression
+  public let trueBranch: AstExpression
+  public let falseBranch: AstExpression
   
-  init(position: Position, condition: AstExpression, trueBranch: AstExpression, falseBranch: AstExpression) {
+  public init(position: Position, condition: AstExpression, trueBranch: AstExpression, falseBranch: AstExpression) {
     self.position = position
     self.condition = condition
     self.trueBranch = trueBranch
     self.falseBranch = falseBranch
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

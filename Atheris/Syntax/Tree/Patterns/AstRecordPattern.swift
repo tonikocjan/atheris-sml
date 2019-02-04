@@ -8,14 +8,14 @@
 
 import Foundation
 
-class AstRecordPattern: AstPattern {
-  let position: Position
+public class AstRecordPattern: AstPattern {
+  public let position: Position
   
-  init(position: Position) {
+  public init(position: Position) {
     self.position = position
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

@@ -8,24 +8,24 @@
 
 import Foundation
 
-class AstAtomType: AstType {
-  let position: Position
-  let name: String
-  let type: AtomType
+public class AstAtomType: AstType {
+  public let position: Position
+  public let name: String
+  public let type: AtomType
   
-  init(position: Position, name: String, type: AtomType) {
+  public init(position: Position, name: String, type: AtomType) {
     self.position = position
     self.name = name
     self.type = type
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }
 
 extension AstAtomType {
-  enum AtomType: String {
+  public enum AtomType: String {
     case int
     case real
     case string

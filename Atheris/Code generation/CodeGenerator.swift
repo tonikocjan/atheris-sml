@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol CodeGenerator: AstVisitor {
+public protocol CodeGenerator: AstVisitor {
   var outputStream: OutputStream { get }
 }

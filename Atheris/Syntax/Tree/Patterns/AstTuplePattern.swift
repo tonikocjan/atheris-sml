@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstTuplePattern: AstPattern {
-  let position: Position
-  let patterns: [AstPattern]
+public class AstTuplePattern: AstPattern {
+  public let position: Position
+  public let patterns: [AstPattern]
   
-  init(position: Position, patterns: [AstPattern]) {
+  public init(position: Position, patterns: [AstPattern]) {
     self.position = position
     self.patterns = patterns
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

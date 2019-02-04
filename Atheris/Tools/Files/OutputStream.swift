@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol OutputStream {
+public protocol OutputStream {
   func print(_ string: String)
   func printLine(_ string: String)
 }

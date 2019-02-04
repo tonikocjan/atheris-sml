@@ -8,20 +8,20 @@
 
 import Foundation
 
-class Atheris {
-  let argumentParser: ArgumentParserProtocol
-  var logger: LoggerProtocol = LoggerFactory.logger
+public class Atheris {
+  public let argumentParser: ArgumentParserProtocol
+  public var logger: LoggerProtocol = LoggerFactory.logger
   
-  init(argumentParser: ArgumentParserProtocol) {
+  public init(argumentParser: ArgumentParserProtocol) {
     self.argumentParser = argumentParser
   }
   
-  func parseArguments(_ args: [String]) -> Atheris {
+  public func parseArguments(_ args: [String]) -> Atheris {
     argumentParser.parseArguments(args)
     return self
   }
   
-  func compile() throws {
+  public func compile() throws {
     let symbolTable = SymbolTable(symbolDescription: SymbolDescription())
     var syntaxTree: AstBindings?
     
@@ -88,8 +88,8 @@ class Atheris {
   }
 }
 
-extension Atheris {
-  enum Error: Swift.Error {
+public extension Atheris {
+  public enum Error: Swift.Error {
     case invalidPath(String)
     case fileNotFound(URL)
     case invalidArguments(errorMessage: String)

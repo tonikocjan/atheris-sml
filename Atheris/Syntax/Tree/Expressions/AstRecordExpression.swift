@@ -8,16 +8,16 @@
 
 import Foundation
 
-class AstRecordExpression: AstExpression {
-  let position: Position
-  let rows: [AstRecordRow]
+public class AstRecordExpression: AstExpression {
+  public let position: Position
+  public let rows: [AstRecordRow]
   
-  init(position: Position, rows: [AstRecordRow]) {
+  public init(position: Position, rows: [AstRecordRow]) {
     self.position = position
     self.rows = rows
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

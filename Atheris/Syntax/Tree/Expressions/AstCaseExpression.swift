@@ -8,18 +8,18 @@
 
 import Foundation
 
-class AstCaseExpression: AstExpression {
-  let position: Position
-  let expression: AstExpression
-  let match: AstMatch
+public class AstCaseExpression: AstExpression {
+  public let position: Position
+  public let expression: AstExpression
+  public let match: AstMatch
   
-  init(position: Position, expression: AstExpression, match: AstMatch) {
+  public init(position: Position, expression: AstExpression, match: AstMatch) {
     self.position = position
     self.expression = expression
     self.match = match
   }
   
-  func accept(visitor: AstVisitor) throws {
+  public func accept(visitor: AstVisitor) throws {
     try visitor.visit(node: self)
   }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ArgumentParserProtocol {
+public protocol ArgumentParserProtocol {
   func parseArguments(_ arguments: [String])
   func bool(for key: String) -> Bool?
   func string(for key: String) -> String?
@@ -16,10 +16,10 @@ protocol ArgumentParserProtocol {
   var count: Int { get }
 }
 
-class ArgumentParser: ArgumentParserProtocol {
+public class ArgumentParser: ArgumentParserProtocol {
   private var arguments = [String: String]()
   
-  func parseArguments(_ arguments: [String]) {
+  public func parseArguments(_ arguments: [String]) {
     guard arguments.count >= 2 else { return }
     self.arguments[Arguments.workingDirectory.rawValue] = arguments[0]
     self.arguments[Arguments.sourceFile.rawValue] = arguments[1]
@@ -29,27 +29,27 @@ class ArgumentParser: ArgumentParserProtocol {
       .forEach { self.arguments[$0.key] = $0.value }
   }
   
-  func bool(for key: String) -> Bool? {
+  public func bool(for key: String) -> Bool? {
     guard let stringValue = arguments[key], let bool = Bool(stringValue) else { return nil }
     return bool
   }
   
-  func string(for key: String) -> String? {
+  public func string(for key: String) -> String? {
     return arguments[key]
   }
   
-  func int(for key: String) -> Int? {
+  public func int(for key: String) -> Int? {
     guard let stringValue = arguments[key], let int = Int(stringValue) else { return nil }
     return int
   }
   
-  var count: Int {
+  public var count: Int {
     return arguments.count
   }
 }
 
-extension ArgumentParser {
-  enum Arguments: String {
+public extension ArgumentParser {
+  public enum Arguments: String {
     case sourceFile = "source_file"
     case workingDirectory = "working_dir"
   }

@@ -8,14 +8,14 @@
 
 import Foundation
 
-class FileInputStream: InputStream {
-  let fileReader: FileReaderProtocol
+public class FileInputStream: InputStream {
+  public let fileReader: FileReaderProtocol
   
-  init(fileReader: FileReaderProtocol) {
+  public init(fileReader: FileReaderProtocol) {
     self.fileReader = fileReader
   }
   
-  func next() throws -> Character {
+  public func next() throws -> Character {
     return try fileReader.readChar()
   }
 }

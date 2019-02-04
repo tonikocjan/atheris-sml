@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TokenType: String {
+public enum TokenType: String {
   case nonEscapedStringConstant
   case invalidCharacter
   

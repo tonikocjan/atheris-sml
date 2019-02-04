@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol FileReaderProtocol {
+public protocol FileReaderProtocol {
   init(fileUrl url: URL) throws
   func closeFile()
   func readByte() -> Data
@@ -19,31 +19,31 @@ protocol FileReaderProtocol {
   func readLines() -> [String]
 }
 
-class FileReader: FileReaderProtocol {
+public class FileReader: FileReaderProtocol {
   private let fileHandle: FileHandle
   
-  required init(fileUrl url: URL) throws {
+  public required init(fileUrl url: URL) throws {
     self.fileHandle = try FileHandle(forReadingFrom: url)
   }
   
-  func closeFile() {
+  public func closeFile() {
     self.fileHandle.closeFile()
   }
   
-  func readByte() -> Data {
+  public func readByte() -> Data {
     return fileHandle.readData(ofLength: 1)
   }
   
-  func readBytes(count: Int) -> Data {
+  public func readBytes(count: Int) -> Data {
     return fileHandle.readData(ofLength: count)
   }
   
-  func readChar() throws -> Character {
+  public func readChar() throws -> Character {
     guard let char = readByte().first else { throw Error.fileEmpty }
     return Character(UnicodeScalar(char))
   }
   
-  func readLine() -> String? {
+  public func readLine() -> String? {
     var line = ""
     do {
       var char = try readChar()
@@ -57,11 +57,11 @@ class FileReader: FileReaderProtocol {
     }
   }
   
-  func readString(size: Int) -> String? {
+  public func readString(size: Int) -> String? {
     return String(data: readBytes(count: size), encoding: .utf8)
   }
   
-  func readLines() -> [String] {
+  public func readLines() -> [String] {
     var lines = [String]()
     while let line = readLine() {
       lines.append(line)
@@ -70,8 +70,8 @@ class FileReader: FileReaderProtocol {
   }
 }
 
-extension FileReader {
-  enum Error: Swift.Error {
+public extension FileReader {
+  public enum Error: Swift.Error {
     case fileEmpty
   }
 }

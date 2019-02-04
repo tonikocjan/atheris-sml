@@ -8,27 +8,27 @@
 
 import Foundation
 
-class SymbolTable: SymbolTableProtocol {
+public class SymbolTable: SymbolTableProtocol {
   private typealias Bindigs = [AstBinding]
   
-  let symbolDescription: SymbolDescriptionProtocol
+  public let symbolDescription: SymbolDescriptionProtocol
   private var mapping: [String: Bindigs] = [:]
   private var currentScopeDepth = 0
   
-  init(symbolDescription: SymbolDescriptionProtocol) {
+  public init(symbolDescription: SymbolDescriptionProtocol) {
     self.symbolDescription = symbolDescription
   }
   
-  func newScope() {
+  public func newScope() {
     currentScopeDepth += 1
   }
   
-  func oldScope() {
+  public func oldScope() {
     removeBindingsFromCurrentScope()
     currentScopeDepth -= 1
   }
   
-  func addBindingToCurrentScope(name: String, binding: AstBinding) throws {
+  public func addBindingToCurrentScope(name: String, binding: AstBinding) throws {
     guard let bindings = mapping[name] else {
       createBinding(name: name, binding: binding)
       setScope(currentScopeDepth, for: binding)
@@ -43,26 +43,26 @@ class SymbolTable: SymbolTableProtocol {
     setScope(currentScopeDepth, for: binding)
   }
   
-  func removeBindingFromCurrentScope(name: String) throws {
+  public func removeBindingFromCurrentScope(name: String) throws {
     guard let bindings = mapping[name], try isNameDefinedInCurrentOrGreaterScope(bindings: bindings) else {
       throw Error.bindingNotFound(name)
     }
     removeBinding(name: name)
   }
   
-  func findBinding(name: String) -> AstBinding? {
+  public func findBinding(name: String) -> AstBinding? {
     guard let binding = mapping[name]?.first else { return nil }
     return binding
   }
 }
 
 extension SymbolTable {
-  enum Error: AtherisError {
+  public enum Error: AtherisError {
     case bindingAlreadyExists(String)
     case bindingNotFound(String)
     case internalError([String])
     
-    var errorMessage: String {
+    public var errorMessage: String {
       switch self {
       case .bindingAlreadyExists(let name): return "error: binding `\(name)` already exists"
       case .bindingNotFound(let name): return "error: binding `\(name)` not found"

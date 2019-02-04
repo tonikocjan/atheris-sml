@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SyntaxParser {
+public protocol SyntaxParser {
   var lexan: LexicalAnalyzer { get }
   func parse() throws -> AstBindings
 }
