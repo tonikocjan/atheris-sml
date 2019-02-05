@@ -557,14 +557,8 @@
 		376164F721553CB90058BD03 /* Atheris */ = {
 			isa = PBXGroup;
 			children = (
-				37E0CE24216A31A900BAFD2A /* Tools */,
-				375FF4FF2161E0BA0088F7A3 /* Compiler */,
-				3761650621553D1E0058BD03 /* Lexan */,
-				37F024A221B3F3E9006B868E /* Syntax */,
-				374505DF21B5163E0051E1E9 /* Semantics */,
-				3745063521B6C6510051E1E9 /* Code generation */,
-				3745064821B6DDAE0051E1E9 /* Executor */,
-				376164F821553CB90058BD03 /* main.swift */,
+				37D8AFAA22098680003D0ABE /* Run */,
+				37D8AFA922098661003D0ABE /* Core */,
 			);
 			path = Atheris;
 			sourceTree = "<group>";
@@ -578,6 +572,29 @@
 				3761650921553D2A0058BD03 /* TokenType.swift */,
 			);
 			name = Lexan;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		37D8AFA922098661003D0ABE /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				37E0CE24216A31A900BAFD2A /* Tools */,
+				375FF4FF2161E0BA0088F7A3 /* Compiler */,
+				3761650621553D1E0058BD03 /* Lexan */,
+				37F024A221B3F3E9006B868E /* Syntax */,
+				374505DF21B5163E0051E1E9 /* Semantics */,
+				3745063521B6C6510051E1E9 /* Code generation */,
+				3745064821B6DDAE0051E1E9 /* Executor */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		37D8AFAA22098680003D0ABE /* Run */ = {
+			isa = PBXGroup;
+			children = (
+				376164F821553CB90058BD03 /* main.swift */,
+			);
+			path = Run;
 			sourceTree = "<group>";
 		};
 		37E0CE24216A31A900BAFD2A /* Tools */ = {

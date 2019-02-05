@@ -10,14 +10,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "AtherisSML",
-    products: [
-        .library(name: "AtherisSML", targets: ["Atheris"]),
-    ],
+    name: "Atheris",
     dependencies: [],
     targets: [
         .target(
-            name: "Atheris",
+            name: "Core",
             dependencies: [],
             path: "Atheris")
     ]
