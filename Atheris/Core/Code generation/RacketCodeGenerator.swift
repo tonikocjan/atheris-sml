@@ -559,7 +559,7 @@ extension RacketCodeGenerator: CodeGenerator {
       guard let code = bindingCodeStack.last else { return }
       print("(null? \(code))")
     case .nestedPattern:
-      throw NSError()
+      throw NSError(domain: "atheris.racket.generator.error", code: 99, userInfo: ["error": "not yet implemented"])
     case .binding:
       break
     case .none:

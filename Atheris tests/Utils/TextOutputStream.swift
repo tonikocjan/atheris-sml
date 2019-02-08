@@ -8,14 +8,14 @@
 
 import Foundation
 
-class TextOutputStream: OutputStream {
+public class TextOutputStream: OutputStream {
   private(set) var buffer = ""
   
-  func print(_ string: String) {
+  public func print(_ string: String) {
     buffer.append(string)
   }
   
-  func printLine(_ string: String) {
+  public func printLine(_ string: String) {
     buffer.append(string + "\n")
   }
 }

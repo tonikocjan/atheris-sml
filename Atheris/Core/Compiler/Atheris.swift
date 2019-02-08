@@ -16,7 +16,7 @@ public class Atheris {
     self.inputStream = inputStream
   }
   
-  public func compile() throws {
+  public func compile() throws -> OutputStream {
     let symbolTable = SymbolTable(symbolDescription: SymbolDescription())
     var syntaxTree: AstBindings?
     
@@ -47,16 +47,29 @@ public class Atheris {
       try dumpAst(ast: ast,
                   symbolDescription: symbolTable.symbolDescription)
       
+      
+      
+      // Execute racket
+      #if os(Linux)
       // Code generation
-      let codeOutputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "code.rkt")!))
-      let codeGenerator = RacketCodeGenerator(outputStream: codeOutputStream,
+      let codeGenerator = RacketCodeGenerator(outputStream: TextOutputStream(),
+                                              configuration: .standard,
+                                              symbolDescription: symbolTable.symbolDescription)
+      try codeGenerator.visit(node: ast)
+      return codeGenerator.outputStream
+      #else
+      // Code generation
+      let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "code.rkt")!))
+      let codeGenerator = RacketCodeGenerator(outputStream: outputStream,
                                               configuration: .standard,
                                               symbolDescription: symbolTable.symbolDescription)
       try codeGenerator.visit(node: ast)
       
-      // Execute racket
       let executor = Executor()
       try executor.execute(file: "code.rkt")
+
+      return codeGenerator.outputStream
+      #endif
     } catch {
       if let syntaxTree = syntaxTree {
         try dumpAst(ast: syntaxTree,
