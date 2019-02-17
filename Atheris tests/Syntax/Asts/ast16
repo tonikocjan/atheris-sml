@@ -1,0 +1,43 @@
+AstBindings [1:1, 4:18]:
+  AstValBinding [1:1, 1:13]:
+    -> typed: bool
+    AstIdentifierPattern [1:5, 1:6]:
+      -> typed: bool
+      Name: x
+    AstConstantExpression [1:9, 1:13]:
+      -> typed: bool
+      Value: true
+      Atom type: bool
+  AstValBinding [2:1, 4:18]:
+    -> typed: int
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: int
+      Name: y
+    AstCaseExpression [2:9, 4:18]:
+      -> typed: int
+      AstNameExpression [2:14, 2:15]:
+        -> defined at:  [1:5, 1:6]:
+        -> typed: bool
+        Name: x
+      AstMatch [3:11, 4:18]:
+        -> typed: bool => int
+        AstRule [3:11, 3:15]:
+          -> typed: bool => int
+          AstConstantPattern [3:11, 3:13]:
+            -> typed: bool
+            Value: true
+            Type: bool
+          AstConstantExpression [3:14, 3:15]:
+            -> typed: int
+            Value: 1
+            Atom type: int
+        AstRule [4:14, 4:18]:
+          -> typed: bool => int
+          AstConstantPattern [4:14, 4:16]:
+            -> typed: bool
+            Value: false
+            Type: bool
+          AstConstantExpression [4:17, 4:18]:
+            -> typed: int
+            Value: 2
+            Atom type: int

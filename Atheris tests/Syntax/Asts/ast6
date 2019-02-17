@@ -1,0 +1,169 @@
+AstBindings [1:1, 6:22]:
+  AstValBinding [1:1, 1:16]:
+    -> typed: int
+    AstIdentifierPattern [1:5, 1:6]:
+      -> typed: int
+      Name: x
+    AstBinaryExpression `+` [1:9, 1:16]:
+      -> typed: int
+      AstConstantExpression [1:9, 1:11]:
+        -> typed: int
+        Value: 10
+        Atom type: int
+      AstConstantExpression [1:14, 1:16]:
+        -> typed: int
+        Value: 20
+        Atom type: int
+  AstValBinding [2:1, 2:19]:
+    -> typed: real
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: real
+      Name: y
+    AstBinaryExpression `/` [2:9, 2:19]:
+      -> typed: real
+      AstConstantExpression [2:9, 2:13]:
+        -> typed: real
+        Value: 10.5
+        Atom type: real
+      AstConstantExpression [2:16, 2:19]:
+        -> typed: real
+        Value: 2.3
+        Atom type: real
+  AstValBinding [3:1, 3:28]:
+    -> typed: bool
+    AstIdentifierPattern [3:5, 3:6]:
+      -> typed: bool
+      Name: z
+    AstBinaryExpression `andalso` [3:9, 3:28]:
+      -> typed: bool
+      AstConstantExpression [3:9, 3:13]:
+        -> typed: bool
+        Value: true
+        Atom type: bool
+      AstBinaryExpression `<` [3:22, 3:28]:
+        -> typed: bool
+        AstConstantExpression [3:22, 3:24]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+        AstConstantExpression [3:27, 3:28]:
+          -> typed: int
+          Value: 5
+          Atom type: int
+  AstValBinding [4:1, 4:35]:
+    -> typed: bool
+    AstIdentifierPattern [4:5, 4:6]:
+      -> typed: bool
+      Name: a
+    AstBinaryExpression `andalso` [4:9, 4:35]:
+      -> typed: bool
+      AstBinaryExpression `<=` [4:9, 4:16]:
+        -> typed: bool
+        AstConstantExpression [4:9, 4:10]:
+          -> typed: int
+          Value: 5
+          Atom type: int
+        AstConstantExpression [4:14, 4:16]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+      AstBinaryExpression `>=` [4:25, 4:35]:
+        -> typed: bool
+        AstConstantExpression [4:25, 4:28]:
+          -> typed: real
+          Value: 2.5
+          Atom type: real
+        AstConstantExpression [4:32, 4:35]:
+          -> typed: real
+          Value: 3.2
+          Atom type: real
+  AstValBinding [5:1, 5:98]:
+    -> typed: bool
+    AstIdentifierPattern [5:5, 5:6]:
+      -> typed: bool
+      Name: b
+    AstBinaryExpression `orelse` [5:9, 5:98]:
+      -> typed: bool
+      AstBinaryExpression `andalso` [5:9, 5:75]:
+        -> typed: bool
+        AstBinaryExpression `andalso` [5:9, 5:56]:
+          -> typed: bool
+          AstBinaryExpression `andalso` [5:9, 5:34]:
+            -> typed: bool
+            AstBinaryExpression `=` [5:9, 5:20]:
+              -> typed: bool
+              AstConstantExpression [5:9, 5:13]:
+                -> typed: bool
+                Value: true
+                Atom type: bool
+              AstConstantExpression [5:16, 5:20]:
+                -> typed: bool
+                Value: true
+                Atom type: bool
+            AstBinaryExpression `=` [5:29, 5:34]:
+              -> typed: bool
+              AstConstantExpression [5:29, 5:30]:
+                -> typed: int
+                Value: 5
+                Atom type: int
+              AstConstantExpression [5:33, 5:34]:
+                -> typed: int
+                Value: 5
+                Atom type: int
+          AstBinaryExpression `=` [5:43, 5:56]:
+            -> typed: bool
+            AstConstantExpression [5:43, 5:48]:
+              -> typed: string
+              Value: abc
+              Atom type: string
+            AstConstantExpression [5:51, 5:56]:
+              -> typed: string
+              Value: efg
+              Atom type: string
+        AstBinaryExpression `<` [5:65, 5:75]:
+          -> typed: bool
+          AstBinaryExpression `*` [5:65, 5:70]:
+            -> typed: int
+            AstConstantExpression [5:65, 5:66]:
+              -> typed: int
+              Value: 5
+              Atom type: int
+            AstConstantExpression [5:69, 5:70]:
+              -> typed: int
+              Value: 5
+              Atom type: int
+          AstConstantExpression [5:73, 5:75]:
+            -> typed: int
+            Value: 13
+            Atom type: int
+      AstBinaryExpression `>` [5:83, 5:98]:
+        -> typed: bool
+        AstBinaryExpression `-` [5:83, 5:92]:
+          -> typed: real
+          AstConstantExpression [5:83, 5:86]:
+            -> typed: real
+            Value: 3.3
+            Atom type: real
+          AstConstantExpression [5:89, 5:92]:
+            -> typed: real
+            Value: 2.3
+            Atom type: real
+        AstConstantExpression [5:95, 5:98]:
+          -> typed: real
+          Value: 0.0
+          Atom type: real
+  AstValBinding [6:1, 6:22]:
+    -> typed: string
+    AstIdentifierPattern [6:5, 6:6]:
+      -> typed: string
+      Name: c
+    AstBinaryExpression `^` [6:9, 6:22]:
+      -> typed: string
+      AstConstantExpression [6:9, 6:14]:
+        -> typed: string
+        Value: 123
+        Atom type: string
+      AstConstantExpression [6:17, 6:22]:
+        -> typed: string
+        Value: 456
+        Atom type: string
