@@ -1,0 +1,76 @@
+AstBindings [1:1, 8:12]:
+  AstDatatypeBinding [1:1, 4:11]:
+    -> typed: () prevozno_sredstvo_t
+    AstIdentifierPattern [1:10, 1:29]:
+      Name: prevozno_sredstvo_t
+    AstCase [2:6, 2:16]:
+      -> typed: int () prevozno_sredstvo_t
+      AstIdentifierPattern [2:6, 2:9]:
+        Name: Bus
+      AstTypeName [2:13, 2:16]:
+        -> typed: int
+        Name: int
+    AstCase [3:8, 3:34]:
+      -> typed: (string * string * int) () prevozno_sredstvo_t
+      AstIdentifierPattern [3:8, 3:12]:
+        Name: Avto
+      AstTupleType [3:17, 3:34]:
+        -> typed: (string * string * int)
+        AstTypeName [3:17, 3:23]:
+          -> typed: string
+          Name: string
+        AstTypeName [3:24, 3:30]:
+          -> typed: string
+          Name: string
+        AstTypeName [3:31, 3:34]:
+          -> typed: int
+          Name: int
+    AstCase [4:8, 4:11]:
+      -> typed: () prevozno_sredstvo_t
+      AstIdentifierPattern [4:8, 4:11]:
+        Name: Pes
+  AstValBinding [6:1, 6:15]:
+    -> typed: int () prevozno_sredstvo_t
+    AstIdentifierPattern [6:5, 6:6]:
+      -> typed: int () prevozno_sredstvo_t
+      Name: x
+    AstFunctionCallExpression [6:9, 6:15]:
+      -> defined at:  [2:6, 2:16]:
+      -> typed: int () prevozno_sredstvo_t
+      Function name: Bus
+      AstConstantExpression [6:13, 6:15]:
+        -> typed: int
+        Value: 10
+        Atom type: int
+  AstValBinding [7:1, 7:31]:
+    -> typed: (string * string * int) () prevozno_sredstvo_t
+    AstIdentifierPattern [7:5, 7:6]:
+      -> typed: (string * string * int) () prevozno_sredstvo_t
+      Name: y
+    AstFunctionCallExpression [7:9, 7:31]:
+      -> defined at:  [3:8, 3:34]:
+      -> typed: (string * string * int) () prevozno_sredstvo_t
+      Function name: Avto
+      AstTupleExpression [7:15, 7:31]:
+        -> typed: (string * string * int)
+        AstConstantExpression [7:15, 7:20]:
+          -> typed: string
+          Value: abc
+          Atom type: string
+        AstConstantExpression [7:22, 7:27]:
+          -> typed: string
+          Value: efg
+          Atom type: string
+        AstConstantExpression [7:29, 7:31]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+  AstValBinding [8:1, 8:12]:
+    -> typed: () prevozno_sredstvo_t
+    AstIdentifierPattern [8:5, 8:6]:
+      -> typed: () prevozno_sredstvo_t
+      Name: z
+    AstNameExpression [8:9, 8:12]:
+      -> defined at:  [4:8, 4:11]:
+      -> typed: () prevozno_sredstvo_t
+      Name: Pes

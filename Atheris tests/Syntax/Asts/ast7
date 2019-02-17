@@ -1,0 +1,22 @@
+AstBindings [1:1, 1:23]:
+  AstValBinding [1:1, 1:23]:
+    -> typed: int
+    AstIdentifierPattern [1:5, 1:6]:
+      -> typed: int
+      Name: x
+    AstLetExpression [1:9, 1:23]:
+      -> typed: int
+      AstBindings [1:13, 1:23]:
+        AstValBinding [1:13, 1:23]:
+          -> typed: int
+          AstIdentifierPattern [1:17, 1:18]:
+            -> typed: int
+            Name: x
+          AstConstantExpression [1:21, 1:23]:
+            -> typed: int
+            Value: 10
+            Atom type: int
+      AstNameExpression [1:27, 1:28]:
+        -> defined at:  [1:17, 1:18]:
+        -> typed: int
+        Name: x

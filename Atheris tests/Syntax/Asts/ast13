@@ -1,0 +1,85 @@
+AstBindings [1:1, 2:29]:
+  AstValBinding [1:1, 1:78]:
+    -> typed: {a:int, b:string, promise:{evaled:bool, f:fn : int -> int}}
+    AstIdentifierPattern [1:5, 1:6]:
+      -> typed: {a:int, b:string, promise:{evaled:bool, f:fn : int -> int}}
+      Name: x
+    AstRecordExpression [1:9, 1:78]:
+      -> typed: {a:int, b:string, promise:{evaled:bool, f:fn : int -> int}}
+      AstRecordRow [1:10, 1:16]:
+        -> typed: int
+        AstIdentifierPattern [1:10, 1:11]:
+          -> typed: int
+          Name: a
+        AstConstantExpression [1:14, 1:16]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+      AstRecordRow [1:18, 1:30]:
+        -> typed: string
+        AstIdentifierPattern [1:18, 1:19]:
+          -> typed: string
+          Name: b
+        AstConstantExpression [1:22, 1:30]:
+          -> typed: string
+          Value: string
+          Atom type: string
+      AstRecordRow [1:32, 1:77]:
+        -> typed: {evaled:bool, f:fn : int -> int}
+        AstIdentifierPattern [1:32, 1:39]:
+          -> typed: {evaled:bool, f:fn : int -> int}
+          Name: promise
+        AstRecordExpression [1:42, 1:77]:
+          -> typed: {evaled:bool, f:fn : int -> int}
+          AstRecordRow [1:43, 1:57]:
+            -> typed: bool
+            AstIdentifierPattern [1:43, 1:49]:
+              -> typed: bool
+              Name: evaled
+            AstConstantExpression [1:52, 1:57]:
+              -> typed: bool
+              Value: false
+              Atom type: bool
+          AstRecordRow [1:59, 1:76]:
+            -> typed: fn : int -> int
+            AstIdentifierPattern [1:59, 1:60]:
+              -> typed: fn : int -> int
+              Name: f
+            AstAnonymousFunctionBinding [1:63, 1:76]:
+              -> typed: fn : int -> int
+              AstIdentifierPattern [1:66, 1:67]:
+                -> typed: int
+                Name: x
+              AstBinaryExpression `*` [1:71, 1:76]:
+                -> typed: int
+                AstNameExpression [1:71, 1:72]:
+                  -> defined at:  [1:66, 1:67]:
+                  -> typed: int
+                  Name: x
+                AstNameExpression [1:75, 1:76]:
+                  -> defined at:  [1:66, 1:67]:
+                  -> typed: int
+                  Name: x
+  AstValBinding [2:1, 2:29]:
+    -> typed: int
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: int
+      Name: a
+    AstAnonymousFunctionCall [2:10, 2:29]:
+      -> typed: int
+      AstConstantExpression [2:27, 2:29]:
+        -> typed: int
+        Value: 10
+        Atom type: int
+      AstRecordRow [2:10, 2:12]:
+        -> typed: fn : int -> int
+        AstIdentifierPattern [2:11, 2:12]:
+          Name: f
+        AstRecordRow [2:14, 2:22]:
+          -> typed: {evaled:bool, f:fn : int -> int}
+          AstIdentifierPattern [2:15, 2:22]:
+            Name: promise
+          AstNameExpression [2:23, 2:24]:
+            -> defined at:  [1:5, 1:6]:
+            -> typed: {a:int, b:string, promise:{evaled:bool, f:fn : int -> int}}
+            Name: x
