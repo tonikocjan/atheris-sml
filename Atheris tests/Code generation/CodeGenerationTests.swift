@@ -274,7 +274,7 @@ fun f (a: 'a -> int) = a;
     performTest(code: code, filepath: "code18.rkt")
   }
   
-  func testTupleBinding() {
+  func testTupleUnpacking() {
     let code = """
 val (x, y, z) = (10, 20, 30);
 """
