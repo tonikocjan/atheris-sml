@@ -138,7 +138,7 @@ val z = x + y;
 
 Even though there is nothing wrong with the above program in terms of syntax, we can quickly evaluate that it is not a valid program, because SML doesn't allow addition of `string` and `int` types.
 
-Onether key observation is that we actually didn't define any types explicitly (even though we could). So how does the compiler know of which types are the above expressions? The answer is that the SML, even though it's strongly typed, doesn't need explicit type annotations. A mechanism that allows this is called `type inference`. Type inference is very useful because it removes redundant typing for the programmer, where it is not needed. Let's take a look at some examples:
+Another key observation is that we actually didn't define any types explicitly (even though we could). So how does the compiler know of which types are the above expressions? The answer is that the SML, even though it's strongly typed, doesn't need explicit type annotations. A mechanism that allows this is called `type inference`. Type inference is very useful because it removes redundant typing for the programmer, where it is not needed. Let's take a look at some examples:
 
 ```
 val x = 10;
@@ -150,7 +150,7 @@ Since the type of right hand side is known, in this case it is `int`, the compil
 val x = 1::2::[3, 4, 5];
 ```
 
-This example is already a bit more complex. We quickly observer that on the right hand side we have a list of sort. Since SML requires that the types of all elements of a list are of the same type, the compiler must ensure that. Luckily, all types are `int`. The second part of the evaluation must ensure, that the left hand side of the `::` operator is not a list and the right hand side is. The `::` binds from the right to the left, meaning that we can write the expression also as `1::(2::[3, 4, 5])`. Appending two to the list results in `1::[2, 3, 4, 5]`. We clearly see now that this example is semantically valid.
+This example is already a bit more complex. We quickly observer that on the right hand side we have a list of sort. Since SML requires that the types of all elements of a list are of the same type the compiler must ensure that. Luckily, all types are `int`. The second part of the evaluation must ensure, that the left hand side of the `::` operator is not a list and the right hand side is. The `::` binds from the right to the left, meaning that we can write the expression also as `1::(2::[3, 4, 5])`. Appending two to the list results in `1::[2, 3, 4, 5]`. We clearly see now that this example is semantically valid.
 
 ```
 fun f x = x + 100;
