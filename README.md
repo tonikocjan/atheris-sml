@@ -37,7 +37,7 @@ Compilers are commonly organized into several phases and linked together using c
 Focusing mostly on front-end of the compilers, they perform the following (but not exclusively):
 
 - break the source into individual words => `stream of tokens`
-- syntax analysis synthesis => `Abstract Syntax Tree` (AST)
+- syntax analysis and synthesis => `Abstract Syntax Tree` (AST)
 - semantic analysis => (updated) AST
 	- define what each phrase means
 	- link uses of variables and other identifiers to their definitions
@@ -73,7 +73,7 @@ As we can see, the lexer produces six tokens, each represented with three compon
 - position in code (very useful when reporting errors)
 - tokens' string representation
 and
-- token's lexeme (how tokens actually looks in the code)
+- token's lexeme (how token actually looks in the code)
 
 We might be wondering what the last symbols' meaning could be; it is simply just a special kind of symbol denoting that the whole code has been processed by the lexer.
 
@@ -95,6 +95,7 @@ val y = x + 20;
 ```
 
 Result:
+
 ![](Documentation/ast.jpg)
 
 The root node of our tree is an `AstBindings` note. Since SML programs are nothing else than a sequence of bindings, it makes sense that ASTs mirror this. That's why `AstBindings` node contains as it's children a list of `AstBinding` notes, where an `AstBinding` can be one of following:
