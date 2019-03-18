@@ -32,7 +32,7 @@ Graduation thesis: http://eprints.fri.uni-lj.si/4058/
 
 ## More about compilers
 
-Compilers are commonly organized into several phases linked together using common interfaces to form a complex system. 
+Compilers are commonly organized into several phases and linked together using common interfaces to form a complex system. 
 
 Focusing mostly on front-end of the compilers, they perform the following (but not exclusively):
 
