@@ -104,7 +104,7 @@ The root node of our tree is an `AstBindings` note. Since SML programs are nothi
 - `AstFunBinding`: function definition and binding to a name
 - `AstDatatypeBinding`: datatypes
 
-Taking a second look at the above diagram, we can also see another kind of a node: an `AstBinaryExpression` node. This node represents some binary expressions, binary expression being an expression joining two other sub-expressions with an operation. Core SML language supports (note that we are not supporing operator overloading) operations:
+Taking a second look at the above diagram, we can also see another kind of a node: an `AstBinaryExpression` node. This node represents binary expressions where a binary expression is an expression which joins two other sub-expressions with an operation. Core SML language supports the following operations (note that we are not supporing operator overloading):
 
 - arithmetic: _+, -, *, /_
 - modulo: _mod_
