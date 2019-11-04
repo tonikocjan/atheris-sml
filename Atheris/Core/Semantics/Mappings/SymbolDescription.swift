@@ -41,14 +41,14 @@ public class SymbolDescription: SymbolDescriptionProtocol {
 private extension SymbolDescription {
   class NodeWrapper: Hashable {
     let node: AstNode
-    private lazy var hashValue_: Int = { return ObjectIdentifier(self.node).hashValue }()
+    private lazy var hashValue_: Int = { ObjectIdentifier(self.node).hashValue }()
     
     init(_ node: AstNode) {
       self.node = node
     }
     
-    public var hashValue: Int {
-      return hashValue_
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(hashValue_)
     }
     
     static func == (lhs: NodeWrapper, rhs: NodeWrapper) -> Bool {

@@ -27,6 +27,9 @@
 		3716C94321BC137E00A24765 /* ast14 in Resources */ = {isa = PBXBuildFile; fileRef = 3716C94221BC137E00A24765 /* ast14 */; };
 		3716C94521BD768500A24765 /* code9.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3716C94421BD768500A24765 /* code9.rkt */; };
 		3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A755215A2D8100917960 /* ArgumentParserTests.swift */; };
+		373B18D82359AC9F004CFCFF /* JSONVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373B18D72359AC9F004CFCFF /* JSONVisitor.swift */; };
+		373B18DA235A05CA004CFCFF /* StdOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373B18D9235A05CA004CFCFF /* StdOutputStream.swift */; };
+		373B18DC235A3E3A004CFCFF /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373B18DB235A3E3A004CFCFF /* Counter.swift */; };
 		374505C821B50FFE0051E1E9 /* AstVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024A321B3F40B006B868E /* AstVisitor.swift */; };
 		374505C921B50FFE0051E1E9 /* DumpVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024D121B419B8006B868E /* DumpVisitor.swift */; };
 		374505CA21B50FFE0051E1E9 /* AstPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024C521B41001006B868E /* AstPattern.swift */; };
@@ -252,6 +255,9 @@
 		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
+		373B18D72359AC9F004CFCFF /* JSONVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONVisitor.swift; sourceTree = "<group>"; };
+		373B18D9235A05CA004CFCFF /* StdOutputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdOutputStream.swift; sourceTree = "<group>"; };
+		373B18DB235A3E3A004CFCFF /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		374505E121B5183D0051E1E9 /* SymbolTableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTableProtocol.swift; sourceTree = "<group>"; };
 		374505E321B518EA0051E1E9 /* SymbolTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTable.swift; sourceTree = "<group>"; };
 		374505E721B5197E0051E1E9 /* SymbolDescriptionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolDescriptionProtocol.swift; sourceTree = "<group>"; };
@@ -601,6 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				37E0CE25216A31B200BAFD2A /* Files */,
+				373B18DB235A3E3A004CFCFF /* Counter.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -614,6 +621,7 @@
 				37E0CE1F2168F93C00BAFD2A /* FileInputStream.swift */,
 				37E0CE2A216A362800BAFD2A /* OutputStream.swift */,
 				37E0CE2C216A380100BAFD2A /* FileOutputStream.swift */,
+				373B18D9235A05CA004CFCFF /* StdOutputStream.swift */,
 			);
 			path = Files;
 			sourceTree = "<group>";
@@ -730,6 +738,7 @@
 			children = (
 				37F024A321B3F40B006B868E /* AstVisitor.swift */,
 				37F024D121B419B8006B868E /* DumpVisitor.swift */,
+				373B18D72359AC9F004CFCFF /* JSONVisitor.swift */,
 			);
 			path = Visitor;
 			sourceTree = "<group>";
@@ -1028,6 +1037,7 @@
 				37F024C921B4110D006B868E /* AstIdentifierPattern.swift in Sources */,
 				3745063A21B6C6990051E1E9 /* RacketCodeGenerator.swift in Sources */,
 				374505F621B537E50051E1E9 /* TypeChecker.swift in Sources */,
+				373B18D82359AC9F004CFCFF /* JSONVisitor.swift in Sources */,
 				37E9869C21C3CC7C00D68CA4 /* AstRule.swift in Sources */,
 				37F024C621B41001006B868E /* AstPattern.swift in Sources */,
 				37E9869F21C3CC9C00D68CA4 /* AstCaseExpression.swift in Sources */,
@@ -1036,6 +1046,7 @@
 				37E0CE202168F93C00BAFD2A /* FileInputStream.swift in Sources */,
 				375FF4FC2161E0930088F7A3 /* FileReader.swift in Sources */,
 				37F024C021B3FE16006B868E /* AstFunBinding.swift in Sources */,
+				373B18DA235A05CA004CFCFF /* StdOutputStream.swift in Sources */,
 				37B2F8D821C1449100C0B9E8 /* AstDatatypeBinding.swift in Sources */,
 				375FF5042161E0D60088F7A3 /* ArgumentParser.swift in Sources */,
 				37F024D221B419B8006B868E /* DumpVisitor.swift in Sources */,
@@ -1057,6 +1068,7 @@
 				3745063321B6BCAB0051E1E9 /* AstIfExpression.swift in Sources */,
 				375FF5062161E0D60088F7A3 /* Logger.swift in Sources */,
 				374505E821B5197E0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,
+				373B18DC235A3E3A004CFCFF /* Counter.swift in Sources */,
 				37F024BC21B3FA2C006B868E /* SynAn.swift in Sources */,
 				37F024C221B40DA0006B868E /* AstExpression.swift in Sources */,
 				374505EF21B530C90051E1E9 /* AstNameExpression.swift in Sources */,

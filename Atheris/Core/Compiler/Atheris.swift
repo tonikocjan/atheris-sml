@@ -21,7 +21,7 @@ public class Atheris {
     var syntaxTree: AstBindings?
     
     do {
-      logger.log(message: "SML -> Racket 🚀 [0.0.1 (pre-alpha)]:")
+//      logger.log(message: "SML -> Racket 🚀 [0.0.1 (pre-alpha)]:")
       let lexan = LexAn(inputStream: inputStream)
       //    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
       //    for symbol in lexan {
@@ -65,8 +65,8 @@ public class Atheris {
                                               symbolDescription: symbolTable.symbolDescription)
       try codeGenerator.visit(node: ast)
       
-      let executor = Executor()
-      try executor.execute(file: "code.rkt")
+//      let executor = Executor()
+//      try executor.execute(file: "code.rkt")
 
       return codeGenerator.outputStream
       #endif
@@ -80,8 +80,9 @@ public class Atheris {
   }
   
   private func dumpAst(ast: AstBindings, outputFile: String = "ast", symbolDescription: SymbolDescriptionProtocol) throws {
-    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: outputFile)!))
-    let dumpVisitor = DumpVisitor(outputStream: outputStream,
+//    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: outputFile)!))
+    let outputStream = StdOutputStream()
+    let dumpVisitor = JSONVisitor(outputStream: outputStream,
                                   symbolDescription: symbolDescription)
     try dumpVisitor.visit(node: ast)
   }
