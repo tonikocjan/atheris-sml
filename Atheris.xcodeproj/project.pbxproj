@@ -26,6 +26,8 @@
 		3716C94121BC0FFB00A24765 /* ListType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716C93F21BC0FFB00A24765 /* ListType.swift */; };
 		3716C94321BC137E00A24765 /* ast14 in Resources */ = {isa = PBXBuildFile; fileRef = 3716C94221BC137E00A24765 /* ast14 */; };
 		3716C94521BD768500A24765 /* code9.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3716C94421BD768500A24765 /* code9.rkt */; };
+		3725CCC523B518D400A4B327 /* λcalculusGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */; };
+		3725CCCA23B5195100A4B327 /* Τree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCC923B5195100A4B327 /* Τree.swift */; };
 		3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A755215A2D8100917960 /* ArgumentParserTests.swift */; };
 		374505C821B50FFE0051E1E9 /* AstVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024A321B3F40B006B868E /* AstVisitor.swift */; };
 		374505C921B50FFE0051E1E9 /* DumpVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024D121B419B8006B868E /* DumpVisitor.swift */; };
@@ -249,6 +251,8 @@
 		3716C93F21BC0FFB00A24765 /* ListType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListType.swift; sourceTree = "<group>"; };
 		3716C94221BC137E00A24765 /* ast14 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast14; sourceTree = "<group>"; };
 		3716C94421BD768500A24765 /* code9.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code9.rkt; sourceTree = "<group>"; };
+		3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "λcalculusGenerator.swift"; sourceTree = "<group>"; };
+		3725CCC923B5195100A4B327 /* Τree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Τree.swift"; sourceTree = "<group>"; };
 		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
@@ -394,6 +398,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3725CCC623B5192F00A4B327 /* Racket */ = {
+			isa = PBXGroup;
+			children = (
+				3745063921B6C6990051E1E9 /* RacketCodeGenerator.swift */,
+			);
+			path = Racket;
+			sourceTree = "<group>";
+		};
+		3725CCC723B5193B00A4B327 /* λ */ = {
+			isa = PBXGroup;
+			children = (
+				3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */,
+				3725CCC923B5195100A4B327 /* Τree.swift */,
+			);
+			path = "λ";
+			sourceTree = "<group>";
+		};
 		3734A74E215A2D6700917960 /* Atheris tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,7 +483,8 @@
 			isa = PBXGroup;
 			children = (
 				3745063621B6C6600051E1E9 /* CodeGenerator.swift */,
-				3745063921B6C6990051E1E9 /* RacketCodeGenerator.swift */,
+				3725CCC723B5193B00A4B327 /* λ */,
+				3725CCC623B5192F00A4B327 /* Racket */,
 			);
 			path = "Code generation";
 			sourceTree = "<group>";
@@ -814,6 +836,7 @@
 					};
 					376164F421553CB90058BD03 = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1120;
 					};
 				};
 			};
@@ -1046,6 +1069,7 @@
 				3745061621B562880051E1E9 /* AstTupleType.swift in Sources */,
 				37F024BE21B3FAC0006B868E /* AstBindings.swift in Sources */,
 				37F024A921B3F4C2006B868E /* AstNode.swift in Sources */,
+				3725CCC523B518D400A4B327 /* λcalculusGenerator.swift in Sources */,
 				376164F921553CB90058BD03 /* main.swift in Sources */,
 				37E0CE29216A360E00BAFD2A /* InputStream.swift in Sources */,
 				3745060321B53EA80051E1E9 /* AbstractType.swift in Sources */,
@@ -1055,6 +1079,7 @@
 				37E5FCC221EA12410091317C /* PolymorphicType.swift in Sources */,
 				378EB81E21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */,
 				3745063321B6BCAB0051E1E9 /* AstIfExpression.swift in Sources */,
+				3725CCCA23B5195100A4B327 /* Τree.swift in Sources */,
 				375FF5062161E0D60088F7A3 /* Logger.swift in Sources */,
 				374505E821B5197E0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,
 				37F024BC21B3FA2C006B868E /* SynAn.swift in Sources */,
@@ -1234,7 +1259,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T634YNT6FE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1244,7 +1269,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T634YNT6FE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

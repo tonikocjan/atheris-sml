@@ -59,14 +59,14 @@ public class Atheris {
       return codeGenerator.outputStream
       #else
       // Code generation
-      let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "code.rkt")!))
+      let outputStream = StdOutputStream()
       let codeGenerator = RacketCodeGenerator(outputStream: outputStream,
                                               configuration: .standard,
                                               symbolDescription: symbolTable.symbolDescription)
       try codeGenerator.visit(node: ast)
       
-      let executor = Executor()
-      try executor.execute(file: "code.rkt")
+//      let executor = Executor()
+//      try executor.execute(file: "code.rkt")
 
       return codeGenerator.outputStream
       #endif

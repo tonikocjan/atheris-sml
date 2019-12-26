@@ -12,3 +12,13 @@ public protocol OutputStream {
   func print(_ string: String)
   func printLine(_ string: String)
 }
+
+public class StdOutputStream: OutputStream {
+  public func print(_ string: String) {
+    Swift.print(string, terminator: "")
+  }
+  
+  public func printLine(_ string: String) {
+    Swift.print(string)
+  }
+}
