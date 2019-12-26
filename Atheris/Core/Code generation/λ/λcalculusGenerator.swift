@@ -87,7 +87,16 @@ public extension λcalculusGenerator {
   }
   
   func visit(node: AstUnaryExpression) throws {}
-  func visit(node: AstIfExpression) throws {}
+  
+  func visit(node: AstIfExpression) throws {
+    let condition = try myVisit(node: node.condition)
+    let trueBranch = try myVisit(node: node.trueBranch)
+    let falseBranch = try myVisit(node: node.falseBranch)
+    let application = Tree.application(fn: .application(fn: condition, value: trueBranch),
+                                       value: falseBranch)
+    setTree(for: node, tree: application)
+  }
+  
   func visit(node: AstLetExpression) throws {}
   func visit(node: AstFunctionCallExpression) throws {}
   func visit(node: AstAnonymousFunctionCall) throws {}

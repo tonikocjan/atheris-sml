@@ -1,9 +1,9 @@
-AstBindings [1:1, 3:6]:
+AstBindings [1:1, 4:31]:
   AstValBinding [1:1, 1:11]:
     -> typed: int
     AstIdentifierPattern [1:5, 1:6]:
       -> typed: int
-      Name: x
+      Name: a
     AstConstantExpression [1:9, 1:11]:
       -> typed: int
       Value: 10
@@ -12,23 +12,68 @@ AstBindings [1:1, 3:6]:
     -> typed: int
     AstIdentifierPattern [2:5, 2:6]:
       -> typed: int
-      Name: y
+      Name: b
     AstConstantExpression [2:9, 2:11]:
       -> typed: int
-      Value: 20
+      Value: 10
       Atom type: int
-  AstValBinding [3:1, 3:6]:
+  AstValBinding [3:1, 3:50]:
     -> typed: int
-    AstIdentifierPattern [3:1, 3:6]:
+    AstIdentifierPattern [3:1, 3:50]:
       -> typed: int
       Name: x1
-    AstBinaryExpression `+` [3:1, 3:6]:
+    AstIfExpression [3:1, 3:50]:
       -> typed: int
-      AstNameExpression [3:1, 3:2]:
-        -> defined at:  [1:5, 1:6]:
+      AstIfExpression [3:4, 3:34]:
+        -> typed: bool
+        AstBinaryExpression `=` [3:7, 3:13]:
+          -> typed: bool
+          AstNameExpression [3:7, 3:8]:
+            -> defined at:  [1:5, 1:6]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [3:11, 3:13]:
+            -> typed: int
+            Value: 10
+            Atom type: int
+        AstConstantExpression [3:19, 3:23]:
+          -> typed: bool
+          Value: true
+          Atom type: bool
+        AstConstantExpression [3:29, 3:34]:
+          -> typed: bool
+          Value: false
+          Atom type: bool
+      AstConstantExpression [3:40, 3:42]:
         -> typed: int
-        Name: x
-      AstNameExpression [3:5, 3:6]:
-        -> defined at:  [2:5, 2:6]:
+        Value: 10
+        Atom type: int
+      AstConstantExpression [3:48, 3:50]:
         -> typed: int
-        Name: y
+        Value: 20
+        Atom type: int
+  AstValBinding [4:1, 4:31]:
+    -> typed: bool
+    AstIdentifierPattern [4:1, 4:31]:
+      -> typed: bool
+      Name: x2
+    AstIfExpression [4:1, 4:31]:
+      -> typed: bool
+      AstBinaryExpression `=` [4:4, 4:10]:
+        -> typed: bool
+        AstNameExpression [4:4, 4:5]:
+          -> defined at:  [2:5, 2:6]:
+          -> typed: int
+          Name: b
+        AstConstantExpression [4:8, 4:10]:
+          -> typed: int
+          Value: 20
+          Atom type: int
+      AstConstantExpression [4:16, 4:20]:
+        -> typed: bool
+        Value: true
+        Atom type: bool
+      AstConstantExpression [4:26, 4:31]:
+        -> typed: bool
+        Value: false
+        Atom type: bool

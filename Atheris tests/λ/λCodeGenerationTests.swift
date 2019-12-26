@@ -13,24 +13,22 @@ class λCodeGenerationTests: XCTestCase {
   typealias Tree = λcalculusGenerator.Tree
   
   func testSimpleConstants() {
-    performTest(code: "val a = 10;", tree: .binding(v: "a", expression: .constant(value: 10)))
-    performTest(code: "val a = true;", tree: .binding(v: "a", expression: .abstraction(variable: "x",
-                                                                                       expression: .abstraction(variable: "y",
-                                                                                                                expression: .variable(name: "x")))))
-    performTest(code: "val a = false;", tree: .binding(v: "a", expression: .abstraction(variable: "x",
-                                                                                        expression: .abstraction(variable: "y",
-                                                                                                                 expression: .variable(name: "y")))))
+    performTest(code: "val a = 10;", expected: "let a = 10")
+    performTest(code: "val a = true;", expected: "let a = \\x.\\y.x")
+    performTest(code: "val a = false;", expected: "let a = \\x.\\y.y")
   }
   
   func testBinaryOperations() {
-    performTest(code: "10 + 20;", tree: .application(fn: .application(fn: .variable(name: "+"),
-                                                                      value: .constant(value: 10)),
-                                                     value: .constant(value: 20)))
+    performTest(code: "10 + 20;", expected: "((+10)20)")
+  }
+  
+  func testIfThenElse() {
+    performTest(code: "if 10 = 10 then true else false;", expected: "((((=10)10)\\x.\\y.x)\\x.\\y.y)")
   }
 }
 
 private extension λCodeGenerationTests {
-  func performTest(code: String, tree: Tree) {
+  func performTest(code: String, expected: String) {
     do {
       let lexan = LexAn(inputStream: TextStream(string: code))
       let parser = SynAn(lexan: lexan)
@@ -47,7 +45,7 @@ private extension λCodeGenerationTests {
       try treeGenerator.visit(node: ast)
       let codeGenerator = λcalculusCodeGen(outputStream: outputStream, mapping: treeGenerator.table)
       try codeGenerator.visit(node: ast)
-      XCTAssertEqual(outputStream.buffer.trimmingCharacters(in: ["\n"]), tree.description)
+      XCTAssertEqual(outputStream.buffer.trimmingCharacters(in: ["\n"]), expected)
     } catch {
       print((error as? AtherisError)?.errorMessage ?? error.localizedDescription)
       XCTFail()
