@@ -29,8 +29,11 @@ public extension λcalculusGenerator {
   func visit(node: AstValBinding) throws {
     switch node.pattern {
     case let identifier as AstIdentifierPattern:
-      let tree = Tree.binding(v: identifier.name, expression: try myVisit(node: node.expression))
-      setLine(for: node, line: tree)
+      var tree = try myVisit(node: node.expression)
+      if !node.isGeneratedByCompiler {
+        tree = .binding(v: identifier.name, expression: tree)
+      }
+      setTree(for: node, tree: tree)
     case _:
       fatalError("Not yet implemented")
     }
@@ -45,25 +48,44 @@ public extension λcalculusGenerator {
   func visit(node: AstTypeName) throws {}
   func visit(node: AstTypeConstructor) throws {}
   func visit(node: AstTupleType) throws {}
+  
   func visit(node: AstConstantExpression) throws {
     switch (node.type, node.value) {
-    case (.int, _), (.real, _):
-      setLine(for: node, line: .constant(value: Double(node.value)!))
+    case (.int, _):
+      setTree(for: node, tree: .constant(value: Int(node.value)!))
     case (.bool, "true"):
-      setLine(for: node, line: .abstraction(variable: "x",
+      setTree(for: node, tree: .abstraction(variable: "x",
                                             expression: .abstraction(variable: "y",
                                                                      expression: .variable(name: "x"))))
     case (.bool, "false"):
-      setLine(for: node, line: .abstraction(variable: "x",
+      setTree(for: node, tree: .abstraction(variable: "x",
                                             expression: .abstraction(variable: "y",
                                                                      expression: .variable(name: "y"))))
     case _:
       fatalError("Not yet implemented")
     }
   }
-  func visit(node: AstNameExpression) throws {}
+  
+  func visit(node: AstNameExpression) throws {
+    setTree(for: node, tree: .variable(name: node.name))
+  }
+  
   func visit(node: AstTupleExpression) throws {}
-  func visit(node: AstBinaryExpression) throws {}
+  
+  func visit(node: AstBinaryExpression) throws {
+    switch node.operation {
+    case .add, .subtract, .multiply, .divide, .equal:
+      let left = try myVisit(node: node.left)
+      let right = try myVisit(node: node.right)
+      let application = Tree.application(fn: .application(fn: .variable(name: node.operation.rawValue),
+                                                          value: left),
+                                         value: right)
+      setTree(for: node, tree: application)
+    case _:
+      fatalError("This binary operation is not (yet) supported!")
+    }
+  }
+  
   func visit(node: AstUnaryExpression) throws {}
   func visit(node: AstIfExpression) throws {}
   func visit(node: AstLetExpression) throws {}
@@ -96,11 +118,11 @@ private extension λcalculusGenerator {
   
   func myVisit(node: AstNode) throws -> Tree {
     try node.accept(visitor: self)
-    guard let line = table[.init(node)] else { fatalError() }
-    return line
+    guard let tree = table[.init(node)] else { fatalError("Node couldn't have been mapped to a Tree. Exiting ...") }
+    return tree
   }
   
-  func setLine(for node: AstNode, line: Tree) {
-    table[.init(node)] = line
+  func setTree(for node: AstNode, tree: Tree) {
+    table[.init(node)] = tree
   }
 }

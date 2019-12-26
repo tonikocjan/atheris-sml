@@ -12,6 +12,7 @@ public class AstValBinding: AstBinding {
   public let position: Position
   public let pattern: AstPattern
   public let expression: AstExpression
+  public var isGeneratedByCompiler = false
   
   public init(position: Position, pattern: AstPattern, expression: AstExpression) {
     self.position = position

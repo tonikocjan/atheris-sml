@@ -21,7 +21,7 @@ public class Atheris {
     var syntaxTree: AstBindings?
     
     do {
-      logger.log(message: "SML -> Racket 🚀 [0.0.1 (pre-alpha)]:")
+//      logger.log(message: "SML -> Racket 🚀 [0.0.1 (pre-alpha)]:")
       let lexan = LexAn(inputStream: inputStream)
       //    let outputStream = FileOutputStream(fileWriter: try FileWriter(fileUrl: URL(string: "lex")!))
       //    for symbol in lexan {
@@ -58,12 +58,20 @@ public class Atheris {
       try codeGenerator.visit(node: ast)
       return codeGenerator.outputStream
       #else
-      
       // Code generation
+      
+      // Lambda
       let treeGenerator = λcalculusGenerator(symbolDescription: symbolTable.symbolDescription)
       try treeGenerator.visit(node: ast)
       let codeGenerator = λcalculusCodeGen(outputStream: StdOutputStream(), mapping: treeGenerator.table)
       try codeGenerator.visit(node: ast)
+      
+      // Racket
+//      let outputStream = StdOutputStream()
+//      let codeGenerator = RacketCodeGenerator(outputStream: outputStream,
+//                                              configuration: .standard,
+//                                              symbolDescription: symbolTable.symbolDescription)
+//      try codeGenerator.visit(node: ast)
       
 //      let executor = Executor()
 //      try executor.execute(file: "code.rkt")

@@ -15,16 +15,18 @@ public protocol LoggerProtocol {
 }
 
 public class Logger: LoggerProtocol {
+  private let stderr = FileHandle.standardError
+  
   public func log(message: String) {
-    print(message)
+    stderr.write(message.data(using: .utf8)!)
   }
   
   public func error(message: String) {
-    print("❗️ " + message)
+    log(message: "❗️ " + message)
   }
   
   public func warning(message: String) {
-    print("⚠ " + message)
+    log(message: "⚠️ " + message)
   }
 }
 

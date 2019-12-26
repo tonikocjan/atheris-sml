@@ -21,6 +21,12 @@ class λCodeGenerationTests: XCTestCase {
                                                                                         expression: .abstraction(variable: "y",
                                                                                                                  expression: .variable(name: "y")))))
   }
+  
+  func testBinaryOperations() {
+    performTest(code: "10 + 20;", tree: .application(fn: .application(fn: .variable(name: "+"),
+                                                                      value: .constant(value: 10)),
+                                                     value: .constant(value: 20)))
+  }
 }
 
 private extension λCodeGenerationTests {

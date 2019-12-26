@@ -59,9 +59,11 @@ private extension SynAn {
     default:
       wildcardVarBindingsCounter += 1
       let expression = try parseExpression()
-      return AstValBinding(position: expression.position,
-                           pattern: AstIdentifierPattern(position: expression.position, name: wildcardValBindingName + String(wildcardVarBindingsCounter)),
-                           expression: expression)
+      let binding = AstValBinding(position: expression.position,
+                                  pattern: AstIdentifierPattern(position: expression.position, name: wildcardValBindingName + String(wildcardVarBindingsCounter)),
+                                  expression: expression)
+      binding.isGeneratedByCompiler = true
+      return binding
     }
   }
   

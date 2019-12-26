@@ -416,8 +416,8 @@
 		3725CCC723B5193B00A4B327 /* λ */ = {
 			isa = PBXGroup;
 			children = (
-				3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */,
 				3725CCC923B5195100A4B327 /* Τree.swift */,
+				3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */,
 				3725CCCD23B5245800A4B327 /* λcalculusCodeGen.swift */,
 			);
 			path = "λ";

@@ -49,7 +49,7 @@ public class ArgumentParser: ArgumentParserProtocol {
 }
 
 public extension ArgumentParser {
-  public enum Arguments: String {
+  enum Arguments: String {
     case sourceFile = "source_file"
     case workingDirectory = "working_dir"
   }

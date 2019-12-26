@@ -1,0 +1,34 @@
+AstBindings [1:1, 3:6]:
+  AstValBinding [1:1, 1:11]:
+    -> typed: int
+    AstIdentifierPattern [1:5, 1:6]:
+      -> typed: int
+      Name: x
+    AstConstantExpression [1:9, 1:11]:
+      -> typed: int
+      Value: 10
+      Atom type: int
+  AstValBinding [2:1, 2:11]:
+    -> typed: int
+    AstIdentifierPattern [2:5, 2:6]:
+      -> typed: int
+      Name: y
+    AstConstantExpression [2:9, 2:11]:
+      -> typed: int
+      Value: 20
+      Atom type: int
+  AstValBinding [3:1, 3:6]:
+    -> typed: int
+    AstIdentifierPattern [3:1, 3:6]:
+      -> typed: int
+      Name: x1
+    AstBinaryExpression `+` [3:1, 3:6]:
+      -> typed: int
+      AstNameExpression [3:1, 3:2]:
+        -> defined at:  [1:5, 1:6]:
+        -> typed: int
+        Name: x
+      AstNameExpression [3:5, 3:6]:
+        -> defined at:  [2:5, 2:6]:
+        -> typed: int
+        Name: y
