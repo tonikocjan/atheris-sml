@@ -58,11 +58,11 @@ public class Atheris {
       try codeGenerator.visit(node: ast)
       return codeGenerator.outputStream
       #else
+      
       // Code generation
-      let outputStream = StdOutputStream()
-      let codeGenerator = RacketCodeGenerator(outputStream: outputStream,
-                                              configuration: .standard,
-                                              symbolDescription: symbolTable.symbolDescription)
+      let treeGenerator = λcalculusGenerator(symbolDescription: symbolTable.symbolDescription)
+      try treeGenerator.visit(node: ast)
+      let codeGenerator = λcalculusCodeGen(outputStream: StdOutputStream(), mapping: treeGenerator.table)
       try codeGenerator.visit(node: ast)
       
 //      let executor = Executor()
@@ -88,7 +88,7 @@ public class Atheris {
 }
 
 public extension Atheris {
-  public enum Error: Swift.Error {
+  enum Error: Swift.Error {
     case invalidPath(String)
     case fileNotFound(URL)
     case invalidArguments(errorMessage: String)

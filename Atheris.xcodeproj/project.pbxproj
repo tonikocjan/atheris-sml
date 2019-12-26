@@ -28,6 +28,11 @@
 		3716C94521BD768500A24765 /* code9.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 3716C94421BD768500A24765 /* code9.rkt */; };
 		3725CCC523B518D400A4B327 /* λcalculusGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */; };
 		3725CCCA23B5195100A4B327 /* Τree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCC923B5195100A4B327 /* Τree.swift */; };
+		3725CCCE23B5245800A4B327 /* λcalculusCodeGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCCD23B5245800A4B327 /* λcalculusCodeGen.swift */; };
+		3725CCD323B528E800A4B327 /* λCodeGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCD223B528E800A4B327 /* λCodeGenerationTests.swift */; };
+		3725CCD423B52A1500A4B327 /* λcalculusGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */; };
+		3725CCD523B52A1700A4B327 /* λcalculusCodeGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCCD23B5245800A4B327 /* λcalculusCodeGen.swift */; };
+		3725CCD623B52A3E00A4B327 /* Τree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725CCC923B5195100A4B327 /* Τree.swift */; };
 		3734A756215A2D8100917960 /* ArgumentParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734A755215A2D8100917960 /* ArgumentParserTests.swift */; };
 		374505C821B50FFE0051E1E9 /* AstVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024A321B3F40B006B868E /* AstVisitor.swift */; };
 		374505C921B50FFE0051E1E9 /* DumpVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F024D121B419B8006B868E /* DumpVisitor.swift */; };
@@ -253,6 +258,8 @@
 		3716C94421BD768500A24765 /* code9.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code9.rkt; sourceTree = "<group>"; };
 		3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "λcalculusGenerator.swift"; sourceTree = "<group>"; };
 		3725CCC923B5195100A4B327 /* Τree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Τree.swift"; sourceTree = "<group>"; };
+		3725CCCD23B5245800A4B327 /* λcalculusCodeGen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "λcalculusCodeGen.swift"; sourceTree = "<group>"; };
+		3725CCD223B528E800A4B327 /* λCodeGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "λCodeGenerationTests.swift"; sourceTree = "<group>"; };
 		3734A74D215A2D6600917960 /* Atheris tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atheris tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3734A751215A2D6700917960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734A755215A2D8100917960 /* ArgumentParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParserTests.swift; sourceTree = "<group>"; };
@@ -411,6 +418,15 @@
 			children = (
 				3725CCC423B518D400A4B327 /* λcalculusGenerator.swift */,
 				3725CCC923B5195100A4B327 /* Τree.swift */,
+				3725CCCD23B5245800A4B327 /* λcalculusCodeGen.swift */,
+			);
+			path = "λ";
+			sourceTree = "<group>";
+		};
+		3725CCCF23B528B800A4B327 /* λ */ = {
+			isa = PBXGroup;
+			children = (
+				3725CCD223B528E800A4B327 /* λCodeGenerationTests.swift */,
 			);
 			path = "λ";
 			sourceTree = "<group>";
@@ -418,6 +434,7 @@
 		3734A74E215A2D6700917960 /* Atheris tests */ = {
 			isa = PBXGroup;
 			children = (
+				3725CCCF23B528B800A4B327 /* λ */,
 				37F024B821B3F9F2006B868E /* Utils */,
 				375FF4F12160C0C80088F7A3 /* Lexan */,
 				37F024B521B3F9AD006B868E /* Syntax */,
@@ -950,6 +967,7 @@
 				374505D321B50FFE0051E1E9 /* AstBindings.swift in Sources */,
 				374505D421B50FFE0051E1E9 /* AstBinding.swift in Sources */,
 				3745060A21B5449C0051E1E9 /* AbstractDummyType.swift in Sources */,
+				3725CCD323B528E800A4B327 /* λCodeGenerationTests.swift in Sources */,
 				374505D521B50FFE0051E1E9 /* AstValBinding.swift in Sources */,
 				374505D621B50FFE0051E1E9 /* AstFunBinding.swift in Sources */,
 				374505D721B50FFE0051E1E9 /* AstExpression.swift in Sources */,
@@ -958,6 +976,7 @@
 				374505DC21B510020051E1E9 /* main.swift in Sources */,
 				374505D921B50FFE0051E1E9 /* AstNode.swift in Sources */,
 				374505DA21B50FFE0051E1E9 /* SyntaxParser.swift in Sources */,
+				3725CCD423B52A1500A4B327 /* λcalculusGenerator.swift in Sources */,
 				37805BF121EA1ADC00F7A7E2 /* AstTypeConstructor.swift in Sources */,
 				37C4126621DE54F90039A618 /* AstEmptyListPattern.swift in Sources */,
 				37C4126921DE57DA0039A618 /* AstListPattern.swift in Sources */,
@@ -985,6 +1004,7 @@
 				3745060D21B545BD0051E1E9 /* AstTupleExpression.swift in Sources */,
 				37E0CE31216A46C000BAFD2A /* FileWriter.swift in Sources */,
 				374505E921B51A4B0051E1E9 /* SymbolDescriptionProtocol.swift in Sources */,
+				3725CCD523B52A1700A4B327 /* λcalculusCodeGen.swift in Sources */,
 				375FF50B2161E0D60088F7A3 /* Atheris.swift in Sources */,
 				375FF5072161E0D60088F7A3 /* Logger.swift in Sources */,
 				378EB82421B8FBA600E576E6 /* AstAnonymousFunctionBinding.swift in Sources */,
@@ -1007,6 +1027,7 @@
 				375FF4F72160C1040088F7A3 /* file_parser_test_2 in Sources */,
 				3745063421B6BCAB0051E1E9 /* AstIfExpression.swift in Sources */,
 				37E986A321C3CF1400D68CA4 /* AstConstantPattern.swift in Sources */,
+				3725CCD623B52A3E00A4B327 /* Τree.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1078,6 +1099,7 @@
 				374505E421B518EA0051E1E9 /* SymbolTable.swift in Sources */,
 				37E5FCC221EA12410091317C /* PolymorphicType.swift in Sources */,
 				378EB81E21B8F81B00E576E6 /* AstAnonymousFunctionCall.swift in Sources */,
+				3725CCCE23B5245800A4B327 /* λcalculusCodeGen.swift in Sources */,
 				3745063321B6BCAB0051E1E9 /* AstIfExpression.swift in Sources */,
 				3725CCCA23B5195100A4B327 /* Τree.swift in Sources */,
 				375FF5062161E0D60088F7A3 /* Logger.swift in Sources */,

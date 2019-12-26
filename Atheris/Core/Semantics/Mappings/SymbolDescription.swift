@@ -8,6 +8,23 @@
 
 import Foundation
 
+public class NodeWrapper: Hashable {
+  let node: AstNode
+  private lazy var hashValue_: Int = { return ObjectIdentifier(self.node).hashValue }()
+  
+  public init(_ node: AstNode) {
+    self.node = node
+  }
+  
+  public var hashValue: Int {
+    return hashValue_
+  }
+  
+  public static func == (lhs: NodeWrapper, rhs: NodeWrapper) -> Bool {
+    return lhs.node === rhs.node
+  }
+}
+
 public class SymbolDescription: SymbolDescriptionProtocol {
   private var scopeMapping: [NodeWrapper: Int] = [:]
   private var definitionsMapping: [NodeWrapper: AstBinding] = [:]
@@ -35,24 +52,5 @@ public class SymbolDescription: SymbolDescriptionProtocol {
   
   public func setType(for node: AstNode, type: Type) {
     typeMapping[NodeWrapper(node)] = type
-  }
-}
-
-private extension SymbolDescription {
-  class NodeWrapper: Hashable {
-    let node: AstNode
-    private lazy var hashValue_: Int = { return ObjectIdentifier(self.node).hashValue }()
-    
-    init(_ node: AstNode) {
-      self.node = node
-    }
-    
-    public var hashValue: Int {
-      return hashValue_
-    }
-    
-    static func == (lhs: NodeWrapper, rhs: NodeWrapper) -> Bool {
-      return lhs.node === rhs.node
-    }
   }
 }

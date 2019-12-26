@@ -8,17 +8,18 @@
 
 import Foundation
 
-extension λcalculusGenerator {
+public extension λcalculusGenerator {
   indirect enum Tree {
     case variable(name: String)
     case abstraction(variable: String, expression: Tree)
     case application(fn: Tree, value: Tree)
     case constant(value: Double)
+    case binding(v: String, expression: Tree)
   }
 }
 
 extension λcalculusGenerator.Tree: CustomStringConvertible {
-  var description: String {
+  public var description: String {
     func stringRepresentation(_ tree: λcalculusGenerator.Tree) -> String {
       switch tree {
       case .variable(let name):
@@ -26,35 +27,11 @@ extension λcalculusGenerator.Tree: CustomStringConvertible {
       case .application(let fn, let value):
         return "(" + stringRepresentation(fn) + " " + stringRepresentation(value) + ")"
       case .abstraction(let variable, let expr):
-        return "λ" + variable + "." + stringRepresentation(expr)
+        return "\\" + variable + "." + stringRepresentation(expr)
       case .constant(let value):
         return String(value)
-      }
-    }
-    
-    return stringRepresentation(self)
-  }
-  
-  var treeLikeDescription: String {
-    func withIndent(_ string: String, indent: Int) -> String { String(repeating: " ", count: indent) + string }
-    
-    var indent = 0
-    func stringRepresentation(_ tree: λcalculusGenerator.Tree) -> String {
-      switch tree {
-      case .variable(let name):
-        return withIndent(name, indent: indent)
-      case .application(let fn, let value):
-        indent += 2
-        let application = withIndent("@\n", indent: indent - 2) + stringRepresentation(fn) + "\n" + stringRepresentation(value)
-        indent -= 2
-        return application
-      case .abstraction(let variable, let expr):
-        indent += 2
-        let abstraction = withIndent("λ\(variable).", indent: indent - 2) + "\n" + stringRepresentation(expr)
-        indent -= 2
-        return abstraction
-      case .constant(let value):
-        return withIndent(String(value), indent: indent)
+      case .binding(let variable, let expression):
+        return "let " + variable + " = " + stringRepresentation(expression)
       }
     }
     
@@ -63,7 +40,7 @@ extension λcalculusGenerator.Tree: CustomStringConvertible {
 }
 
 extension λcalculusGenerator.Tree: Equatable {
-  static func == (lhs: λcalculusGenerator.Tree, rhs: λcalculusGenerator.Tree) -> Bool {
+  public static func == (lhs: λcalculusGenerator.Tree, rhs: λcalculusGenerator.Tree) -> Bool {
     switch (lhs, rhs) {
     case (.variable(let v1), .variable(let v2)):
       return v1 == v2
