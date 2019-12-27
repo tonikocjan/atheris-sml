@@ -25,6 +25,11 @@ class λCodeGenerationTests: XCTestCase {
   func testIfThenElse() {
     performTest(code: "if 10 = 10 then true else false;", expected: "((((=10)10)\\x.\\y.x)\\x.\\y.y)")
   }
+  
+  func testFunctions() {
+    performTest(code: "fun f x = x; f 10;", expected: "let f = \\x.x\n(f10)")
+    performTest(code: "fun f x y = x + y; f 10 20;", expected: "let f = \\x.\\y.((+x)y)\n((f10)20)")
+  }
 }
 
 private extension λCodeGenerationTests {

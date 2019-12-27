@@ -39,8 +39,32 @@ public extension λcalculusGenerator {
     }
   }
   
-  func visit(node: AstFunBinding) throws {}
-  func visit(node: AstAnonymousFunctionBinding) throws {}
+  func visit(node: AstFunBinding) throws {
+    guard node.cases.count == 1 else { fatalError("Not yet handled!") }
+    
+    switch node.cases[0].parameter {
+    case let identifier as AstIdentifierPattern:
+      let body = try myVisit(node: node.cases[0].body)
+      let abstraction = Tree.abstraction(variable: identifier.name, expression: body)
+      setTree(for: node, tree: .binding(v: node.identifier.name, expression: abstraction))
+    case _:
+      fatalError("Not yet implemented!")
+    }
+  }
+  
+  func visit(node: AstAnonymousFunctionBinding) throws {
+    guard node.cases.count == 1 else { fatalError("Not yet handled!") }
+    
+    switch node.cases[0].parameter {
+    case let identifier as AstIdentifierPattern:
+      let body = try myVisit(node: node.cases[0].body)
+      let abstraction = Tree.abstraction(variable: identifier.name, expression: body)
+      setTree(for: node, tree: abstraction)
+    case _:
+      fatalError("Not yet implemented!")
+    }
+  }
+  
   func visit(node: AstDatatypeBinding) throws {}
   func visit(node: AstCase) throws {}
   func visit(node: AstTypeBinding) throws {}
@@ -98,14 +122,29 @@ public extension λcalculusGenerator {
   }
   
   func visit(node: AstLetExpression) throws {}
-  func visit(node: AstFunctionCallExpression) throws {}
-  func visit(node: AstAnonymousFunctionCall) throws {}
+  
+  func visit(node: AstFunctionCallExpression) throws {
+    let argument = try myVisit(node: node.argument)
+    setTree(for: node, tree: .application(fn: .variable(name: node.name),
+                                          value: argument))
+  }
+  
+  func visit(node: AstAnonymousFunctionCall) throws {
+    let function = try myVisit(node: node.function)
+    let argument = try myVisit(node: node.argument)
+    setTree(for: node, tree: .application(fn: function, value: argument))
+  }
+  
   func visit(node: AstRecordExpression) throws {}
   func visit(node: AstRecordRow) throws {}
   func visit(node: AstListExpression) throws {}
   func visit(node: AstRecordSelectorExpression) throws {}
   func visit(node: AstCaseExpression) throws {}
-  func visit(node: AstIdentifierPattern) throws {}
+  
+  func visit(node: AstIdentifierPattern) throws {
+    setTree(for: node, tree: .variable(name: node.name))
+  }
+  
   func visit(node: AstWildcardPattern) throws {}
   func visit(node: AstTuplePattern) throws {}
   

@@ -1,79 +1,68 @@
-AstBindings [1:1, 4:31]:
-  AstValBinding [1:1, 1:11]:
-    -> typed: int
+AstBindings [1:1, 4:8]:
+  AstFunBinding [1:1, 1:12]:
+    -> typed: fn : 'Z -> 'Z
     AstIdentifierPattern [1:5, 1:6]:
-      -> typed: int
-      Name: a
-    AstConstantExpression [1:9, 1:11]:
-      -> typed: int
-      Value: 10
-      Atom type: int
-  AstValBinding [2:1, 2:11]:
-    -> typed: int
+      -> typed: fn : 'Z -> 'Z
+      Name: f
+    AstIdentifierPattern [1:7, 1:8]:
+      -> typed: 'Z
+      Name: x
+    AstNameExpression [1:11, 1:12]:
+      -> defined at:  [1:7, 1:8]:
+      -> typed: 'Z
+      Name: x
+  AstFunBinding [2:1, 2:18]:
+    -> typed: fn : int -> fn : int -> int
     AstIdentifierPattern [2:5, 2:6]:
+      -> typed: fn : int -> fn : int -> int
+      Name: g
+    AstIdentifierPattern [2:7, 2:8]:
       -> typed: int
-      Name: b
-    AstConstantExpression [2:9, 2:11]:
-      -> typed: int
-      Value: 10
-      Atom type: int
-  AstValBinding [3:1, 3:50]:
-    -> typed: int
-    AstIdentifierPattern [3:1, 3:50]:
-      -> typed: int
-      Name: x1
-    AstIfExpression [3:1, 3:50]:
-      -> typed: int
-      AstIfExpression [3:4, 3:34]:
-        -> typed: bool
-        AstBinaryExpression `=` [3:7, 3:13]:
-          -> typed: bool
-          AstNameExpression [3:7, 3:8]:
-            -> defined at:  [1:5, 1:6]:
-            -> typed: int
-            Name: a
-          AstConstantExpression [3:11, 3:13]:
-            -> typed: int
-            Value: 10
-            Atom type: int
-        AstConstantExpression [3:19, 3:23]:
-          -> typed: bool
-          Value: true
-          Atom type: bool
-        AstConstantExpression [3:29, 3:34]:
-          -> typed: bool
-          Value: false
-          Atom type: bool
-      AstConstantExpression [3:40, 3:42]:
+      Name: x
+    AstAnonymousFunctionBinding [2:9, 2:18]:
+      -> typed: fn : int -> int
+      AstIdentifierPattern [2:9, 2:10]:
         -> typed: int
+        Name: y
+      AstBinaryExpression `+` [2:13, 2:18]:
+        -> typed: int
+        AstNameExpression [2:13, 2:14]:
+          -> defined at:  [2:7, 2:8]:
+          -> typed: int
+          Name: x
+        AstNameExpression [2:17, 2:18]:
+          -> defined at:  [2:9, 2:10]:
+          -> typed: int
+          Name: y
+  AstValBinding [3:1, 3:5]:
+    -> typed: 'Z
+    AstIdentifierPattern [3:1, 3:5]:
+      -> typed: 'Z
+      Name: x1
+    AstFunctionCallExpression [3:1, 3:5]:
+      -> defined at:  [1:1, 1:12]:
+      -> typed: 'Z
+      Function name: f
+      AstConstantExpression [3:3, 3:5]:
+        -> typed: 'Z
         Value: 10
         Atom type: int
-      AstConstantExpression [3:48, 3:50]:
+  AstValBinding [4:1, 4:8]:
+    -> typed: int
+    AstIdentifierPattern [4:1, 4:8]:
+      -> typed: int
+      Name: x2
+    AstAnonymousFunctionCall [4:1, 4:8]:
+      -> typed: int
+      AstConstantExpression [4:6, 4:8]:
         -> typed: int
         Value: 20
         Atom type: int
-  AstValBinding [4:1, 4:31]:
-    -> typed: bool
-    AstIdentifierPattern [4:1, 4:31]:
-      -> typed: bool
-      Name: x2
-    AstIfExpression [4:1, 4:31]:
-      -> typed: bool
-      AstBinaryExpression `=` [4:4, 4:10]:
-        -> typed: bool
-        AstNameExpression [4:4, 4:5]:
-          -> defined at:  [2:5, 2:6]:
+      AstFunctionCallExpression [4:1, 4:5]:
+        -> defined at:  [2:1, 2:18]:
+        -> typed: fn : int -> int
+        Function name: g
+        AstConstantExpression [4:3, 4:5]:
           -> typed: int
-          Name: b
-        AstConstantExpression [4:8, 4:10]:
-          -> typed: int
-          Value: 20
+          Value: 10
           Atom type: int
-      AstConstantExpression [4:16, 4:20]:
-        -> typed: bool
-        Value: true
-        Atom type: bool
-      AstConstantExpression [4:26, 4:31]:
-        -> typed: bool
-        Value: false
-        Atom type: bool
