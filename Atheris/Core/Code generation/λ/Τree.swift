@@ -15,6 +15,7 @@ public extension λcalculusGenerator {
     case application(fn: Tree, value: Tree)
     case constant(value: Int)
     case binding(v: String, expression: Tree)
+    case bindings([(v: String, expression: Tree)])
   }
 }
 
@@ -27,11 +28,15 @@ extension λcalculusGenerator.Tree: CustomStringConvertible {
       case .application(let fn, let value):
         return "(" + stringRepresentation(fn) + "" + stringRepresentation(value) + ")"
       case .abstraction(let variable, let expr):
-        return "\\" + variable + "." + stringRepresentation(expr)
+        return "(\\" + variable + "." + stringRepresentation(expr) + ")"
       case .constant(let value):
         return String(value)
       case .binding(let variable, let expression):
         return "let " + variable + " = " + stringRepresentation(expression)
+      case .bindings(let bindings):
+        return bindings
+          .map { "let " + $0.v + " = " + stringRepresentation($0.expression) }
+          .joined(separator: "\n")
       }
     }
     

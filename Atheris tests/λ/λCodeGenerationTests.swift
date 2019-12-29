@@ -14,8 +14,8 @@ class λCodeGenerationTests: XCTestCase {
   
   func testSimpleConstants() {
     performTest(code: "val a = 10;", expected: "let a = 10")
-    performTest(code: "val a = true;", expected: "let a = \\x.\\y.x")
-    performTest(code: "val a = false;", expected: "let a = \\x.\\y.y")
+    performTest(code: "val a = true;", expected: #"let a = (\x.(\y.x))"#)
+    performTest(code: "val a = false;", expected: #"let a = (\x.(\y.y))"#)
   }
   
   func testBinaryOperations() {
@@ -23,12 +23,23 @@ class λCodeGenerationTests: XCTestCase {
   }
   
   func testIfThenElse() {
-    performTest(code: "if 10 = 10 then true else false;", expected: "((((=10)10)\\x.\\y.x)\\x.\\y.y)")
+    performTest(code: "if 10 = 10 then true else false;", expected: #"((((=10)10)(\x.(\y.x)))(\x.(\y.y)))"#)
   }
   
   func testFunctions() {
-    performTest(code: "fun f x = x; f 10;", expected: "let f = \\x.x\n(f10)")
-    performTest(code: "fun f x y = x + y; f 10 20;", expected: "let f = \\x.\\y.((+x)y)\n((f10)20)")
+    performTest(code: "fun f x = x; f 10;", expected: #"let f = (\x.x)\#n(f10)"#)
+    performTest(code: "fun f x y = x + y; f 10 20;", expected: #"let f = (\x.(\y.((+x)y)))\#n((f10)20)"#)
+  }
+  
+  func testTuple() {
+    performTest(code: """
+val x = (10, 20, 30, 40, 50);
+#1 x;
+#2 x;
+#3 x;
+#4 x;
+#5 x;
+""", loadFromFile: "Tuple")
   }
 }
 
@@ -54,6 +65,22 @@ private extension λCodeGenerationTests {
     } catch {
       print((error as? AtherisError)?.errorMessage ?? error.localizedDescription)
       XCTFail()
+    }
+  }
+  
+  func performTest(code: String, loadFromFile file: String) {
+    let file = loadFile(file)
+    performTest(code: code, expected: file)
+  }
+  
+  func loadFile(_ file: String) -> String {
+    do {
+      guard let path = Bundle(for: type(of: self)).url(forResource: file, withExtension: nil) else { fatalError() }
+      let code = String(data: try Data(contentsOf: path), encoding: .utf8)?.trimmingCharacters(in: ["\n"])
+      return code ?? ""
+    } catch {
+      print(error.localizedDescription)
+      fatalError()
     }
   }
 }

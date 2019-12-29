@@ -65,7 +65,10 @@ public extension λcalculusGenerator {
     }
   }
   
-  func visit(node: AstDatatypeBinding) throws {}
+  func visit(node: AstDatatypeBinding) throws {
+    
+  }
+  
   func visit(node: AstCase) throws {}
   func visit(node: AstTypeBinding) throws {}
   func visit(node: AstAtomType) throws {}
@@ -94,7 +97,28 @@ public extension λcalculusGenerator {
     setTree(for: node, tree: .variable(name: node.name))
   }
   
-  func visit(node: AstTupleExpression) throws {}
+  func visit(node: AstTupleExpression) throws {
+    let constructor = Tree.abstraction(variable: "e",
+                                       expression: .abstraction(variable: "m",
+                                                                expression: .abstraction(variable: "g",
+                                                                                         expression: .application(fn: .application(fn: .variable(name: "g"),
+                                                                                                                                   value: .variable(name: "e")),
+                                                                                                                  value: .variable(name: "m")))))
+    
+    func createTuple(rows: [Tree]) -> Tree {
+      if rows.count == 1 {
+        return rows[0]
+      }
+      return .application(fn: .application(fn: constructor,
+                                           value: rows[0]),
+                                           value: createTuple(rows: Array(rows.dropFirst())))
+    }
+    
+    let expressions = try node.expressions.map(myVisit)
+    setTree(for: node, tree: .application(fn: .application(fn: constructor,
+                                                           value: expressions[0]),
+                                          value: createTuple(rows: Array(expressions.dropFirst()))))
+  }
   
   func visit(node: AstBinaryExpression) throws {
     switch node.operation {
@@ -121,7 +145,9 @@ public extension λcalculusGenerator {
     setTree(for: node, tree: application)
   }
   
-  func visit(node: AstLetExpression) throws {}
+  func visit(node: AstLetExpression) throws {
+    
+  }
   
   func visit(node: AstFunctionCallExpression) throws {
     let argument = try myVisit(node: node.argument)
@@ -136,9 +162,40 @@ public extension λcalculusGenerator {
   }
   
   func visit(node: AstRecordExpression) throws {}
+  
   func visit(node: AstRecordRow) throws {}
   func visit(node: AstListExpression) throws {}
-  func visit(node: AstRecordSelectorExpression) throws {}
+  
+  func visit(node: AstRecordSelectorExpression) throws {
+    let record = try myVisit(node: node.record)
+    guard let tuple = type(for: node.record).toTuple else { fatalError("Records not yet covered!") }
+    let index = Int(node.label.name)!
+    let fst = Tree.abstraction(variable: "h",
+                               expression: .application(fn: .variable(name: "h"),
+                                                        value: .abstraction(variable: "a",
+                                                                            expression: .abstraction(variable: "b",
+                                                                                                     expression: .variable(name: "a")))))
+    let snd = Tree.abstraction(variable: "i",
+    expression: .application(fn: .variable(name: "i"),
+                             value: .abstraction(variable: "c",
+                                                 expression: .abstraction(variable: "d",
+                                                                          expression: .variable(name: "d")))))
+    let selector: Tree
+    
+    switch (index, tuple.rows.count) {
+    case (1, 1...):
+      selector = .application(fn: fst, value: record)
+    case _ where index == tuple.rows.count:
+      selector = .application(fn: snd,
+                              value: (1..<index - 2).reduce(Tree.application(fn: snd, value: record)) { tree, _ in Tree.application(fn: snd, value: tree) })
+    case _:
+      selector = .application(fn: fst,
+                              value: (1..<index - 1).reduce(Tree.application(fn: snd, value: record)) { tree, _ in Tree.application(fn: snd, value: tree) })
+    }
+    
+    setTree(for: node, tree: selector)
+  }
+  
   func visit(node: AstCaseExpression) throws {}
   
   func visit(node: AstIdentifierPattern) throws {
