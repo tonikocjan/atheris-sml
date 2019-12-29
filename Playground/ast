@@ -1,93 +1,89 @@
-AstBindings [1:1, 6:3]:
-  AstValBinding [1:1, 1:28]:
-    -> typed: (int * int * int * int * int)
-    AstIdentifierPattern [1:5, 1:6]:
-      -> typed: (int * int * int * int * int)
-      Name: x
-    AstTupleExpression [1:10, 1:28]:
-      -> typed: (int * int * int * int * int)
-      AstConstantExpression [1:10, 1:12]:
+AstBindings [1:1, 11:2]:
+  AstDatatypeBinding [1:1, 4:9]:
+    -> typed: A
+    AstIdentifierPattern [1:10, 1:11]:
+      Name: A
+    AstCase [2:6, 2:14]:
+      -> typed: (int) A
+      AstIdentifierPattern [2:6, 2:7]:
+        Name: X
+      AstTypeName [2:11, 2:14]:
+        -> typed: int
+        Name: int
+    AstCase [3:8, 3:16]:
+      -> typed: (int) A
+      AstIdentifierPattern [3:8, 3:9]:
+        Name: Y
+      AstTypeName [3:13, 3:16]:
+        -> typed: int
+        Name: int
+    AstCase [4:8, 4:9]:
+      -> typed: A
+      AstIdentifierPattern [4:8, 4:9]:
+        Name: Z
+  AstValBinding [6:1, 6:13]:
+    -> typed: (int) A
+    AstIdentifierPattern [6:5, 6:6]:
+      -> typed: (int) A
+      Name: q
+    AstFunctionCallExpression [6:9, 6:13]:
+      -> defined at:  [2:6, 2:14]:
+      -> typed: (int) A
+      Function name: X
+      AstConstantExpression [6:11, 6:13]:
         -> typed: int
         Value: 10
         Atom type: int
-      AstConstantExpression [1:14, 1:16]:
+  AstValBinding [7:1, 7:13]:
+    -> typed: (int) A
+    AstIdentifierPattern [7:5, 7:6]:
+      -> typed: (int) A
+      Name: w
+    AstFunctionCallExpression [7:9, 7:13]:
+      -> defined at:  [3:8, 3:16]:
+      -> typed: (int) A
+      Function name: Y
+      AstConstantExpression [7:11, 7:13]:
         -> typed: int
-        Value: 20
+        Value: 10
         Atom type: int
-      AstConstantExpression [1:18, 1:20]:
+  AstValBinding [8:1, 8:13]:
+    -> typed: A
+    AstIdentifierPattern [8:5, 8:6]:
+      -> typed: A
+      Name: e
+    AstFunctionCallExpression [8:9, 8:13]:
+      -> defined at:  [4:8, 4:9]:
+      -> typed: A
+      Function name: Z
+      AstConstantExpression [8:11, 8:13]:
         -> typed: int
-        Value: 30
+        Value: 10
         Atom type: int
-      AstConstantExpression [1:22, 1:24]:
-        -> typed: int
-        Value: 40
-        Atom type: int
-      AstConstantExpression [1:26, 1:28]:
-        -> typed: int
-        Value: 50
-        Atom type: int
-  AstValBinding [2:1, 2:3]:
-    -> typed: int
-    AstIdentifierPattern [2:1, 2:3]:
-      -> typed: int
+  AstValBinding [9:1, 9:2]:
+    -> typed: (int) A
+    AstIdentifierPattern [9:1, 9:2]:
+      -> typed: (int) A
       Name: x1
-    AstRecordRow [2:1, 2:3]:
-      -> typed: int
-      AstIdentifierPattern [2:2, 2:3]:
-        Name: 1
-      AstNameExpression [2:4, 2:5]:
-        -> defined at:  [1:5, 1:6]:
-        -> typed: (int * int * int * int * int)
-        Name: x
-  AstValBinding [3:1, 3:3]:
-    -> typed: int
-    AstIdentifierPattern [3:1, 3:3]:
-      -> typed: int
+    AstNameExpression [9:1, 9:2]:
+      -> defined at:  [6:5, 6:6]:
+      -> typed: (int) A
+      Name: q
+  AstValBinding [10:1, 10:2]:
+    -> typed: (int) A
+    AstIdentifierPattern [10:1, 10:2]:
+      -> typed: (int) A
       Name: x2
-    AstRecordRow [3:1, 3:3]:
-      -> typed: int
-      AstIdentifierPattern [3:2, 3:3]:
-        Name: 2
-      AstNameExpression [3:4, 3:5]:
-        -> defined at:  [1:5, 1:6]:
-        -> typed: (int * int * int * int * int)
-        Name: x
-  AstValBinding [4:1, 4:3]:
-    -> typed: int
-    AstIdentifierPattern [4:1, 4:3]:
-      -> typed: int
+    AstNameExpression [10:1, 10:2]:
+      -> defined at:  [7:5, 7:6]:
+      -> typed: (int) A
+      Name: w
+  AstValBinding [11:1, 11:2]:
+    -> typed: A
+    AstIdentifierPattern [11:1, 11:2]:
+      -> typed: A
       Name: x3
-    AstRecordRow [4:1, 4:3]:
-      -> typed: int
-      AstIdentifierPattern [4:2, 4:3]:
-        Name: 3
-      AstNameExpression [4:4, 4:5]:
-        -> defined at:  [1:5, 1:6]:
-        -> typed: (int * int * int * int * int)
-        Name: x
-  AstValBinding [5:1, 5:3]:
-    -> typed: int
-    AstIdentifierPattern [5:1, 5:3]:
-      -> typed: int
-      Name: x4
-    AstRecordRow [5:1, 5:3]:
-      -> typed: int
-      AstIdentifierPattern [5:2, 5:3]:
-        Name: 4
-      AstNameExpression [5:4, 5:5]:
-        -> defined at:  [1:5, 1:6]:
-        -> typed: (int * int * int * int * int)
-        Name: x
-  AstValBinding [6:1, 6:3]:
-    -> typed: int
-    AstIdentifierPattern [6:1, 6:3]:
-      -> typed: int
-      Name: x5
-    AstRecordRow [6:1, 6:3]:
-      -> typed: int
-      AstIdentifierPattern [6:2, 6:3]:
-        Name: 5
-      AstNameExpression [6:4, 6:5]:
-        -> defined at:  [1:5, 1:6]:
-        -> typed: (int * int * int * int * int)
-        Name: x
+    AstNameExpression [11:1, 11:2]:
+      -> defined at:  [8:5, 8:6]:
+      -> typed: A
+      Name: e
