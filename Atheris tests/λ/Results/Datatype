@@ -1,0 +1,3 @@
+let X = (\a.(\b.(\c.(fa))))
+let Y = (\a.(\b.(\c.(fb))))
+let Z = (\a.(\b.(\c.(fc))))

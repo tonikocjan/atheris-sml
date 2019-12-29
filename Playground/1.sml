@@ -1,6 +1,4 @@
-val x = (10, 20, 30, 40, 50);
-#1 x;
-#2 x;
-#3 x;
-#4 x;
-#5 x;
+datatype A = 
+	X of int 
+	| Y of (int*int)
+	| Z;

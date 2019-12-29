@@ -66,10 +66,32 @@ public extension λcalculusGenerator {
   }
   
   func visit(node: AstDatatypeBinding) throws {
+    guard node.cases.count <= 25 else { fatalError("Datatype can contain at best 25 cases (for now)!") }
     
+    let variables = (0...25) // the simplest strategy of choosing variable names ...
+      .compactMap { UnicodeScalar($0 + 97) }
+      .map { String($0) }
+    
+    func handleCase(_ c: AstCase, index: Int) -> (v: String, expression: Tree) {
+      let n = node.cases.count
+      let abstraction = (1...n)
+        .reduce(Tree.application(fn: .variable(name: "f"),
+                                 value: .variable(name: variables[index]))) {
+                                  Tree.abstraction(variable: variables[n - $1], expression: $0)
+      }
+      return (v: c.name.name, expression: abstraction)
+    }
+    
+    let datatype = node.cases
+      .enumerated()
+      .map { handleCase($0.element, index: $0.offset) }
+    setTree(for: node, tree: .bindings(datatype))
   }
   
-  func visit(node: AstCase) throws {}
+  func visit(node: AstCase) throws {
+    fatalError("AstCase should be handled by the parent!")
+  }
+  
   func visit(node: AstTypeBinding) throws {}
   func visit(node: AstAtomType) throws {}
   func visit(node: AstTypeName) throws {}

@@ -41,6 +41,15 @@ val x = (10, 20, 30, 40, 50);
 #5 x;
 """, loadFromFile: "Tuple")
   }
+  
+  func testDatatypeBinding() {
+    performTest(code: """
+datatype A =
+X of int
+| Y of (int*int)
+| Z;
+""", loadFromFile: "Datatype")
+  }
 }
 
 private extension λCodeGenerationTests {
