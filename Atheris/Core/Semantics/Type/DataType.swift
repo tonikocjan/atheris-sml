@@ -9,11 +9,13 @@
 import Foundation
 
 public class DataType: Type {
+  public let binding: AstBinding
   public let name: String
   public let constructorTypes: [(name: String, type: Type)]
   public let cases: [String: Type]
   
-  public init(name: String, constructorTypes: [(String, Type)], cases: [String: Type]) {
+  public init(binding: AstBinding, name: String, constructorTypes: [(String, Type)], cases: [String: Type]) {
+    self.binding = binding
     self.name = name
     self.constructorTypes = constructorTypes
     self.cases = cases

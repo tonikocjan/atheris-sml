@@ -1,4 +1,4 @@
-AstBindings [1:1, 11:2]:
+AstBindings [1:1, 19:14]:
   AstDatatypeBinding [1:1, 4:9]:
     -> typed: A
     AstIdentifierPattern [1:10, 1:11]:
@@ -18,72 +18,161 @@ AstBindings [1:1, 11:2]:
         -> typed: int
         Name: int
     AstCase [4:8, 4:9]:
-      -> typed: A
+      -> typed: (int) A
       AstIdentifierPattern [4:8, 4:9]:
         Name: Z
-  AstValBinding [6:1, 6:13]:
-    -> typed: (int) A
-    AstIdentifierPattern [6:5, 6:6]:
-      -> typed: (int) A
-      Name: q
-    AstFunctionCallExpression [6:9, 6:13]:
-      -> defined at:  [2:6, 2:14]:
-      -> typed: (int) A
-      Function name: X
-      AstConstantExpression [6:11, 6:13]:
-        -> typed: int
-        Value: 10
-        Atom type: int
-  AstValBinding [7:1, 7:13]:
-    -> typed: (int) A
-    AstIdentifierPattern [7:5, 7:6]:
-      -> typed: (int) A
-      Name: w
-    AstFunctionCallExpression [7:9, 7:13]:
-      -> defined at:  [3:8, 3:16]:
-      -> typed: (int) A
-      Function name: Y
-      AstConstantExpression [7:11, 7:13]:
-        -> typed: int
-        Value: 10
-        Atom type: int
-  AstValBinding [8:1, 8:13]:
-    -> typed: A
-    AstIdentifierPattern [8:5, 8:6]:
-      -> typed: A
-      Name: e
-    AstFunctionCallExpression [8:9, 8:13]:
-      -> defined at:  [4:8, 4:9]:
-      -> typed: A
-      Function name: Z
-      AstConstantExpression [8:11, 8:13]:
-        -> typed: int
-        Value: 10
-        Atom type: int
-  AstValBinding [9:1, 9:2]:
-    -> typed: (int) A
-    AstIdentifierPattern [9:1, 9:2]:
-      -> typed: (int) A
+  AstValBinding [6:1, 9:14]:
+    -> typed: int
+    AstIdentifierPattern [6:1, 9:14]:
+      -> typed: int
       Name: x1
-    AstNameExpression [9:1, 9:2]:
-      -> defined at:  [6:5, 6:6]:
-      -> typed: (int) A
-      Name: q
-  AstValBinding [10:1, 10:2]:
-    -> typed: (int) A
-    AstIdentifierPattern [10:1, 10:2]:
-      -> typed: (int) A
+    AstCaseExpression [6:1, 9:14]:
+      -> typed: int
+      AstFunctionCallExpression [6:6, 6:10]:
+        -> defined at:  [2:6, 2:14]:
+        -> typed: (int) A
+        Function name: X
+        AstConstantExpression [6:8, 6:10]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+      AstMatch [7:6, 9:14]:
+        -> typed: (int) A => int
+        AstRule [7:6, 7:14]:
+          -> typed: (int) A => int
+          AstIdentifierPattern [7:6, 7:7]:
+            -> defined at:  [2:6, 2:14]:
+            -> typed: (int) A
+            Name: X
+          AstIdentifierPattern [7:8, 7:9]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [7:13, 7:14]:
+            -> typed: int
+            Value: 1
+            Atom type: int
+        AstRule [8:8, 8:16]:
+          -> typed: (int) A => int
+          AstIdentifierPattern [8:8, 8:9]:
+            -> defined at:  [3:8, 3:16]:
+            -> typed: (int) A
+            Name: Y
+          AstIdentifierPattern [8:10, 8:11]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [8:15, 8:16]:
+            -> typed: int
+            Value: 2
+            Atom type: int
+        AstRule [9:8, 9:14]:
+          -> typed: A => int
+          AstIdentifierPattern [9:8, 9:9]:
+            -> defined at:  [4:8, 4:9]:
+            -> typed: A
+            Name: Z
+          AstConstantExpression [9:13, 9:14]:
+            -> typed: int
+            Value: 0
+            Atom type: int
+  AstValBinding [11:1, 14:14]:
+    -> typed: int
+    AstIdentifierPattern [11:1, 14:14]:
+      -> typed: int
       Name: x2
-    AstNameExpression [10:1, 10:2]:
-      -> defined at:  [7:5, 7:6]:
-      -> typed: (int) A
-      Name: w
-  AstValBinding [11:1, 11:2]:
-    -> typed: A
-    AstIdentifierPattern [11:1, 11:2]:
-      -> typed: A
+    AstCaseExpression [11:1, 14:14]:
+      -> typed: int
+      AstFunctionCallExpression [11:6, 11:10]:
+        -> defined at:  [3:8, 3:16]:
+        -> typed: (int) A
+        Function name: Y
+        AstConstantExpression [11:8, 11:10]:
+          -> typed: int
+          Value: 10
+          Atom type: int
+      AstMatch [12:6, 14:14]:
+        -> typed: (int) A => int
+        AstRule [12:6, 12:14]:
+          -> typed: (int) A => int
+          AstIdentifierPattern [12:6, 12:7]:
+            -> defined at:  [2:6, 2:14]:
+            -> typed: (int) A
+            Name: X
+          AstIdentifierPattern [12:8, 12:9]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [12:13, 12:14]:
+            -> typed: int
+            Value: 1
+            Atom type: int
+        AstRule [13:8, 13:16]:
+          -> typed: (int) A => int
+          AstIdentifierPattern [13:8, 13:9]:
+            -> defined at:  [3:8, 3:16]:
+            -> typed: (int) A
+            Name: Y
+          AstIdentifierPattern [13:10, 13:11]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [13:15, 13:16]:
+            -> typed: int
+            Value: 2
+            Atom type: int
+        AstRule [14:8, 14:14]:
+          -> typed: A => int
+          AstIdentifierPattern [14:8, 14:9]:
+            -> defined at:  [4:8, 4:9]:
+            -> typed: A
+            Name: Z
+          AstConstantExpression [14:13, 14:14]:
+            -> typed: int
+            Value: 0
+            Atom type: int
+  AstValBinding [16:1, 19:14]:
+    -> typed: int
+    AstIdentifierPattern [16:1, 19:14]:
+      -> typed: int
       Name: x3
-    AstNameExpression [11:1, 11:2]:
-      -> defined at:  [8:5, 8:6]:
-      -> typed: A
-      Name: e
+    AstCaseExpression [16:1, 19:14]:
+      -> typed: int
+      AstNameExpression [16:6, 16:7]:
+        -> defined at:  [4:8, 4:9]:
+        -> typed: (int) A
+        Name: Z
+      AstMatch [17:6, 19:14]:
+        -> typed: (int) A => int
+        AstRule [17:6, 17:14]:
+          -> typed: (int) A => int
+          AstIdentifierPattern [17:6, 17:7]:
+            -> defined at:  [2:6, 2:14]:
+            -> typed: (int) A
+            Name: X
+          AstIdentifierPattern [17:8, 17:9]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [17:13, 17:14]:
+            -> typed: int
+            Value: 1
+            Atom type: int
+        AstRule [18:8, 18:16]:
+          -> typed: (int) A => int
+          AstIdentifierPattern [18:8, 18:9]:
+            -> defined at:  [3:8, 3:16]:
+            -> typed: (int) A
+            Name: Y
+          AstIdentifierPattern [18:10, 18:11]:
+            -> typed: int
+            Name: a
+          AstConstantExpression [18:15, 18:16]:
+            -> typed: int
+            Value: 2
+            Atom type: int
+        AstRule [19:8, 19:14]:
+          -> typed: A => int
+          AstIdentifierPattern [19:8, 19:9]:
+            -> defined at:  [4:8, 4:9]:
+            -> typed: A
+            Name: Z
+          AstConstantExpression [19:13, 19:14]:
+            -> typed: int
+            Value: 0
+            Atom type: int

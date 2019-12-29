@@ -171,6 +171,8 @@
 		37C4126921DE57DA0039A618 /* AstListPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C4126721DE57DA0039A618 /* AstListPattern.swift */; };
 		37CAC78D23B8BAB200130937 /* Tuple in Resources */ = {isa = PBXBuildFile; fileRef = 37CAC78C23B8BAB200130937 /* Tuple */; };
 		37CAC78F23B8C08400130937 /* Datatype in Resources */ = {isa = PBXBuildFile; fileRef = 37CAC78E23B8C08400130937 /* Datatype */; };
+		37CAC79123B8CDC100130937 /* UnitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CAC79023B8CDC100130937 /* UnitType.swift */; };
+		37CAC79223B8CDC100130937 /* UnitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CAC79023B8CDC100130937 /* UnitType.swift */; };
 		37D396B021BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
 		37D396B121BA698800C11EB5 /* AstMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D396AF21BA698800C11EB5 /* AstMatch.swift */; };
 		37D396B321BA6E0C00C11EB5 /* code7.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37D396B221BA6E0B00C11EB5 /* code7.rkt */; };
@@ -342,6 +344,7 @@
 		37C4126721DE57DA0039A618 /* AstListPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstListPattern.swift; sourceTree = "<group>"; };
 		37CAC78C23B8BAB200130937 /* Tuple */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tuple; sourceTree = "<group>"; };
 		37CAC78E23B8C08400130937 /* Datatype */ = {isa = PBXFileReference; lastKnownFileType = text; path = Datatype; sourceTree = "<group>"; };
+		37CAC79023B8CDC100130937 /* UnitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitType.swift; sourceTree = "<group>"; };
 		37D396AF21BA698800C11EB5 /* AstMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AstMatch.swift; sourceTree = "<group>"; };
 		37D396B221BA6E0B00C11EB5 /* code7.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code7.rkt; sourceTree = "<group>"; };
 		37E0CE1C2168F73E00BAFD2A /* LexanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexanTests.swift; sourceTree = "<group>"; };
@@ -489,6 +492,7 @@
 				37E5FCC121EA12410091317C /* PolymorphicType.swift */,
 				37B2F8DA21C1526A00C0B9E8 /* DataType.swift */,
 				37E403812206F5A90070D310 /* CaseType.swift */,
+				37CAC79023B8CDC100130937 /* UnitType.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -962,6 +966,7 @@
 				374505CA21B50FFE0051E1E9 /* AstPattern.swift in Sources */,
 				375353A2220DDEB80075C77E /* TokenType.swift in Sources */,
 				374505CB21B50FFE0051E1E9 /* AstIdentifierPattern.swift in Sources */,
+				37CAC79223B8CDC100130937 /* UnitType.swift in Sources */,
 				37E9869D21C3CC7C00D68CA4 /* AstRule.swift in Sources */,
 				3745061721B562880051E1E9 /* AstTupleType.swift in Sources */,
 				374505CC21B50FFE0051E1E9 /* AstWildcardPattern.swift in Sources */,
@@ -1130,6 +1135,7 @@
 				3745061E21B59F860051E1E9 /* AstUnaryExpression.swift in Sources */,
 				37F024D421B424EE006B868E /* AstTypeName.swift in Sources */,
 				37E986A521C3D62500D68CA4 /* RuleType.swift in Sources */,
+				37CAC79123B8CDC100130937 /* UnitType.swift in Sources */,
 				374505EB21B51FCF0051E1E9 /* SymbolDescription.swift in Sources */,
 				375353A5220DDEB80075C77E /* Symbol.swift in Sources */,
 				3745060021B53C950051E1E9 /* TupleType.swift in Sources */,

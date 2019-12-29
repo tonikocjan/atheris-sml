@@ -160,11 +160,12 @@ extension TypeChecker: AstVisitor {
         guard let associatedType = symbolDescription.type(for: associatedTypeNode) else { throw internalError() }
         cases[case_.name.name] = associatedType
       case .none:
-        break
+        cases[case_.name.name] = UnitType()
       }
     }
     
-    let datatype = DataType(name: node.name.name,
+    let datatype = DataType(binding: node,
+                            name: node.name.name,
                             constructorTypes: constructorTypes,
                             cases: cases)
     symbolDescription.setType(for: node, type: datatype)
@@ -282,7 +283,8 @@ extension TypeChecker: AstVisitor {
       updatedCases[name] = replacedType
     }
     
-    let updatedDatatype = DataType(name: datatype.name,
+    let updatedDatatype = DataType(binding: binding,
+                                   name: datatype.name,
                                    constructorTypes: constructorTypes,
                                    cases: updatedCases)
     symbolDescription.setType(for: node, type: updatedDatatype)

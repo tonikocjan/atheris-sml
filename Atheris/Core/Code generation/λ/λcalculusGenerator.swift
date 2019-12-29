@@ -74,9 +74,11 @@ public extension λcalculusGenerator {
     
     func handleCase(_ c: AstCase, index: Int) -> (v: String, expression: Tree) {
       let n = node.cases.count
-      let abstraction = (1...n).reduce(Tree.application(fn: .variable(name: variables[index]),
-                                                        value: .variable(name: "a"))) {
-                                                          Tree.abstraction(variable: variables[n - $1], expression: $0)
+      let inner = Tree.application(fn: .variable(name: variables[index]),
+                                   value: .variable(name: "a"))
+      
+      let abstraction = (1...n).reduce(inner) {
+        Tree.abstraction(variable: variables[n - $1], expression: $0)
       }
         
       return (v: c.name.name, expression: .abstraction(variable: "a", expression: abstraction))
@@ -207,9 +209,12 @@ public extension λcalculusGenerator {
     switch (index, tuple.rows.count) {
     case (1, 1...):
       selector = .application(fn: fst, value: record)
-    case _ where index == tuple.rows.count:
+    case _ where index == tuple.rows.count && index > 2:
       selector = .application(fn: snd,
                               value: (1..<index - 2).reduce(Tree.application(fn: snd, value: record)) { tree, _ in Tree.application(fn: snd, value: tree) })
+    case _ where index == tuple.rows.count:
+      selector = .application(fn: snd,
+                              value: record)
     case _:
       selector = .application(fn: fst,
                               value: (1..<index - 1).reduce(Tree.application(fn: snd, value: record)) { tree, _ in Tree.application(fn: snd, value: tree) })
@@ -218,7 +223,44 @@ public extension λcalculusGenerator {
     setTree(for: node, tree: selector)
   }
   
-  func visit(node: AstCaseExpression) throws {}
+  func visit(node: AstCaseExpression) throws {
+    guard let datatype = (type(for: node.expression) as? CaseType)?.parent else { fatalError("Invalid type!") }
+    guard let binding = datatype.binding as? AstDatatypeBinding else { fatalError("Invalid binding!") }
+    
+    func handleRule(_ rule: AstRule) throws -> Tree {
+      let expression = try myVisit(node: rule.expression)
+      
+      if let associatedValue = rule.associatedValue {
+        switch try myVisit(node: associatedValue) {
+        case .variable(let v):
+          return .abstraction(variable: v, expression: expression)
+        case let tree:
+          fatalError("Not yet handled!")
+        }
+      } else {
+        return .abstraction(variable: "a", expression: expression)
+      }
+    }
+    
+    func index(of rule: AstRule) -> Int {
+      binding.cases.firstIndex { $0.name.name == (rule.pattern as! AstIdentifierPattern).name }! // TODO: - this will carsh if pattern is not identifier!!
+    }
+    
+    let expression = try myVisit(node: node.expression)
+    let rules = try node.match.rules
+      .sorted { index(of: $0) < index(of: $1) }
+      .map(handleRule)
+
+    switch expression {
+    case .variable:
+      // need to manually provide a dummy value (0)
+      let application = rules.reduce(.application(fn: expression, value: .constant(value: 0))) { Tree.application(fn: $0, value: $1) }
+      setTree(for: node, tree: application)
+    case _:
+      let application = rules.reduce(expression) { Tree.application(fn: $0, value: $1) }
+      setTree(for: node, tree: application)
+    }
+  }
   
   func visit(node: AstIdentifierPattern) throws {
     setTree(for: node, tree: .variable(name: node.name))

@@ -45,9 +45,24 @@ val x = (10, 20, 30, 40, 50);
   func testDatatypeBinding() {
     performTest(code: """
 datatype A =
-X of int
-| Y of (int*int)
-| Z;
+  X of int
+  | Y of int
+  | Z;
+
+case X 10 of
+  X a => 1
+  | Y a => 2
+  | Z => 0;
+
+case Y 10 of
+  X a => 1
+  | Y a => 2
+  | Z => 0;
+
+case Z of
+  X a => 1
+  | Y a => 2
+  | Z => 0;
 """, loadFromFile: "Datatype")
   }
 }
