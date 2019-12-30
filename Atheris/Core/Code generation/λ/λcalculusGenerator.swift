@@ -102,16 +102,12 @@ public extension λcalculusGenerator {
   
   func visit(node: AstConstantExpression) throws {
     switch (node.type, node.value) {
-    case (.int, _):
-      setTree(for: node, tree: .constant(value: Int(node.value)!))
+    case (.int, _), (.real, _):
+      setTree(for: node, tree: .constant(value: Int(Double(node.value)!)))
     case (.bool, "true"):
-      setTree(for: node, tree: .abstraction(variable: "x",
-                                            expression: .abstraction(variable: "y",
-                                                                     expression: .variable(name: "x"))))
+      setTree(for: node, tree: λcalculusGenerator.TRUE)
     case (.bool, "false"):
-      setTree(for: node, tree: .abstraction(variable: "x",
-                                            expression: .abstraction(variable: "y",
-                                                                     expression: .variable(name: "y"))))
+      setTree(for: node, tree: λcalculusGenerator.FALSE)
     case _:
       fatalError("Not yet implemented")
     }
@@ -154,11 +150,25 @@ public extension λcalculusGenerator {
                                          value: right)
       setTree(for: node, tree: application)
     case _:
-      fatalError("This binary operation is not (yet) supported!")
+      fatalError("Binary operation \(node.operation.rawValue) is not (yet) supported!")
     }
   }
   
-  func visit(node: AstUnaryExpression) throws {}
+  func visit(node: AstUnaryExpression) throws {
+    let expression = try myVisit(node: node.expression)
+    switch node.operation {
+    case .negate:
+      let application = Tree.application(fn: .application(fn: .variable(name: "-"),
+                                                          value: .constant(value: 0)),
+                                         value: expression)
+      setTree(for: node, tree: application)
+    case .not:
+      let application = Tree.application(fn: .application(fn: expression,
+                                                          value: λcalculusGenerator.FALSE),
+                                         value: λcalculusGenerator.TRUE)
+      setTree(for: node, tree: application)
+    }
+  }
   
   func visit(node: AstIfExpression) throws {
     let condition = try myVisit(node: node.condition)
@@ -175,8 +185,7 @@ public extension λcalculusGenerator {
   
   func visit(node: AstFunctionCallExpression) throws {
     let argument = try myVisit(node: node.argument)
-    setTree(for: node, tree: .application(fn: .variable(name: node.name),
-                                          value: argument))
+    setTree(for: node, tree: .application(fn: .variable(name: node.name), value: argument))
   }
   
   func visit(node: AstAnonymousFunctionCall) throws {
@@ -293,5 +302,19 @@ private extension λcalculusGenerator {
   
   func setTree(for node: AstNode, tree: Tree) {
     table[.init(node)] = tree
+  }
+  
+  ///
+  
+  static var TRUE: Tree {
+    .abstraction(variable: "x",
+                 expression: .abstraction(variable: "y",
+                                          expression: .variable(name: "x")))
+  }
+  
+  static var FALSE: Tree {
+    .abstraction(variable: "x",
+                 expression: .abstraction(variable: "y",
+                                          expression: .variable(name: "y")))
   }
 }

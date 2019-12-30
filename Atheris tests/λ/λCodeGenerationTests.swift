@@ -20,6 +20,16 @@ class λCodeGenerationTests: XCTestCase {
   
   func testBinaryOperations() {
     performTest(code: "10 + 20;", expected: "((+10)20)")
+    performTest(code: "10 - 20;", expected: "((-10)20)")
+    performTest(code: "10 * 20;", expected: "((*10)20)")
+    performTest(code: "10.0 / 20.0;", expected: "((/10)20)")
+    performTest(code: "10 = 20;", expected: "((=10)20)")
+  }
+  
+  func testUnaryOperations() {
+    performTest(code: "~10;", expected: "((-0)10)")
+    performTest(code: "not true;", expected: #"(((\x.(\y.x))(\x.(\y.y)))(\x.(\y.x)))"#)
+    performTest(code: "not false;", expected: #"(((\x.(\y.y))(\x.(\y.y)))(\x.(\y.x)))"#)
   }
   
   func testIfThenElse() {
