@@ -74,14 +74,21 @@ public extension λcalculusGenerator {
     
     func handleCase(_ c: AstCase, index: Int) -> (v: String, expression: Tree) {
       let n = node.cases.count
-      let inner = Tree.application(fn: .variable(name: variables[index]),
-                                   value: .variable(name: "a"))
+      let inner = c.associatedType.map { _ in
+        Tree.application(fn: .variable(name: variables[index]),
+                         value: .variable(name: "a"))
+      } ?? Tree.application(fn: .variable(name: variables[index]),
+                            value: .constant(value: 0)) // need to provide dummy value
       
       let abstraction = (1...n).reduce(inner) {
         Tree.abstraction(variable: variables[n - $1], expression: $0)
       }
-        
-      return (v: c.name.name, expression: .abstraction(variable: "a", expression: abstraction))
+      
+      let datatypeConstructor = c.associatedType.map { _ in
+        Tree.abstraction(variable: "a", expression: abstraction)
+      } ?? abstraction
+      
+      return (v: c.name.name, expression: datatypeConstructor)
     }
     
     let datatype = node.cases
@@ -260,15 +267,8 @@ public extension λcalculusGenerator {
       .sorted { index(of: $0) < index(of: $1) }
       .map(handleRule)
 
-//    switch expression {
-//    case .variable:
-//      // need to manually provide a dummy value (0)
-//      let application = rules.reduce(.application(fn: expression, value: .constant(value: 0))) { Tree.application(fn: $0, value: $1) }
-//      setTree(for: node, tree: application)
-//    case _:
-      let application = rules.reduce(expression) { Tree.application(fn: $0, value: $1) }
-      setTree(for: node, tree: application)
-//    }
+    let application = rules.reduce(expression) { Tree.application(fn: $0, value: $1) }
+    setTree(for: node, tree: application)
   }
   
   func visit(node: AstIdentifierPattern) throws {

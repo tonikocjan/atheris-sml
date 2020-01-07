@@ -191,7 +191,7 @@
 		37E403822206F5A90070D310 /* CaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E403812206F5A90070D310 /* CaseType.swift */; };
 		37E403832206F5A90070D310 /* CaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E403812206F5A90070D310 /* CaseType.swift */; };
 		37E40385220706C50070D310 /* ast21 in Resources */ = {isa = PBXBuildFile; fileRef = 37E40384220706C40070D310 /* ast21 */; };
-		37E4F45223C4B2D4005EF5D0 /* TupleFunctor in Resources */ = {isa = PBXBuildFile; fileRef = 37E4F45123C4B2D4005EF5D0 /* TupleFunctor */; };
+		37E4F45223C4B2D4005EF5D0 /* OptionFunctor in Resources */ = {isa = PBXBuildFile; fileRef = 37E4F45123C4B2D4005EF5D0 /* OptionFunctor */; };
 		37E5FCB721E4DB280091317C /* code19.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCB621E4DB280091317C /* code19.rkt */; };
 		37E5FCB921E88E160091317C /* code20.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCB821E88E160091317C /* code20.rkt */; };
 		37E5FCBB21E8B9660091317C /* code21.rkt in Resources */ = {isa = PBXBuildFile; fileRef = 37E5FCBA21E8B9650091317C /* code21.rkt */; };
@@ -357,7 +357,7 @@
 		37E0CE2C216A380100BAFD2A /* FileOutputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOutputStream.swift; sourceTree = "<group>"; };
 		37E403812206F5A90070D310 /* CaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseType.swift; sourceTree = "<group>"; };
 		37E40384220706C40070D310 /* ast21 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ast21; sourceTree = "<group>"; };
-		37E4F45123C4B2D4005EF5D0 /* TupleFunctor */ = {isa = PBXFileReference; lastKnownFileType = text; path = TupleFunctor; sourceTree = "<group>"; };
+		37E4F45123C4B2D4005EF5D0 /* OptionFunctor */ = {isa = PBXFileReference; lastKnownFileType = text; path = OptionFunctor; sourceTree = "<group>"; };
 		37E5FCB621E4DB280091317C /* code19.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code19.rkt; sourceTree = "<group>"; };
 		37E5FCB821E88E160091317C /* code20.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code20.rkt; sourceTree = "<group>"; };
 		37E5FCBA21E8B9650091317C /* code21.rkt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = code21.rkt; sourceTree = "<group>"; };
@@ -630,7 +630,7 @@
 			children = (
 				37CAC78C23B8BAB200130937 /* Tuple */,
 				37CAC78E23B8C08400130937 /* Datatype */,
-				37E4F45123C4B2D4005EF5D0 /* TupleFunctor */,
+				37E4F45123C4B2D4005EF5D0 /* OptionFunctor */,
 			);
 			path = Results;
 			sourceTree = "<group>";
@@ -924,7 +924,7 @@
 				37CAC78D23B8BAB200130937 /* Tuple in Resources */,
 				37C4125B21DCC0CA0039A618 /* code16.rkt in Resources */,
 				3745064321B6D0470051E1E9 /* code1.rkt in Resources */,
-				37E4F45223C4B2D4005EF5D0 /* TupleFunctor in Resources */,
+				37E4F45223C4B2D4005EF5D0 /* OptionFunctor in Resources */,
 				370F3B8B21CE4AE900C53C85 /* code12.rkt in Resources */,
 				3716C94521BD768500A24765 /* code9.rkt in Resources */,
 				3716C93821BC043E00A24765 /* code8.rkt in Resources */,

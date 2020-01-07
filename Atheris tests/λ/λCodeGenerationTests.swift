@@ -85,7 +85,7 @@ val x = m (J 10) (fn x => x * x);
 case x of
   J x => x
   | N => 0;
-"""#, loadFromFile: "TupleFunctor")
+"""#, loadFromFile: "OptionFunctor")
   }
 }
 
