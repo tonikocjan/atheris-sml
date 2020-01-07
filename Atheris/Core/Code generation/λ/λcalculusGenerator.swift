@@ -142,7 +142,7 @@ public extension λcalculusGenerator {
   
   func visit(node: AstBinaryExpression) throws {
     switch node.operation {
-    case .add, .subtract, .multiply, .divide, .equal:
+    case .add, .subtract, .multiply, .divide, .equal, .lessThan, .greaterThan:
       let left = try myVisit(node: node.left)
       let right = try myVisit(node: node.right)
       let application = Tree.application(fn: .application(fn: .variable(name: node.operation.rawValue),
@@ -260,15 +260,15 @@ public extension λcalculusGenerator {
       .sorted { index(of: $0) < index(of: $1) }
       .map(handleRule)
 
-    switch expression {
-    case .variable:
-      // need to manually provide a dummy value (0)
-      let application = rules.reduce(.application(fn: expression, value: .constant(value: 0))) { Tree.application(fn: $0, value: $1) }
-      setTree(for: node, tree: application)
-    case _:
+//    switch expression {
+//    case .variable:
+//      // need to manually provide a dummy value (0)
+//      let application = rules.reduce(.application(fn: expression, value: .constant(value: 0))) { Tree.application(fn: $0, value: $1) }
+//      setTree(for: node, tree: application)
+//    case _:
       let application = rules.reduce(expression) { Tree.application(fn: $0, value: $1) }
       setTree(for: node, tree: application)
-    }
+//    }
   }
   
   func visit(node: AstIdentifierPattern) throws {

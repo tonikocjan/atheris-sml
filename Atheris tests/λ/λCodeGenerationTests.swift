@@ -75,6 +75,18 @@ case Z of
   | Z => 0;
 """, loadFromFile: "Datatype")
   }
+  
+  func testOptionFunctor() {
+    performTest(code: #"""
+datatype 'a O = J of 'a | N;
+fun m x f = case x of J l => J (f l) | N => N;
+
+val x = m (J 10) (fn x => x * x);
+case x of
+  J x => x
+  | N => 0;
+"""#, loadFromFile: "TupleFunctor")
+  }
 }
 
 private extension λCodeGenerationTests {

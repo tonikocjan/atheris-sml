@@ -1,178 +1,1686 @@
-AstBindings [1:1, 19:14]:
-  AstDatatypeBinding [1:1, 4:9]:
-    -> typed: A
-    AstIdentifierPattern [1:10, 1:11]:
-      Name: A
-    AstCase [2:6, 2:14]:
-      -> typed: (int) A
-      AstIdentifierPattern [2:6, 2:7]:
-        Name: X
-      AstTypeName [2:11, 2:14]:
-        -> typed: int
-        Name: int
-    AstCase [3:8, 3:16]:
-      -> typed: (int) A
-      AstIdentifierPattern [3:8, 3:9]:
-        Name: Y
-      AstTypeName [3:13, 3:16]:
-        -> typed: int
-        Name: int
-    AstCase [4:8, 4:9]:
-      -> typed: (int) A
-      AstIdentifierPattern [4:8, 4:9]:
-        Name: Z
-  AstValBinding [6:1, 9:14]:
-    -> typed: int
-    AstIdentifierPattern [6:1, 9:14]:
+AstBindings [9:1, 212:10]:
+  AstDatatypeBinding [9:1, 9:42]:
+    -> typed: natural
+    AstIdentifierPattern [9:10, 9:17]:
+      Name: natural
+    AstCase [9:20, 9:35]:
+      -> typed: (natural) natural
+      AstIdentifierPattern [9:20, 9:24]:
+        Name: NEXT
+      AstTypeName [9:28, 9:35]:
+        -> defined at:  [9:1, 9:42]:
+        -> typed: natural
+        Name: natural
+    AstCase [9:38, 9:42]:
+      -> typed: natural
+      AstIdentifierPattern [9:38, 9:42]:
+        Name: ZERO
+  AstFunBinding [12:1, 15:28]:
+    -> typed: fn : natural -> 'Z
+    AstIdentifierPattern [12:5, 12:10]:
+      -> typed: fn : natural -> int
+      Name: toInt
+    AstTypedPattern [12:12, 12:22]:
+      -> typed: natural
+      AstIdentifierPattern [12:12, 12:13]:
+        -> typed: natural
+        Name: a
+      AstTypeName [12:15, 12:22]:
+        -> defined at:  [9:1, 9:42]:
+        -> typed: natural
+        Name: natural
+    AstTypeName [12:25, 12:28]:
       -> typed: int
-      Name: x1
-    AstCaseExpression [6:1, 9:14]:
+      Name: int
+    AstCaseExpression [13:3, 15:28]:
       -> typed: int
-      AstFunctionCallExpression [6:6, 6:10]:
-        -> defined at:  [2:6, 2:14]:
-        -> typed: (int) A
-        Function name: X
-        AstConstantExpression [6:8, 6:10]:
-          -> typed: int
-          Value: 10
-          Atom type: int
-      AstMatch [7:6, 9:14]:
-        -> typed: (int) A => int
-        AstRule [7:6, 7:14]:
-          -> typed: (int) A => int
-          AstIdentifierPattern [7:6, 7:7]:
-            -> defined at:  [2:6, 2:14]:
-            -> typed: (int) A
-            Name: X
-          AstIdentifierPattern [7:8, 7:9]:
-            -> typed: int
-            Name: a
-          AstConstantExpression [7:13, 7:14]:
-            -> typed: int
-            Value: 1
-            Atom type: int
-        AstRule [8:8, 8:16]:
-          -> typed: (int) A => int
-          AstIdentifierPattern [8:8, 8:9]:
-            -> defined at:  [3:8, 3:16]:
-            -> typed: (int) A
-            Name: Y
-          AstIdentifierPattern [8:10, 8:11]:
-            -> typed: int
-            Name: a
-          AstConstantExpression [8:15, 8:16]:
-            -> typed: int
-            Value: 2
-            Atom type: int
-        AstRule [9:8, 9:14]:
-          -> typed: A => int
-          AstIdentifierPattern [9:8, 9:9]:
-            -> defined at:  [4:8, 4:9]:
-            -> typed: A
-            Name: Z
-          AstConstantExpression [9:13, 9:14]:
-            -> typed: int
-            Value: 0
-            Atom type: int
-  AstValBinding [11:1, 14:14]:
-    -> typed: int
-    AstIdentifierPattern [11:1, 14:14]:
-      -> typed: int
-      Name: x2
-    AstCaseExpression [11:1, 14:14]:
-      -> typed: int
-      AstFunctionCallExpression [11:6, 11:10]:
-        -> defined at:  [3:8, 3:16]:
-        -> typed: (int) A
-        Function name: Y
-        AstConstantExpression [11:8, 11:10]:
-          -> typed: int
-          Value: 10
-          Atom type: int
-      AstMatch [12:6, 14:14]:
-        -> typed: (int) A => int
-        AstRule [12:6, 12:14]:
-          -> typed: (int) A => int
-          AstIdentifierPattern [12:6, 12:7]:
-            -> defined at:  [2:6, 2:14]:
-            -> typed: (int) A
-            Name: X
-          AstIdentifierPattern [12:8, 12:9]:
-            -> typed: int
-            Name: a
-          AstConstantExpression [12:13, 12:14]:
-            -> typed: int
-            Value: 1
-            Atom type: int
-        AstRule [13:8, 13:16]:
-          -> typed: (int) A => int
-          AstIdentifierPattern [13:8, 13:9]:
-            -> defined at:  [3:8, 3:16]:
-            -> typed: (int) A
-            Name: Y
-          AstIdentifierPattern [13:10, 13:11]:
-            -> typed: int
-            Name: a
-          AstConstantExpression [13:15, 13:16]:
-            -> typed: int
-            Value: 2
-            Atom type: int
-        AstRule [14:8, 14:14]:
-          -> typed: A => int
-          AstIdentifierPattern [14:8, 14:9]:
-            -> defined at:  [4:8, 4:9]:
-            -> typed: A
-            Name: Z
+      AstNameExpression [13:8, 13:9]:
+        -> defined at:  [12:12, 12:13]:
+        -> typed: natural
+        Name: a
+      AstMatch [14:5, 15:28]:
+        -> typed: natural => int
+        AstRule [14:5, 14:14]:
+          -> typed: natural => int
+          AstIdentifierPattern [14:5, 14:9]:
+            -> defined at:  [9:38, 9:42]:
+            -> typed: natural
+            Name: ZERO
           AstConstantExpression [14:13, 14:14]:
             -> typed: int
             Value: 0
             Atom type: int
-  AstValBinding [16:1, 19:14]:
-    -> typed: int
-    AstIdentifierPattern [16:1, 19:14]:
-      -> typed: int
+        AstRule [15:7, 15:28]:
+          -> typed: (natural) natural => int
+          AstIdentifierPattern [15:7, 15:11]:
+            -> defined at:  [9:20, 9:35]:
+            -> typed: (natural) natural
+            Name: NEXT
+          AstIdentifierPattern [15:12, 15:13]:
+            -> typed: natural
+            Name: i
+          AstBinaryExpression `+` [15:17, 15:28]:
+            -> typed: int
+            AstConstantExpression [15:17, 15:18]:
+              -> typed: int
+              Value: 1
+              Atom type: int
+            AstFunctionCallExpression [15:21, 15:28]:
+              -> defined at:  [12:1, 15:28]:
+              -> typed: fn : natural -> int
+              Function name: toInt
+              AstNameExpression [15:27, 15:28]:
+                -> defined at:  [15:12, 15:13]:
+                -> typed: natural
+                Name: i
+  AstValBinding [17:1, 17:11]:
+    -> typed: 'Z
+    AstIdentifierPattern [17:1, 17:11]:
+      -> typed: 'Z
+      Name: x1
+    AstFunctionCallExpression [17:1, 17:11]:
+      -> defined at:  [12:1, 15:28]:
+      -> typed: 'Z
+      Function name: toInt
+      AstNameExpression [17:7, 17:11]:
+        -> defined at:  [9:38, 9:42]:
+        -> typed: natural
+        Name: ZERO
+  AstValBinding [18:1, 18:16]:
+    -> typed: 'Z
+    AstIdentifierPattern [18:1, 18:16]:
+      -> typed: 'Z
+      Name: x2
+    AstFunctionCallExpression [18:1, 18:16]:
+      -> defined at:  [12:1, 15:28]:
+      -> typed: 'Z
+      Function name: toInt
+      AstFunctionCallExpression [18:7, 18:16]:
+        -> defined at:  [9:20, 9:35]:
+        -> typed: natural
+        Function name: NEXT
+        AstNameExpression [18:12, 18:16]:
+          -> defined at:  [9:38, 9:42]:
+          -> typed: natural
+          Name: ZERO
+  AstValBinding [19:1, 19:21]:
+    -> typed: 'Z
+    AstIdentifierPattern [19:1, 19:21]:
+      -> typed: 'Z
       Name: x3
-    AstCaseExpression [16:1, 19:14]:
-      -> typed: int
-      AstNameExpression [16:6, 16:7]:
-        -> defined at:  [4:8, 4:9]:
-        -> typed: (int) A
-        Name: Z
-      AstMatch [17:6, 19:14]:
-        -> typed: (int) A => int
-        AstRule [17:6, 17:14]:
-          -> typed: (int) A => int
-          AstIdentifierPattern [17:6, 17:7]:
-            -> defined at:  [2:6, 2:14]:
-            -> typed: (int) A
-            Name: X
-          AstIdentifierPattern [17:8, 17:9]:
-            -> typed: int
+    AstFunctionCallExpression [19:1, 19:21]:
+      -> defined at:  [12:1, 15:28]:
+      -> typed: 'Z
+      Function name: toInt
+      AstFunctionCallExpression [19:7, 19:21]:
+        -> defined at:  [9:20, 9:35]:
+        -> typed: natural
+        Function name: NEXT
+        AstFunctionCallExpression [19:12, 19:21]:
+          -> defined at:  [9:20, 9:35]:
+          -> typed: (natural) natural
+          Function name: NEXT
+          AstNameExpression [19:17, 19:21]:
+            -> defined at:  [9:38, 9:42]:
+            -> typed: natural
+            Name: ZERO
+  AstValBinding [20:1, 20:36]:
+    -> typed: 'Z
+    AstIdentifierPattern [20:1, 20:36]:
+      -> typed: 'Z
+      Name: x4
+    AstFunctionCallExpression [20:1, 20:36]:
+      -> defined at:  [12:1, 15:28]:
+      -> typed: 'Z
+      Function name: toInt
+      AstFunctionCallExpression [20:7, 20:36]:
+        -> defined at:  [9:20, 9:35]:
+        -> typed: natural
+        Function name: NEXT
+        AstFunctionCallExpression [20:12, 20:36]:
+          -> defined at:  [9:20, 9:35]:
+          -> typed: ((((natural) natural) natural) natural) natural
+          Function name: NEXT
+          AstFunctionCallExpression [20:17, 20:36]:
+            -> defined at:  [9:20, 9:35]:
+            -> typed: (((natural) natural) natural) natural
+            Function name: NEXT
+            AstFunctionCallExpression [20:22, 20:36]:
+              -> defined at:  [9:20, 9:35]:
+              -> typed: ((natural) natural) natural
+              Function name: NEXT
+              AstFunctionCallExpression [20:27, 20:36]:
+                -> defined at:  [9:20, 9:35]:
+                -> typed: (natural) natural
+                Function name: NEXT
+                AstNameExpression [20:32, 20:36]:
+                  -> defined at:  [9:38, 9:42]:
+                  -> typed: natural
+                  Name: ZERO
+  AstFunBinding [23:1, 26:31]:
+    -> typed: fn : (natural * natural) -> natural
+    AstIdentifierPattern [23:5, 23:8]:
+      -> typed: fn : (natural * natural) -> natural
+      Name: add
+    AstTuplePattern [23:9, 23:34]:
+      -> typed: (natural * natural)
+      AstTypedPattern [23:10, 23:20]:
+        -> typed: natural
+        AstIdentifierPattern [23:10, 23:11]:
+          -> typed: natural
+          Name: a
+        AstTypeName [23:13, 23:20]:
+          -> defined at:  [9:1, 9:42]:
+          -> typed: natural
+          Name: natural
+      AstTypedPattern [23:22, 23:32]:
+        -> typed: natural
+        AstIdentifierPattern [23:22, 23:23]:
+          -> typed: natural
+          Name: b
+        AstTypeName [23:25, 23:32]:
+          -> defined at:  [9:1, 9:42]:
+          -> typed: natural
+          Name: natural
+    AstTypeName [23:35, 23:42]:
+      -> typed: natural
+      Name: natural
+    AstCaseExpression [24:3, 26:31]:
+      -> typed: natural
+      AstNameExpression [24:8, 24:9]:
+        -> defined at:  [23:22, 23:23]:
+        -> typed: natural
+        Name: b
+      AstMatch [25:5, 26:31]:
+        -> typed: natural => natural
+        AstRule [25:5, 25:14]:
+          -> typed: natural => natural
+          AstIdentifierPattern [25:5, 25:9]:
+            -> defined at:  [9:38, 9:42]:
+            -> typed: natural
+            Name: ZERO
+          AstNameExpression [25:13, 25:14]:
+            -> defined at:  [23:10, 23:11]:
+            -> typed: natural
             Name: a
-          AstConstantExpression [17:13, 17:14]:
-            -> typed: int
+        AstRule [26:7, 26:31]:
+          -> typed: (natural) natural => natural
+          AstIdentifierPattern [26:7, 26:11]:
+            -> defined at:  [9:20, 9:35]:
+            -> typed: (natural) natural
+            Name: NEXT
+          AstIdentifierPattern [26:12, 26:13]:
+            -> typed: natural
+            Name: i
+          AstFunctionCallExpression [26:17, 26:31]:
+            -> defined at:  [23:1, 26:31]:
+            -> typed: natural
+            Function name: add
+            AstTupleExpression [26:21, 26:31]:
+              -> typed: (natural * natural)
+              AstFunctionCallExpression [26:21, 26:27]:
+                -> defined at:  [9:20, 9:35]:
+                -> typed: (natural) natural
+                Function name: NEXT
+                AstNameExpression [26:26, 26:27]:
+                  -> defined at:  [23:10, 23:11]:
+                  -> typed: natural
+                  Name: a
+              AstNameExpression [26:30, 26:31]:
+                -> defined at:  [26:12, 26:13]:
+                -> typed: natural
+                Name: i
+  AstValBinding [28:1, 28:25]:
+    -> typed: ((natural) natural) natural
+    AstIdentifierPattern [28:5, 28:8]:
+      -> typed: ((natural) natural) natural
+      Name: two
+    AstFunctionCallExpression [28:11, 28:25]:
+      -> defined at:  [9:20, 9:35]:
+      -> typed: ((natural) natural) natural
+      Function name: NEXT
+      AstFunctionCallExpression [28:16, 28:25]:
+        -> defined at:  [9:20, 9:35]:
+        -> typed: (natural) natural
+        Function name: NEXT
+        AstNameExpression [28:21, 28:25]:
+          -> defined at:  [9:38, 9:42]:
+          -> typed: natural
+          Name: ZERO
+  AstValBinding [29:1, 29:36]:
+    -> typed: ((((natural) natural) natural) natural) natural
+    AstIdentifierPattern [29:5, 29:9]:
+      -> typed: ((((natural) natural) natural) natural) natural
+      Name: four
+    AstFunctionCallExpression [29:12, 29:36]:
+      -> defined at:  [9:20, 9:35]:
+      -> typed: ((((natural) natural) natural) natural) natural
+      Function name: NEXT
+      AstFunctionCallExpression [29:17, 29:36]:
+        -> defined at:  [9:20, 9:35]:
+        -> typed: (((natural) natural) natural) natural
+        Function name: NEXT
+        AstFunctionCallExpression [29:22, 29:36]:
+          -> defined at:  [9:20, 9:35]:
+          -> typed: ((natural) natural) natural
+          Function name: NEXT
+          AstFunctionCallExpression [29:27, 29:36]:
+            -> defined at:  [9:20, 9:35]:
+            -> typed: (natural) natural
+            Function name: NEXT
+            AstNameExpression [29:32, 29:36]:
+              -> defined at:  [9:38, 9:42]:
+              -> typed: natural
+              Name: ZERO
+  AstValBinding [30:1, 30:57]:
+    -> typed: ((((((((natural) natural) natural) natural) natural) natural) natural) natural) natural
+    AstIdentifierPattern [30:5, 30:10]:
+      -> typed: ((((((((natural) natural) natural) natural) natural) natural) natural) natural) natural
+      Name: eight
+    AstFunctionCallExpression [30:13, 30:57]:
+      -> defined at:  [9:20, 9:35]:
+      -> typed: ((((((((natural) natural) natural) natural) natural) natural) natural) natural) natural
+      Function name: NEXT
+      AstFunctionCallExpression [30:18, 30:57]:
+        -> defined at:  [9:20, 9:35]:
+        -> typed: (((((((natural) natural) natural) natural) natural) natural) natural) natural
+        Function name: NEXT
+        AstFunctionCallExpression [30:23, 30:57]:
+          -> defined at:  [9:20, 9:35]:
+          -> typed: ((((((natural) natural) natural) natural) natural) natural) natural
+          Function name: NEXT
+          AstFunctionCallExpression [30:28, 30:57]:
+            -> defined at:  [9:20, 9:35]:
+            -> typed: (((((natural) natural) natural) natural) natural) natural
+            Function name: NEXT
+            AstFunctionCallExpression [30:33, 30:57]:
+              -> defined at:  [9:20, 9:35]:
+              -> typed: ((((natural) natural) natural) natural) natural
+              Function name: NEXT
+              AstFunctionCallExpression [30:38, 30:57]:
+                -> defined at:  [9:20, 9:35]:
+                -> typed: (((natural) natural) natural) natural
+                Function name: NEXT
+                AstFunctionCallExpression [30:43, 30:57]:
+                  -> defined at:  [9:20, 9:35]:
+                  -> typed: ((natural) natural) natural
+                  Function name: NEXT
+                  AstFunctionCallExpression [30:48, 30:57]:
+                    -> defined at:  [9:20, 9:35]:
+                    -> typed: (natural) natural
+                    Function name: NEXT
+                    AstNameExpression [30:53, 30:57]:
+                      -> defined at:  [9:38, 9:42]:
+                      -> typed: natural
+                      Name: ZERO
+  AstValBinding [32:1, 32:20]:
+    AstIdentifierPattern [32:1, 32:20]:
+      Name: x5
+    AstFunctionCallExpression [32:1, 32:20]:
+      -> defined at:  [12:1, 15:28]:
+      Function name: toInt
+      AstFunctionCallExpression [32:7, 32:20]:
+        -> defined at:  [23:1, 26:31]:
+        -> typed: natural
+        Function name: add
+        AstTupleExpression [32:11, 32:20]:
+          -> typed: (natural * natural)
+          AstNameExpression [32:11, 32:14]:
+            -> defined at:  [28:5, 28:8]:
+            -> typed: ((natural) natural) natural
+            Name: two
+          AstNameExpression [32:16, 32:20]:
+            -> defined at:  [29:5, 29:9]:
+            -> typed: ((((natural) natural) natural) natural) natural
+            Name: four
+  AstValBinding [33:1, 33:21]:
+    AstIdentifierPattern [33:1, 33:21]:
+      Name: x6
+    AstFunctionCallExpression [33:1, 33:21]:
+      -> defined at:  [12:1, 15:28]:
+      Function name: toInt
+      AstFunctionCallExpression [33:7, 33:21]:
+        -> defined at:  [23:1, 26:31]:
+        Function name: add
+        AstTupleExpression [33:11, 33:21]:
+          AstNameExpression [33:11, 33:14]:
+            -> defined at:  [28:5, 28:8]:
+            Name: two
+          AstNameExpression [33:16, 33:21]:
+            -> defined at:  [30:5, 30:10]:
+            Name: eight
+  AstValBinding [34:1, 34:23]:
+    AstIdentifierPattern [34:1, 34:23]:
+      Name: x7
+    AstFunctionCallExpression [34:1, 34:23]:
+      -> defined at:  [12:1, 15:28]:
+      Function name: toInt
+      AstFunctionCallExpression [34:7, 34:23]:
+        -> defined at:  [23:1, 26:31]:
+        Function name: add
+        AstTupleExpression [34:11, 34:23]:
+          AstNameExpression [34:11, 34:16]:
+            -> defined at:  [30:5, 30:10]:
+            Name: eight
+          AstNameExpression [34:18, 34:23]:
+            -> defined at:  [30:5, 30:10]:
+            Name: eight
+  AstValBinding [35:1, 35:21]:
+    AstIdentifierPattern [35:1, 35:21]:
+      Name: x8
+    AstFunctionCallExpression [35:1, 35:21]:
+      -> defined at:  [12:1, 15:28]:
+      Function name: toInt
+      AstFunctionCallExpression [35:7, 35:21]:
+        -> defined at:  [23:1, 26:31]:
+        Function name: add
+        AstTupleExpression [35:11, 35:21]:
+          AstNameExpression [35:11, 35:15]:
+            -> defined at:  [9:38, 9:42]:
+            Name: ZERO
+          AstNameExpression [35:17, 35:21]:
+            -> defined at:  [9:38, 9:42]:
+            Name: ZERO
+  AstValBinding [36:1, 36:20]:
+    AstIdentifierPattern [36:1, 36:20]:
+      Name: x9
+    AstFunctionCallExpression [36:1, 36:20]:
+      -> defined at:  [12:1, 15:28]:
+      Function name: toInt
+      AstFunctionCallExpression [36:7, 36:20]:
+        -> defined at:  [23:1, 26:31]:
+        Function name: add
+        AstTupleExpression [36:11, 36:20]:
+          AstNameExpression [36:11, 36:15]:
+            -> defined at:  [9:38, 9:42]:
+            Name: ZERO
+          AstNameExpression [36:17, 36:20]:
+            -> defined at:  [28:5, 28:8]:
+            Name: two
+  AstDatatypeBinding [44:1, 44:56]:
+    AstIdentifierPattern [44:10, 44:14]:
+      Name: tree
+    AstCase [44:17, 44:42]:
+      AstIdentifierPattern [44:17, 44:21]:
+        Name: NODE
+      AstTupleType [44:25, 44:42]:
+        AstTypeName [44:25, 44:28]:
+          Name: int
+        AstTypeName [44:31, 44:35]:
+          -> defined at:  [44:1, 44:56]:
+          Name: tree
+        AstTypeName [44:38, 44:42]:
+          -> defined at:  [44:1, 44:56]:
+          Name: tree
+    AstCase [44:45, 44:56]:
+      AstIdentifierPattern [44:45, 44:49]:
+        Name: LEAF
+      AstTypeName [44:53, 44:56]:
+        Name: int
+  AstFunBinding [47:1, 52:24]:
+    AstIdentifierPattern [47:5, 47:8]:
+      Name: min
+    AstTypedPattern [47:10, 47:20]:
+      AstIdentifierPattern [47:10, 47:14]:
+        Name: tree
+      AstTypeName [47:16, 47:20]:
+        -> defined at:  [47:10, 47:14]:
+        Name: tree
+    AstTypeName [47:23, 47:26]:
+      Name: int
+    AstCaseExpression [48:3, 52:24]:
+      AstNameExpression [48:8, 48:12]:
+        -> defined at:  [47:10, 47:14]:
+        Name: tree
+      AstMatch [49:5, 52:24]:
+        AstRule [49:5, 49:16]:
+          AstIdentifierPattern [49:5, 49:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstIdentifierPattern [49:10, 49:11]:
+            Name: x
+          AstNameExpression [49:15, 49:16]:
+            -> defined at:  [49:10, 49:11]:
+            Name: x
+        AstRule [50:7, 52:24]:
+          AstIdentifierPattern [50:7, 50:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [50:12, 50:31]:
+            AstIdentifierPattern [50:13, 50:14]:
+              Name: x
+            AstIdentifierPattern [50:16, 50:20]:
+              Name: left
+            AstIdentifierPattern [50:22, 50:27]:
+              Name: right
+          AstLetExpression [50:32, 52:24]:
+            AstBindings [51:7, 52:24]:
+              AstValBinding [51:7, 51:23]:
+                AstIdentifierPattern [51:11, 51:12]:
+                  Name: l
+                AstFunctionCallExpression [51:15, 51:23]:
+                  -> defined at:  [47:1, 52:24]:
+                  Function name: min
+                  AstNameExpression [51:19, 51:23]:
+                    -> defined at:  [50:16, 50:20]:
+                    Name: left
+              AstValBinding [52:7, 52:24]:
+                AstIdentifierPattern [52:11, 52:12]:
+                  Name: r
+                AstFunctionCallExpression [52:15, 52:24]:
+                  -> defined at:  [47:1, 52:24]:
+                  Function name: min
+                  AstNameExpression [52:19, 52:24]:
+                    -> defined at:  [50:22, 50:27]:
+                    Name: right
+            AstIfExpression [54:7, 55:34]:
+              AstBinaryExpression `andalso` [54:10, 54:29]:
+                AstBinaryExpression `<` [54:10, 54:15]:
+                  AstNameExpression [54:10, 54:11]:
+                    -> defined at:  [50:13, 50:14]:
+                    Name: x
+                  AstNameExpression [54:14, 54:15]:
+                    -> defined at:  [51:11, 51:12]:
+                    Name: l
+                AstBinaryExpression `<` [54:24, 54:29]:
+                  AstNameExpression [54:24, 54:25]:
+                    -> defined at:  [50:13, 50:14]:
+                    Name: x
+                  AstNameExpression [54:28, 54:29]:
+                    -> defined at:  [52:11, 52:12]:
+                    Name: r
+              AstNameExpression [54:35, 54:36]:
+                -> defined at:  [50:13, 50:14]:
+                Name: x
+              AstIfExpression [55:12, 55:34]:
+                AstBinaryExpression `<` [55:15, 55:20]:
+                  AstNameExpression [55:15, 55:16]:
+                    -> defined at:  [51:11, 51:12]:
+                    Name: l
+                  AstNameExpression [55:19, 55:20]:
+                    -> defined at:  [52:11, 52:12]:
+                    Name: r
+                AstNameExpression [55:26, 55:27]:
+                  -> defined at:  [51:11, 51:12]:
+                  Name: l
+                AstNameExpression [55:33, 55:34]:
+                  -> defined at:  [52:11, 52:12]:
+                  Name: r
+  AstValBinding [58:1, 68:23]:
+    AstIdentifierPattern [58:5, 58:13]:
+      Name: big_tree
+    AstFunctionCallExpression [58:16, 68:23]:
+      -> defined at:  [44:17, 44:42]:
+      Function name: NODE
+      AstTupleExpression [58:21, 68:23]:
+        AstConstantExpression [58:21, 58:22]:
+          Value: 1
+          Atom type: int
+        AstFunctionCallExpression [59:11, 61:19]:
+          -> defined at:  [44:17, 44:42]:
+          Function name: NODE
+          AstTupleExpression [59:16, 61:19]:
+            AstConstantExpression [59:16, 59:17]:
+              Value: 2
+              Atom type: int
+            AstFunctionCallExpression [60:13, 60:19]:
+              -> defined at:  [44:45, 44:56]:
+              Function name: LEAF
+              AstConstantExpression [60:18, 60:19]:
+                Value: 5
+                Atom type: int
+            AstFunctionCallExpression [61:13, 61:19]:
+              -> defined at:  [44:45, 44:56]:
+              Function name: LEAF
+              AstConstantExpression [61:18, 61:19]:
+                Value: 7
+                Atom type: int
+        AstFunctionCallExpression [62:11, 68:23]:
+          -> defined at:  [44:17, 44:42]:
+          Function name: NODE
+          AstTupleExpression [62:16, 68:23]:
+            AstConstantExpression [62:16, 62:18]:
+              Value: 10
+              Atom type: int
+            AstFunctionCallExpression [63:13, 63:21]:
+              -> defined at:  [44:45, 44:56]:
+              Function name: LEAF
+              AstUnaryExpression `~` [63:18, 63:21]:
+                AstConstantExpression [63:19, 63:21]:
+                  Value: 10
+                  Atom type: int
+            AstFunctionCallExpression [64:13, 68:23]:
+              -> defined at:  [44:17, 44:42]:
+              Function name: NODE
+              AstTupleExpression [64:18, 68:23]:
+                AstConstantExpression [64:18, 64:19]:
+                  Value: 1
+                  Atom type: int
+                AstFunctionCallExpression [65:15, 67:25]:
+                  -> defined at:  [44:17, 44:42]:
+                  Function name: NODE
+                  AstTupleExpression [65:20, 67:25]:
+                    AstConstantExpression [65:20, 65:23]:
+                      Value: 100
+                      Atom type: int
+                    AstFunctionCallExpression [66:17, 66:24]:
+                      -> defined at:  [44:45, 44:56]:
+                      Function name: LEAF
+                      AstConstantExpression [66:22, 66:24]:
+                        Value: 10
+                        Atom type: int
+                    AstFunctionCallExpression [67:17, 67:25]:
+                      -> defined at:  [44:45, 44:56]:
+                      Function name: LEAF
+                      AstConstantExpression [67:22, 67:25]:
+                        Value: 100
+                        Atom type: int
+                AstFunctionCallExpression [68:15, 68:23]:
+                  -> defined at:  [44:45, 44:56]:
+                  Function name: LEAF
+                  AstConstantExpression [68:20, 68:23]:
+                    Value: 500
+                    Atom type: int
+  AstValBinding [69:1, 69:12]:
+    AstIdentifierPattern [69:1, 69:12]:
+      Name: x10
+    AstFunctionCallExpression [69:1, 69:12]:
+      -> defined at:  [47:1, 52:24]:
+      Function name: min
+      AstFunctionCallExpression [69:5, 69:12]:
+        -> defined at:  [44:45, 44:56]:
+        Function name: LEAF
+        AstConstantExpression [69:10, 69:12]:
+          Value: 10
+          Atom type: int
+  AstValBinding [70:1, 70:13]:
+    AstIdentifierPattern [70:1, 70:13]:
+      Name: x11
+    AstFunctionCallExpression [70:1, 70:13]:
+      -> defined at:  [47:1, 52:24]:
+      Function name: min
+      AstNameExpression [70:5, 70:13]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstFunBinding [73:1, 78:24]:
+    AstIdentifierPattern [73:5, 73:8]:
+      Name: max
+    AstTypedPattern [73:10, 73:20]:
+      AstIdentifierPattern [73:10, 73:14]:
+        Name: tree
+      AstTypeName [73:16, 73:20]:
+        -> defined at:  [73:10, 73:14]:
+        Name: tree
+    AstTypeName [73:23, 73:26]:
+      Name: int
+    AstCaseExpression [74:3, 78:24]:
+      AstNameExpression [74:8, 74:12]:
+        -> defined at:  [73:10, 73:14]:
+        Name: tree
+      AstMatch [75:5, 78:24]:
+        AstRule [75:5, 75:16]:
+          AstIdentifierPattern [75:5, 75:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstIdentifierPattern [75:10, 75:11]:
+            Name: x
+          AstNameExpression [75:15, 75:16]:
+            -> defined at:  [75:10, 75:11]:
+            Name: x
+        AstRule [76:7, 78:24]:
+          AstIdentifierPattern [76:7, 76:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [76:12, 76:31]:
+            AstIdentifierPattern [76:13, 76:14]:
+              Name: x
+            AstIdentifierPattern [76:16, 76:20]:
+              Name: left
+            AstIdentifierPattern [76:22, 76:27]:
+              Name: right
+          AstLetExpression [76:32, 78:24]:
+            AstBindings [77:7, 78:24]:
+              AstValBinding [77:7, 77:23]:
+                AstIdentifierPattern [77:11, 77:12]:
+                  Name: l
+                AstFunctionCallExpression [77:15, 77:23]:
+                  -> defined at:  [73:1, 78:24]:
+                  Function name: max
+                  AstNameExpression [77:19, 77:23]:
+                    -> defined at:  [76:16, 76:20]:
+                    Name: left
+              AstValBinding [78:7, 78:24]:
+                AstIdentifierPattern [78:11, 78:12]:
+                  Name: r
+                AstFunctionCallExpression [78:15, 78:24]:
+                  -> defined at:  [73:1, 78:24]:
+                  Function name: max
+                  AstNameExpression [78:19, 78:24]:
+                    -> defined at:  [76:22, 76:27]:
+                    Name: right
+            AstIfExpression [80:7, 81:34]:
+              AstBinaryExpression `andalso` [80:10, 80:29]:
+                AstBinaryExpression `>` [80:10, 80:15]:
+                  AstNameExpression [80:10, 80:11]:
+                    -> defined at:  [76:13, 76:14]:
+                    Name: x
+                  AstNameExpression [80:14, 80:15]:
+                    -> defined at:  [77:11, 77:12]:
+                    Name: l
+                AstBinaryExpression `>` [80:24, 80:29]:
+                  AstNameExpression [80:24, 80:25]:
+                    -> defined at:  [76:13, 76:14]:
+                    Name: x
+                  AstNameExpression [80:28, 80:29]:
+                    -> defined at:  [78:11, 78:12]:
+                    Name: r
+              AstNameExpression [80:35, 80:36]:
+                -> defined at:  [76:13, 76:14]:
+                Name: x
+              AstIfExpression [81:12, 81:34]:
+                AstBinaryExpression `>` [81:15, 81:20]:
+                  AstNameExpression [81:15, 81:16]:
+                    -> defined at:  [77:11, 77:12]:
+                    Name: l
+                  AstNameExpression [81:19, 81:20]:
+                    -> defined at:  [78:11, 78:12]:
+                    Name: r
+                AstNameExpression [81:26, 81:27]:
+                  -> defined at:  [77:11, 77:12]:
+                  Name: l
+                AstNameExpression [81:33, 81:34]:
+                  -> defined at:  [78:11, 78:12]:
+                  Name: r
+  AstValBinding [84:1, 84:12]:
+    AstIdentifierPattern [84:1, 84:12]:
+      Name: x12
+    AstFunctionCallExpression [84:1, 84:12]:
+      -> defined at:  [73:1, 78:24]:
+      Function name: max
+      AstFunctionCallExpression [84:5, 84:12]:
+        -> defined at:  [44:45, 44:56]:
+        Function name: LEAF
+        AstConstantExpression [84:10, 84:12]:
+          Value: 10
+          Atom type: int
+  AstValBinding [85:1, 85:13]:
+    AstIdentifierPattern [85:1, 85:13]:
+      Name: x13
+    AstFunctionCallExpression [85:1, 85:13]:
+      -> defined at:  [73:1, 78:24]:
+      Function name: max
+      AstNameExpression [85:5, 85:13]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstFunBinding [88:1, 91:87]:
+    AstIdentifierPattern [88:5, 88:13]:
+      Name: contains
+    AstTuplePattern [88:14, 88:35]:
+      AstTypedPattern [88:15, 88:25]:
+        AstIdentifierPattern [88:15, 88:19]:
+          Name: tree
+        AstTypeName [88:21, 88:25]:
+          -> defined at:  [88:15, 88:19]:
+          Name: tree
+      AstTypedPattern [88:27, 88:33]:
+        AstIdentifierPattern [88:27, 88:28]:
+          Name: x
+        AstTypeName [88:30, 88:33]:
+          Name: int
+    AstTypeName [88:36, 88:40]:
+      Name: bool
+    AstCaseExpression [89:3, 91:87]:
+      AstNameExpression [89:8, 89:12]:
+        -> defined at:  [88:15, 88:19]:
+        Name: tree
+      AstMatch [90:5, 91:87]:
+        AstRule [90:5, 90:20]:
+          AstIdentifierPattern [90:5, 90:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstIdentifierPattern [90:10, 90:11]:
+            Name: a
+          AstBinaryExpression `=` [90:15, 90:20]:
+            AstNameExpression [90:15, 90:16]:
+              -> defined at:  [90:10, 90:11]:
+              Name: a
+            AstNameExpression [90:19, 90:20]:
+              -> defined at:  [88:27, 88:28]:
+              Name: x
+        AstRule [91:7, 91:87]:
+          AstIdentifierPattern [91:7, 91:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [91:12, 91:31]:
+            AstIdentifierPattern [91:13, 91:14]:
+              Name: a
+            AstIdentifierPattern [91:16, 91:20]:
+              Name: left
+            AstIdentifierPattern [91:22, 91:27]:
+              Name: right
+          AstBinaryExpression `orelse` [91:32, 91:87]:
+            AstBinaryExpression `orelse` [91:32, 91:61]:
+              AstBinaryExpression `=` [91:32, 91:37]:
+                AstNameExpression [91:32, 91:33]:
+                  -> defined at:  [91:13, 91:14]:
+                  Name: a
+                AstNameExpression [91:36, 91:37]:
+                  -> defined at:  [88:27, 88:28]:
+                  Name: x
+              AstFunctionCallExpression [91:45, 91:61]:
+                -> defined at:  [88:1, 91:87]:
+                Function name: contains
+                AstTupleExpression [91:54, 91:61]:
+                  AstNameExpression [91:54, 91:58]:
+                    -> defined at:  [91:16, 91:20]:
+                    Name: left
+                  AstNameExpression [91:60, 91:61]:
+                    -> defined at:  [88:27, 88:28]:
+                    Name: x
+            AstFunctionCallExpression [91:70, 91:87]:
+              -> defined at:  [88:1, 91:87]:
+              Function name: contains
+              AstTupleExpression [91:79, 91:87]:
+                AstNameExpression [91:79, 91:84]:
+                  -> defined at:  [91:22, 91:27]:
+                  Name: right
+                AstNameExpression [91:86, 91:87]:
+                  -> defined at:  [88:27, 88:28]:
+                  Name: x
+  AstValBinding [93:1, 93:23]:
+    AstIdentifierPattern [93:1, 93:23]:
+      Name: x14
+    AstFunctionCallExpression [93:1, 93:23]:
+      -> defined at:  [88:1, 91:87]:
+      Function name: contains
+      AstTupleExpression [93:10, 93:23]:
+        AstNameExpression [93:10, 93:18]:
+          -> defined at:  [58:5, 58:13]:
+          Name: big_tree
+        AstConstantExpression [93:20, 93:23]:
+          Value: 123
+          Atom type: int
+  AstValBinding [94:1, 94:21]:
+    AstIdentifierPattern [94:1, 94:21]:
+      Name: x15
+    AstFunctionCallExpression [94:1, 94:21]:
+      -> defined at:  [88:1, 91:87]:
+      Function name: contains
+      AstTupleExpression [94:10, 94:21]:
+        AstNameExpression [94:10, 94:18]:
+          -> defined at:  [58:5, 58:13]:
+          Name: big_tree
+        AstConstantExpression [94:20, 94:21]:
+          Value: 0
+          Atom type: int
+  AstValBinding [95:1, 95:21]:
+    AstIdentifierPattern [95:1, 95:21]:
+      Name: x16
+    AstFunctionCallExpression [95:1, 95:21]:
+      -> defined at:  [88:1, 91:87]:
+      Function name: contains
+      AstTupleExpression [95:10, 95:21]:
+        AstNameExpression [95:10, 95:18]:
+          -> defined at:  [58:5, 58:13]:
+          Name: big_tree
+        AstConstantExpression [95:20, 95:21]:
+          Value: 1
+          Atom type: int
+  AstValBinding [96:1, 96:23]:
+    AstIdentifierPattern [96:1, 96:23]:
+      Name: x17
+    AstFunctionCallExpression [96:1, 96:23]:
+      -> defined at:  [88:1, 91:87]:
+      Function name: contains
+      AstTupleExpression [96:10, 96:23]:
+        AstNameExpression [96:10, 96:18]:
+          -> defined at:  [58:5, 58:13]:
+          Name: big_tree
+        AstUnaryExpression `~` [96:20, 96:23]:
+          AstConstantExpression [96:21, 96:23]:
+            Value: 10
+            Atom type: int
+  AstValBinding [97:1, 97:23]:
+    AstIdentifierPattern [97:1, 97:23]:
+      Name: x18
+    AstFunctionCallExpression [97:1, 97:23]:
+      -> defined at:  [88:1, 91:87]:
+      Function name: contains
+      AstTupleExpression [97:10, 97:23]:
+        AstNameExpression [97:10, 97:18]:
+          -> defined at:  [58:5, 58:13]:
+          Name: big_tree
+        AstConstantExpression [97:20, 97:23]:
+          Value: 500
+          Atom type: int
+  AstFunBinding [100:1, 103:55]:
+    AstIdentifierPattern [100:5, 100:16]:
+      Name: countLeaves
+    AstTypedPattern [100:18, 100:28]:
+      AstIdentifierPattern [100:18, 100:22]:
+        Name: tree
+      AstTypeName [100:24, 100:28]:
+        -> defined at:  [100:18, 100:22]:
+        Name: tree
+    AstTypeName [100:31, 100:34]:
+      Name: int
+    AstCaseExpression [101:3, 103:55]:
+      AstNameExpression [101:8, 101:12]:
+        -> defined at:  [100:18, 100:22]:
+        Name: tree
+      AstMatch [102:5, 103:55]:
+        AstRule [102:5, 102:16]:
+          AstIdentifierPattern [102:5, 102:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstWildcardPattern [102:12, 102:14]:
+          AstConstantExpression [102:15, 102:16]:
             Value: 1
             Atom type: int
-        AstRule [18:8, 18:16]:
-          -> typed: (int) A => int
-          AstIdentifierPattern [18:8, 18:9]:
-            -> defined at:  [3:8, 3:16]:
-            -> typed: (int) A
-            Name: Y
-          AstIdentifierPattern [18:10, 18:11]:
-            -> typed: int
-            Name: a
-          AstConstantExpression [18:15, 18:16]:
-            -> typed: int
-            Value: 2
-            Atom type: int
-        AstRule [19:8, 19:14]:
-          -> typed: A => int
-          AstIdentifierPattern [19:8, 19:9]:
-            -> defined at:  [4:8, 4:9]:
-            -> typed: A
-            Name: Z
-          AstConstantExpression [19:13, 19:14]:
-            -> typed: int
+        AstRule [103:7, 103:55]:
+          AstIdentifierPattern [103:7, 103:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [103:12, 103:24]:
+            AstWildcardPattern [103:14, 103:15]:
+            AstIdentifierPattern [103:16, 103:17]:
+              Name: l
+            AstIdentifierPattern [103:19, 103:20]:
+              Name: r
+          AstBinaryExpression `+` [103:25, 103:55]:
+            AstFunctionCallExpression [103:25, 103:38]:
+              -> defined at:  [100:1, 103:55]:
+              Function name: countLeaves
+              AstNameExpression [103:37, 103:38]:
+                -> defined at:  [103:16, 103:17]:
+                Name: l
+            AstFunctionCallExpression [103:42, 103:55]:
+              -> defined at:  [100:1, 103:55]:
+              Function name: countLeaves
+              AstNameExpression [103:54, 103:55]:
+                -> defined at:  [103:19, 103:20]:
+                Name: r
+  AstValBinding [104:1, 104:21]:
+    AstIdentifierPattern [104:1, 104:21]:
+      Name: x19
+    AstFunctionCallExpression [104:1, 104:21]:
+      -> defined at:  [100:1, 103:55]:
+      Function name: countLeaves
+      AstNameExpression [104:13, 104:21]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstFunBinding [107:1, 110:63]:
+    AstIdentifierPattern [107:5, 107:18]:
+      Name: countBranches
+    AstTypedPattern [107:20, 107:30]:
+      AstIdentifierPattern [107:20, 107:24]:
+        Name: tree
+      AstTypeName [107:26, 107:30]:
+        -> defined at:  [107:20, 107:24]:
+        Name: tree
+    AstTypeName [107:33, 107:36]:
+      Name: int
+    AstCaseExpression [108:3, 110:63]:
+      AstNameExpression [108:8, 108:12]:
+        -> defined at:  [107:20, 107:24]:
+        Name: tree
+      AstMatch [109:5, 110:63]:
+        AstRule [109:5, 109:16]:
+          AstIdentifierPattern [109:5, 109:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstWildcardPattern [109:12, 109:14]:
+          AstConstantExpression [109:15, 109:16]:
             Value: 0
             Atom type: int
+        AstRule [110:7, 110:63]:
+          AstIdentifierPattern [110:7, 110:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [110:12, 110:24]:
+            AstWildcardPattern [110:14, 110:15]:
+            AstIdentifierPattern [110:16, 110:17]:
+              Name: l
+            AstIdentifierPattern [110:19, 110:20]:
+              Name: r
+          AstBinaryExpression `+` [110:25, 110:63]:
+            AstBinaryExpression `+` [110:25, 110:44]:
+              AstConstantExpression [110:25, 110:26]:
+                Value: 1
+                Atom type: int
+              AstFunctionCallExpression [110:29, 110:44]:
+                -> defined at:  [107:1, 110:63]:
+                Function name: countBranches
+                AstNameExpression [110:43, 110:44]:
+                  -> defined at:  [110:16, 110:17]:
+                  Name: l
+            AstFunctionCallExpression [110:48, 110:63]:
+              -> defined at:  [107:1, 110:63]:
+              Function name: countBranches
+              AstNameExpression [110:62, 110:63]:
+                -> defined at:  [110:19, 110:20]:
+                Name: r
+  AstValBinding [111:1, 111:23]:
+    AstIdentifierPattern [111:1, 111:23]:
+      Name: x20
+    AstFunctionCallExpression [111:1, 111:23]:
+      -> defined at:  [107:1, 110:63]:
+      Function name: countBranches
+      AstNameExpression [111:15, 111:23]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstFunBinding [114:1, 119:31]:
+    AstIdentifierPattern [114:5, 114:11]:
+      Name: height
+    AstTypedPattern [114:13, 114:23]:
+      AstIdentifierPattern [114:13, 114:17]:
+        Name: tree
+      AstTypeName [114:19, 114:23]:
+        -> defined at:  [114:13, 114:17]:
+        Name: tree
+    AstTypeName [114:26, 114:29]:
+      Name: int
+    AstCaseExpression [115:3, 119:31]:
+      AstNameExpression [115:8, 115:12]:
+        -> defined at:  [114:13, 114:17]:
+        Name: tree
+      AstMatch [116:5, 119:31]:
+        AstRule [116:5, 116:16]:
+          AstIdentifierPattern [116:5, 116:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstWildcardPattern [116:12, 116:14]:
+          AstConstantExpression [116:15, 116:16]:
+            Value: 1
+            Atom type: int
+        AstRule [117:7, 119:31]:
+          AstIdentifierPattern [117:7, 117:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [117:12, 117:24]:
+            AstWildcardPattern [117:14, 117:15]:
+            AstIdentifierPattern [117:16, 117:17]:
+              Name: l
+            AstIdentifierPattern [117:19, 117:20]:
+              Name: r
+          AstLetExpression [117:25, 119:31]:
+            AstBindings [118:7, 119:31]:
+              AstValBinding [118:7, 118:30]:
+                AstIdentifierPattern [118:11, 118:15]:
+                  Name: left
+                AstBinaryExpression `+` [118:18, 118:30]:
+                  AstConstantExpression [118:18, 118:19]:
+                    Value: 1
+                    Atom type: int
+                  AstFunctionCallExpression [118:22, 118:30]:
+                    -> defined at:  [114:1, 119:31]:
+                    Function name: height
+                    AstNameExpression [118:29, 118:30]:
+                      -> defined at:  [117:16, 117:17]:
+                      Name: l
+              AstValBinding [119:7, 119:31]:
+                AstIdentifierPattern [119:11, 119:16]:
+                  Name: right
+                AstBinaryExpression `+` [119:19, 119:31]:
+                  AstConstantExpression [119:19, 119:20]:
+                    Value: 1
+                    Atom type: int
+                  AstFunctionCallExpression [119:23, 119:31]:
+                    -> defined at:  [114:1, 119:31]:
+                    Function name: height
+                    AstNameExpression [119:30, 119:31]:
+                      -> defined at:  [117:19, 117:20]:
+                      Name: r
+            AstIfExpression [121:7, 121:43]:
+              AstBinaryExpression `>` [121:10, 121:22]:
+                AstNameExpression [121:10, 121:14]:
+                  -> defined at:  [118:11, 118:15]:
+                  Name: left
+                AstNameExpression [121:17, 121:22]:
+                  -> defined at:  [119:11, 119:16]:
+                  Name: right
+              AstNameExpression [121:28, 121:32]:
+                -> defined at:  [118:11, 118:15]:
+                Name: left
+              AstNameExpression [121:38, 121:43]:
+                -> defined at:  [119:11, 119:16]:
+                Name: right
+  AstValBinding [123:1, 123:15]:
+    AstIdentifierPattern [123:1, 123:15]:
+      Name: x21
+    AstFunctionCallExpression [123:1, 123:15]:
+      -> defined at:  [114:1, 119:31]:
+      Function name: height
+      AstFunctionCallExpression [123:8, 123:15]:
+        -> defined at:  [44:45, 44:56]:
+        Function name: LEAF
+        AstConstantExpression [123:13, 123:15]:
+          Value: 10
+          Atom type: int
+  AstValBinding [124:1, 124:16]:
+    AstIdentifierPattern [124:1, 124:16]:
+      Name: x22
+    AstFunctionCallExpression [124:1, 124:16]:
+      -> defined at:  [114:1, 119:31]:
+      Function name: height
+      AstNameExpression [124:8, 124:16]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstFunBinding [126:1, 136:30]:
+    AstIdentifierPattern [126:5, 126:15]:
+      Name: append_lst
+    AstTuplePattern [126:15, 126:31]:
+      AstIdentifierPattern [126:16, 126:21]:
+        Name: lst_a
+      AstIdentifierPattern [126:23, 126:28]:
+        Name: lst_b
+    AstLetExpression [127:3, 136:30]:
+      AstBindings [128:5, 136:30]:
+        AstFunBinding [128:5, 136:30]:
+          AstIdentifierPattern [128:9, 128:15]:
+            Name: append
+          AstTuplePattern [128:15, 128:25]:
+            AstIdentifierPattern [128:16, 128:19]:
+              Name: lst
+            AstIdentifierPattern [128:21, 128:22]:
+              Name: a
+          AstLetExpression [129:7, 136:30]:
+            AstBindings [130:9, 136:30]:
+              AstFunBinding [130:9, 133:49]:
+                AstIdentifierPattern [130:13, 130:19]:
+                  Name: insert
+                AstTuplePattern [130:19, 130:32]:
+                  AstIdentifierPattern [130:20, 130:23]:
+                    Name: lst
+                  AstIdentifierPattern [130:25, 130:26]:
+                    Name: x
+                  AstIdentifierPattern [130:28, 130:29]:
+                    Name: n
+                AstIfExpression [131:11, 133:49]:
+                  AstFunctionCallExpression [131:14, 131:22]:
+                    -> defined at:  [0:0, 0:0]:
+                    Function name: null
+                    AstNameExpression [131:19, 131:22]:
+                      -> defined at:  [130:20, 130:23]:
+                      Name: lst
+                  AstBinaryExpression `::` [131:28, 131:33]:
+                    AstNameExpression [131:28, 131:29]:
+                      -> defined at:  [130:25, 130:26]:
+                      Name: x
+                    AstListExpression [131:31, 131:33]:
+                  AstIfExpression [132:16, 133:49]:
+                    AstBinaryExpression `=` [132:19, 132:24]:
+                      AstNameExpression [132:19, 132:20]:
+                        -> defined at:  [130:28, 130:29]:
+                        Name: n
+                      AstConstantExpression [132:23, 132:24]:
+                        Value: 0
+                        Atom type: int
+                    AstBinaryExpression `::` [132:30, 132:36]:
+                      AstNameExpression [132:30, 132:31]:
+                        -> defined at:  [130:25, 130:26]:
+                        Name: x
+                      AstNameExpression [132:33, 132:36]:
+                        -> defined at:  [130:20, 130:23]:
+                        Name: lst
+                    AstBinaryExpression `::` [133:17, 133:49]:
+                      AstFunctionCallExpression [133:17, 133:23]:
+                        -> defined at:  [0:0, 0:0]:
+                        Function name: hd
+                        AstNameExpression [133:20, 133:23]:
+                          -> defined at:  [130:20, 130:23]:
+                          Name: lst
+                      AstFunctionCallExpression [133:26, 133:49]:
+                        -> defined at:  [130:9, 133:49]:
+                        Function name: insert
+                        AstTupleExpression [133:33, 133:49]:
+                          AstFunctionCallExpression [133:33, 133:39]:
+                            -> defined at:  [0:0, 0:0]:
+                            Function name: tl
+                            AstNameExpression [133:36, 133:39]:
+                              -> defined at:  [130:20, 130:23]:
+                              Name: lst
+                          AstNameExpression [133:41, 133:42]:
+                            -> defined at:  [130:25, 130:26]:
+                            Name: x
+                          AstBinaryExpression `-` [133:44, 133:49]:
+                            AstNameExpression [133:44, 133:45]:
+                              -> defined at:  [130:28, 130:29]:
+                              Name: n
+                            AstConstantExpression [133:48, 133:49]:
+                              Value: 1
+                              Atom type: int
+              AstFunBinding [134:9, 136:30]:
+                AstIdentifierPattern [134:13, 134:16]:
+                  Name: len
+                AstIdentifierPattern [134:17, 134:20]:
+                  Name: lst
+                AstIfExpression [135:11, 136:30]:
+                  AstFunctionCallExpression [135:14, 135:22]:
+                    -> defined at:  [0:0, 0:0]:
+                    Function name: null
+                    AstNameExpression [135:19, 135:22]:
+                      -> defined at:  [134:17, 134:20]:
+                      Name: lst
+                  AstConstantExpression [135:28, 135:29]:
+                    Value: 0
+                    Atom type: int
+                  AstBinaryExpression `+` [136:16, 136:30]:
+                    AstConstantExpression [136:16, 136:17]:
+                      Value: 1
+                      Atom type: int
+                    AstFunctionCallExpression [136:20, 136:30]:
+                      -> defined at:  [134:9, 136:30]:
+                      Function name: len
+                      AstFunctionCallExpression [136:24, 136:30]:
+                        -> defined at:  [0:0, 0:0]:
+                        Function name: tl
+                        AstNameExpression [136:27, 136:30]:
+                          -> defined at:  [134:17, 134:20]:
+                          Name: lst
+            AstFunctionCallExpression [138:7, 138:29]:
+              -> defined at:  [130:9, 133:49]:
+              Function name: insert
+              AstTupleExpression [138:14, 138:29]:
+                AstNameExpression [138:14, 138:17]:
+                  -> defined at:  [128:16, 128:19]:
+                  Name: lst
+                AstNameExpression [138:19, 138:20]:
+                  -> defined at:  [128:21, 128:22]:
+                  Name: a
+                AstFunctionCallExpression [138:22, 138:29]:
+                  -> defined at:  [134:9, 136:30]:
+                  Function name: len
+                  AstNameExpression [138:26, 138:29]:
+                    -> defined at:  [128:16, 128:19]:
+                    Name: lst
+      AstIfExpression [141:5, 142:56]:
+        AstFunctionCallExpression [141:8, 141:18]:
+          -> defined at:  [0:0, 0:0]:
+          Function name: null
+          AstNameExpression [141:13, 141:18]:
+            -> defined at:  [126:23, 126:28]:
+            Name: lst_b
+        AstNameExpression [141:24, 141:29]:
+          -> defined at:  [126:16, 126:21]:
+          Name: lst_a
+        AstFunctionCallExpression [142:12, 142:56]:
+          -> defined at:  [126:1, 136:30]:
+          Function name: append_lst
+          AstTupleExpression [142:23, 142:56]:
+            AstFunctionCallExpression [142:23, 142:45]:
+              -> defined at:  [128:5, 136:30]:
+              Function name: append
+              AstTupleExpression [142:30, 142:45]:
+                AstNameExpression [142:30, 142:35]:
+                  -> defined at:  [126:16, 126:21]:
+                  Name: lst_a
+                AstFunctionCallExpression [142:37, 142:45]:
+                  -> defined at:  [0:0, 0:0]:
+                  Function name: hd
+                  AstNameExpression [142:40, 142:45]:
+                    -> defined at:  [126:23, 126:28]:
+                    Name: lst_b
+            AstFunctionCallExpression [142:48, 142:56]:
+              -> defined at:  [0:0, 0:0]:
+              Function name: tl
+              AstNameExpression [142:51, 142:56]:
+                -> defined at:  [126:23, 126:28]:
+                Name: lst_b
+  AstValBinding [145:1, 145:21]:
+    AstIdentifierPattern [145:1, 145:21]:
+      Name: x23
+    AstFunctionCallExpression [145:1, 145:21]:
+      -> defined at:  [126:1, 136:30]:
+      Function name: append_lst
+      AstTupleExpression [145:12, 145:21]:
+        AstListExpression [145:12, 145:16]:
+          AstConstantExpression [145:13, 145:14]:
+            Value: 1
+            Atom type: int
+        AstListExpression [145:17, 145:21]:
+          AstConstantExpression [145:18, 145:19]:
+            Value: 4
+            Atom type: int
+  AstFunBinding [148:1, 151:72]:
+    AstIdentifierPattern [148:5, 148:11]:
+      Name: toList
+    AstTypedPattern [148:13, 148:23]:
+      AstIdentifierPattern [148:13, 148:17]:
+        Name: tree
+      AstTypeName [148:19, 148:23]:
+        -> defined at:  [148:13, 148:17]:
+        Name: tree
+    AstCaseExpression [149:3, 151:72]:
+      AstNameExpression [149:8, 149:12]:
+        -> defined at:  [148:13, 148:17]:
+        Name: tree
+      AstMatch [150:5, 151:72]:
+        AstRule [150:5, 151:6]:
+          AstIdentifierPattern [150:5, 150:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstIdentifierPattern [150:10, 150:11]:
+            Name: i
+          AstListExpression [150:15, 151:6]:
+            AstNameExpression [150:16, 150:17]:
+              -> defined at:  [150:10, 150:11]:
+              Name: i
+        AstRule [151:7, 151:72]:
+          AstIdentifierPattern [151:7, 151:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [151:12, 151:24]:
+            AstIdentifierPattern [151:13, 151:14]:
+              Name: i
+            AstIdentifierPattern [151:16, 151:17]:
+              Name: l
+            AstIdentifierPattern [151:19, 151:20]:
+              Name: r
+          AstFunctionCallExpression [151:25, 151:72]:
+            -> defined at:  [126:1, 136:30]:
+            Function name: append_lst
+            AstTupleExpression [151:36, 151:72]:
+              AstFunctionCallExpression [151:36, 151:62]:
+                -> defined at:  [126:1, 136:30]:
+                Function name: append_lst
+                AstTupleExpression [151:47, 151:62]:
+                  AstFunctionCallExpression [151:47, 151:55]:
+                    -> defined at:  [148:1, 151:72]:
+                    Function name: toList
+                    AstNameExpression [151:54, 151:55]:
+                      -> defined at:  [151:16, 151:17]:
+                      Name: l
+                  AstListExpression [151:58, 151:62]:
+                    AstNameExpression [151:59, 151:60]:
+                      -> defined at:  [151:13, 151:14]:
+                      Name: i
+              AstFunctionCallExpression [151:64, 151:72]:
+                -> defined at:  [148:1, 151:72]:
+                Function name: toList
+                AstNameExpression [151:71, 151:72]:
+                  -> defined at:  [151:19, 151:20]:
+                  Name: r
+  AstValBinding [152:1, 152:16]:
+    AstIdentifierPattern [152:1, 152:16]:
+      Name: x24
+    AstFunctionCallExpression [152:1, 152:16]:
+      -> defined at:  [148:1, 151:72]:
+      Function name: toList
+      AstNameExpression [152:8, 152:16]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstFunBinding [159:1, 163:45]:
+    AstIdentifierPattern [159:5, 159:15]:
+      Name: isBalanced
+    AstTypedPattern [159:17, 159:27]:
+      AstIdentifierPattern [159:17, 159:21]:
+        Name: tree
+      AstTypeName [159:23, 159:27]:
+        -> defined at:  [159:17, 159:21]:
+        Name: tree
+    AstTypeName [159:30, 159:34]:
+      Name: bool
+    AstCaseExpression [160:3, 163:45]:
+      AstNameExpression [160:8, 160:12]:
+        -> defined at:  [159:17, 159:21]:
+        Name: tree
+      AstMatch [161:5, 163:45]:
+        AstRule [161:5, 161:19]:
+          AstIdentifierPattern [161:5, 161:9]:
+            -> defined at:  [44:45, 44:56]:
+            Name: LEAF
+          AstWildcardPattern [161:12, 161:14]:
+          AstConstantExpression [161:15, 161:19]:
+            Value: true
+            Atom type: bool
+        AstRule [162:7, 163:45]:
+          AstIdentifierPattern [162:7, 162:11]:
+            -> defined at:  [44:17, 44:42]:
+            Name: NODE
+          AstTuplePattern [162:12, 162:24]:
+            AstWildcardPattern [162:14, 162:15]:
+            AstIdentifierPattern [162:16, 162:17]:
+              Name: l
+            AstIdentifierPattern [162:19, 162:20]:
+              Name: r
+          AstLetExpression [162:25, 163:45]:
+            AstBindings [163:7, 163:45]:
+              AstValBinding [163:7, 163:45]:
+                AstIdentifierPattern [163:11, 163:22]:
+                  Name: height_diff
+                AstBinaryExpression `-` [163:25, 163:45]:
+                  AstFunctionCallExpression [163:25, 163:33]:
+                    -> defined at:  [114:1, 119:31]:
+                    Function name: height
+                    AstNameExpression [163:32, 163:33]:
+                      -> defined at:  [162:16, 162:17]:
+                      Name: l
+                  AstFunctionCallExpression [163:37, 163:45]:
+                    -> defined at:  [114:1, 119:31]:
+                    Function name: height
+                    AstNameExpression [163:44, 163:45]:
+                      -> defined at:  [162:19, 162:20]:
+                      Name: r
+            AstBinaryExpression `andalso` [165:7, 165:49]:
+              AstBinaryExpression `<=` [165:7, 165:23]:
+                AstNameExpression [165:7, 165:18]:
+                  -> defined at:  [163:11, 163:22]:
+                  Name: height_diff
+                AstConstantExpression [165:22, 165:23]:
+                  Value: 1
+                  Atom type: int
+              AstBinaryExpression `>=` [165:32, 165:49]:
+                AstNameExpression [165:32, 165:43]:
+                  -> defined at:  [163:11, 163:22]:
+                  Name: height_diff
+                AstUnaryExpression `~` [165:47, 165:49]:
+                  AstConstantExpression [165:48, 165:49]:
+                    Value: 1
+                    Atom type: int
+  AstValBinding [168:1, 168:19]:
+    AstIdentifierPattern [168:1, 168:19]:
+      Name: x25
+    AstFunctionCallExpression [168:1, 168:19]:
+      -> defined at:  [159:1, 163:45]:
+      Function name: isBalanced
+      AstFunctionCallExpression [168:12, 168:19]:
+        -> defined at:  [44:45, 44:56]:
+        Function name: LEAF
+        AstConstantExpression [168:17, 168:19]:
+          Value: 10
+          Atom type: int
+  AstValBinding [169:1, 169:20]:
+    AstIdentifierPattern [169:1, 169:20]:
+      Name: x26
+    AstFunctionCallExpression [169:1, 169:20]:
+      -> defined at:  [159:1, 163:45]:
+      Function name: isBalanced
+      AstNameExpression [169:12, 169:20]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstValBinding [170:1, 170:67]:
+    AstIdentifierPattern [170:1, 170:67]:
+      Name: x27
+    AstFunctionCallExpression [170:1, 170:67]:
+      -> defined at:  [159:1, 163:45]:
+      Function name: isBalanced
+      AstFunctionCallExpression [170:12, 170:67]:
+        -> defined at:  [44:17, 44:42]:
+        Function name: NODE
+        AstTupleExpression [170:17, 170:67]:
+          AstConstantExpression [170:17, 170:18]:
+            Value: 0
+            Atom type: int
+          AstFunctionCallExpression [170:20, 170:42]:
+            -> defined at:  [44:17, 44:42]:
+            Function name: NODE
+            AstTupleExpression [170:25, 170:42]:
+              AstConstantExpression [170:25, 170:26]:
+                Value: 0
+                Atom type: int
+              AstFunctionCallExpression [170:28, 170:34]:
+                -> defined at:  [44:45, 44:56]:
+                Function name: LEAF
+                AstConstantExpression [170:33, 170:34]:
+                  Value: 0
+                  Atom type: int
+              AstFunctionCallExpression [170:36, 170:42]:
+                -> defined at:  [44:45, 44:56]:
+                Function name: LEAF
+                AstConstantExpression [170:41, 170:42]:
+                  Value: 0
+                  Atom type: int
+          AstFunctionCallExpression [170:45, 170:67]:
+            -> defined at:  [44:17, 44:42]:
+            Function name: NODE
+            AstTupleExpression [170:50, 170:67]:
+              AstConstantExpression [170:50, 170:51]:
+                Value: 0
+                Atom type: int
+              AstFunctionCallExpression [170:53, 170:59]:
+                -> defined at:  [44:45, 44:56]:
+                Function name: LEAF
+                AstConstantExpression [170:58, 170:59]:
+                  Value: 0
+                  Atom type: int
+              AstFunctionCallExpression [170:61, 170:67]:
+                -> defined at:  [44:45, 44:56]:
+                Function name: LEAF
+                AstConstantExpression [170:66, 170:67]:
+                  Value: 0
+                  Atom type: int
+  AstFunBinding [178:1, 183:28]:
+    AstIdentifierPattern [178:5, 178:10]:
+      Name: isBST
+    AstTypedPattern [178:12, 178:22]:
+      AstIdentifierPattern [178:12, 178:16]:
+        Name: tree
+      AstTypeName [178:18, 178:22]:
+        -> defined at:  [178:12, 178:16]:
+        Name: tree
+    AstTypeName [178:25, 178:29]:
+      Name: bool
+    AstLetExpression [179:1, 183:28]:
+      AstBindings [180:3, 183:28]:
+        AstFunBinding [180:3, 183:28]:
+          AstIdentifierPattern [180:7, 180:11]:
+            Name: eval
+          AstIdentifierPattern [180:12, 180:16]:
+            Name: tree
+          AstCaseExpression [181:5, 183:28]:
+            AstNameExpression [181:10, 181:14]:
+              -> defined at:  [180:12, 180:16]:
+              Name: tree
+            AstMatch [182:7, 183:28]:
+              AstRule [182:7, 182:18]:
+                AstIdentifierPattern [182:7, 182:11]:
+                  -> defined at:  [44:45, 44:56]:
+                  Name: LEAF
+                AstIdentifierPattern [182:12, 182:13]:
+                  Name: x
+                AstNameExpression [182:17, 182:18]:
+                  -> defined at:  [182:12, 182:13]:
+                  Name: x
+              AstRule [183:9, 183:28]:
+                AstIdentifierPattern [183:9, 183:13]:
+                  -> defined at:  [44:17, 44:42]:
+                  Name: NODE
+                AstTuplePattern [183:14, 183:26]:
+                  AstIdentifierPattern [183:15, 183:16]:
+                    Name: x
+                  AstWildcardPattern [183:19, 183:20]:
+                  AstWildcardPattern [183:22, 183:23]:
+                AstNameExpression [183:27, 183:28]:
+                  -> defined at:  [183:15, 183:16]:
+                  Name: x
+      AstCaseExpression [185:3, 190:25]:
+        AstNameExpression [185:8, 185:12]:
+          -> defined at:  [178:12, 178:16]:
+          Name: tree
+        AstMatch [186:5, 190:25]:
+          AstRule [186:5, 186:19]:
+            AstIdentifierPattern [186:5, 186:9]:
+              -> defined at:  [44:45, 44:56]:
+              Name: LEAF
+            AstWildcardPattern [186:12, 186:14]:
+            AstConstantExpression [186:15, 186:19]:
+              Value: true
+              Atom type: bool
+          AstRule [187:7, 190:25]:
+            AstIdentifierPattern [187:7, 187:11]:
+              -> defined at:  [44:17, 44:42]:
+              Name: NODE
+            AstTuplePattern [187:12, 187:24]:
+              AstIdentifierPattern [187:13, 187:14]:
+                Name: x
+              AstIdentifierPattern [187:16, 187:17]:
+                Name: l
+              AstIdentifierPattern [187:19, 187:20]:
+                Name: r
+            AstLetExpression [188:5, 190:25]:
+              AstBindings [189:7, 190:25]:
+                AstValBinding [189:7, 189:24]:
+                  AstIdentifierPattern [189:11, 189:15]:
+                    Name: left
+                  AstFunctionCallExpression [189:18, 189:24]:
+                    -> defined at:  [180:3, 183:28]:
+                    Function name: eval
+                    AstNameExpression [189:23, 189:24]:
+                      -> defined at:  [187:16, 187:17]:
+                      Name: l
+                AstValBinding [190:7, 190:25]:
+                  AstIdentifierPattern [190:11, 190:16]:
+                    Name: right
+                  AstFunctionCallExpression [190:19, 190:25]:
+                    -> defined at:  [180:3, 183:28]:
+                    Function name: eval
+                    AstNameExpression [190:24, 190:25]:
+                      -> defined at:  [187:19, 187:20]:
+                      Name: r
+              AstBinaryExpression `andalso` [192:7, 192:66]:
+                AstBinaryExpression `andalso` [192:7, 192:49]:
+                  AstBinaryExpression `andalso` [192:7, 192:33]:
+                    AstBinaryExpression `>` [192:7, 192:15]:
+                      AstNameExpression [192:7, 192:8]:
+                        -> defined at:  [187:13, 187:14]:
+                        Name: x
+                      AstNameExpression [192:11, 192:15]:
+                        -> defined at:  [189:11, 189:15]:
+                        Name: left
+                    AstBinaryExpression `<` [192:24, 192:33]:
+                      AstNameExpression [192:24, 192:25]:
+                        -> defined at:  [187:13, 187:14]:
+                        Name: x
+                      AstNameExpression [192:28, 192:33]:
+                        -> defined at:  [190:11, 190:16]:
+                        Name: right
+                  AstFunctionCallExpression [192:42, 192:49]:
+                    -> defined at:  [178:1, 183:28]:
+                    Function name: isBST
+                    AstNameExpression [192:48, 192:49]:
+                      -> defined at:  [187:16, 187:17]:
+                      Name: l
+                AstFunctionCallExpression [192:59, 192:66]:
+                  -> defined at:  [178:1, 183:28]:
+                  Function name: isBST
+                  AstNameExpression [192:65, 192:66]:
+                    -> defined at:  [187:19, 187:20]:
+                    Name: r
+  AstValBinding [196:1, 208:16]:
+    AstIdentifierPattern [196:5, 196:8]:
+      Name: bst
+    AstFunctionCallExpression [196:11, 208:16]:
+      -> defined at:  [44:17, 44:42]:
+      Function name: NODE
+      AstTupleExpression [196:16, 208:16]:
+        AstConstantExpression [196:16, 196:18]:
+          Value: 20
+          Atom type: int
+        AstFunctionCallExpression [197:7, 205:18]:
+          -> defined at:  [44:17, 44:42]:
+          Function name: NODE
+          AstTupleExpression [197:12, 205:18]:
+            AstConstantExpression [197:12, 197:14]:
+              Value: 10
+              Atom type: int
+            AstFunctionCallExpression [198:9, 202:19]:
+              -> defined at:  [44:17, 44:42]:
+              Function name: NODE
+              AstTupleExpression [198:14, 202:19]:
+                AstConstantExpression [198:14, 198:15]:
+                  Value: 5
+                  Atom type: int
+                AstFunctionCallExpression [199:11, 199:17]:
+                  -> defined at:  [44:45, 44:56]:
+                  Function name: LEAF
+                  AstConstantExpression [199:16, 199:17]:
+                    Value: 2
+                    Atom type: int
+                AstFunctionCallExpression [200:11, 202:19]:
+                  -> defined at:  [44:17, 44:42]:
+                  Function name: NODE
+                  AstTupleExpression [200:16, 202:19]:
+                    AstConstantExpression [200:16, 200:17]:
+                      Value: 7
+                      Atom type: int
+                    AstFunctionCallExpression [201:13, 201:19]:
+                      -> defined at:  [44:45, 44:56]:
+                      Function name: LEAF
+                      AstConstantExpression [201:18, 201:19]:
+                        Value: 6
+                        Atom type: int
+                    AstFunctionCallExpression [202:13, 202:19]:
+                      -> defined at:  [44:45, 44:56]:
+                      Function name: LEAF
+                      AstConstantExpression [202:18, 202:19]:
+                        Value: 8
+                        Atom type: int
+            AstFunctionCallExpression [203:9, 205:18]:
+              -> defined at:  [44:17, 44:42]:
+              Function name: NODE
+              AstTupleExpression [203:14, 205:18]:
+                AstConstantExpression [203:14, 203:16]:
+                  Value: 15
+                  Atom type: int
+                AstFunctionCallExpression [204:11, 204:18]:
+                  -> defined at:  [44:45, 44:56]:
+                  Function name: LEAF
+                  AstConstantExpression [204:16, 204:18]:
+                    Value: 12
+                    Atom type: int
+                AstFunctionCallExpression [205:11, 205:18]:
+                  -> defined at:  [44:45, 44:56]:
+                  Function name: LEAF
+                  AstConstantExpression [205:16, 205:18]:
+                    Value: 17
+                    Atom type: int
+        AstFunctionCallExpression [206:7, 208:16]:
+          -> defined at:  [44:17, 44:42]:
+          Function name: NODE
+          AstTupleExpression [206:12, 208:16]:
+            AstConstantExpression [206:12, 206:14]:
+              Value: 22
+              Atom type: int
+            AstFunctionCallExpression [207:9, 207:16]:
+              -> defined at:  [44:45, 44:56]:
+              Function name: LEAF
+              AstConstantExpression [207:14, 207:16]:
+                Value: 18
+                Atom type: int
+            AstFunctionCallExpression [208:9, 208:16]:
+              -> defined at:  [44:45, 44:56]:
+              Function name: LEAF
+              AstConstantExpression [208:14, 208:16]:
+                Value: 25
+                Atom type: int
+  AstValBinding [210:1, 210:14]:
+    AstIdentifierPattern [210:1, 210:14]:
+      Name: x28
+    AstFunctionCallExpression [210:1, 210:14]:
+      -> defined at:  [178:1, 183:28]:
+      Function name: isBST
+      AstFunctionCallExpression [210:7, 210:14]:
+        -> defined at:  [44:45, 44:56]:
+        Function name: LEAF
+        AstConstantExpression [210:12, 210:14]:
+          Value: 10
+          Atom type: int
+  AstValBinding [211:1, 211:15]:
+    AstIdentifierPattern [211:1, 211:15]:
+      Name: x29
+    AstFunctionCallExpression [211:1, 211:15]:
+      -> defined at:  [178:1, 183:28]:
+      Function name: isBST
+      AstNameExpression [211:7, 211:15]:
+        -> defined at:  [58:5, 58:13]:
+        Name: big_tree
+  AstValBinding [212:1, 212:10]:
+    AstIdentifierPattern [212:1, 212:10]:
+      Name: x30
+    AstFunctionCallExpression [212:1, 212:10]:
+      -> defined at:  [178:1, 183:28]:
+      Function name: isBST
+      AstNameExpression [212:7, 212:10]:
+        -> defined at:  [196:5, 196:8]:
+        Name: bst
